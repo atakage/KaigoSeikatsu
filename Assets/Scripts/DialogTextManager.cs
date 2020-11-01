@@ -33,7 +33,7 @@ public class DialogTextManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
         else
         {
@@ -70,7 +70,6 @@ public class DialogTextManager : MonoBehaviour
                 timeUntilDisplay = 0;
             }
         }
-
         int displayCharacterCount = (int)(Mathf.Clamp01((Time.time - timeElapsed) / timeUntilDisplay) * currentText.Length);
         if (displayCharacterCount != lastUpdateCharacter)
         {
