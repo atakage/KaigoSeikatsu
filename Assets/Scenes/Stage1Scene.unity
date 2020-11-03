@@ -334,6 +334,8 @@ MonoBehaviour:
   sceneTransitionManager: {fileID: 0}
   textFileName: stage1
   nextSceneName: 
+  buttonOrContactStart: 1
+  buttonOrContact: 
 --- !u!1 &1047809613
 GameObject:
   m_ObjectHideFlags: 0
