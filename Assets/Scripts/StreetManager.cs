@@ -21,22 +21,7 @@ public class StreetManager : MonoBehaviour
         // パタン始まりの信号
         if (buttonOrContactStart)
         {
-            // ランダムでbuttonやcontactを決定
-            List<string> btnConArrayList = new List<string>(); // 7(button):3(contact)
-            btnConArrayList.Add("B");
-            btnConArrayList.Add("B");
-            btnConArrayList.Add("B");
-            btnConArrayList.Add("B");
-            btnConArrayList.Add("B");
-            btnConArrayList.Add("B");
-            btnConArrayList.Add("B");
-            btnConArrayList.Add("C");
-            btnConArrayList.Add("C");
-            btnConArrayList.Add("C");
-
-            List<string> shuffledbtnConArrayList = shuffleList(btnConArrayList);
-            string result = string.Join(",", shuffledbtnConArrayList);
-            Debug.Log(result);
+            DecidePattern();
         }
 
         TextAsset textAsset = Resources.Load(textFileName, typeof(TextAsset)) as TextAsset;
@@ -56,16 +41,25 @@ public class StreetManager : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 // スクリプトをすべて読んだら && 次のシーンがあったら
-                if (index > dataArray.Length-1 && nextSceneName != null)
+                if (index > dataArray.Length-1 && !nextSceneName.Trim().Equals(""))
                 {
                     //DialogTextManager.instance.DestroyObject();
                     sceneTransitionManager  = new SceneTransitionManager();
                     sceneTransitionManager.LoadTo(nextSceneName);
 
                 // スクリプトをすべて読んだら && パタンが決めたら 
-                }else if (index > dataArray.Length - 1 && buttonOrContact != null)
+                }else if (index > dataArray.Length - 1 && !buttonOrContact.Trim().Equals(""))
                 {
+                    // 次のシーンがB(Button)なら
+                    if (buttonOrContact.Equals("B"))
+                    {
+                        // 画面に歩く（進行）ボタンを作る
 
+                    }
+                    else//次のシーンがC(Contact)なら
+                    {
+                        // ランダムに何かと出会う
+                    }
                 }
                 else{ 
                         DialogTextManager.instance.SetScenarios(new string[] { dataArray[index] });
@@ -74,7 +68,34 @@ public class StreetManager : MonoBehaviour
             }
         
     }
+
+    // 画面に歩くボタンを作る関数
     
+    // 次のシーンを決める関数
+    public void DecidePattern()
+    {
+        // ランダムでbuttonやcontactを決定
+        List<string> btnConArrayList = new List<string>(); // 7(button):3(contact)
+        btnConArrayList.Add("B");
+        btnConArrayList.Add("B");
+        btnConArrayList.Add("B");
+        btnConArrayList.Add("B");
+        btnConArrayList.Add("B");
+        btnConArrayList.Add("B");
+        btnConArrayList.Add("B");
+        btnConArrayList.Add("C");
+        btnConArrayList.Add("C");
+        btnConArrayList.Add("C");
+
+        List<string> shuffledbtnConArrayList = shuffleList(btnConArrayList);
+        string result = string.Join(",", shuffledbtnConArrayList);
+        buttonOrContact = result.Substring(0, 1);
+
+        Debug.Log(result);
+        Debug.Log(buttonOrContact);
+    }
+
+    // 何かと出会う関数
 
 
     public List<string> shuffleList(List<string> list)
