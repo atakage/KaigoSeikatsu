@@ -11,6 +11,7 @@ public class StreetManager : MonoBehaviour
 
     int index = 0;
     public SceneTransitionManager sceneTransitionManager;
+    public StreetButtonManager streetButtonManager;
     public string textFileName;
     public string nextSceneName;
     public bool buttonOrContactStart; 
@@ -18,6 +19,11 @@ public class StreetManager : MonoBehaviour
     
     private void Start()
     {
+
+        //最初はステージのボタンUIを隠す
+        streetButtonManager = new StreetButtonManager();
+        streetButtonManager.SettingStageUI(false);
+
         // パタン始まりの信号
         if (buttonOrContactStart)
         {
@@ -53,7 +59,9 @@ public class StreetManager : MonoBehaviour
                     // 次のシーンがB(Button)なら
                     if (buttonOrContact.Equals("B"))
                     {
-                        // 画面に歩く（進行）ボタンを作る
+                    // 画面に歩く（進行）ボタンを作る
+                    streetButtonManager = new StreetButtonManager();
+                    streetButtonManager.SettingStageUI(true);
 
                     }
                     else//次のシーンがC(Contact)なら
