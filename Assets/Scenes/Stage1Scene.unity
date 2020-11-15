@@ -547,6 +547,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneTransitionManager: {fileID: 0}
   streetButtonManager: {fileID: 0}
+  streetVariableManager: {fileID: 0}
+  streetContactManager: {fileID: 0}
   textFileName: stage1
   nextSceneName: 
   buttonOrContactStart: 1
@@ -1074,7 +1076,7 @@ GameObject:
   - component: {fileID: 1868475853}
   - component: {fileID: 1868475852}
   m_Layer: 5
-  m_Name: actPoint
+  m_Name: actPointText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

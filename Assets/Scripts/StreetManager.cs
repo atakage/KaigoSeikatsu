@@ -13,6 +13,8 @@ public class StreetManager : MonoBehaviour
     public SceneTransitionManager sceneTransitionManager;
     public StreetButtonManager streetButtonManager;
     public StreetVariableManager streetVariableManager;
+    public StreetContactManager streetContactManager;
+    
     public string textFileName;
     public string nextSceneName;
     public bool buttonOrContactStart; 
@@ -27,8 +29,9 @@ public class StreetManager : MonoBehaviour
 
         //行動力を初期化
         streetVariableManager = new StreetVariableManager();
+        streetVariableManager.AssignInitialVariable();
 
-        // パタン始まりの信号
+             // パタン始まりの信号
         if (buttonOrContactStart)
         {
             DecidePattern();
@@ -70,7 +73,10 @@ public class StreetManager : MonoBehaviour
                     }
                     else//次のシーンがC(Contact)なら
                     {
-                        // ランダムに何かと出会う
+                              // ランダムに何かと出会う
+                    streetContactManager = new StreetContactManager();
+                    streetContactManager.BeginingContact();
+
                     }
                 // 行動力がゼロなら
                 }else if (streetVariableManager.actPoint < 1)
@@ -94,13 +100,13 @@ public class StreetManager : MonoBehaviour
     {
         // ランダムでbuttonやcontactを決定
         List<string> btnConArrayList = new List<string>(); // 7(button):3(contact)
-        btnConArrayList.Add("B");
-        btnConArrayList.Add("B");
-        btnConArrayList.Add("B");
-        btnConArrayList.Add("B");
-        btnConArrayList.Add("B");
-        btnConArrayList.Add("B");
-        btnConArrayList.Add("B");
+        btnConArrayList.Add("C");
+        btnConArrayList.Add("C");
+        btnConArrayList.Add("C");
+        btnConArrayList.Add("C");
+        btnConArrayList.Add("C");
+        btnConArrayList.Add("C");
+        btnConArrayList.Add("C");
         btnConArrayList.Add("C");
         btnConArrayList.Add("C");
         btnConArrayList.Add("C");

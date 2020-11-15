@@ -7,13 +7,15 @@ public class StreetVariableManager : MonoBehaviour
 {
     public Text actPointText;
     public int actPoint;
-    // Start is called before the first frame update
-    void Start()
+
+    public void AssignInitialVariable()
     {
         Debug.Log("StreetVariableManager START");
-        actPoint = 0;
+        actPoint = 10;
+        actPointText = GameObject.Find("actPointText").gameObject.GetComponent<Text>();
         actPointText.text = string.Format("行動力: {0}/10", actPoint);
-
     }
+
+
 
 }
