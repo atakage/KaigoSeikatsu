@@ -12,6 +12,7 @@ public class StreetManager : MonoBehaviour
     int index = 0;
     public SceneTransitionManager sceneTransitionManager;
     public StreetButtonManager streetButtonManager;
+    public StreetVariableManager streetVariableManager;
     public string textFileName;
     public string nextSceneName;
     public bool buttonOrContactStart; 
@@ -23,6 +24,9 @@ public class StreetManager : MonoBehaviour
         //最初はステージのボタンUIを隠す
         streetButtonManager = new StreetButtonManager();
         streetButtonManager.SettingStageUI(false);
+
+        //行動力を初期化
+        streetVariableManager = new StreetVariableManager();
 
         // パタン始まりの信号
         if (buttonOrContactStart)
@@ -68,7 +72,13 @@ public class StreetManager : MonoBehaviour
                     {
                         // ランダムに何かと出会う
                     }
-                }
+                // 行動力がゼロなら
+                }else if (streetVariableManager.actPoint < 1)
+                    {
+                        streetButtonManager = new StreetButtonManager();
+                        streetButtonManager.cannotActButtonUI();
+
+                     }
                 else{ 
                         DialogTextManager.instance.SetScenarios(new string[] { dataArray[index] });
                         ++index;
