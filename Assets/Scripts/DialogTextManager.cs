@@ -11,7 +11,7 @@ public class DialogTextManager : MonoBehaviour
     //テキスト送り終了後から関数を実行するまでの時間
     [SerializeField] float eventDelayTime = 1f;
     // 終了したかどうかのフラグ(これがないと終了後繰り返し関数を実行してしまう)
-    bool isEnd;
+    public bool isEnd;
 
     public UnityAction onClickText;
     public string[] scenarios;

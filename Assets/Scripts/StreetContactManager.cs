@@ -9,6 +9,10 @@ public class StreetContactManager : MonoBehaviour
 
     public void BeginingContact()
     {
+
+        // まずものに接近するかを決める
+        DecideContacting();
+
         // 接触するものをランダムで決める
         string getOne = ShuffleGroupCList();
 
@@ -20,13 +24,26 @@ public class StreetContactManager : MonoBehaviour
 
     public void CreateGroupCList(string getOne)
     {
-
         if (getOne.Equals("TestA"))
         {
             TestA testA = new TestA();
             testA.StartContact();
         }
     }
+
+
+    public void DecideContacting()
+    {
+        Debug.Log("DecideContacting() START");
+        DialogTextManager.instance.SetScenarios(new string[] {"向こうから何か感じる"});
+        DialogTextManager.instance.SetScenarios(new string[] { "近づきますか？" });
+
+        GameObject.Find("Canvas").transform.Find("contactButton").gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.Find("turnAroundButton").gameObject.SetActive(true);
+    }
+
+
+
 
     public string ShuffleGroupCList()
     {

@@ -25,7 +25,7 @@ public class StreetManager : MonoBehaviour
 
         //最初はステージのボタンUIを隠す
         streetButtonManager = new StreetButtonManager();
-        streetButtonManager.SettingStageUI(false);
+        //streetButtonManager.SettingStageUI(false);
 
         //行動力を初期化
         streetVariableManager = new StreetVariableManager();
