@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class StreetVariableManager : MonoBehaviour
 {
     public Text actPointText;
-    public int actPoint;
+    public static int actPoint;
+    public static bool decideContactingBool;
 
     public void AssignInitialVariable()
     {

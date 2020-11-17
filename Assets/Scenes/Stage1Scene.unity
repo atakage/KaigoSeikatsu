@@ -710,7 +710,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actPointText: {fileID: 1868475852}
-  actPoint: 0
 --- !u!4 &512885641
 Transform:
   m_ObjectHideFlags: 0
@@ -851,6 +850,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   eventDelayTime: 1
+  isEnd: 0
   scenarios: []
   uiText: {fileID: 267295395}
   intervalForCharacterDisplay: 0.05
@@ -1588,7 +1588,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1296487377}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2045846884}
+        m_MethodName: ContactButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1296487377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2120,6 +2131,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2034519786}
   m_CullTransparentMesh: 0
+--- !u!1 &2045846883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2045846885}
+  - component: {fileID: 2045846884}
+  m_Layer: 0
+  m_Name: ButtonClickManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2045846884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045846883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 288e26aaf3e4f834e8c04436caed1c56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  streetContactManager: {fileID: 0}
+--- !u!4 &2045846885
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045846883}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 444.77438, y: 648.4012, z: -254.27586}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2055427145
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,14 +10,16 @@ public class StreetContactManager : MonoBehaviour
     public void BeginingContact()
     {
 
-        // まずものに接近するかを決める
+        // ものに接近するかを決める
         DecideContacting();
 
+
+
         // 接触するものをランダムで決める
-        string getOne = ShuffleGroupCList();
+        // string getOne = ShuffleGroupCList();
 
      // 決めたものを作る
-        CreateGroupCList(getOne);
+     //   CreateGroupCList(getOne);
     }
 
 
