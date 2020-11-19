@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UtilManager : MonoBehaviour
 {
+
+
     public List<string> shuffleList(List<string> list)
     {
         System.Random rnd = new System.Random();

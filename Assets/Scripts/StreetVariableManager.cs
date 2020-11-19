@@ -11,10 +11,17 @@ public class StreetVariableManager : MonoBehaviour
 
     public void AssignInitialVariable()
     {
+
+        if(actPoint < 1)
+        {
+            actPoint = 10;
+        }
+
         Debug.Log("StreetVariableManager START");
-        actPoint = 10;
+        
         actPointText = GameObject.Find("actPointText").gameObject.GetComponent<Text>();
         actPointText.text = string.Format("行動力: {0}/10", actPoint);
+        
     }
 
 

@@ -87,6 +87,7 @@ public class DialogTextManager : MonoBehaviour
             isEnd = true;
             // 登録関数をeventDelayTime秒後に実行
             Invoke("EventFunction", eventDelayTime);
+
         }
     }
     // 登録関数の実行
@@ -112,6 +113,7 @@ public class DialogTextManager : MonoBehaviour
     // 基本的に使うのはこれだけ
     public void SetScenarios(string[] sc)
     {
+
         scenarios = sc;
         currentLine = 0;
         SetNextLine();

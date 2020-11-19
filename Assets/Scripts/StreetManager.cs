@@ -23,6 +23,7 @@ public class StreetManager : MonoBehaviour
     
     private void Start()
     {
+        
         clickSwitch = true;
 
         //最初はステージのボタンUIを隠す
@@ -32,6 +33,7 @@ public class StreetManager : MonoBehaviour
         //行動力を初期化
         streetVariableManager = new StreetVariableManager();
         streetVariableManager.AssignInitialVariable();
+
 
              // パタン始まりの信号
         if (buttonOrContactStart)
