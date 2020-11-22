@@ -29,7 +29,8 @@ public class StreetContactManager : MonoBehaviour
         if (getOne.Equals("TestA"))
         {
             TestA testA = new TestA();
-            testA.StartContact();
+            GameObject.Find("Canvas").gameObject.AddComponent<TestA>();
+
         }
     }
 
@@ -53,7 +54,7 @@ public class StreetContactManager : MonoBehaviour
         List<string> groupCList = new List<string>();
 
         groupCList.Add("TestA");
-        groupCList.Add("TestB");
+        groupCList.Add("TestA");
 
         utilManager = new UtilManager();
 

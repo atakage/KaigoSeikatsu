@@ -43,6 +43,6 @@ public class ButtonClickManager : MonoBehaviour
     public void ClickSwitchAvailable()
     {
         Debug.Log("ClickSwitchAvailable() START");
-        StreetManager.clickSwitch = true;
+        StreetVariableManager.clickSwitch = true;
     }
 }

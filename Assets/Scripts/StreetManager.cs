@@ -19,12 +19,12 @@ public class StreetManager : MonoBehaviour
     public string nextSceneName;
     public bool buttonOrContactStart; 
     public string buttonOrContact; // 次のパタンを決めるために
-    public static bool clickSwitch; // update()内でクリックイベントが重なることを防ぐために
+    
     
     private void Start()
     {
-        
-        clickSwitch = true;
+
+        StreetVariableManager.clickSwitch = true;
 
         //最初はステージのボタンUIを隠す
         streetButtonManager = new StreetButtonManager();
@@ -34,6 +34,7 @@ public class StreetManager : MonoBehaviour
         streetVariableManager = new StreetVariableManager();
         streetVariableManager.AssignInitialVariable();
 
+        
 
              // パタン始まりの信号
         if (buttonOrContactStart)
@@ -55,7 +56,7 @@ public class StreetManager : MonoBehaviour
         TextAsset textAsset = Resources.Load(textFileName, typeof(TextAsset)) as TextAsset;
         string[] dataArray = textAsset.text.Split('/');
 
-            if (Input.GetMouseButtonDown(0) && clickSwitch)
+            if (Input.GetMouseButtonDown(0) && StreetVariableManager.clickSwitch)
             {
                 // スクリプトをすべて読んだら && 次のシーンがあったら
             if (index > dataArray.Length-1 && !nextSceneName.Trim().Equals(""))
@@ -78,7 +79,7 @@ public class StreetManager : MonoBehaviour
                     }
                     else//次のシーンがC(Contact)なら
                     {
-                    clickSwitch = false;
+                    StreetVariableManager.clickSwitch = false;
                     // ランダムに何かと出会う
                     streetContactManager = new StreetContactManager();
                     streetContactManager.BeginingContact();

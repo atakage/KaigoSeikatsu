@@ -8,6 +8,7 @@ public class StreetVariableManager : MonoBehaviour
     public Text actPointText;
     public static int actPoint;
     public static bool decideContactingBool;
+    public static bool clickSwitch; // update()内でクリックイベントが重なることを防ぐために
 
     public void AssignInitialVariable()
     {
