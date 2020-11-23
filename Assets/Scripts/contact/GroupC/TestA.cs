@@ -5,14 +5,15 @@ using UnityEngine.UI;
 
 public class TestA : MonoBehaviour
 {
+    public SceneTransitionManager sceneTransitionManager;
+
     public Text panelText;
     public string[] taleArray;
     public int index;
+    public bool DialogAutoAccess;
 
-    public string stst;
-
-
-
+    Button choiceAButton;
+    Button choiceBButton;
 
     public void Start()
     {
@@ -46,13 +47,41 @@ public class TestA : MonoBehaviour
     }
 
 
+    // ボタンクリック
+    public void ClickChoiceAButton()
+    {
+        Debug.Log("ClickChoiceAButton");
+
+        // テキスト読み込む
+        TextAsset textAsset = Resources.Load("contact/groupC/TestA/testA_tale1_end", typeof(TextAsset)) as TextAsset;
+        taleArray = textAsset.text.Split('/');
+
+        // ボタンを隠す
+        GameObject.Find("Canvas").transform.Find("ChoiceAButton").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("ChoiceBButton").gameObject.SetActive(false);
+
+        DialogTextManager.instance.SetScenarios(new string[] { "A!!" });
+
+        // テキストを読むためにindexを初期化&クリックスイッチtrue
+        index = 0;
+        StreetVariableManager.clickSwitch = true;
+    }
+
+    public void ClickChoiceBButton()
+    {
+        Debug.Log("ClickChoiceBButton");
+    }
+
+
     public void Update()
     {
         if (Input.GetMouseButtonDown(0) && StreetVariableManager.clickSwitch)
         {
             Debug.Log("INDEX:" + index);
             Debug.Log("taleArrayINDEX:" + taleArray.Length);
+
             DialogTextManager.instance.SetScenarios(new string[] { taleArray[index] });
+
             panelText = GameObject.Find("panelText").gameObject.GetComponent<Text>();
 
             // indexの増加位置を考えて最後のテキストのすぐ前で切る
@@ -61,8 +90,32 @@ public class TestA : MonoBehaviour
                 Debug.Log("END!!");
                 //選択肢ボタンを作る、クリックスイッチをfalseにする
                 StreetVariableManager.clickSwitch = false;
+
+                GameObject.Find("Canvas").transform.Find("ChoiceAButton").gameObject.SetActive(true);
+                GameObject.Find("Canvas").transform.Find("ChoiceBButton").gameObject.SetActive(true);
+
+                
+                choiceAButton = GameObject.Find("Canvas").transform.Find("ChoiceAButton").GetComponent<Button>();
+                choiceBButton = GameObject.Find("Canvas").transform.Find("ChoiceBButton").GetComponent<Button>();
+
+                // ボタンにonClick設定
+                choiceAButton.onClick.AddListener(ClickChoiceAButton);
+                choiceBButton.onClick.AddListener(ClickChoiceBButton);
+
             }
-            ++index;
+
+
+            // 選択が終わるとシーン転換
+            if (panelText.text.Equals("bye"))
+            {
+                sceneTransitionManager = new SceneTransitionManager();
+                StreetVariableManager.clickSwitch = false;
+                Debug.Log("sCene");
+                sceneTransitionManager.LoadTo("StreetScene");
+            }
+
+
+            if(taleArray.Length-1 > index) ++index;
         }
     }
 }
