@@ -15,7 +15,7 @@ public class StreetVariableManager : MonoBehaviour
 
         if(actPoint < 1)
         {
-            actPoint = 10;
+            actPoint = 5;
         }
 
         Debug.Log("StreetVariableManager START");
