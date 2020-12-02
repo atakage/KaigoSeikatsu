@@ -6,11 +6,14 @@ using UnityEngine.UI;
 public class TestA : MonoBehaviour
 {
     public SceneTransitionManager sceneTransitionManager;
+    public PlayerSaveDataManager playerSaveDataManager;
 
     public Text panelText;
     public string[] taleArray;
     public int index;
-    public bool DialogAutoAccess;
+    // 現在進行中のスクリプト
+    public string presentTale;
+
 
     Button choiceAButton;
     Button choiceBButton;
@@ -29,7 +32,41 @@ public class TestA : MonoBehaviour
 
 
         //人物と最初に接触ここで初期設定、好感度や記憶の破片なで
-        Tale1();
+
+
+        // playerとのprogress(好感度)を読み出す
+        playerSaveDataManager = new PlayerSaveDataManager();
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+
+        // playerとのprogress(好感度)に合うスクリプトを再生
+        if (playerData.progressWithTestA == 0)
+        {
+            playerData.progressWithTestA = 1;
+            playerSaveDataManager.SavePlayerData(playerData);
+            Debug.Log("TestAとの関係:" + playerData.progressWithTestA);
+            Tale1();
+        }
+        else if (playerData.progressWithTestA == 1)
+        {
+
+        }else if (playerData.progressWithTestA == 20)
+        {
+
+        }else if (playerData.progressWithTestA == 40)
+        {
+
+        }else if (playerData.progressWithTestA == 60)
+        {
+
+        }
+        // 80%
+        else
+        {
+
+        }
+        
+
+        
     }
 
 

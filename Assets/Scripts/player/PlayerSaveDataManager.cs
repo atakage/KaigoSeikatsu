@@ -46,14 +46,8 @@ public class PlayerSaveDataManager : MonoBehaviour
     {
         string dataStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerData.json");
         PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(dataStr);
-        Debug.Log("LOADDATA: " + playerData.money);
+        Debug.Log("LOADDATA: " + playerData.money +","+ playerData.progressWithTestA);
 
         return playerData;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
