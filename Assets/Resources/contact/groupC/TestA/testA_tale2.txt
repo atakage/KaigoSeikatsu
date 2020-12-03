@@ -1,0 +1,1 @@
+tale2 start/tale2 content/tale2 select

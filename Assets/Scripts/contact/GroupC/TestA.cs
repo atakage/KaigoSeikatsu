@@ -48,7 +48,7 @@ public class TestA : MonoBehaviour
         }
         else if (playerData.progressWithTestA == 1)
         {
-
+            Tale2();
         }else if (playerData.progressWithTestA == 20)
         {
 
@@ -81,6 +81,21 @@ public class TestA : MonoBehaviour
         TextAsset textAsset = Resources.Load("contact/groupC/TestA/testA_tale1", typeof(TextAsset)) as TextAsset;
         taleArray = textAsset.text.Split('/');
         //話を始める最後に選択肢
+        presentTale = "Tale1";
+    }
+
+    public void Tale2()
+    {
+        Debug.Log("Tale2 START");
+
+        TextAsset textAsset = Resources.Load("contact/groupC/TestA/testA_tale2", typeof(TextAsset)) as TextAsset;
+        taleArray = textAsset.text.Split('/');
+        presentTale = "Tale2";
+
+        // ボタンにonClick設定
+        choiceAButton = GameObject.Find("Canvas").transform.Find("ChoiceAButton").GetComponent<Button>();
+        choiceAButton.onClick.AddListener(ClickChoiceAButton);
+
     }
 
 
@@ -89,19 +104,37 @@ public class TestA : MonoBehaviour
     {
         Debug.Log("ClickChoiceAButton");
 
-        // テキスト読み込む
-        TextAsset textAsset = Resources.Load("contact/groupC/TestA/testA_tale1_end", typeof(TextAsset)) as TextAsset;
-        taleArray = textAsset.text.Split('/');
+        if (presentTale.Equals("Tale2"))
+        {
+            // テキスト読み込む
+            TextAsset textAsset =  Resources.Load("contact/groupC/TestA/taleA_tale2_choiceA", typeof(TextAsset)) as TextAsset;
+            taleArray = textAsset.text.Split('/');
 
-        // ボタンを隠す
-        GameObject.Find("Canvas").transform.Find("ChoiceAButton").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("ChoiceBButton").gameObject.SetActive(false);
+            // ボタンを隠す
+            GameObject.Find("Canvas").transform.Find("ChoiceAButton").gameObject.SetActive(false);
+            GameObject.Find("Canvas").transform.Find("ChoiceBButton").gameObject.SetActive(false);
 
-        DialogTextManager.instance.SetScenarios(new string[] { "A!!" });
+            DialogTextManager.instance.SetScenarios(new string[] { "A!!" });
+            // テキストを読むためにindexを初期化&クリックスイッチtrue
+            index = 0;
+            StreetVariableManager.clickSwitch = true;
+        }
+        else if(presentTale.Equals("Tale1")) { 
 
-        // テキストを読むためにindexを初期化&クリックスイッチtrue
-        index = 0;
-        StreetVariableManager.clickSwitch = true;
+            // テキスト読み込む
+            TextAsset textAsset = Resources.Load("contact/groupC/TestA/testA_tale1_end", typeof(TextAsset)) as TextAsset;
+            taleArray = textAsset.text.Split('/');
+
+            // ボタンを隠す
+            GameObject.Find("Canvas").transform.Find("ChoiceAButton").gameObject.SetActive(false);
+            GameObject.Find("Canvas").transform.Find("ChoiceBButton").gameObject.SetActive(false);
+
+            DialogTextManager.instance.SetScenarios(new string[] { "A!!" });
+
+            // テキストを読むためにindexを初期化&クリックスイッチtrue
+            index = 0;
+            StreetVariableManager.clickSwitch = true;
+        }
     }
 
     public void ClickChoiceBButton()
@@ -140,14 +173,31 @@ public class TestA : MonoBehaviour
                 choiceBButton.onClick.AddListener(ClickChoiceBButton);
 
             }
+            // indexの増加位置を考えて最後のテキストのすぐ前で切る
+            else if (panelText.text.Equals("tale2 content") && presentTale.Equals("Tale2"))
+            {
+                Debug.Log("Tale2 END!!");
+                //選択肢ボタンを作る、クリックスイッチをfalseにする
+                StreetVariableManager.clickSwitch = false;
+
+                GameObject.Find("Canvas").transform.Find("ChoiceAButton").gameObject.SetActive(true);
+                GameObject.Find("Canvas").transform.Find("ChoiceBButton").gameObject.SetActive(true);
+
+
+            }
 
 
             // 選択が終わるとシーン転換
-            if (panelText.text.Equals("bye"))
+            if (panelText.text.Equals("bye") && presentTale.Equals("Tale1"))
             {
                 sceneTransitionManager = new SceneTransitionManager();
                 StreetVariableManager.clickSwitch = false;
                 Debug.Log("sCene");
+                sceneTransitionManager.LoadTo("StreetScene");
+            }else if (panelText.text.Equals("bye") && presentTale.Equals("Tale2"))
+            {
+                sceneTransitionManager = new SceneTransitionManager();
+                StreetVariableManager.clickSwitch = false;
                 sceneTransitionManager.LoadTo("StreetScene");
             }
 
