@@ -36,7 +36,11 @@ public class TestA : MonoBehaviour
 
         // playerとのprogress(好感度)を読み出す
         playerSaveDataManager = new PlayerSaveDataManager();
-        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        //PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        PlayerData playerData = new PlayerData();
+        ItemListData[] itemListData = new ItemListData[2];
+
+        playerData.progressWithTestA = 1;
 
         // playerとのprogress(好感度)に合うスクリプトを再生
         if (playerData.progressWithTestA == 0)
@@ -48,6 +52,17 @@ public class TestA : MonoBehaviour
         }
         else if (playerData.progressWithTestA == 1)
         {
+
+            itemListData[0] = new ItemListData();
+            itemListData[0].itemName = "item3";
+            itemListData[0].quantity = 222;
+
+            itemListData[1] = new ItemListData();
+            itemListData[1].itemName = "item5";
+            itemListData[1].quantity = 666;
+
+            playerSaveDataManager.SaveItemListData(itemListData);
+            //playerSaveDataManager.SavePlayerData(playerData);
             Tale2();
         }else if (playerData.progressWithTestA == 20)
         {
