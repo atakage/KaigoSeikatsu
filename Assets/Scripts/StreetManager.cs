@@ -19,8 +19,11 @@ public class StreetManager : MonoBehaviour
     public string nextSceneName;
     public bool buttonOrContactStart; 
     public string buttonOrContact; // 次のパタンを決めるために
-    
-    
+    public static bool reUpdate;   // ボタンをクリックしたあとStreetManagerのUpdate()でDecidePattern()を動作するかを決める
+    public List<string> btnConArrayList;
+    public List<string> shuffledbtnConArrayList;
+    public string result;
+
     private void Start()
     {
 
@@ -56,6 +59,8 @@ public class StreetManager : MonoBehaviour
         TextAsset textAsset = Resources.Load(textFileName, typeof(TextAsset)) as TextAsset;
         string[] dataArray = textAsset.text.Split('/');
 
+        if (reUpdate) DecidePattern();
+
             if (Input.GetMouseButtonDown(0) && StreetVariableManager.clickSwitch)
             {
                 // スクリプトをすべて読んだら && 次のシーンがあったら
@@ -73,7 +78,7 @@ public class StreetManager : MonoBehaviour
                     if (buttonOrContact.Equals("B"))
                     {
                     // 画面に歩く（進行）ボタンを作る
-                    streetButtonManager = new StreetButtonManager();
+                    reUpdate = false;
                     streetButtonManager.SettingStageUI(true);
 
                     }
@@ -81,6 +86,7 @@ public class StreetManager : MonoBehaviour
                     {
                     StreetVariableManager.clickSwitch = false;
                     // ランダムに何かと出会う
+                    reUpdate = false;
                     streetContactManager = new StreetContactManager();
                     streetContactManager.BeginingContact();
 
@@ -106,20 +112,12 @@ public class StreetManager : MonoBehaviour
     public void DecidePattern()
     {
         // ランダムでbuttonやcontactを決定
-        List<string> btnConArrayList = new List<string>(); // 7(button):3(contact)
-        btnConArrayList.Add("C");
-        btnConArrayList.Add("C");
-        btnConArrayList.Add("C");
-        btnConArrayList.Add("C");
-        btnConArrayList.Add("C");
-        btnConArrayList.Add("C");
-        btnConArrayList.Add("C");
-        btnConArrayList.Add("C");
-        btnConArrayList.Add("C");
+        btnConArrayList = new List<string>(); // 7(button):3(contact)
+        btnConArrayList.Add("B");
         btnConArrayList.Add("C");
 
-        List<string> shuffledbtnConArrayList = shuffleList(btnConArrayList);
-        string result = string.Join(",", shuffledbtnConArrayList);
+        shuffledbtnConArrayList = shuffleList(btnConArrayList);
+        result = string.Join(",", shuffledbtnConArrayList);
         buttonOrContact = result.Substring(0, 1);
 
         Debug.Log(result);
