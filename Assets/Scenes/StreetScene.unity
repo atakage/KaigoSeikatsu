@@ -347,6 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f803d79291032049a5de68a58dcf10c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  streetManager: {fileID: 0}
   walkButton: {fileID: 0}
   returnButton: {fileID: 0}
   shopButton: {fileID: 0}
@@ -874,6 +875,53 @@ MonoBehaviour:
   nextSceneName: 
   buttonOrContactStart: 1
   buttonOrContact: 
+  btnConArrayList: []
+  shuffledbtnConArrayList: []
+  result: 
+--- !u!1 &627915493
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 627915495}
+  - component: {fileID: 627915494}
+  m_Layer: 0
+  m_Name: StreetContactManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &627915494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627915493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 472144a54a81d9640baafaefd01656ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  utilManager: {fileID: 0}
+--- !u!4 &627915495
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627915493}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 279.26144, y: 573.94617, z: -99.70126}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &663397091
 GameObject:
   m_ObjectHideFlags: 0
@@ -1391,18 +1439,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1092055534}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2045846884}
-        m_MethodName: TurnAroundButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1092055534
 MonoBehaviour:
   m_ObjectHideFlags: 0

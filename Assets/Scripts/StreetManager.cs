@@ -31,13 +31,14 @@ public class StreetManager : MonoBehaviour
 
         //最初はステージのボタンUIを隠す
         streetButtonManager = new StreetButtonManager();
-        //streetButtonManager.SettingStageUI(false);
+        streetContactManager = new StreetContactManager();
 
         //行動力を初期化
         streetVariableManager = new StreetVariableManager();
         streetVariableManager.AssignInitialVariable();
 
-        
+
+
 
              // パタン始まりの信号
         if (buttonOrContactStart)
@@ -87,7 +88,6 @@ public class StreetManager : MonoBehaviour
                     StreetVariableManager.clickSwitch = false;
                     // ランダムに何かと出会う
                     reUpdate = false;
-                    streetContactManager = new StreetContactManager();
                     streetContactManager.BeginingContact();
 
                     }
@@ -113,7 +113,7 @@ public class StreetManager : MonoBehaviour
     {
         // ランダムでbuttonやcontactを決定
         btnConArrayList = new List<string>(); // 7(button):3(contact)
-        btnConArrayList.Add("B");
+        //btnConArrayList.Add("B");
         btnConArrayList.Add("C");
 
         shuffledbtnConArrayList = shuffleList(btnConArrayList);

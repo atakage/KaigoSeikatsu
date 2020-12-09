@@ -24,25 +24,9 @@ public class ButtonClickManager : MonoBehaviour
 
     }
 
-    public void TurnAroundButtonClick()
-    {
-        Debug.Log("TurnAroundButtonClick() START");
-        GameObject.Find("Canvas").transform.Find("contactButton").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("turnAroundButton").gameObject.SetActive(false);
-        
-        DialogTextManager.instance.SetScenarios(new string[] { "近づくのをやめた" });
-
-        // クリック遅延
-        Invoke("ClickSwitchAvailable", 1f);
-  
-    }
 
 
 
 
-    public void ClickSwitchAvailable()
-    {
-        Debug.Log("ClickSwitchAvailable() START");
-        StreetVariableManager.clickSwitch = true;
-    }
+
 }

@@ -1,25 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StreetContactManager : MonoBehaviour
 {
     public UtilManager utilManager;
+    //public GameObject turnAroundButton;
 
+
+    void Start()
+    {
+        Debug.Log("StreetContactManager START");
+        GameObject.Find("Canvas").transform.Find("turnAroundButton").GetComponent<Button>().onClick.AddListener(TurnAroundButtonClick);
+    }
 
     public void BeginingContact()
     {
-
         // ものに接近するかを決める
         DecideContacting();
-
-
 
         // 接触するものをランダムで決める
         // string getOne = ShuffleGroupCList();
 
-     // 決めたものを作る
-     //   CreateGroupCList(getOne);
+        // 決めたものを作る
+        //   CreateGroupCList(getOne);
     }
 
 
@@ -37,16 +42,33 @@ public class StreetContactManager : MonoBehaviour
 
     public void DecideContacting()
     {
+
         Debug.Log("DecideContacting() START");
-        DialogTextManager.instance.SetScenarios(new string[] {"向こうから何か感じる"});
         DialogTextManager.instance.SetScenarios(new string[] { "近づきますか？" });
 
         GameObject.Find("Canvas").transform.Find("contactButton").gameObject.SetActive(true);
         GameObject.Find("Canvas").transform.Find("turnAroundButton").gameObject.SetActive(true);
+
     }
 
 
+    public void TurnAroundButtonClick()
+    {
+        Debug.Log("TurnAroundButtonClick() START");
+        GameObject.Find("Canvas").transform.Find("contactButton").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("turnAroundButton").gameObject.SetActive(false);
 
+        DialogTextManager.instance.SetScenarios(new string[] { "近づくのをやめた" });
+
+        // クリック遅延
+        Invoke("ClickSwitchAvailable", 1f);
+    }
+
+    public void ClickSwitchAvailable()
+    {
+        Debug.Log("ClickSwitchAvailable() START");
+        StreetVariableManager.clickSwitch = true;
+    }
 
     public string ShuffleGroupCList()
     {
