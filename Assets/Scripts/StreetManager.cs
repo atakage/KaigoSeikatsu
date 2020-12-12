@@ -113,7 +113,7 @@ public class StreetManager : MonoBehaviour
     {
         // ランダムでbuttonやcontactを決定
         btnConArrayList = new List<string>(); // 7(button):3(contact)
-        //btnConArrayList.Add("B");
+        btnConArrayList.Add("B");
         btnConArrayList.Add("C");
 
         shuffledbtnConArrayList = shuffleList(btnConArrayList);

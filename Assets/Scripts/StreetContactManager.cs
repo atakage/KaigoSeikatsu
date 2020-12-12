@@ -6,13 +6,14 @@ using UnityEngine.UI;
 public class StreetContactManager : MonoBehaviour
 {
     public UtilManager utilManager;
-    //public GameObject turnAroundButton;
+    public SceneTransitionManager sceneTransitionManager;
 
 
     void Start()
     {
         Debug.Log("StreetContactManager START");
         GameObject.Find("Canvas").transform.Find("turnAroundButton").GetComponent<Button>().onClick.AddListener(TurnAroundButtonClick);
+        GameObject.Find("Canvas").transform.Find("contactButton").GetComponent<Button>().onClick.AddListener(TurnAroundButtonClick);
     }
 
     public void BeginingContact()
@@ -51,6 +52,20 @@ public class StreetContactManager : MonoBehaviour
 
     }
 
+    public void ContactButtonClick()
+    {
+        Debug.Log("ContactButtonClick() START");
+
+        StreetVariableManager.actPoint -= 1;
+
+        if (StreetVariableManager.actPoint > 0)
+        {
+            sceneTransitionManager = new SceneTransitionManager();
+            sceneTransitionManager.LoadTo("ContactingScene");
+        }
+
+    }
+
 
     public void TurnAroundButtonClick()
     {
@@ -62,12 +77,14 @@ public class StreetContactManager : MonoBehaviour
 
         // クリック遅延
         Invoke("ClickSwitchAvailable", 1f);
+
     }
 
     public void ClickSwitchAvailable()
     {
         Debug.Log("ClickSwitchAvailable() START");
         StreetVariableManager.clickSwitch = true;
+        StreetManager.reUpdate = true;
     }
 
     public string ShuffleGroupCList()

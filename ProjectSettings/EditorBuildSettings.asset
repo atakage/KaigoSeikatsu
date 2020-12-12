@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ContactingScene.unity
     guid: 37c21518d23379a4ea3f1603892f001f
+  - enabled: 1
+    path: Assets/Scenes/ShopScene.unity
+    guid: cf7bfc5191e281044b69206a139297cc
   m_configObjects: {}

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class StreetButtonManager : MonoBehaviour
 {
     public StreetManager streetManager;
+    public SceneTransitionManager sceneTransitionManager;
+
     public GameObject walkButton;
     public GameObject returnButton;
     public GameObject shopButton;
@@ -14,6 +16,8 @@ public class StreetButtonManager : MonoBehaviour
     {
         Debug.Log("StreetButtonManager START");
         GameObject.Find("Canvas").transform.Find("walkButton").GetComponent<Button>().onClick.AddListener(WalkButtonClick);
+        GameObject.Find("Canvas").transform.Find("returnButton").GetComponent<Button>().onClick.AddListener(ReturnButtonClick);
+        GameObject.Find("Canvas").transform.Find("shopButton").GetComponent<Button>().onClick.AddListener(ShopButtonClick);
     }
 
     public void WalkButtonClick()
@@ -22,6 +26,20 @@ public class StreetButtonManager : MonoBehaviour
         SettingStageUI(false);
         DialogTextManager.instance.SetScenarios(new string[] { "街を歩く" });
         StreetManager.reUpdate = true;
+    }
+
+    public void ReturnButtonClick()
+    {
+        Debug.Log("ReturnButtonClick START");
+        sceneTransitionManager = new SceneTransitionManager();
+        sceneTransitionManager.LoadTo("ReadyToWorkScene");
+    }
+
+    public void ShopButtonClick()
+    {
+        Debug.Log("ShopButtonClick START");
+        sceneTransitionManager = new SceneTransitionManager();
+        sceneTransitionManager.LoadTo("ShopScene");
     }
 
 
@@ -42,9 +60,6 @@ public class StreetButtonManager : MonoBehaviour
     public void cannotActButtonUI()
     {
         Debug.Log("cannotActButtonUI START");
-
-        
-        
 
         // 歩くボタンの色を変える
         Button walkButtonObj = GameObject.Find("Canvas").transform.Find("walkButton").gameObject.GetComponent<Button>();
