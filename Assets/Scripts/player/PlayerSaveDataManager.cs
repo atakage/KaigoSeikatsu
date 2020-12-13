@@ -18,6 +18,7 @@ public class PlayerData
 public class ItemListData
 {
     public string itemName;
+    public string itemDescription;
     public int quantity;
 }
 
