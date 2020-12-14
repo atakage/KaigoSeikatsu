@@ -55,7 +55,7 @@ public class PlayerSaveDataManager : MonoBehaviour
             {
                 for(int j = 0; j < itemListData.Length; j++)
                 {
-                    if (loadedItemListData[i].itemName.Equals(itemListData[j].itemName))
+                    if (itemListData[j] != null && loadedItemListData[i].itemName.Equals(itemListData[j].itemName))
                     {
                         loadedItemListData[i].quantity = itemListData[j].quantity;
                         itemListData[j].itemName = null;
@@ -72,7 +72,7 @@ public class PlayerSaveDataManager : MonoBehaviour
             foreach (ItemListData loadedData in itemListData)
             {
                 // 新しいアイテムの中名前がnullにできたものはリストに追加しない
-                if(loadedData.itemName != null)
+                if(loadedData != null && loadedData.itemName != null)
                 {
                     mergedItemList.Add(loadedData);
                 }

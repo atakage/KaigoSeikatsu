@@ -13,10 +13,20 @@ public class ItemCheckManager : MonoBehaviour
     public int onePageItemQty = 6;
     public int itemSlotPage;
     public int itemSlotPageIndex;
+    public int loadItemIndex = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+
+        PlayerSaveDataManager playerSaveDataManager = new PlayerSaveDataManager();
+        ItemListData[] itemListData2 = new ItemListData[2];
+        itemListData2[0] = new ItemListData();
+         itemListData2[0].itemName = "android";
+        itemListData2[0].itemDescription = "this is android";
+        itemListData2[0].quantity = 30;
+        playerSaveDataManager.SaveItemListData(itemListData2);
+
         Debug.Log("ItemCheckManager START");
         playerSaveDataManager = new PlayerSaveDataManager();
 
@@ -25,6 +35,12 @@ public class ItemCheckManager : MonoBehaviour
         itemListData = playerSaveDataManager.LoadItemListData();
 
         ItemSlotPage();
+
+    }
+
+    // クリックしたらアイテムを表示
+    public void DisplayItem(int slotIndex)
+    {
 
     }
 
@@ -46,6 +62,9 @@ public class ItemCheckManager : MonoBehaviour
         {
             itemSlotPage = 1;
         }
+
+        //ロードしたアイテムをスロットに配置する
+        for(int i=0; i< )
 
 
         Debug.Log("itemSlotPage: " + itemSlotPage);
