@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ItemCheckManager : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class ItemCheckManager : MonoBehaviour
     public int itemSlotPage;
     public int itemSlotPageIndex;
     public int loadItemIndex = 0;
-
+  
     // Start is called before the first frame update
     void Start()
     {
@@ -63,10 +64,26 @@ public class ItemCheckManager : MonoBehaviour
             itemSlotPage = 1;
         }
 
+        Texture2D texture = null;
         //ロードしたアイテムをスロットに配置する
-        for(int i=0; i< )
+        for (int i=0; i< itemQuantity; i++)
+        {
+            //イメージをロード
+            texture = new Texture2D(0, 0);
+            string imgPath = "img/item/"+ itemListData[i].itemName;
 
-
+            texture = Resources.Load(imgPath, typeof(Texture2D)) as Texture2D;
+            // イメージがないならdefaultイメージを設定
+            if(texture == null)
+            {
+                imgPath = "img/item/unity";
+                texture = Resources.Load(imgPath, typeof(Texture2D)) as Texture2D;
+            }
+           
+            // texture to sprite
+            Rect rect = new Rect(0, 0, texture.width, texture.height);
+            GameObject.Find("itemSlotCanvas").transform.Find("item" + i).GetComponent<Image>().sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+        }
         Debug.Log("itemSlotPage: " + itemSlotPage);
     }
 
