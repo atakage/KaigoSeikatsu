@@ -35,7 +35,8 @@ public class ItemCheckManager : MonoBehaviour
         //playerData = playerSaveDataManager.LoadPlayerData();
         itemListData = playerSaveDataManager.LoadItemListData();
 
-        ItemSlotPage();
+        if(itemListData != null && itemListData.Length > 0) ItemSlotPage();
+
 
     }
 
@@ -83,7 +84,20 @@ public class ItemCheckManager : MonoBehaviour
             // texture to sprite
             Rect rect = new Rect(0, 0, texture.width, texture.height);
             GameObject.Find("itemSlotCanvas").transform.Find("item" + i).GetComponent<Image>().sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+
+            // アイテム情報
+            GameObject.Find("item" + i).transform.Find("itemName").GetComponent<Text>().text = itemListData[i].itemName;
+            GameObject.Find("item" + i).transform.Find("itemQty").GetComponent<Text>().text = itemListData[i].quantity.ToString();
+            GameObject.Find("item" + i).transform.Find("itemDesc").GetComponent<Text>().text = itemListData[i].itemDescription;
         }
+
+        // 最初はindex0のアイテム情報を基準にする
+        GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text =
+        "[ " + "<color=#93DAFF>" + itemListData[0].itemName + "</color>" + "(" + itemListData[0].quantity + ")" + " ]" +
+        "\n" +
+        itemListData[0].itemDescription;
+        
+        ;
         Debug.Log("itemSlotPage: " + itemSlotPage);
     }
 
