@@ -88,14 +88,53 @@ public class PlayerSaveDataManager : MonoBehaviour
         }
     }
 
-    public ItemListData[] LoadItemListData()
+    public ItemListData[] LoadItemListData(int page)
     {
         ItemListData[] itemListData;
+        ItemListData[] returnItemListData = null;
+        Debug.Log("PAGEPARAM: " + page);
 
         try
         {
             string itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
             itemListData = JsonHelper.FromJson<ItemListData>(itemAsStr);
+
+            int pageItemStartIndex = (page-1) * 6;
+            int pageItemEndIndex = pageItemStartIndex+6;
+            // 全体アイテムの数を超えるとendIndexを全体アイテムの数で設定する
+            if (pageItemStartIndex + 6 > itemListData.Length)
+            {
+                pageItemEndIndex = itemListData.Length;
+            }
+            returnItemListData = new ItemListData[((pageItemEndIndex-1) - pageItemStartIndex) + 1];
+            Debug.Log("pageItemStartIndex: " + pageItemStartIndex);
+            Debug.Log("pageItemEndIndex: " + pageItemEndIndex);
+            int returnCount = 0;
+            // アイテム全体でrequestページのアイテムだけ引けだす
+            for(int i= pageItemStartIndex; i<pageItemEndIndex; i++)
+            {
+                returnItemListData[returnCount] = itemListData[i];
+                returnCount++;
+            }
+
+            Debug.Log("SUCCESS LOAD");
+        }
+        catch
+        {
+            Debug.Log("LOADITEMLISTDATA ERROR");
+        }
+        return returnItemListData;
+    }
+
+    // 全体アイテムロード
+    public ItemListData[] LoadItemListData()
+    {
+        ItemListData[] itemListData;
+        try
+        {
+            string itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
+            itemListData = JsonHelper.FromJson<ItemListData>(itemAsStr);
+
             Debug.Log("SUCCESS LOAD");
         }
         catch

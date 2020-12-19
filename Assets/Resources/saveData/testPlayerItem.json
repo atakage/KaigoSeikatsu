@@ -19,6 +19,26 @@
             "itemName": "android",
             "itemDescription": "this is android",
             "quantity": 30
+        },
+        {
+            "itemName": "財布",
+            "itemDescription": "お金を保つ",
+            "quantity": 2
+        },
+        {
+            "itemName": "ios",
+            "itemDescription": "this is ios",
+            "quantity": 30
+        },
+        {
+            "itemName": "messi",
+            "itemDescription": "i'm messi",
+            "quantity": 50
+        },
+        {
+            "itemName": "カタリナ",
+            "itemDescription": "いいところ",
+            "quantity": 1
         }
     ]
 }

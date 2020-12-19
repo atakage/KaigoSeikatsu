@@ -14,18 +14,33 @@ public class ItemCheckManager : MonoBehaviour
     public int onePageItemQty = 6;
     public int itemSlotPage;
     public int itemSlotPageIndex;
-    public int loadItemIndex = 0;
+    public int loadItemPage = 1;
   
     // Start is called before the first frame update
     void Start()
     {
 
         PlayerSaveDataManager playerSaveDataManager = new PlayerSaveDataManager();
-        ItemListData[] itemListData2 = new ItemListData[2];
+        ItemListData[] itemListData2 = new ItemListData[4];
         itemListData2[0] = new ItemListData();
-         itemListData2[0].itemName = "android";
-        itemListData2[0].itemDescription = "this is android";
+        itemListData2[0].itemName = "ios";
+        itemListData2[0].itemDescription = "this is ios";
         itemListData2[0].quantity = 30;
+
+        itemListData2[1] = new ItemListData();
+        itemListData2[1].itemName = "messi";
+        itemListData2[1].itemDescription = "i'm messi";
+        itemListData2[1].quantity = 50;
+
+        itemListData2[2] = new ItemListData();
+        itemListData2[2].itemName = "カタリナ";
+        itemListData2[2].itemDescription = "いいところ";
+        itemListData2[2].quantity = 1;
+
+        itemListData2[3] = new ItemListData();
+        itemListData2[3].itemName = "財布";
+        itemListData2[3].itemDescription = "お金を保つ";
+        itemListData2[3].quantity = 2;
         playerSaveDataManager.SaveItemListData(itemListData2);
 
         Debug.Log("ItemCheckManager START");
@@ -33,7 +48,7 @@ public class ItemCheckManager : MonoBehaviour
 
         // プレイヤーが持っているアイテムを読み出す
         //playerData = playerSaveDataManager.LoadPlayerData();
-        itemListData = playerSaveDataManager.LoadItemListData();
+        itemListData = playerSaveDataManager.LoadItemListData(loadItemPage);
 
         if(itemListData != null && itemListData.Length > 0) ItemSlotPage();
 
@@ -72,6 +87,7 @@ public class ItemCheckManager : MonoBehaviour
             //イメージをロード
             texture = new Texture2D(0, 0);
             string imgPath = "img/item/"+ itemListData[i].itemName;
+            Debug.Log("IMGPATH: " + imgPath);
 
             texture = Resources.Load(imgPath, typeof(Texture2D)) as Texture2D;
             // イメージがないならdefaultイメージを設定
@@ -93,7 +109,7 @@ public class ItemCheckManager : MonoBehaviour
 
         // 最初はindex0のアイテム情報を基準にする
         GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text =
-        "[ " + "<color=#93DAFF>" + itemListData[0].itemName + "</color>" + "(" + itemListData[0].quantity + ")" + " ]" +
+        "[ " + "<color=#93DAFF>" + itemListData[0].itemName + "</color>" + "(" + "x" + itemListData[0].quantity + ")" + " ]" +
         "\n" +
         itemListData[0].itemDescription;
         
