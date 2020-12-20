@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class ItemCheckManager : MonoBehaviour
 {
     public PlayerSaveDataManager playerSaveDataManager;
     public PlayerData playerData;
+    public ItemListData[] allItemListData;
     public ItemListData[] itemListData;
 
+    public int allItemQuantity;
     public int itemQuantity;
     public int itmeSlotIndex;
-    public int onePageItemQty = 6;
-    public int itemSlotPage;
+    public int onePageItemQty;
+    public int itemSlotPage;        // 全体ページ
     public int itemSlotPageIndex;
-    public int loadItemPage = 1;
+    public int loadItemPage;
   
     // Start is called before the first frame update
     void Start()
@@ -46,8 +49,16 @@ public class ItemCheckManager : MonoBehaviour
         Debug.Log("ItemCheckManager START");
         playerSaveDataManager = new PlayerSaveDataManager();
 
+        onePageItemQty = 6;
+        loadItemPage = 1;
+
         // プレイヤーが持っているアイテムを読み出す
         //playerData = playerSaveDataManager.LoadPlayerData();
+
+        // 全体アイテムリスト
+        allItemListData = playerSaveDataManager.LoadItemListData();
+
+        // 現在ページのアイテムリスト
         itemListData = playerSaveDataManager.LoadItemListData(loadItemPage);
 
         if(itemListData != null && itemListData.Length > 0) ItemSlotPage();
@@ -65,19 +76,28 @@ public class ItemCheckManager : MonoBehaviour
     public void ItemSlotPage()
     {
         Debug.Log("ItemSlotPage START");
-        // 現在持っているアイテムの数
+        // 全体アイテム数
+        allItemQuantity = allItemListData.Length;
+        Debug.Log("allItemQuantity: " + allItemQuantity);
+        // 現在ページで持っているアイテムの数
         itemQuantity = itemListData.Length;
         Debug.Log("itemQuantity: " + itemQuantity);
         // スロットの全体ページ数を算出する、(現在持っているアイテムの数)/(1ページに表現するアイテム数)
         try
         {
-            float itemSlotPageF = Mathf.Ceil(itemQuantity / onePageItemQty);
+
+            float qtyForCeil = (float)allItemQuantity / (float)onePageItemQty;
+            Debug.Log("qtyForCeil: " + qtyForCeil);
+            float itemSlotPageF = Mathf.Ceil(qtyForCeil);
+            Debug.Log("itemSlotPageF: " + itemSlotPageF);
             itemSlotPage = (int)itemSlotPageF;
+            Debug.Log("maxItemPage: " + itemSlotPage);
         }
         // dividezeroException防止 
-        catch
+        catch(Exception e)
         {
             itemSlotPage = 1;
+            Debug.Log("Exception itemSlotPage!!  " + e);
         }
 
         Texture2D texture = null;
@@ -112,9 +132,26 @@ public class ItemCheckManager : MonoBehaviour
         "[ " + "<color=#93DAFF>" + itemListData[0].itemName + "</color>" + "(" + "x" + itemListData[0].quantity + ")" + " ]" +
         "\n" +
         itemListData[0].itemDescription;
-        
-        ;
+
+        prevNextButtonDisplay();
+
+        // display page
+        GameObject.Find("itemPageCanvas").transform.Find("displayPage").GetComponent<Text>().text =
+        loadItemPage.ToString() + " / " + itemSlotPage.ToString();
         Debug.Log("itemSlotPage: " + itemSlotPage);
     }
 
+    // 現在ページによるディスプレイ設定
+    public void prevNextButtonDisplay()
+    {
+        // 1ページならprevButtonをfalse
+        if(loadItemPage == 1)
+        {
+            GameObject.Find("itemPageCanvas").transform.Find("prevButton").gameObject.SetActive(false);
+        }
+        else
+        {
+            GameObject.Find("itemPageCanvas").transform.Find("prevButton").gameObject.SetActive(true);
+        }
+    }
 }
