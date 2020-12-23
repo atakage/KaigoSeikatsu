@@ -52,6 +52,10 @@ public class ItemCheckManager : MonoBehaviour
         onePageItemQty = 6;
         loadItemPage = 1;
 
+        // ボタンにmethodをつける
+        GameObject.Find("itemPageCanvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextPage);
+        GameObject.Find("itemPageCanvas").transform.Find("prevButton").GetComponent<Button>().onClick.AddListener(ClickPrevPage);
+
         // プレイヤーが持っているアイテムを読み出す
         //playerData = playerSaveDataManager.LoadPlayerData();
 
@@ -66,10 +70,44 @@ public class ItemCheckManager : MonoBehaviour
 
     }
 
-    // クリックしたらアイテムを表示
-    public void DisplayItem(int slotIndex)
+    // item next page
+    public void ClickNextPage()
     {
+        RefreshItemSlot();
+        playerSaveDataManager = new PlayerSaveDataManager();
 
+        loadItemPage += 1;
+        // 現在ページのアイテムリスト
+        itemListData = playerSaveDataManager.LoadItemListData(loadItemPage);
+        // アイテム表示
+        if (itemListData != null && itemListData.Length > 0) ItemSlotPage();
+    }
+
+    // item next page
+    public void ClickPrevPage()
+    {
+        RefreshItemSlot();
+        playerSaveDataManager = new PlayerSaveDataManager();
+
+        loadItemPage -= 1;
+        // 現在ページのアイテムリスト
+        itemListData = playerSaveDataManager.LoadItemListData(loadItemPage);
+        // アイテム表示
+        if (itemListData != null && itemListData.Length > 0) ItemSlotPage();
+    }
+
+    // アイテムスロット初期化
+    public void RefreshItemSlot()
+    {
+        for(int i=0; i<6; i++)
+        {
+            GameObject.Find("itemSlotCanvas").transform.Find("item" + i).GetComponent<Image>().sprite = null;
+
+            // アイテム情報
+            GameObject.Find("item" + i).transform.Find("itemName").GetComponent<Text>().text = "";
+            GameObject.Find("item" + i).transform.Find("itemQty").GetComponent<Text>().text = "";
+            GameObject.Find("item" + i).transform.Find("itemDesc").GetComponent<Text>().text = "";
+        }
     }
 
     // スロットでアイテムを表現するために必要な作業
@@ -141,7 +179,7 @@ public class ItemCheckManager : MonoBehaviour
         Debug.Log("itemSlotPage: " + itemSlotPage);
     }
 
-    // 現在ページによるディスプレイ設定
+    // 現在ページによるボタンディスプレイ設定
     public void prevNextButtonDisplay()
     {
         // 1ページならprevButtonをfalse
@@ -152,6 +190,16 @@ public class ItemCheckManager : MonoBehaviour
         else
         {
             GameObject.Find("itemPageCanvas").transform.Find("prevButton").gameObject.SetActive(true);
+        }
+
+        // 現在ページが最大ページと同じなら
+        if(loadItemPage == itemSlotPage)
+        {
+            GameObject.Find("itemPageCanvas").transform.Find("nextButton").gameObject.SetActive(false);
+        }
+        else
+        {
+            GameObject.Find("itemPageCanvas").transform.Find("nextButton").gameObject.SetActive(true);
         }
     }
 }
