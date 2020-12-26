@@ -16,7 +16,7 @@ public class ItemCheckManager : MonoBehaviour
     public int itmeSlotIndex;
     public int onePageItemQty;
     public int itemSlotPage;        // 全体ページ
-    public int itemSlotPageIndex;
+    public static int itemSelectIndex;
     public int loadItemPage;
   
     // Start is called before the first frame update
@@ -51,6 +51,7 @@ public class ItemCheckManager : MonoBehaviour
 
         onePageItemQty = 6;
         loadItemPage = 1;
+        itemSelectIndex = 0;
 
         // ボタンにmethodをつける
         GameObject.Find("itemPageCanvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextPage);
@@ -70,6 +71,8 @@ public class ItemCheckManager : MonoBehaviour
 
     }
 
+
+
     // item next page
     public void ClickNextPage()
     {
@@ -83,7 +86,7 @@ public class ItemCheckManager : MonoBehaviour
         if (itemListData != null && itemListData.Length > 0) ItemSlotPage();
     }
 
-    // item next page
+    // item prev page
     public void ClickPrevPage()
     {
         RefreshItemSlot();
