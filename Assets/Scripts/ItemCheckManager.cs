@@ -7,6 +7,7 @@ using System;
 public class ItemCheckManager : MonoBehaviour
 {
     public PlayerSaveDataManager playerSaveDataManager;
+    public ItemSelectManager itemSelectManager;
     public PlayerData playerData;
     public ItemListData[] allItemListData;
     public ItemListData[] itemListData;
@@ -17,7 +18,7 @@ public class ItemCheckManager : MonoBehaviour
     public int onePageItemQty;
     public int itemSlotPage;        // 全体ページ
     public static int itemSelectIndex;
-    public int loadItemPage;
+    public int loadItemPage;        // 現在ページ
   
     // Start is called before the first frame update
     void Start()
@@ -48,10 +49,10 @@ public class ItemCheckManager : MonoBehaviour
 
         Debug.Log("ItemCheckManager START");
         playerSaveDataManager = new PlayerSaveDataManager();
+        itemSelectManager = new ItemSelectManager();
 
         onePageItemQty = 6;
         loadItemPage = 1;
-        itemSelectIndex = 0;
 
         // ボタンにmethodをつける
         GameObject.Find("itemPageCanvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextPage);
@@ -68,6 +69,9 @@ public class ItemCheckManager : MonoBehaviour
 
         if(itemListData != null && itemListData.Length > 0) ItemSlotPage();
 
+        // アイテムスロットUI初期化
+        itemSelectManager.DisplayItemSlotUI(true);
+        Debug.Log("SELECTED ITEM INDEX: " + itemSelectIndex);
 
     }
 
@@ -84,6 +88,9 @@ public class ItemCheckManager : MonoBehaviour
         itemListData = playerSaveDataManager.LoadItemListData(loadItemPage);
         // アイテム表示
         if (itemListData != null && itemListData.Length > 0) ItemSlotPage();
+        // アイテムスロットUI初期化
+        itemSelectManager.DisplayItemSlotUI(true);
+        Debug.Log("SELECTED ITEM INDEX: " + itemSelectIndex);
     }
 
     // item prev page
@@ -97,6 +104,9 @@ public class ItemCheckManager : MonoBehaviour
         itemListData = playerSaveDataManager.LoadItemListData(loadItemPage);
         // アイテム表示
         if (itemListData != null && itemListData.Length > 0) ItemSlotPage();
+        // アイテムスロットUI初期化
+        itemSelectManager.DisplayItemSlotUI(true);
+        Debug.Log("SELECTED ITEM INDEX: " + itemSelectIndex);
     }
 
     // アイテムスロット初期化

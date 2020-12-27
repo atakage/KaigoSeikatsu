@@ -14,46 +14,20 @@ public class ItemSelectManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            uiCamera = GameObject.Find("UICamera").GetComponent<Camera>();
-            Ray ray = uiCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
-            if (hit.collider != null)
-            {
-                Debug.Log(hit.transform.gameObject.name);
-                // クリックしたアイテムスロットに情報(アイテムネーム)がいれば取り出す
-                if (!GameObject.Find(hit.transform.gameObject.name).transform.Find("itemName").GetComponent<Text>().text.Equals(""))
-                {
-                    findedItem = GameObject.Find(hit.transform.gameObject.name);
-
-                    CleanItemSlotUI();
-
-                    // クリックしたアイテムの情報を読み出す
-                    GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text =
-                    "[ " + "<color=#93DAFF>" + findedItem.transform.Find("itemName").GetComponent<Text>().text + "</color>" + "(" + "x" + findedItem.transform.Find("itemQty").GetComponent<Text>().text + ")" + " ]" +
-                    "\n" +
-                    findedItem.transform.Find("itemDesc").GetComponent<Text>().text;
-
-                    // set item outline
-                    GameObject.Find("itemSlotCanvas").transform.Find(hit.transform.gameObject.name).GetComponent<Outline>().effectDistance = new Vector2(10, 10);
-                }
-            }
-            // ないなら
-            else
-            {
-                Debug.Log("ddd");
-                CleanItemSlotUI();
-            }
+            DisplayItemSlotUI(false);
         }
     }
 
     public void DisplayItemSlotUI(bool begin)
     {
+        CleanItemSlotUI();
         // 最初のアイテムindexを呼び出すのかを決める
         if (!begin)
         {
             uiCamera = GameObject.Find("UICamera").GetComponent<Camera>();
             Ray ray = uiCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
+            // クリックした位置に物体があったら
             if (hit.collider != null)
             {
                 Debug.Log(hit.transform.gameObject.name);
@@ -64,6 +38,10 @@ public class ItemSelectManager : MonoBehaviour
 
                     CleanItemSlotUI();
 
+                    // 選択されたアイテムのindex
+                    Debug.Log("SELECTED ITEM INDEX: " + Convert.ToInt32(findedItem.name.Substring(4)));
+                    ItemCheckManager.itemSelectIndex = Convert.ToInt32(findedItem.name.Substring(4));
+
                     // クリックしたアイテムの情報を読み出す
                     GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text =
                     "[ " + "<color=#93DAFF>" + findedItem.transform.Find("itemName").GetComponent<Text>().text + "</color>" + "(" + "x" + findedItem.transform.Find("itemQty").GetComponent<Text>().text + ")" + " ]" +
@@ -73,11 +51,15 @@ public class ItemSelectManager : MonoBehaviour
                     // set item outline
                     GameObject.Find("itemSlotCanvas").transform.Find(hit.transform.gameObject.name).GetComponent<Outline>().effectDistance = new Vector2(10, 10);
                 }
+                // クリックしたアイテムスロットに情報がなかったら
+                else
+                {
+                    CleanItemSlotUI();
+                }
             }
-            // ないなら
+            // クリックした位置に物体がなかったら
             else
             {
-                Debug.Log("ddd");
                 CleanItemSlotUI();
             }
         }
@@ -106,5 +88,8 @@ public class ItemSelectManager : MonoBehaviour
         }
         // UI Clear(panel)
         GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text = null;
+
+        // 選択されたアイテムのindex
+        ItemCheckManager.itemSelectIndex = 0;
     }
 }
