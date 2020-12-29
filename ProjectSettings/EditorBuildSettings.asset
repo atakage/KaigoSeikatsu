@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/IntroScene.unity
     guid: 7e505299acccd19479259f03b7d5caf0
   - enabled: 1
-    path: Assets/Scenes/ReadyToWorkScene.unity
+    path: Assets/Scenes/AtHomeScene.unity
     guid: b67fbd21cc9e751488512130ce2a217f
   - enabled: 1
     path: Assets/Scenes/StreetScene.unity
@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ItemCheckScene.unity
     guid: e8a8c3f8944ede64a8c5eef0bedcc7aa
+  - enabled: 1
+    path: Assets/Scenes/FacilityScene.unity
+    guid: a246e533bc3b6c041b9528e1770660b0
   m_configObjects: {}
