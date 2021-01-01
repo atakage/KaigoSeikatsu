@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 
 
 [System.Serializable]
@@ -22,10 +23,68 @@ public class ItemListData
     public int quantity;
 }
 
+[System.Serializable]
+public class EventListData
+{
+    public string eventCode;
+    public string script;
+}
+
 
 
 public class PlayerSaveDataManager : MonoBehaviour
 {
+
+    public void SaveEventListData(EventListData[] eventListData)
+    {
+        Dictionary<string, string> EventListDic = new Dictionary<string, string>();
+
+        // セーブ前にデータをロードする
+        EventListData[] loadedEventListData = LoadedEventListData();
+
+        // もしロードしたデータがなかったら新しいイベントリストをセーブする
+        if (loadedEventListData == null)
+        {
+            Debug.Log("NEW SAVE EVENTLIST: " + eventListData.ToString());
+            string eventAsStr = JsonHelper.ToJson(eventListData, true);
+            File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
+        }
+        // ロードデータがあるなら既存イベントリストに新しいイベントリストを追加してセーブする
+        else
+        {
+            Debug.Log("MERGE EVENTLIST: " + loadedEventListData.ToString());
+            Debug.Log("MERGE EVENTLIST: " + eventListData.ToString());
+            foreach (EventListData loadedEvent in loadedEventListData)
+            {
+                EventListDic.Add(loadedEvent.eventCode, loadedEvent.script);
+            }
+            foreach (EventListData eventList in eventListData)
+            {
+                // dictionary same key different value update
+                EventListDic[eventList.eventCode] = eventList.script; 
+            }
+            Debug.Log("MERGED eventList: " + EventListDic.ToString());
+            string eventAsStr = JsonConvert.SerializeObject(EventListDic);
+            Debug.Log("dictionary to string: " + eventAsStr);
+            File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
+        }
+    }
+
+    public EventListData[] LoadedEventListData()
+    {
+        EventListData[] returnEventListData = null;
+        try
+        {
+            string eventAsStr = File.ReadAllText(Application.dataPath + "/Resources/event/eventList.json");
+            returnEventListData = JsonHelper.FromJson<EventListData>(eventAsStr);
+        }
+        catch(Exception e)
+        {
+            Debug.Log("EXCEPTION: " +e);
+            returnEventListData = null;
+        }
+        return returnEventListData;
+    }
 
     public void SaveItemListData(ItemListData[] itemListData)
     {

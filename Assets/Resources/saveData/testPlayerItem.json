@@ -1,44 +1,12 @@
 {
     "Items": [
         {
-            "itemName": "item3",
-            "itemDescription": "",
-            "quantity": 222
+            "eventCode": "EE00",
+            "script": "EESCRIPT"
         },
         {
-            "itemName": "item4",
-            "itemDescription": "",
-            "quantity": 51
-        },
-        {
-            "itemName": "item5",
-            "itemDescription": "",
-            "quantity": 666
-        },
-        {
-            "itemName": "android",
-            "itemDescription": "this is android",
-            "quantity": 30
-        },
-        {
-            "itemName": "財布",
-            "itemDescription": "お金を保つ",
-            "quantity": 2
-        },
-        {
-            "itemName": "ios",
-            "itemDescription": "this is ios",
-            "quantity": 30
-        },
-        {
-            "itemName": "messi",
-            "itemDescription": "i'm messi",
-            "quantity": 50
-        },
-        {
-            "itemName": "カタリナ",
-            "itemDescription": "いいところ",
-            "quantity": 1
+            "eventCode": "EE01",
+            "script": "EESCIPRT222"
         }
     ]
 }

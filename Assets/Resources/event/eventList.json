@@ -1,0 +1,20 @@
+{
+    "Items": [
+        {
+            "eventCode": "EE00",
+            "script": "EESCRIPT"
+        },
+        {
+            "eventCode": "EE01",
+            "script": "EESCIPRT222modify"
+        },
+        {
+            "eventCode": "EE03",
+            "script": "EESCIPRT3333333modify"
+        },
+        {
+            "eventCode": "EE04",
+            "script": "EESCIPRT444"
+        }
+    ]
+}
