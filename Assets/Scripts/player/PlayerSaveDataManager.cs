@@ -28,6 +28,13 @@ public class EventListData
 {
     public string eventCode;
     public string script;
+    public string optionSW;
+}
+
+public class EventScriptDicData
+{
+    public Dictionary<string, string> EVEventScript;
+    public Dictionary<string, string> ETEventScript;
 }
 
 
@@ -35,47 +42,98 @@ public class EventListData
 public class PlayerSaveDataManager : MonoBehaviour
 {
 
-    public void SaveEventListData(EventListData[] eventListData)
+    public EventScriptDicData GetEventScript()
     {
-        Dictionary<string, string> EventListDic = new Dictionary<string, string>();
+        Dictionary<string, string> loadedEVEventScript = new Dictionary<string, string>();
+        Dictionary<string, string> loadedETEventScript = new Dictionary<string, string>();
 
-        // セーブ前にデータをロードする
-        EventListData[] loadedEventListData = LoadedEventListData();
+        loadedEVEventScript = GetEventText("EV", 0);
+        loadedETEventScript = GetEventText("ET", 0);
 
-        // もしロードしたデータがなかったら新しいイベントリストをセーブする
-        if (loadedEventListData == null)
-        {
-            Debug.Log("NEW SAVE EVENTLIST: " + eventListData.ToString());
-            string eventAsStr = JsonHelper.ToJson(eventListData, true);
-            File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
-        }
-        // ロードデータがあるなら既存イベントリストに新しいイベントリストを追加してセーブする
-        else
-        {
-            Debug.Log("MERGE EVENTLIST: " + loadedEventListData.ToString());
-            Debug.Log("MERGE EVENTLIST: " + eventListData.ToString());
-            foreach (EventListData loadedEvent in loadedEventListData)
-            {
-                EventListDic.Add(loadedEvent.eventCode, loadedEvent.script);
-            }
-            foreach (EventListData eventList in eventListData)
-            {
-                // dictionary same key different value update
-                EventListDic[eventList.eventCode] = eventList.script; 
-            }
-            Debug.Log("MERGED eventList: " + EventListDic.ToString());
-            string eventAsStr = JsonConvert.SerializeObject(EventListDic);
-            Debug.Log("dictionary to string: " + eventAsStr);
-            File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
-        }
+        EventScriptDicData eventScriptDicData = new EventScriptDicData();
+
+        eventScriptDicData.EVEventScript = loadedEVEventScript;
+        eventScriptDicData.ETEventScript = loadedETEventScript;
+
+        return eventScriptDicData;
     }
 
+    public Dictionary<string, string> GetEventText(string fileNameHeader, int fileNameIndex)
+    {
+        bool loadSW = true;
+        string fileNameFull = "";
+        Dictionary<string, string> loadedEventScriptDic = new Dictionary<string, string>();
+        TextAsset eventScript = null;
+
+        // テキストファイルをすべて読み出す
+        while (loadSW)
+        {
+            try
+            {
+                fileNameFull = fileNameHeader + fileNameIndex.ToString().PadLeft(3, '0');
+                Debug.Log("fileNameFull: " + fileNameFull);
+                eventScript = Resources.Load("eventScript/" + fileNameFull, typeof(TextAsset)) as TextAsset;
+                Debug.Log("eventScript: " + eventScript);
+                loadedEventScriptDic.Add(fileNameFull, eventScript.text);
+                ++fileNameIndex;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Fail loaded event script: " + e);
+                loadSW = false;
+            }
+        }
+        return loadedEventScriptDic;
+    }
+
+    public void SaveEventListData(EventListData[] eventListData)
+    {
+        //Dictionary<string, string> EventListDic = new Dictionary<string, string>();
+
+        // セーブ前にデータをロードする
+        //EventListData[] loadedEventListData = LoadedEventListData();
+        //for(int i = 0; i < loadedEventListData.Length; i++)
+        //{
+        //   Debug.Log("loadedEventListData: " + loadedEventListData[i].eventCode);
+        //}
+
+        // もしロードしたデータがなかったら新しいイベントリストをセーブする
+        //if (loadedEventListData == null)
+        //{
+        //    Debug.Log("NEW SAVE EVENTLIST: " + eventListData.ToString());
+        //    string eventAsStr = JsonHelper.ToJson(eventListData, true);
+        //    File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
+        //}
+        // ロードデータがあるなら既存イベントリストに新しいイベントリストを追加してセーブする
+        //else
+        //{
+            //Debug.Log("loadedEventListData EVENTLIST: " + loadedEventListData.ToString());
+
+        //    foreach (EventListData loadedEvent in loadedEventListData)
+        //    {
+        //        EventListDic.Add(loadedEvent.eventCode, loadedEvent.script);
+        //    }
+        //    foreach (EventListData eventList in eventListData)
+        //    {
+                // dictionary same key different value update
+        //        EventListDic[eventList.eventCode] = eventList.script; 
+        //    }
+        //    Debug.Log("MERGED eventList: " + EventListDic.ToString());
+        //    string eventAsStr = JsonConvert.SerializeObject(EventListDic);
+            string eventAsStr = JsonHelper.ToJson(eventListData, true);
+            Debug.Log("dictionary to string: " + eventAsStr);
+            File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
+        //}
+    }
+
+    /*
     public EventListData[] LoadedEventListData()
     {
         EventListData[] returnEventListData = null;
         try
         {
             string eventAsStr = File.ReadAllText(Application.dataPath + "/Resources/event/eventList.json");
+            Debug.Log("eventAsStr: " + eventAsStr);
             returnEventListData = JsonHelper.FromJson<EventListData>(eventAsStr);
         }
         catch(Exception e)
@@ -85,6 +143,7 @@ public class PlayerSaveDataManager : MonoBehaviour
         }
         return returnEventListData;
     }
+    */
 
     public void SaveItemListData(ItemListData[] itemListData)
     {

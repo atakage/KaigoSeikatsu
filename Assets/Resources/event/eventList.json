@@ -1,20 +1,24 @@
 {
     "Items": [
         {
-            "eventCode": "EE00",
-            "script": "EESCRIPT"
+            "eventCode": "EV000",
+            "script": "働きたくない/もうやめよう",
+            "optionSW": "ON"
         },
         {
-            "eventCode": "EE01",
-            "script": "EESCIPRT222modify"
+            "eventCode": "EV001",
+            "script": "良いダンスだね/何もないね/modify222222222222222222",
+            "optionSW": "OFF"
         },
         {
-            "eventCode": "EE03",
-            "script": "EESCIPRT3333333modify"
+            "eventCode": "ET000",
+            "script": "勇気に変え/光を指している",
+            "optionSW": "ON"
         },
         {
-            "eventCode": "EE04",
-            "script": "EESCIPRT444"
+            "eventCode": "ET001",
+            "script": "変わりたいまま走れ/幸せはそこにしかない/modify2222222223232323",
+            "optionSW": "ON"
         }
     ]
 }
