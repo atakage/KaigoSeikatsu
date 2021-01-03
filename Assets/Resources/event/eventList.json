@@ -2,7 +2,7 @@
     "Items": [
         {
             "eventCode": "EV000",
-            "script": "働きたくない/もうやめよう",
+            "script": "私は伊藤日陽菜/21歳、介護士だ",
             "optionSW": "ON"
         },
         {
@@ -12,7 +12,7 @@
         },
         {
             "eventCode": "ET000",
-            "script": "勇気に変え/光を指している",
+            "script": "女の子の名前として定番となっています/光を指している",
             "optionSW": "ON"
         },
         {

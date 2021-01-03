@@ -40,17 +40,17 @@ public class TestA : MonoBehaviour
         PlayerData playerData = new PlayerData();
         ItemListData[] itemListData = new ItemListData[2];
 
-        playerData.progressWithTestA = 1;
+        playerData.progress = 1;
 
         // playerとのprogress(好感度)に合うスクリプトを再生
-        if (playerData.progressWithTestA == 0)
+        if (playerData.progress == 0)
         {
-            playerData.progressWithTestA = 1;
+            playerData.progress = 1;
             playerSaveDataManager.SavePlayerData(playerData);
-            Debug.Log("TestAとの関係:" + playerData.progressWithTestA);
+            Debug.Log("TestAとの関係:" + playerData.progress);
             Tale1();
         }
-        else if (playerData.progressWithTestA == 1)
+        else if (playerData.progress == 1)
         {
 
             itemListData[0] = new ItemListData();
@@ -64,13 +64,13 @@ public class TestA : MonoBehaviour
             playerSaveDataManager.SaveItemListData(itemListData);
             //playerSaveDataManager.SavePlayerData(playerData);
             Tale2();
-        }else if (playerData.progressWithTestA == 20)
+        }else if (playerData.progress == 20)
         {
 
-        }else if (playerData.progressWithTestA == 40)
+        }else if (playerData.progress == 40)
         {
 
-        }else if (playerData.progressWithTestA == 60)
+        }else if (playerData.progress == 60)
         {
 
         }

@@ -11,7 +11,12 @@ using System;
 public class PlayerData
 {
     public int money;
-    public int progressWithTestA;
+    public string time;
+    public string[] eventCodeArray; // クリアしたイベント
+    public int progress; // 進行度
+    public int fatigue; // 疲労、ゼロになったらゲームオーバー
+    public int satisfaction; // ending
+    public int action; // 行動力
 }
 
 
@@ -126,7 +131,7 @@ public class PlayerSaveDataManager : MonoBehaviour
         //}
     }
 
-    /*
+    
     public EventListData[] LoadedEventListData()
     {
         EventListData[] returnEventListData = null;
@@ -143,7 +148,7 @@ public class PlayerSaveDataManager : MonoBehaviour
         }
         return returnEventListData;
     }
-    */
+    
 
     public void SaveItemListData(ItemListData[] itemListData)
     {
@@ -276,7 +281,7 @@ public class PlayerSaveDataManager : MonoBehaviour
     {
         string dataStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerData.json");
         PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(dataStr);
-        Debug.Log("LOADDATA: " + playerData.money +","+ playerData.progressWithTestA);
+        Debug.Log("LOADDATA: " + playerData.money +","+ playerData.progress);
 
         return playerData;
     }

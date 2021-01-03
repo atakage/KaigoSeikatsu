@@ -13,16 +13,17 @@ public class ChatManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Start ChatManager");
         panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
         clickCount = 0;
 
-        string[] aa = {"T","E","S"," ","T","1" };
-        string[] bb = { "T", "E", "S", " ", "T", "2", "2" };
-        List<string[]> reqList = new List<string[]>();
-        reqList.Add(aa);
-        reqList.Add(bb);
+        //string[] aa = {"T","E","S"," ","T","1" };
+        //string[] bb = { "T", "E", "S", " ", "T", "2", "2" };
+       // List<string[]> reqList = new List<string[]>();
+        //reqList.Add(aa);
+       // reqList.Add(bb);
 
-        ShowDialogue(reqList);
+       // ShowDialogue(reqList);
 
     }
 
@@ -66,6 +67,7 @@ public class ChatManager : MonoBehaviour
 
     IEnumerator StartDialogueCoroutine()
     {
+        Debug.Log("StartDialogueCoroutine");
         dialogueSW = true;
         panelText.text = "";
 

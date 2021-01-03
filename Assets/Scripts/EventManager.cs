@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class EventManager : MonoBehaviour
 {
     public PlayerSaveDataManager playerSaveDataManager;
@@ -19,6 +19,35 @@ public class EventManager : MonoBehaviour
         Debug.Log("Event Save Start-----------------------------------------------------------");
         playerSaveDataManager.SaveEventListData(eventListData);
 
+    }
+
+    public List<string[]> ScriptSaveToList(EventListData eventItem)
+    {
+        List<string[]> returnScriptArrList = new List<string[]>();
+        string[] scriptArrayPara = eventItem.script.Split('/');
+        string[] scriptArray = null;
+        char[] chars = null;
+        for (int i=0; i< scriptArrayPara.Length; i++)
+        {
+            // '/'分かれた文章を文字ごとで入れる
+            chars = scriptArrayPara[i].ToCharArray();
+            Array.Resize(ref scriptArray, chars.Length);
+            for(int j=0; j < chars.Length; j++)
+            {
+                scriptArray[j] = new string(chars[j], 1);
+            }
+            returnScriptArrList.Add(scriptArray);
+        }
+        return returnScriptArrList;
+    }
+
+    public EventListData FindEventByCode(EventListData[] eventListData, string eventCode)
+    {
+        foreach (EventListData eventItem in eventListData)
+        {
+            if(eventCode.Equals(eventItem.eventCode)) return eventItem;
+        }
+        return null;
     }
 
     public EventListData[] CreateEventListForSave(EventScriptDicData eventScriptDicData)
