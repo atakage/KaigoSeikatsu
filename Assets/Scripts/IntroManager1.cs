@@ -20,6 +20,15 @@ public class IntroManager1 : MonoBehaviour
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, "EV000");
         // イベントスクリプトを配列に入れる
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
-        chatManager.ShowDialogue(scriptList);
+        chatManager.ShowDialogue(scriptList, "EV000");
+    }
+
+
+    private void Update()
+    {
+        if(chatManager.completeEventSW["EV000"] == true)
+        {
+            Debug.Log("選択肢表示");
+        }
     }
 }

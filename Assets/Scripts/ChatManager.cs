@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class ChatManager : MonoBehaviour
 {
     public List<string[]> textList;
+    public string eventCode;
+    public Dictionary<string, bool> completeEventSW; // イベントスクリプトの完了確認
     public Text panelText;
     public bool dialogueSW;
     public int clickCount;
@@ -39,6 +41,8 @@ public class ChatManager : MonoBehaviour
                 {
                     StopAllCoroutines();
                     ExitDialogue();
+                    // イベントスクリプトが終わったことを示す
+                    if (this.completeEventSW != null) this.completeEventSW[this.eventCode] = true;
                 }
                 else
                 {
@@ -49,8 +53,15 @@ public class ChatManager : MonoBehaviour
         }
     }
 
-    public void ShowDialogue(List<string[]> textList)
+    public void ShowDialogue(List<string[]> textList, string eventCode)
     {
+        // イベントコードがあるなら(選択肢活用)
+        if (!eventCode.Equals(""))
+        {
+            this.completeEventSW = new Dictionary<string, bool>();
+            this.eventCode = eventCode;
+            this.completeEventSW.Add(eventCode, false);
+        }
         // リストにある配列の数を読み込む
         textCount = textList.Count;
         this.textList = textList;
@@ -74,7 +85,7 @@ public class ChatManager : MonoBehaviour
         for (int i=0; i< textList[clickCount].Length; i++)
         {
             panelText.text += textList[clickCount][i];
-            Debug.Log(panelText.text);
+            Debug.Log("panelText.text: " + panelText.text);
             yield return new WaitForSeconds(0.05f);
         }
     }
