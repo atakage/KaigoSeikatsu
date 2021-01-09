@@ -121,6 +121,49 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &129964211
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 129964212}
+  - component: {fileID: 129964213}
+  m_Layer: 0
+  m_Name: MsgChoiceManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &129964212
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129964211}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 630, y: 734, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &129964213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129964211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70cc9f09ff8140c4fbb98b477c81ec54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &375966692
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,6 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abdb3f61913faea4683d0d4d88653e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventCode: 
   panelText: {fileID: 0}
   dialogueSW: 0
   clickCount: 0
@@ -599,6 +643,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chatManager: {fileID: 0}
+  msgChoiceManager: {fileID: 0}
+  eventManager: {fileID: 0}
+  playerSaveDataManager: {fileID: 0}
 --- !u!4 &1961760617
 Transform:
   m_ObjectHideFlags: 0
