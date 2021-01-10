@@ -644,8 +644,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatManager: {fileID: 0}
   msgChoiceManager: {fileID: 0}
+  sceneTransitionManager: {fileID: 0}
   eventManager: {fileID: 0}
   playerSaveDataManager: {fileID: 0}
+  playerData:
+    money: 
+    time: 
+    eventCodeArray: []
+    progress: 0
+    fatigue: 0
+    satisfaction: 0
+    action: 0
 --- !u!4 &1961760617
 Transform:
   m_ObjectHideFlags: 0

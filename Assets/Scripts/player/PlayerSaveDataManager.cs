@@ -10,11 +10,11 @@ using System;
 [System.Serializable]
 public class PlayerData
 {
-    public int money;
+    public string money;
     public string time;
     public string[] eventCodeArray; // クリアしたイベント
     public int progress; // 進行度
-    public int fatigue; // 疲労、ゼロになったらゲームオーバー
+    public float fatigue; // 疲労、ゼロになったらゲームオーバー
     public int satisfaction; // ending
     public int action; // 行動力
 }
