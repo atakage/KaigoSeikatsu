@@ -2,13 +2,23 @@
     "Items": [
         {
             "eventCode": "EV000",
-            "script": "私は伊藤日陽菜/21歳、介護士だ",
+            "script": "私は伊藤陽菜/21歳、介護士だ",
             "optionSW": "ON"
         },
         {
             "eventCode": "EV001",
-            "script": "良いダンスだね/何もないね/modify222222222222222222",
-            "optionSW": "OFF"
+            "script": "\"おはようございます～\"/職員たちが利用者をお出迎えしている",
+            "optionSW": "ON"
+        },
+        {
+            "eventCode": "EV002",
+            "script": "看護師による健康チェックが行われている",
+            "optionSW": "ON"
+        },
+        {
+            "eventCode": "EV003",
+            "script": "\"お風呂の準備ができました!\"/職員たちが入浴介助をしている",
+            "optionSW": "ON"
         },
         {
             "eventCode": "ET000",
