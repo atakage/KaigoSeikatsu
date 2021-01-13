@@ -17,6 +17,13 @@ public class FacilityManager : MonoBehaviour
         eventManager = new EventManager();
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
 
+        // Panelを除いたUI Display off
+        GameObject.Find("Canvas").transform.Find("menuButton").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("Image").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("time").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("fatigueText").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("fatigueBar").gameObject.SetActive(false);
+
         // ランダムで朝のイベント
         string morningEventCode = CallMorningReqEvent(morningrequiredEvent);
         EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
