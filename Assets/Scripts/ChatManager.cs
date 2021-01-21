@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ChatManager : MonoBehaviour
 {
+    public EventCodeManager eventCodeManager;
     public List<string[]> textList;
     public string eventCode;
     public Dictionary<string, bool> completeEventSW; // イベントスクリプトの完了確認
@@ -15,6 +16,7 @@ public class ChatManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        eventCodeManager = new EventCodeManager();
         Debug.Log("Start ChatManager");
         panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
         clickCount = 0;
@@ -43,6 +45,14 @@ public class ChatManager : MonoBehaviour
                     ExitDialogue();
                     // イベントスクリプトが終わったことを示す
                     if (this.completeEventSW != null) this.completeEventSW[this.eventCode] = true;
+
+                    //イベントスクリプト後にFade OutやUI変更
+                    string afterEvent = eventCodeManager.FindAfterEventByEventCode(eventCode);
+                    if(afterEvent.Equals("Fade Out"))
+                    {
+                        GameObject fadeObj = GameObject.Find("FadeInOutManager");
+                        fadeObj.AddComponent<FadeInOutManager>();
+                    }
                 }
                 else
                 {

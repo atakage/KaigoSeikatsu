@@ -10,6 +10,7 @@ public class FadeInOutManager : MonoBehaviour
     void Awake()
     {
         fadeImage = GameObject.Find("Canvas").transform.Find("fadeImage").GetComponent<Image>();
+        fadeImage.gameObject.SetActive(true);
         Color color = fadeImage.color;
         color.a = Time.deltaTime * 1.0f;
         fadeImage.color = color;
