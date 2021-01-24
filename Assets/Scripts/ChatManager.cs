@@ -17,6 +17,7 @@ public class ChatManager : MonoBehaviour
     void Start()
     {
         eventCodeManager = new EventCodeManager();
+
         Debug.Log("Start ChatManager");
         panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
         clickCount = 0;

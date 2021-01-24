@@ -18,11 +18,7 @@ public class FacilityManager : MonoBehaviour
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
 
         // Panelを除いたUI Display off
-        GameObject.Find("Canvas").transform.Find("menuButton").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("Image").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("time").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("fatigueText").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("fatigueBar").gameObject.SetActive(false);
+        FacilityUISetActive(false);
 
         // ランダムで朝のイベント
         string morningEventCode = CallMorningReqEvent(morningrequiredEvent);
@@ -39,6 +35,15 @@ public class FacilityManager : MonoBehaviour
         GameObject.Find("Canvas").transform.Find("fatigueBar").GetComponent<Slider>().value = playerData.fatigue;
 
 
+    }
+    public void FacilityUISetActive(bool setActive)
+    {
+        GameObject.Find("Canvas").transform.Find("menuButton").gameObject.SetActive(setActive);
+        GameObject.Find("Canvas").transform.Find("nextButton").gameObject.SetActive(setActive);
+        GameObject.Find("Canvas").transform.Find("Image").gameObject.SetActive(setActive);
+        GameObject.Find("Canvas").transform.Find("time").gameObject.SetActive(setActive);
+        GameObject.Find("Canvas").transform.Find("fatigueText").gameObject.SetActive(setActive);
+        GameObject.Find("Canvas").transform.Find("fatigueBar").gameObject.SetActive(setActive);
     }
     
     public string CallMorningReqEvent(string[] morningrequiredEvent)

@@ -4,8 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 public class FadeInOutManager : MonoBehaviour
 {
+    public FacilityManager facilityManager;
+
     Image fadeImage;
     bool fadeSW;
+
+    private void Start()
+    {
+        facilityManager = new FacilityManager();
+    }
 
     void Awake()
     {
@@ -23,6 +30,8 @@ public class FadeInOutManager : MonoBehaviour
         if (fadeSW)
         {
             Destroy(this.gameObject);
+            fadeImage.gameObject.SetActive(false);
+            facilityManager.FacilityUISetActive(true);
         }
     }
 
@@ -36,7 +45,7 @@ public class FadeInOutManager : MonoBehaviour
             color.a += Time.deltaTime * 0.007f;
             fadeImage.color = color;
 
-            if(fadeImage.color.a == 1)
+            if(fadeImage.color.a > 1)
             {
                 fadeSW = true;
             }
