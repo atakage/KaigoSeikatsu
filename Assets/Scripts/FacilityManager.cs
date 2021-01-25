@@ -9,6 +9,7 @@ public class FacilityManager : MonoBehaviour
     public PlayerSaveDataManager playerSaveDataManager;
     public EventManager eventManager;
     public ChatManager chatManager;
+    public Button nextButton;
     public string[] morningrequiredEvent = {"EV001","EV002","EV003"};
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,8 @@ public class FacilityManager : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         eventManager = new EventManager();
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
+        nextButton = GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>();
+        nextButton.onClick.AddListener(ClickNextButton);
 
         // Panelを除いたUI Display off
         FacilityUISetActive(false);
@@ -36,6 +39,15 @@ public class FacilityManager : MonoBehaviour
 
 
     }
+
+    public void ClickNextButton()
+    {
+        string timeStr = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+        Debug.Log(timeStr);
+        //時間による次のイベント(switch)
+    }
+
+
     public void FacilityUISetActive(bool setActive)
     {
         GameObject.Find("Canvas").transform.Find("menuButton").gameObject.SetActive(setActive);
