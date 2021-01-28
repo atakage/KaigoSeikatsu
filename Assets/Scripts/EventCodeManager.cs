@@ -15,6 +15,7 @@ public class EventCodeManager : MonoBehaviour
         EventCodeDic.Add("EV001", "Fade Out");
         EventCodeDic.Add("EV002", "Fade Out");
         EventCodeDic.Add("EV003", "Fade Out");
+        EventCodeDic.Add("EV004", "Choice");
 
         return EventCodeDic[eventCode];
     }

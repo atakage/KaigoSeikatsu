@@ -41,7 +41,6 @@ public class FadeInOutManager : MonoBehaviour
 
         for (int i=0; i<100; i++)
         {
-            Debug.Log("fadeImage.color.a: " + fadeImage.color.a);
             color.a += Time.deltaTime * 0.007f;
             fadeImage.color = color;
 

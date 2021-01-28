@@ -11,6 +11,7 @@ public class FacilityManager : MonoBehaviour
     public ChatManager chatManager;
     public Button nextButton;
     public string[] morningrequiredEvent = {"EV001","EV002","EV003"};
+    public string[] careQuizEvent = {"EV004","NO"};
     // Start is called before the first frame update
     void Start()
     {
@@ -24,13 +25,10 @@ public class FacilityManager : MonoBehaviour
         FacilityUISetActive(false);
 
         // ランダムで朝のイベント
-        string morningEventCode = CallMorningReqEvent(morningrequiredEvent);
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
-        EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, morningEventCode);
-        List<string[]>scriptList = eventManager.ScriptSaveToList(eventItem);
-        chatManager.ShowDialogue(scriptList, morningEventCode);
-        
-        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        string morningEventCode = CallRandomEvent(morningrequiredEvent);
+        LoadEventAndShow(morningEventCode);
+
+                PlayerData playerData = playerSaveDataManager.LoadPlayerData();
         Debug.Log("playerData: " + playerData.ToString());
 
         // UI setting
@@ -45,8 +43,35 @@ public class FacilityManager : MonoBehaviour
         string timeStr = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
         Debug.Log(timeStr);
         //時間による次のイベント(switch)
+
+        switch (timeStr)
+        {
+            // ９時なら
+            case "09:00":
+                // ランダムで介護クイズイベント発動
+                string eventCode = CallRandomEvent(careQuizEvent);
+                if (!eventCode.Equals("NO"))
+                {
+                    LoadEventAndShow(eventCode);
+                }
+                // クイズイベントなかったら時間がたつ(->12:00)
+                else
+                {
+                    // fade out
+                }
+
+
+                break;
+        }
     }
 
+    public void LoadEventAndShow(string eventCode)
+    {
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
+        List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
+        chatManager.ShowDialogue(scriptList, eventCode);
+    }
 
     public void FacilityUISetActive(bool setActive)
     {
@@ -58,11 +83,11 @@ public class FacilityManager : MonoBehaviour
         GameObject.Find("Canvas").transform.Find("fatigueBar").gameObject.SetActive(setActive);
     }
     
-    public string CallMorningReqEvent(string[] morningrequiredEvent)
+    public string CallRandomEvent(string[] randomrequiredEvent)
     {
         System.Random random = new System.Random();
-        int randomIndex = random.Next(0, morningrequiredEvent.Length);
-        Debug.Log("Random morning EventCode: " + morningrequiredEvent[randomIndex]);
-        return morningrequiredEvent[randomIndex];
+        int randomIndex = random.Next(0, randomrequiredEvent.Length);
+        Debug.Log("Random EventCode: " + randomrequiredEvent[randomIndex]);
+        return randomrequiredEvent[randomIndex];
     }
 }

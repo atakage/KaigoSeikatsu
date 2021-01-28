@@ -54,6 +54,10 @@ public class ChatManager : MonoBehaviour
                         GameObject fadeObj = GameObject.Find("FadeInOutManager");
                         fadeObj.AddComponent<FadeInOutManager>();
                     }
+                    else if (afterEvent.Equals("Choice"))
+                    {
+                        Debug.Log("Choice");
+                    }
                 }
                 else
                 {

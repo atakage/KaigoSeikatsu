@@ -21,6 +21,11 @@
             "optionSW": "ON"
         },
         {
+            "eventCode": "EV004",
+            "script": "\"あんたは誰?\"",
+            "optionSW": "ON"
+        },
+        {
             "eventCode": "ET000",
             "script": "女の子の名前として定番となっています/光を指している",
             "optionSW": "ON"
