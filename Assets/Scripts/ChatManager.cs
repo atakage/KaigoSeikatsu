@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ChatManager : MonoBehaviour
 {
     public EventCodeManager eventCodeManager;
+    public EventManager eventManager;
     public List<string[]> textList;
     public string eventCode;
     public Dictionary<string, bool> completeEventSW; // イベントスクリプトの完了確認
@@ -17,6 +18,7 @@ public class ChatManager : MonoBehaviour
     void Start()
     {
         eventCodeManager = new EventCodeManager();
+        eventManager = new EventManager();
 
         Debug.Log("Start ChatManager");
         panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
@@ -56,7 +58,10 @@ public class ChatManager : MonoBehaviour
                     }
                     else if (afterEvent.Equals("Choice"))
                     {
-                        Debug.Log("Choice");
+                        // チョイスイベントを読み込む
+                        string choiceEvent = eventManager.GetChoiceEvent(eventCode);
+                        // チョイスボタンをセット
+                        SetChoiceButtonUI(choiceEvent);
                     }
                 }
                 else
@@ -66,6 +71,19 @@ public class ChatManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void SetChoiceButtonUI(string choiceEvent)
+    {
+        string[] choiceEventArray = choiceEvent.Split('/');
+
+        GameObject.Find("Canvas").transform.Find("ChoiceButtonA").gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.Find("ChoiceButtonB").gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.Find("ChoiceButtonC").gameObject.SetActive(true);
+
+        GameObject.Find("ChoiceButtonA").transform.Find("Text").GetComponent<Text>().text = choiceEventArray[0];
+        GameObject.Find("ChoiceButtonB").transform.Find("Text").GetComponent<Text>().text = choiceEventArray[1];
+        GameObject.Find("ChoiceButtonC").transform.Find("Text").GetComponent<Text>().text = choiceEventArray[2];
     }
 
     public void ShowDialogue(List<string[]> textList, string eventCode)

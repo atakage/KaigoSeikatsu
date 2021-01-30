@@ -18,7 +18,13 @@ public class EventManager : MonoBehaviour
         // 新しいイベントを登録する時や既存イベントを修正するときに使う
         Debug.Log("Event Save Start-----------------------------------------------------------");
         playerSaveDataManager.SaveEventListData(eventListData);
+    }
 
+    // ChoiceEvent
+    public string GetChoiceEvent(string eventCode)
+    {
+        TextAsset textAsset = Resources.Load("eventScript/"+eventCode+"-CHOICE", typeof(TextAsset)) as TextAsset;
+        return textAsset.text;
     }
 
     public List<string[]> ScriptSaveToList(EventListData eventItem)
