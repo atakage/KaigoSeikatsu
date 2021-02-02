@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class ChatManager : MonoBehaviour
 {
@@ -61,7 +62,9 @@ public class ChatManager : MonoBehaviour
                         // チョイスイベントを読み込む
                         string choiceEvent = eventManager.GetChoiceEvent(eventCode);
                         // チョイスボタンをセット
-                        SetChoiceButtonUI(choiceEvent);
+                        SetChoiceButtonUI(choiceEvent, true);
+                        // チョイスボタンクリックイベント
+                        ClickChoiceButton(eventCode);
                     }
                 }
                 else
@@ -73,13 +76,40 @@ public class ChatManager : MonoBehaviour
         }
     }
 
-    public void SetChoiceButtonUI(string choiceEvent)
+    public void ClickChoiceButton(string eventCode)
+    {
+        switch (eventCode)
+        {
+            case "EV004":
+                GameObject.Find("Canvas").transform.Find("ChoiceButtonA").GetComponent<Button>().onClick.AddListener();
+                GameObject.Find("Canvas").transform.Find("ChoiceButtonB").GetComponent<Button>().onClick.AddListener();
+                GameObject.Find("Canvas").transform.Find("ChoiceButtonC").GetComponent<Button>().onClick.AddListener();
+                break;
+        }
+    }
+
+    public void ClickChoiceButtonAfter(string parameter, float value, string panelText)
+    {
+        // チョイスボタンを隠す
+        SetActiveChoiceButton(false);
+        // プレイヤーデータにパラメータを適用する(parameter, value)
+
+        // スクリプトをディスプレイする
+        eventManager.SingleScriptSaveToList(panelText);
+    }
+
+    public void SetActiveChoiceButton(bool sw)
+    {
+        GameObject.Find("Canvas").transform.Find("ChoiceButtonA").gameObject.SetActive(sw);
+        GameObject.Find("Canvas").transform.Find("ChoiceButtonB").gameObject.SetActive(sw);
+        GameObject.Find("Canvas").transform.Find("ChoiceButtonC").gameObject.SetActive(sw);
+    }
+
+    public void SetChoiceButtonUI(string choiceEvent, bool sw)
     {
         string[] choiceEventArray = choiceEvent.Split('/');
 
-        GameObject.Find("Canvas").transform.Find("ChoiceButtonA").gameObject.SetActive(true);
-        GameObject.Find("Canvas").transform.Find("ChoiceButtonB").gameObject.SetActive(true);
-        GameObject.Find("Canvas").transform.Find("ChoiceButtonC").gameObject.SetActive(true);
+        SetActiveChoiceButton(sw);
 
         GameObject.Find("ChoiceButtonA").transform.Find("Text").GetComponent<Text>().text = choiceEventArray[0];
         GameObject.Find("ChoiceButtonB").transform.Find("Text").GetComponent<Text>().text = choiceEventArray[1];

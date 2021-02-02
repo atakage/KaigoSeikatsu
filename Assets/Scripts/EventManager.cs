@@ -27,6 +27,11 @@ public class EventManager : MonoBehaviour
         return textAsset.text;
     }
 
+    public List<string[]> SingleScriptSaveToList(string script)
+    {
+
+    }
+
     public List<string[]> ScriptSaveToList(EventListData eventItem)
     {
         List<string[]> returnScriptArrList = new List<string[]>();
