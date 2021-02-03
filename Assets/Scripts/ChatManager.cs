@@ -8,6 +8,7 @@ public class ChatManager : MonoBehaviour
 {
     public EventCodeManager eventCodeManager;
     public EventManager eventManager;
+    public PlayerSaveDataManager playerSaveDataManager;
     public List<string[]> textList;
     public string eventCode;
     public Dictionary<string, bool> completeEventSW; // イベントスクリプトの完了確認
@@ -20,6 +21,7 @@ public class ChatManager : MonoBehaviour
     {
         eventCodeManager = new EventCodeManager();
         eventManager = new EventManager();
+        playerSaveDataManager = new PlayerSaveDataManager();
 
         Debug.Log("Start ChatManager");
         panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
@@ -81,7 +83,7 @@ public class ChatManager : MonoBehaviour
         switch (eventCode)
         {
             case "EV004":
-                GameObject.Find("Canvas").transform.Find("ChoiceButtonA").GetComponent<Button>().onClick.AddListener();
+                GameObject.Find("Canvas").transform.Find("ChoiceButtonA").GetComponent<Button>().onClick.AddListener(delegate { ClickChoiceButtonAfter("satisfaction", -11, "そうか/"); });
                 GameObject.Find("Canvas").transform.Find("ChoiceButtonB").GetComponent<Button>().onClick.AddListener();
                 GameObject.Find("Canvas").transform.Find("ChoiceButtonC").GetComponent<Button>().onClick.AddListener();
                 break;
@@ -93,6 +95,45 @@ public class ChatManager : MonoBehaviour
         // チョイスボタンを隠す
         SetActiveChoiceButton(false);
         // プレイヤーデータにパラメータを適用する(parameter, value)
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        if (parameter.Equals("progress"))
+        {
+            // 数値が0より大きいとプラス
+            if(value > 0)
+            {
+                playerData.progress += (int)value;
+            }
+            else
+            {
+                value *= -1;
+                playerData.progress -= (int)value;
+            }
+        }else if (parameter.Equals("fatigue"))
+        {
+            // 数値が0より大きいとプラス
+            if (value > 0)
+            {
+                playerData.fatigue += (int)value;
+            }
+            else
+            {
+                value *= -1;
+                playerData.fatigue -= (int)value;
+            }
+        }
+        else if (parameter.Equals("satisfaction"))
+        {
+            // 数値が0より大きいとプラス
+            if (value > 0)
+            {
+                playerData.satisfaction += (int)value;
+            }
+            else
+            {
+                value *= -1;
+                playerData.satisfaction -= (int)value;
+            }
+        }
 
         // スクリプトをディスプレイする
         eventManager.SingleScriptSaveToList(panelText);
