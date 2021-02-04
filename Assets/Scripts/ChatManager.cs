@@ -45,6 +45,8 @@ public class ChatManager : MonoBehaviour
             {
                 // マウスをクリックするとclickCountが増加して次の配列テキストを読み込む
                 ++clickCount;
+                Debug.Log("clickCount: " + clickCount);
+                Debug.Log("textCount: " + textCount);
                 if (clickCount == textCount)
                 {
                     StopAllCoroutines();
@@ -65,6 +67,8 @@ public class ChatManager : MonoBehaviour
                         string choiceEvent = eventManager.GetChoiceEvent(eventCode);
                         // チョイスボタンをセット
                         SetChoiceButtonUI(choiceEvent, true);
+                        // メニューボタンと進行ボタンを隠す
+                        SetActiveMenuAndNextButton(false);
                         // チョイスボタンクリックイベント
                         ClickChoiceButton(eventCode);
                     }
@@ -84,8 +88,8 @@ public class ChatManager : MonoBehaviour
         {
             case "EV004":
                 GameObject.Find("Canvas").transform.Find("ChoiceButtonA").GetComponent<Button>().onClick.AddListener(delegate { ClickChoiceButtonAfter("satisfaction", -11, "そうか/"); });
-                GameObject.Find("Canvas").transform.Find("ChoiceButtonB").GetComponent<Button>().onClick.AddListener();
-                GameObject.Find("Canvas").transform.Find("ChoiceButtonC").GetComponent<Button>().onClick.AddListener();
+                //GameObject.Find("Canvas").transform.Find("ChoiceButtonB").GetComponent<Button>().onClick.AddListener();
+                //GameObject.Find("Canvas").transform.Find("ChoiceButtonC").GetComponent<Button>().onClick.AddListener();
                 break;
         }
     }
@@ -134,9 +138,32 @@ public class ChatManager : MonoBehaviour
                 playerData.satisfaction -= (int)value;
             }
         }
+        // 時間が経つ
+        SetTime();
+
+        //プレイヤーデータをセーブ
 
         // スクリプトをディスプレイする
-        eventManager.SingleScriptSaveToList(panelText);
+        List<string[]> scriptArrList = eventManager.SingleScriptSaveToList(panelText);
+        ShowDialogue(scriptArrList, "");
+
+        // イベントの重複呼びを防止
+        this.eventCode = "EV999";
+    }
+
+    public void SetTime()
+    {
+        Text time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>();
+        if (time.text.Equals("09:00"))
+        {
+            GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = "12:00";
+        }
+    }
+
+    public void SetActiveMenuAndNextButton(bool sw)
+    {
+        GameObject.Find("Canvas").transform.Find("menuButton").gameObject.SetActive(sw);
+        GameObject.Find("Canvas").transform.Find("nextButton").gameObject.SetActive(sw);
     }
 
     public void SetActiveChoiceButton(bool sw)
@@ -165,6 +192,11 @@ public class ChatManager : MonoBehaviour
             this.completeEventSW = new Dictionary<string, bool>();
             this.eventCode = eventCode;
             this.completeEventSW.Add(eventCode, false);
+        }
+        // スクリプトだけなら
+        else
+        {
+
         }
         // リストにある配列の数を読み込む
         textCount = textList.Count;

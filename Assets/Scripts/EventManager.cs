@@ -27,9 +27,24 @@ public class EventManager : MonoBehaviour
         return textAsset.text;
     }
 
-    public void SingleScriptSaveToList(string script)
+    public List<string[]> SingleScriptSaveToList(string script)
     {
-
+        List<string[]> returnScriptArrList = new List<string[]>();
+        string[] scriptArrayPara = script.Split('/');
+        string[] scriptArray = null;
+        char[] chars = null;
+        for (int i = 0; i < scriptArrayPara.Length; i++)
+        {
+            // '/'分かれた文章を文字ごとで入れる
+            chars = scriptArrayPara[i].ToCharArray();
+            Array.Resize(ref scriptArray, chars.Length);
+            for (int j = 0; j < chars.Length; j++)
+            {
+                scriptArray[j] = new string(chars[j], 1);
+            }
+            returnScriptArrList.Add(scriptArray);
+        }
+        return returnScriptArrList;
     }
 
     public List<string[]> ScriptSaveToList(EventListData eventItem)
