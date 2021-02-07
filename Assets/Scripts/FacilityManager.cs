@@ -10,8 +10,9 @@ public class FacilityManager : MonoBehaviour
     public EventManager eventManager;
     public ChatManager chatManager;
     public Button nextButton;
-    public string[] morningrequiredEvent = {"EV001","EV002","EV003"};
-    public string[] careQuizEvent = {"EV004","NO"};
+    public string[] morningrequiredEvent = null;
+    public string[] careQuizEvent = null;
+    public string[] lunchEvent = null; 
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,11 @@ public class FacilityManager : MonoBehaviour
         nextButton = GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>();
         nextButton.onClick.AddListener(ClickNextButton);
 
+        // イベントコードセット
+        morningrequiredEvent = new string[]{ "EV001", "EV002", "EV003" };  // 08:00 ~ 09:00
+        careQuizEvent = new string[]{ "ET000","NO"}; // 9:00 ~ 11:50
+        lunchEvent = new string[] {"EV004"}; // 11:50 ~ 13:00
+
         // Panelを除いたUI Display off
         FacilityUISetActive(false);
 
@@ -28,7 +34,7 @@ public class FacilityManager : MonoBehaviour
         string morningEventCode = CallRandomEvent(morningrequiredEvent);
         LoadEventAndShow(morningEventCode);
 
-                PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
         Debug.Log("playerData: " + playerData.ToString());
 
         // UI setting
@@ -46,7 +52,7 @@ public class FacilityManager : MonoBehaviour
 
         switch (timeStr)
         {
-            // ９時なら
+            // ９時なら(-> 11:00)
             case "09:00":
                 // ランダムで介護クイズイベント発動
                 string eventCode = CallRandomEvent(careQuizEvent);
@@ -54,13 +60,20 @@ public class FacilityManager : MonoBehaviour
                 {
                     LoadEventAndShow(eventCode);
                 }
-                // クイズイベントなかったら時間がたつ(->12:00)
+                // クイズイベントなかったら時間がたつ(->11:50)
                 else
                 {
                     // fade out
                 }
+                break;
+            // 11時なら食事に (-> 12:00(昼ご飯) -> 12:50)
+            case "11:50":
+                FacilityUISetActive(false);
+                eventCode = CallRandomEvent(lunchEvent);
+                LoadEventAndShow(eventCode);
 
-
+                // 時間が経つ
+                chatManager.SetTime();
                 break;
         }
     }

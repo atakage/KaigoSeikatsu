@@ -27,14 +27,6 @@ public class ChatManager : MonoBehaviour
         panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
         clickCount = 0;
 
-        //string[] aa = {"T","E","S"," ","T","1" };
-        //string[] bb = { "T", "E", "S", " ", "T", "2", "2" };
-       // List<string[]> reqList = new List<string[]>();
-        //reqList.Add(aa);
-       // reqList.Add(bb);
-
-       // ShowDialogue(reqList);
-
     }
 
     private void Update()
@@ -47,6 +39,7 @@ public class ChatManager : MonoBehaviour
                 ++clickCount;
                 Debug.Log("clickCount: " + clickCount);
                 Debug.Log("textCount: " + textCount);
+                // スクリプト全部読んだら
                 if (clickCount == textCount)
                 {
                     StopAllCoroutines();
@@ -58,6 +51,7 @@ public class ChatManager : MonoBehaviour
                     string afterEvent = eventCodeManager.FindAfterEventByEventCode(eventCode);
                     if(afterEvent.Equals("Fade Out"))
                     {
+                        GameObject FadeInOutManager = new GameObject("FadeInOutManager");
                         GameObject fadeObj = GameObject.Find("FadeInOutManager");
                         fadeObj.AddComponent<FadeInOutManager>();
                     }
@@ -71,6 +65,12 @@ public class ChatManager : MonoBehaviour
                         SetActiveMenuAndNextButton(false);
                         // チョイスボタンクリックイベント
                         ClickChoiceButton(eventCode);
+                    // 終了信号イベントならFadeOut && UIをdisplay
+                    }else if (afterEvent.Equals("None"))
+                    {
+                        GameObject FadeInOutManager = new GameObject("FadeInOutManager"); 
+                        GameObject fadeObj = GameObject.Find("FadeInOutManager");
+                        fadeObj.AddComponent<FadeInOutManager>();
                     }
                 }
                 else
@@ -86,10 +86,10 @@ public class ChatManager : MonoBehaviour
     {
         switch (eventCode)
         {
-            case "EV004":
-                GameObject.Find("Canvas").transform.Find("ChoiceButtonA").GetComponent<Button>().onClick.AddListener(delegate { ClickChoiceButtonAfter("satisfaction", -11, "そうか/"); });
-                //GameObject.Find("Canvas").transform.Find("ChoiceButtonB").GetComponent<Button>().onClick.AddListener();
-                //GameObject.Find("Canvas").transform.Find("ChoiceButtonC").GetComponent<Button>().onClick.AddListener();
+            case "ET000":
+                GameObject.Find("Canvas").transform.Find("ChoiceButtonA").GetComponent<Button>().onClick.AddListener(delegate { ClickChoiceButtonAfter("satisfaction", 1, "そうか"); });
+                GameObject.Find("Canvas").transform.Find("ChoiceButtonB").GetComponent<Button>().onClick.AddListener(delegate { ClickChoiceButtonAfter("fatigue", 3, "そうか/いいね/なにゃ"); });
+                GameObject.Find("Canvas").transform.Find("ChoiceButtonC").GetComponent<Button>().onClick.AddListener(delegate { ClickChoiceButtonAfter("satisfaction", -1, "そうか/いいね"); });
                 break;
         }
     }
@@ -142,9 +142,11 @@ public class ChatManager : MonoBehaviour
         SetTime();
 
         //プレイヤーデータをセーブ
+        playerSaveDataManager.SavePlayerData(playerData);
 
         // スクリプトをディスプレイする
         List<string[]> scriptArrList = eventManager.SingleScriptSaveToList(panelText);
+
         ShowDialogue(scriptArrList, "");
 
         // イベントの重複呼びを防止
@@ -156,8 +158,20 @@ public class ChatManager : MonoBehaviour
         Text time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>();
         if (time.text.Equals("09:00"))
         {
-            GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = "12:00";
+            GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = "11:50";
+        }else if (time.text.Equals("11:50"))
+        {
+            GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = "12:50";
         }
+    }
+
+    public void SetActiveUI(bool sw)
+    {
+        Debug.Log("SetactiveUI");
+        GameObject.Find("Canvas").transform.Find("Image").gameObject.SetActive(sw);
+        GameObject.Find("Canvas").transform.Find("time").gameObject.SetActive(sw);
+        GameObject.Find("Canvas").transform.Find("fatigueText").gameObject.SetActive(sw);
+        GameObject.Find("Canvas").transform.Find("fatigueBar").gameObject.SetActive(sw);
     }
 
     public void SetActiveMenuAndNextButton(bool sw)
@@ -178,6 +192,7 @@ public class ChatManager : MonoBehaviour
         string[] choiceEventArray = choiceEvent.Split('/');
 
         SetActiveChoiceButton(sw);
+        SetActiveUI(false);
 
         GameObject.Find("ChoiceButtonA").transform.Find("Text").GetComponent<Text>().text = choiceEventArray[0];
         GameObject.Find("ChoiceButtonB").transform.Find("Text").GetComponent<Text>().text = choiceEventArray[1];

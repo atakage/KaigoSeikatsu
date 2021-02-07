@@ -22,17 +22,12 @@
         },
         {
             "eventCode": "EV004",
-            "script": "\"あんたは誰?\"",
+            "script": "昼食時間だ/利用者とスタッフが一緒に昼飯をとっている",
             "optionSW": "ON"
         },
         {
             "eventCode": "ET000",
-            "script": "女の子の名前として定番となっています/光を指している",
-            "optionSW": "ON"
-        },
-        {
-            "eventCode": "ET001",
-            "script": "変わりたいまま走れ/幸せはそこにしかない/modify2222222223232323",
+            "script": "\"あんたは誰?\"",
             "optionSW": "ON"
         }
     ]

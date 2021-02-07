@@ -43,6 +43,9 @@ public class EventManager : MonoBehaviour
                 scriptArray[j] = new string(chars[j], 1);
             }
             returnScriptArrList.Add(scriptArray);
+            // null処理でデータクリアしないと最後のデータだけ残ってしまう
+            // c#とjavaの違い
+            scriptArray = null;   
         }
         return returnScriptArrList;
     }
