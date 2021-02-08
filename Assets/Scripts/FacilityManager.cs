@@ -12,7 +12,9 @@ public class FacilityManager : MonoBehaviour
     public Button nextButton;
     public string[] morningrequiredEvent = null;
     public string[] careQuizEvent = null;
-    public string[] lunchEvent = null; 
+    public string[] lunchEvent = null;
+    public string[] recreationEvent = null;
+    public bool timeCheckSW;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +27,10 @@ public class FacilityManager : MonoBehaviour
         // イベントコードセット
         morningrequiredEvent = new string[]{ "EV001", "EV002", "EV003" };  // 08:00 ~ 09:00
         careQuizEvent = new string[]{ "ET000","NO"}; // 9:00 ~ 11:50
-        lunchEvent = new string[] {"EV004"}; // 11:50 ~ 13:00
+        lunchEvent = new string[] {"EV004"}; // 11:50 ~ 12:50
+        recreationEvent = new string[] { }; // 14:00 ~ 16:00
 
+        timeCheckSW = false;
         // Panelを除いたUI Display off
         FacilityUISetActive(false);
 
@@ -42,6 +46,22 @@ public class FacilityManager : MonoBehaviour
         GameObject.Find("Canvas").transform.Find("fatigueBar").GetComponent<Slider>().value = playerData.fatigue;
 
 
+    }
+
+    private void Update()
+    {
+        if (timeCheckSW)
+        {
+            string timeStr = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+
+            if (timeStr.Equals("12:50") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
+            {
+                SetPanelText("休憩時間だ\n何をしようかな?");
+                timeCheckSW = false;
+            }
+        }
+        
+        
     }
 
     public void ClickNextButton()
@@ -74,8 +94,17 @@ public class FacilityManager : MonoBehaviour
 
                 // 時間が経つ
                 chatManager.SetTime();
+                timeCheckSW = true;
                 break;
+            // 12:50なら休憩時間( -> 14:00)
+            //case "12:50":
+
         }
+    }
+
+    public void SetPanelText(string text)
+    {
+        GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text = text;    
     }
 
     public void LoadEventAndShow(string eventCode)
