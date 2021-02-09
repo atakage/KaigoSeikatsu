@@ -26,6 +26,21 @@
             "optionSW": "ON"
         },
         {
+            "eventCode": "EV005",
+            "script": "\"肩を上げて, 下ろして...\"/スタッフがお手本をしながらリハビリ体操を行っている",
+            "optionSW": "ON"
+        },
+        {
+            "eventCode": "EV006",
+            "script": "脳を使うレクリエーション時間だ/楽しそうな利用者もいれば興味なさそうな利用者もいる",
+            "optionSW": "ON"
+        },
+        {
+            "eventCode": "EV007",
+            "script": "利用者一人ひとりの状態に合わせた機能訓練が行われている",
+            "optionSW": "ON"
+        },
+        {
             "eventCode": "ET000",
             "script": "\"あんたは誰?\"",
             "optionSW": "ON"

@@ -51,9 +51,7 @@ public class ChatManager : MonoBehaviour
                     string afterEvent = eventCodeManager.FindAfterEventByEventCode(eventCode);
                     if(afterEvent.Equals("Fade Out"))
                     {
-                        GameObject FadeInOutManager = new GameObject("FadeInOutManager");
-                        GameObject fadeObj = GameObject.Find("FadeInOutManager");
-                        fadeObj.AddComponent<FadeInOutManager>();
+                        executeFadeOut();
                     }
                     else if (afterEvent.Equals("Choice"))
                     {
@@ -68,9 +66,7 @@ public class ChatManager : MonoBehaviour
                     // 終了信号イベントならFadeOut && UIをdisplay
                     }else if (afterEvent.Equals("None"))
                     {
-                        GameObject FadeInOutManager = new GameObject("FadeInOutManager"); 
-                        GameObject fadeObj = GameObject.Find("FadeInOutManager");
-                        fadeObj.AddComponent<FadeInOutManager>();
+                        executeFadeOut();
                     }
                 }
                 else
@@ -153,6 +149,13 @@ public class ChatManager : MonoBehaviour
         this.eventCode = "EV999";
     }
 
+    public void executeFadeOut()
+    {
+        GameObject FadeInOutManager = new GameObject("FadeInOutManager");
+        GameObject fadeObj = GameObject.Find("FadeInOutManager");
+        fadeObj.AddComponent<FadeInOutManager>();
+    } 
+
     public void SetTime()
     {
         Text time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>();
@@ -162,6 +165,9 @@ public class ChatManager : MonoBehaviour
         }else if (time.text.Equals("11:50"))
         {
             GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = "12:50";
+        }else if (time.text.Equals("12:50"))
+        {
+            GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = "14:00";
         }
     }
 

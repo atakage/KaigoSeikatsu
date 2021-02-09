@@ -28,7 +28,7 @@ public class FacilityManager : MonoBehaviour
         morningrequiredEvent = new string[]{ "EV001", "EV002", "EV003" };  // 08:00 ~ 09:00
         careQuizEvent = new string[]{ "ET000","NO"}; // 9:00 ~ 11:50
         lunchEvent = new string[] {"EV004"}; // 11:50 ~ 12:50
-        recreationEvent = new string[] { }; // 14:00 ~ 16:00
+        recreationEvent = new string[] {"EV005","EV006","EV007" }; // 14:00 ~ 16:00
 
         timeCheckSW = false;
         // Panelを除いたUI Display off
@@ -97,8 +97,18 @@ public class FacilityManager : MonoBehaviour
                 timeCheckSW = true;
                 break;
             // 12:50なら休憩時間( -> 14:00)
-            //case "12:50":
-
+            case "12:50":
+                FacilityUISetActive(false);
+                SetPanelText("");
+                chatManager.SetTime();
+                chatManager.executeFadeOut();
+                break;
+            // 14時ならレクリエーションの時間( -> 16:00)
+            case "14:00":
+                FacilityUISetActive(false);
+                eventCode = CallRandomEvent(recreationEvent);
+                LoadEventAndShow(eventCode);
+                break;
         }
     }
 
