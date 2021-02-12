@@ -168,6 +168,12 @@ public class ChatManager : MonoBehaviour
         }else if (time.text.Equals("12:50"))
         {
             GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = "14:00";
+        }else if (time.text.Equals("14:00"))
+        {
+            GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = "17:00";
+        }else if (time.text.Equals("17:00"))
+        {
+            GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = "17:20";
         }
     }
 

@@ -41,6 +41,11 @@
             "optionSW": "ON"
         },
         {
+            "eventCode": "EV008",
+            "script": "もう17時だ/利用者さんのお見送りを終わらせて/私も施設を出た",
+            "optionSW": "ON"
+        },
+        {
             "eventCode": "ET000",
             "script": "\"あんたは誰?\"",
             "optionSW": "ON"
