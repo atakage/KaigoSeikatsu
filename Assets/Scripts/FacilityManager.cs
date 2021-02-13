@@ -24,6 +24,9 @@ public class FacilityManager : MonoBehaviour
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
         nextButton = GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>();
         nextButton.onClick.AddListener(ClickNextButton);
+        GameObject.Find("Canvas").transform.Find("GoToCafeButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoToButton("カフェ"); });
+        GameObject.Find("Canvas").transform.Find("GoToParkButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoToButton("公園"); });
+        GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("No").GetComponent<Button>().onClick.AddListener(ClickGoToAlertNoButton);
 
         // イベントコードセット
         morningrequiredEvent = new string[]{ "EV001", "EV002", "EV003" };  // 08:00 ~ 09:00
@@ -61,6 +64,11 @@ public class FacilityManager : MonoBehaviour
                 SetPanelText("休憩時間だ\n何をしようかな?");
                 timeCheckSW = false;
             }
+            else if (timeStr.Equals("11:50") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
+            {
+                SetPanelText("もうすぐお昼の時間だ");
+                timeCheckSW = false;
+            }
             else if (timeStr.Equals("14:00") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
             {
                 SetPanelText("まもなく午後のスケジュールが始まる");
@@ -69,6 +77,13 @@ public class FacilityManager : MonoBehaviour
             else if (timeStr.Equals("17:00") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
             {
                 SetPanelText("午後のスケジュールが終わった");
+                timeCheckSW = false;
+            }
+            else if (timeStr.Equals("17:20") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
+            {
+                SetPanelText("これからどうする?");
+                SetGoToButton(true);
+                GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "帰宅";
                 timeCheckSW = false;
             }
         }
@@ -80,62 +95,113 @@ public class FacilityManager : MonoBehaviour
     {
         string timeStr = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
         Debug.Log(timeStr);
-        //時間による次のイベント(switch)
 
-        switch (timeStr)
+        string nextBtnText = GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text;
+
+        // nextButtonのテキストが進行なら
+        if (nextBtnText.Equals("進行"))
         {
-            // ９時なら(-> 11:00)
-            case "09:00":
-                // ランダムで介護クイズイベント発動
-                string eventCode = CallRandomEvent(careQuizEvent);
-                if (!eventCode.Equals("NO"))
-                {
+            //時間による次のイベント(switch)
+            switch (timeStr)
+            {
+                // ９時なら(-> 11:00)
+                case "09:00":
+                    // ランダムで介護クイズイベント発動
+                    string eventCode = CallRandomEvent(careQuizEvent);
+                    if (!eventCode.Equals("NO"))
+                    {
+                        LoadEventAndShow(eventCode);
+                    }
+                    // クイズイベントなかったら時間がたつ(->11:50)
+                    else
+                    {
+                        // fade out
+                    }
+                    timeCheckSW = true;
+                    break;
+                // 11時なら食事に (-> 12:00(昼ご飯) -> 12:50)
+                case "11:50":
+                    FacilityUISetActive(false);
+                    eventCode = CallRandomEvent(lunchEvent);
                     LoadEventAndShow(eventCode);
-                }
-                // クイズイベントなかったら時間がたつ(->11:50)
-                else
-                {
-                    // fade out
-                }
-                break;
-            // 11時なら食事に (-> 12:00(昼ご飯) -> 12:50)
-            case "11:50":
-                FacilityUISetActive(false);
-                eventCode = CallRandomEvent(lunchEvent);
-                LoadEventAndShow(eventCode);
 
-                // 時間が経つ
-                chatManager.SetTime();
-                timeCheckSW = true;
-                break;
-            // 12:50なら休憩時間( -> 14:00)
-            case "12:50":
-                FacilityUISetActive(false);
-                SetPanelText("");
-                chatManager.SetTime();
-                chatManager.executeFadeOut();
-                timeCheckSW = true;
-                break;
-            // 14時ならレクリエーションの時間( -> 16:00)
-            case "14:00":
-                FacilityUISetActive(false);
-                eventCode = CallRandomEvent(recreationEvent);
-                LoadEventAndShow(eventCode);
+                    // 時間が経つ
+                    chatManager.SetTime();
+                    timeCheckSW = true;
+                    break;
+                // 12:50なら休憩時間( -> 14:00)
+                case "12:50":
+                    FacilityUISetActive(false);
+                    SetPanelText("");
+                    chatManager.SetTime();
+                    chatManager.executeFadeOut();
+                    timeCheckSW = true;
+                    break;
+                // 14時ならレクリエーションの時間( -> 16:00)
+                case "14:00":
+                    FacilityUISetActive(false);
+                    eventCode = CallRandomEvent(recreationEvent);
+                    LoadEventAndShow(eventCode);
 
-                // 時間が経つ
-                chatManager.SetTime();
-                timeCheckSW = true;
-                break;
-            // 17時なら帰宅準備( -> 仕事終り)
-            case "17:00":
-                FacilityUISetActive(false);
-                eventCode = CallRandomEvent(afternoonEvent);
-                LoadEventAndShow(eventCode);
+                    // 時間が経つ
+                    chatManager.SetTime();
+                    timeCheckSW = true;
+                    break;
+                // 17時なら帰宅準備( -> 仕事終り)
+                case "17:00":
+                    FacilityUISetActive(false);
+                    eventCode = CallRandomEvent(afternoonEvent);
+                    LoadEventAndShow(eventCode);
 
-                // 時間が経つ
-                chatManager.SetTime();
-                timeCheckSW = true;
-                break;
+                    // 時間が経つ
+                    chatManager.SetTime();
+                    timeCheckSW = true;
+                    break;
+            }
+        }
+        // nextButtonのテキストが進行がないなら帰宅する
+        else
+        {
+            Debug.Log("帰宅");
+        }
+
+
+    }
+
+    public void ClickGoToAlertNoButton()
+    {
+        GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("GoToCafeButton").gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.Find("GoToParkButton").gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.Find("menuButton").GetComponent<Button>().interactable = true;
+        GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = true;
+    }
+
+    public void ClickGoToButton(string destination)
+    {
+        SetGoToButton(false);
+        GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(true);
+        GameObject.Find("AlertGoing").transform.Find("DestinationValue").gameObject.SetActive(false);
+        GameObject.Find("AlertGoing").transform.Find("alertMessage").GetComponent<Text>().text =
+        "<color=#f54242>" + destination + "</color>" + "に行って時間を過ごしますか?";
+        GameObject.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text = destination;
+    }
+
+    public void SetGoToButton(bool sw)
+    {
+        if (sw)
+        {
+            GameObject.Find("Canvas").transform.Find("GoToCafeButton").gameObject.SetActive(sw);
+            GameObject.Find("Canvas").transform.Find("GoToParkButton").gameObject.SetActive(sw);
+            GameObject.Find("Canvas").transform.Find("menuButton").GetComponent<Button>().interactable = false;
+            GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            GameObject.Find("Canvas").transform.Find("GoToCafeButton").gameObject.SetActive(sw);
+            GameObject.Find("Canvas").transform.Find("GoToParkButton").gameObject.SetActive(sw);
+            GameObject.Find("Canvas").transform.Find("menuButton").GetComponent<Button>().interactable = false;
+            GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = false;
         }
     }
 
