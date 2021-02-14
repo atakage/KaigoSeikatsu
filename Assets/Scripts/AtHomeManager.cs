@@ -6,16 +6,18 @@ using UnityEngine.UI;
 public class AtHomeManager : MonoBehaviour
 {
     public SceneTransitionManager sceneTransitionManager;
-    public string morningOrNight;
+    public PlayerSaveDataManager playerSaveDataManager;
 
     private void Start()
     {
-        morningOrNight = "morning";
-        
+        playerSaveDataManager = new PlayerSaveDataManager();
+
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        string time = playerData.time;
 
         // 朝なら出勤する、夜なら寝るにボタン変更
         GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text 
-                           = (morningOrNight.Equals("morning")) ? "出勤する" : "寝る";
+                           = (time.Equals("09:00")) ? "出勤する" : "寝る";
 
         GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextButton);
         GameObject.Find("Canvas").transform.Find("itemCheckButton").GetComponent<Button>().onClick.AddListener(ClickItemCheckButton);

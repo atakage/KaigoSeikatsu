@@ -9,6 +9,7 @@ public class FacilityManager : MonoBehaviour
     public PlayerSaveDataManager playerSaveDataManager;
     public EventManager eventManager;
     public ChatManager chatManager;
+    public SceneTransitionManager sceneTransitionManager;
     public Button nextButton;
     public string[] morningrequiredEvent = null;
     public string[] careQuizEvent = null;
@@ -22,11 +23,13 @@ public class FacilityManager : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         eventManager = new EventManager();
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
+        sceneTransitionManager = new SceneTransitionManager();
         nextButton = GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>();
         nextButton.onClick.AddListener(ClickNextButton);
         GameObject.Find("Canvas").transform.Find("GoToCafeButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoToButton("カフェ"); });
         GameObject.Find("Canvas").transform.Find("GoToParkButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoToButton("公園"); });
         GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("No").GetComponent<Button>().onClick.AddListener(ClickGoToAlertNoButton);
+        GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("Yes").GetComponent<Button>().onClick.AddListener(ClickGoToAlertYesButton);
 
         // イベントコードセット
         morningrequiredEvent = new string[]{ "EV001", "EV002", "EV003" };  // 08:00 ~ 09:00
@@ -85,6 +88,11 @@ public class FacilityManager : MonoBehaviour
                 SetGoToButton(true);
                 GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "帰宅";
                 timeCheckSW = false;
+            }
+            else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call"))
+            {
+                Debug.Log("18:00");
+                sceneTransitionManager.LoadTo("AtHomeScene");
             }
         }
         
@@ -162,10 +170,26 @@ public class FacilityManager : MonoBehaviour
         // nextButtonのテキストが進行がないなら帰宅する
         else
         {
-            Debug.Log("帰宅");
+            ClickGoToHomeButton();
         }
 
 
+    }
+
+    // 17:00 -> 18:00
+    public void ClickGoToAlertYesButton()
+    {
+        // プレイヤーデータに時間をセーブ
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        playerData.time = "18:00";
+        //playerSaveDataManager.SavePlayerData(playerData);
+
+        GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("Panel").gameObject.SetActive(false);
+        FacilityUISetActive(false);
+        chatManager.executeFadeOutSimple();
+        chatManager.SetTime();
+        timeCheckSW = true;
     }
 
     public void ClickGoToAlertNoButton()
@@ -175,6 +199,16 @@ public class FacilityManager : MonoBehaviour
         GameObject.Find("Canvas").transform.Find("GoToParkButton").gameObject.SetActive(true);
         GameObject.Find("Canvas").transform.Find("menuButton").GetComponent<Button>().interactable = true;
         GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = true;
+    }
+
+    public void ClickGoToHomeButton()
+    {
+        SetGoToButton(false);
+        GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(true);
+        GameObject.Find("AlertGoing").transform.Find("DestinationValue").gameObject.SetActive(false);
+        GameObject.Find("AlertGoing").transform.Find("alertMessage").GetComponent<Text>().text =
+        "<color=#f54242>" + "帰宅" + "</color>"  + "しますか?";
+        GameObject.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text = "帰宅";
     }
 
     public void ClickGoToButton(string destination)
@@ -193,15 +227,11 @@ public class FacilityManager : MonoBehaviour
         {
             GameObject.Find("Canvas").transform.Find("GoToCafeButton").gameObject.SetActive(sw);
             GameObject.Find("Canvas").transform.Find("GoToParkButton").gameObject.SetActive(sw);
-            GameObject.Find("Canvas").transform.Find("menuButton").GetComponent<Button>().interactable = false;
-            GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = false;
         }
         else
         {
             GameObject.Find("Canvas").transform.Find("GoToCafeButton").gameObject.SetActive(sw);
             GameObject.Find("Canvas").transform.Find("GoToParkButton").gameObject.SetActive(sw);
-            GameObject.Find("Canvas").transform.Find("menuButton").GetComponent<Button>().interactable = false;
-            GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = false;
         }
     }
 

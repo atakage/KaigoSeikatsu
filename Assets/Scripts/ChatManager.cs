@@ -149,6 +149,13 @@ public class ChatManager : MonoBehaviour
         this.eventCode = "EV999";
     }
 
+    public void executeFadeOutSimple()
+    {
+        GameObject FadeInOutManager = new GameObject("FadeInOutManager");
+        GameObject fadeObj = GameObject.Find("FadeInOutManager");
+        fadeObj.AddComponent<SimpleFadeInOutManager>();
+    }
+
     public void executeFadeOut()
     {
         GameObject FadeInOutManager = new GameObject("FadeInOutManager");
@@ -174,6 +181,10 @@ public class ChatManager : MonoBehaviour
         }else if (time.text.Equals("17:00"))
         {
             GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = "17:20";
+        }
+        else if (time.text.Equals("17:20"))
+        {
+            GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = "18:00";
         }
     }
 
