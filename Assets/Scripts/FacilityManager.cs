@@ -11,6 +11,7 @@ public class FacilityManager : MonoBehaviour
     public ChatManager chatManager;
     public SceneTransitionManager sceneTransitionManager;
     public Button nextButton;
+    public PlayerData playerData = null;
     public string[] morningrequiredEvent = null;
     public string[] careQuizEvent = null;
     public string[] lunchEvent = null;
@@ -46,7 +47,7 @@ public class FacilityManager : MonoBehaviour
         string morningEventCode = CallRandomEvent(morningrequiredEvent);
         LoadEventAndShow(morningEventCode);
 
-        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        playerData = playerSaveDataManager.LoadPlayerData();
         Debug.Log("playerData: " + playerData.ToString());
 
         // UI setting
@@ -89,8 +90,12 @@ public class FacilityManager : MonoBehaviour
                 GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "帰宅";
                 timeCheckSW = false;
             }
-            else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call"))
+            // 18:00 -> 家へ
+            else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
+                GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("帰宅"))
             {
+                playerData.time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+                playerSaveDataManager.SavePlayerData(playerData);
                 Debug.Log("18:00");
                 sceneTransitionManager.LoadTo("AtHomeScene");
             }
