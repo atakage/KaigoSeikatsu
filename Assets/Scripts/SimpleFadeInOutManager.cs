@@ -21,9 +21,9 @@ public class SimpleFadeInOutManager : MonoBehaviour
         StartCoroutine("FadeIn");
         if (fadeSW)
         {
-            Destroy(this.gameObject);
             fadeImage.gameObject.SetActive(false);
             GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text = "call";
+            Destroy(this.gameObject);
         }
     }
 
