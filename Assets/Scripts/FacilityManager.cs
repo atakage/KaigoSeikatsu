@@ -99,6 +99,15 @@ public class FacilityManager : MonoBehaviour
                 Debug.Log("18:00");
                 sceneTransitionManager.LoadTo("AtHomeScene");
             }
+            // 18:00 -> カフェへ
+            else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
+                GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("カフェ"))
+            {
+                playerData.time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+                playerSaveDataManager.SavePlayerData(playerData);
+                Debug.Log("18:00");
+                sceneTransitionManager.LoadTo("CafeScene");
+            }
         }
         
         
