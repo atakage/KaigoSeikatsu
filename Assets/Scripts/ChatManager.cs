@@ -67,6 +67,9 @@ public class ChatManager : MonoBehaviour
                     }else if (afterEvent.Equals("None"))
                     {
                         executeFadeOut();
+                    }else if (afterEvent.Equals("Text"))
+                    {
+                        GameObject.Find("Canvas").transform.Find("textEventEndSW").GetComponent<Text>().text = "END";
                     }
                 }
                 else
@@ -236,6 +239,7 @@ public class ChatManager : MonoBehaviour
         {
 
         }
+        Debug.Log("EVENTCODE: " + eventCode);
         // リストにある配列の数を読み込む
         textCount = textList.Count;
         this.textList = textList;
@@ -247,7 +251,6 @@ public class ChatManager : MonoBehaviour
         dialogueSW = false;
         clickCount = 0;
         panelText.text = "";
-
     }
 
     IEnumerator StartDialogueCoroutine()
