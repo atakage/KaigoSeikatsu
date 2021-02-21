@@ -257,12 +257,12 @@ public class ChatManager : MonoBehaviour
     {
         Debug.Log("StartDialogueCoroutine");
         dialogueSW = true;
-        panelText.text = "";
+        GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "";
 
         for (int i=0; i< textList[clickCount].Length; i++)
         {
-            panelText.text += textList[clickCount][i];
-            Debug.Log("panelText.text: " + panelText.text);
+            GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text += textList[clickCount][i];
+            Debug.Log("panelText.text: " + GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text);
             yield return new WaitForSeconds(0.05f);
         }
     }

@@ -1,0 +1,11 @@
+{
+    "Items": [
+        {
+            "itemName": "コーヒー",
+            "price": 400,
+            "quantity": 5,
+            "description": "温かいコーヒーだ",
+            "sale": false
+        }
+    ]
+}
