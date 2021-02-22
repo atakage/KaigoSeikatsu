@@ -6,6 +6,13 @@
             "quantity": 5,
             "description": "温かいコーヒーだ",
             "sale": false
+        },
+        {
+            "itemName": "カフェ・ラッテ",
+            "price": 550,
+            "quantity": 5,
+            "description": "ミルクたっぷりのカフェ・ラッテ",
+            "sale": false
         }
     ]
 }
