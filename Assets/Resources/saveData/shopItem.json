@@ -13,6 +13,20 @@
             "quantity": 5,
             "description": "ミルクたっぷりのカフェ・ラッテ",
             "sale": false
+        },
+        {
+            "itemName": "アイスティー",
+            "price": 350,
+            "quantity": 5,
+            "description": "冷たくて甘い",
+            "sale": false
+        },
+        {
+            "itemName": "ハムサンド",
+            "price": 500,
+            "quantity": 5,
+            "description": "定番のハムサンド",
+            "sale": false
         }
     ]
 }
