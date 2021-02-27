@@ -82,7 +82,7 @@ public class ShopItemSetManager : MonoBehaviour
 
         }
 
-        // 
+        // UIセッティング完了
     }
 
     public void SetShopItem()
