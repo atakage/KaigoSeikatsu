@@ -33,37 +33,48 @@ public class ShopItemSetManager : MonoBehaviour
     public void SetShopItemUI(ShopItem[] loadedShopItemArray)
     {
         int shopItemCount = loadedShopItemArray.Length;
+        int addmenuBackSizeCount = shopItemCount - 3;
         Transform menuBackTransform = GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").transform.Find("Viewport").transform.Find("menuBack").transform;
-        Vector3 menuBackPos = menuBackTransform.position;
 
         Debug.Log("shopItemCount: " + shopItemCount);
 
-        // アイテム数が4以上ならアイテムバッググラウンドをアイテムかずほど伸ばす
+        
+             // アイテム数が4以上ならアイテムバッググラウンドをアイテムかずほど伸ばす
         if(shopItemCount > 3)
         {
             GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").transform.Find("Viewport").transform.Find("menuBack").GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 200 * shopItemCount);
         }
+        
+        Vector3 menuBackPos = menuBackTransform.position;
 
         // itemBoxObject
         GameObject itemBox = GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").transform.Find("Viewport").transform.Find("menuBack").transform.Find("itemBox0").gameObject;
 
-        // アイテムの数だけオブジェクトを作る
-        for(int i=0; i< shopItemCount; i++)
+        
+            // アイテムの数だけオブジェクトを作る
+        for (int i=0; i< shopItemCount; i++)
         {
-            // 最初のdefaultオブジェクトにはアイテム情報をセット
+            // 0番目アイテムの情報をセッティング
+                  // アイテム数が3以下default
             if (i == 0 && 4 > shopItemCount)
             {
                 itemBox.transform.Find("itemNameBox").transform.Find("Text").GetComponent<Text>().text = loadedShopItemArray[i].itemName;
                 itemBox.transform.Find("itemPriceBox").transform.Find("Text").GetComponent<Text>().text = loadedShopItemArray[i].price.ToString()+"円";
                 itemBox.transform.Find("itemDescription").GetComponent<Text>().text = loadedShopItemArray[i].description;
+                itemBox.transform.Translate(0, menuBackPos.y - 401, 0);
             }
             // 最初のdefaultオブジェクトにはアイテム情報をセット(バッググラウンドが伸びることによって最後のアイテムボックスの位置を調整する)
             else if (i == 0 && shopItemCount > 3)
             {
+                
                 itemBox.transform.Find("itemNameBox").transform.Find("Text").GetComponent<Text>().text = loadedShopItemArray[i].itemName;
                 itemBox.transform.Find("itemPriceBox").transform.Find("Text").GetComponent<Text>().text = loadedShopItemArray[i].price.ToString() + "円";
                 itemBox.transform.Find("itemDescription").GetComponent<Text>().text = loadedShopItemArray[i].description;
-                itemBox.transform.Translate(0, (shopItemCount-3)*100, 0);
+                itemBox.transform.Translate(0, (addmenuBackSizeCount * 100) - 50, 0);
+                //Debug.Log(" menuBackPos.y: " + cafeMenuScrollViewPos.y);
+                //Debug.Log("(shopItemCount-3)*50: " + cafeMenuScrollViewPos.y / shopItemCount);
+                //Debug.Log("menuBackPos.y - (shopItemCount-3)*50: " + menuBackPos.y + (menuBackPos.y * shopItemCount - 3) * 10));
+                //itemBox.transform.Translate(0, menuBackPos.y - 400, 0);
             }
             else
             {
@@ -87,7 +98,7 @@ public class ShopItemSetManager : MonoBehaviour
 
     public void SetShopItem()
     {
-        ShopItem[] shopItemArray = new ShopItem[4];
+        ShopItem[] shopItemArray = new ShopItem[10];
 
         shopItemArray[0] = new ShopItem();
         shopItemArray[0].itemName = "コーヒー";
@@ -116,7 +127,7 @@ public class ShopItemSetManager : MonoBehaviour
         shopItemArray[3].quantity = 5;
         shopItemArray[3].description = "定番のハムサンド";
         shopItemArray[3].sale = false;
-
+        
         CreateShopItemJsonFile(shopItemArray);
     }
 
