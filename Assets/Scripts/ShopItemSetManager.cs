@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System;
 using System.IO;
 
@@ -75,6 +76,7 @@ public class ShopItemSetManager : MonoBehaviour
                 //Debug.Log("(shopItemCount-3)*50: " + cafeMenuScrollViewPos.y / shopItemCount);
                 //Debug.Log("menuBackPos.y - (shopItemCount-3)*50: " + menuBackPos.y + (menuBackPos.y * shopItemCount - 3) * 10));
                 //itemBox.transform.Translate(0, menuBackPos.y - 400, 0);
+
             }
             else
             {
@@ -90,10 +92,26 @@ public class ShopItemSetManager : MonoBehaviour
                 itemBox.transform.Find("itemDescription").GetComponent<Text>().text = loadedShopItemArray[i].description;
             }
 
-
+            // オーダーボタンにイベント追加
+            itemBox.transform.Find("orderButton").GetComponent<Button>().onClick.AddListener(addOrderButtonEvent);
         }
 
         // UIセッティング完了
+    }
+
+    public void addOrderButtonEvent()
+    {
+        // クリックしたオブジェクトを取り出す
+        Transform itemBoxTransform = EventSystem.current.currentSelectedGameObject.transform.parent;
+        Debug.Log("itemBoxTransform: " + itemBoxTransform);
+
+        // ボタンを押すとdetailにメニューを入れる
+        if (itemBoxTransform.Find("orderCheck").GetComponent<Text>().text.Equals("N"))
+        {
+            itemBoxTransform.Find("orderCheck").GetComponent<Text>().text = "Y";
+            itemBoxTransform.Find("orderButton").GetComponent<Button>().interactable = false;
+
+        }
     }
 
     public void SetShopItem()

@@ -26,6 +26,8 @@ public class CafeManager : MonoBehaviour
 
         LoadEventAndShow("EV009");
 
+
+
     }
 
     private void Update()
@@ -74,6 +76,7 @@ public class CafeManager : MonoBehaviour
             }
         }
     }
+
 
     public void SetItemDes(string itemBoxName)
     {
