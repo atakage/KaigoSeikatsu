@@ -111,7 +111,47 @@ public class ShopItemSetManager : MonoBehaviour
             itemBoxTransform.Find("orderCheck").GetComponent<Text>().text = "Y";
             itemBoxTransform.Find("orderButton").GetComponent<Button>().interactable = false;
 
+            Transform detailBackTransform = GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").transform.Find("Viewport").transform.Find("detailBack");
+            GameObject detailItemSample = detailBackTransform.transform.Find("detailItemSample").gameObject;
+            int detailItemCount = detailBackTransform.childCount;
+            Debug.Log("detailItemCount: " + detailItemCount);
+
+            // detailItemが0なら(sampleを除いて)detailItemSampleの位置に最初のdetailItemを作る
+            if(detailItemCount-1 == 0)
+            {
+                GameObject detailItemN = Instantiate(detailItemSample, new Vector3(detailItemSample.transform.position.x, detailItemSample.transform.position.y, detailItemSample.transform.position.z), Quaternion.identity);
+                detailItemN.gameObject.name = "detailItem"+ (detailItemCount - 1).ToString();
+                detailItemN.transform.SetParent(detailBackTransform);
+
+                // クリックしたメニューアイテムの情報を移る
+                detailItemN.transform.Find("itemName").GetComponent<Text>().text = itemBoxTransform.Find("itemNameBox").transform.Find("Text").GetComponent<Text>().text;
+                detailItemN.transform.Find("itemPrice").GetComponent<Text>().text = itemBoxTransform.Find("itemPriceBox").transform.Find("Text").GetComponent<Text>().text;
+                // detailボタン(削除)にイベントをつける
+                detailItemN.transform.Find("deleteButton").GetComponent<Button>().onClick.AddListener(delegate { addDetailDeleteButtonEvent(itemBoxTransform); });
+
+                detailItemN.SetActive(true);
+            }
+            // 一番下にdetailItemを作る
+            else
+            {
+
+            }
+            
+            
+            // detailにアイテム情報を追加する
+            //Instantiate(itemBox, new Vector3(itemBox.transform.position.x, itemBox.transform.position.y - 200, itemBox.transform.position.z), Quaternion.identity);
         }
+    }
+
+    public void addDetailDeleteButtonEvent(Transform itemBoxTransform)
+    {
+        // クリックしたオブジェクトを取り出す
+        Transform detailItemTransform = EventSystem.current.currentSelectedGameObject.transform.parent;
+        // メニューアイテムのボタンをいかす
+        itemBoxTransform.transform.Find("orderCheck").GetComponent<Text>().text = "N"; 
+        itemBoxTransform.transform.Find("orderButton").GetComponent<Button>().interactable = true;
+        // クリックした detailItemを取り除く
+        Destroy(detailItemTransform.gameObject);
     }
 
     public void SetShopItem()
