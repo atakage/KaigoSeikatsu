@@ -119,8 +119,25 @@ public class ShopItemSetManager : MonoBehaviour
             // detailItemが0なら(sampleを除いて)detailItemSampleの位置に最初のdetailItemを作る
             if(detailItemCount-1 == 0)
             {
-                GameObject detailItemN = Instantiate(detailItemSample, new Vector3(detailItemSample.transform.position.x, detailItemSample.transform.position.y, detailItemSample.transform.position.z), Quaternion.identity);
-                detailItemN.gameObject.name = "detailItem"+ (detailItemCount - 1).ToString();
+                GameObject detailItem = Instantiate(detailItemSample, new Vector3(detailItemSample.transform.position.x, detailItemSample.transform.position.y, detailItemSample.transform.position.z), Quaternion.identity);
+                detailItem.gameObject.name = "detailItem"+ (detailItemCount - 1).ToString();
+                detailItem.transform.SetParent(detailBackTransform);
+
+                // クリックしたメニューアイテムの情報を移る
+                detailItem.transform.Find("itemName").GetComponent<Text>().text = itemBoxTransform.Find("itemNameBox").transform.Find("Text").GetComponent<Text>().text;
+                detailItem.transform.Find("itemPrice").GetComponent<Text>().text = itemBoxTransform.Find("itemPriceBox").transform.Find("Text").GetComponent<Text>().text;
+                // detailボタン(削除)にイベントをつける
+                detailItem.transform.Find("deleteButton").GetComponent<Button>().onClick.AddListener(delegate { addDetailDeleteButtonEvent(itemBoxTransform); });
+
+                detailItem.SetActive(true);
+            }
+            // 一番下にdetailItemを作る
+            else
+            {
+                Transform lastDetailItemTransform = detailBackTransform.transform.GetChild(detailBackTransform.childCount-1);
+                Debug.Log("lastDetailItemTransform: " + lastDetailItemTransform.gameObject.name);
+                GameObject detailItemN = Instantiate(lastDetailItemTransform.gameObject, new Vector3(lastDetailItemTransform.gameObject.transform.position.x, lastDetailItemTransform.gameObject.transform.position.y-50, lastDetailItemTransform.gameObject.transform.position.z), Quaternion.identity);
+                detailItemN.gameObject.name = "detailItem" + (detailItemCount - 1).ToString();
                 detailItemN.transform.SetParent(detailBackTransform);
 
                 // クリックしたメニューアイテムの情報を移る
@@ -130,11 +147,7 @@ public class ShopItemSetManager : MonoBehaviour
                 detailItemN.transform.Find("deleteButton").GetComponent<Button>().onClick.AddListener(delegate { addDetailDeleteButtonEvent(itemBoxTransform); });
 
                 detailItemN.SetActive(true);
-            }
-            // 一番下にdetailItemを作る
-            else
-            {
-
+                
             }
             
             
@@ -145,13 +158,78 @@ public class ShopItemSetManager : MonoBehaviour
 
     public void addDetailDeleteButtonEvent(Transform itemBoxTransform)
     {
+        
         // クリックしたオブジェクトを取り出す
         Transform detailItemTransform = EventSystem.current.currentSelectedGameObject.transform.parent;
+        Transform detailBack = detailItemTransform.parent;
         // メニューアイテムのボタンをいかす
         itemBoxTransform.transform.Find("orderCheck").GetComponent<Text>().text = "N"; 
         itemBoxTransform.transform.Find("orderButton").GetComponent<Button>().interactable = true;
+
+
+
         // クリックした detailItemを取り除く
         Destroy(detailItemTransform.gameObject);
+        detailItemTransform.DetachChildren();
+        // ★Destoryを後オブジェクトすぐに破壊されない、フレームアプデ後(1frame)OnDestroyが作用される
+        // ★Destroy後正しいChildCountを得るために
+
+        bool firstDetailItemSW = false;
+        // detailItem位置を取り直す
+        Debug.Log("detailBack.childCount: " + detailBack.childCount);
+
+        ArrayList detailItemList = new ArrayList();
+        
+        for (int i=1; i< detailBack.childCount; i++)
+        {
+            /*
+            Transform detailItemNTransform = detailBack.GetChild(i);
+            Debug.Log("detailItemNTransform: " + detailItemNTransform.name);
+
+            
+            if (!firstDetailItemSW && detailItemNTransform.transform.Find("itemName") != null)
+            {
+                Debug.Log("position reset");
+                // ★Canvas(UI)を親にしている子objectのpositionを取り出すときはRectTransformのanchoredPositionを利用する
+                RectTransform detailItemSample = (RectTransform)detailBack.Find("detailItemSample");
+                detailItemNTransform.Translate(detailItemSample.anchoredPosition.x, detailItemSample.anchoredPosition.y, 0);
+                firstDetailItemSW = true;
+            }
+            else
+            {
+                Debug.Log("detailItemNTransform: " + detailItemNTransform.name);
+                detailItemNTransform.Translate(detailItemNTransform.position.x, detailItemNTransform.position.y+50, detailItemNTransform.position.z);
+            }
+            */
+
+            // オブジェクトを配列に移る(detailSampleと削除されたdetailItem除外)
+            Transform detailItemNTransform = detailBack.GetChild(i);
+            if(detailItemNTransform.transform.Find("itemName") != null)
+            {
+                Debug.Log("added detailItemNTransform: " + detailItemNTransform.name);
+                detailItemList.Add(detailItemNTransform);
+            }
+        }
+
+        // 配列のdetailItemの位置変更
+        for(int i=0; i< detailItemList.Count; i++)
+        {
+            Transform detailItem = (Transform)detailItemList[i];
+            if (i == 0)
+            {
+                // ★Canvas(UI)を親にしている子objectのpositionを取り出すときはRectTransformのanchoredPositionを利用する
+                RectTransform detailItemSample = (RectTransform)detailBack.Find("detailItemSample");
+                detailItem.Translate(detailItemSample.anchoredPosition.x, detailItemSample.anchoredPosition.y, 0);
+            }
+            else
+            {
+
+            }
+        }
+            
+
+
+
     }
 
     public void SetShopItem()
