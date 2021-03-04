@@ -104,6 +104,8 @@ public class ShopItemSetManager : MonoBehaviour
         // クリックしたオブジェクトを取り出す
         Transform itemBoxTransform = EventSystem.current.currentSelectedGameObject.transform.parent;
         Debug.Log("itemBoxTransform: " + itemBoxTransform);
+        // detailItemにつけるランダム番号
+        System.Random r = new System.Random();
 
         // ボタンを押すとdetailにメニューを入れる
         if (itemBoxTransform.Find("orderCheck").GetComponent<Text>().text.Equals("N"))
@@ -120,7 +122,7 @@ public class ShopItemSetManager : MonoBehaviour
             if(detailItemCount-1 == 0)
             {
                 GameObject detailItem = Instantiate(detailItemSample, new Vector3(detailItemSample.transform.position.x, detailItemSample.transform.position.y, detailItemSample.transform.position.z), Quaternion.identity);
-                detailItem.gameObject.name = "detailItem"+ (detailItemCount - 1).ToString();
+                detailItem.gameObject.name = "detailItem"+ r.Next().ToString();
                 detailItem.transform.SetParent(detailBackTransform);
 
                 // クリックしたメニューアイテムの情報を移る
@@ -137,7 +139,7 @@ public class ShopItemSetManager : MonoBehaviour
                 Transform lastDetailItemTransform = detailBackTransform.transform.GetChild(detailBackTransform.childCount-1);
                 Debug.Log("lastDetailItemTransform: " + lastDetailItemTransform.gameObject.name);
                 GameObject detailItemN = Instantiate(lastDetailItemTransform.gameObject, new Vector3(lastDetailItemTransform.gameObject.transform.position.x, lastDetailItemTransform.gameObject.transform.position.y-50, lastDetailItemTransform.gameObject.transform.position.z), Quaternion.identity);
-                detailItemN.gameObject.name = "detailItem" + (detailItemCount - 1).ToString();
+                detailItemN.gameObject.name = "detailItem" + r.Next().ToString();
                 detailItemN.transform.SetParent(detailBackTransform);
 
                 // クリックしたメニューアイテムの情報を移る
@@ -150,9 +152,7 @@ public class ShopItemSetManager : MonoBehaviour
                 
             }
             
-            
-            // detailにアイテム情報を追加する
-            //Instantiate(itemBox, new Vector3(itemBox.transform.position.x, itemBox.transform.position.y - 200, itemBox.transform.position.z), Quaternion.identity);
+            // detailBackのchildCountが3以上ならdetailBackのサイズを伸ばす
         }
     }
 
@@ -167,19 +167,14 @@ public class ShopItemSetManager : MonoBehaviour
         itemBoxTransform.transform.Find("orderButton").GetComponent<Button>().interactable = true;
 
 
-
-        // クリックした detailItemを取り除く
-        Destroy(detailItemTransform.gameObject);
-        detailItemTransform.DetachChildren();
+        Debug.Log("Destroy: " + detailItemTransform.gameObject.name);
         // ★Destoryを後オブジェクトすぐに破壊されない、フレームアプデ後(1frame)OnDestroyが作用される
-        // ★Destroy後正しいChildCountを得るために
+        Destroy(detailItemTransform.gameObject);
 
-        bool firstDetailItemSW = false;
-        // detailItem位置を取り直す
         Debug.Log("detailBack.childCount: " + detailBack.childCount);
 
         ArrayList detailItemList = new ArrayList();
-        
+   
         for (int i=1; i< detailBack.childCount; i++)
         {
             /*
@@ -202,34 +197,38 @@ public class ShopItemSetManager : MonoBehaviour
             }
             */
 
+            RectTransform detailItemSample = (RectTransform)detailBack.Find("detailItemSample");
+            RectTransform detailItemNTransform = (RectTransform)detailBack.GetChild(i);
             // オブジェクトを配列に移る(detailSampleと削除されたdetailItem除外)
-            Transform detailItemNTransform = detailBack.GetChild(i);
-            if(detailItemNTransform.transform.Find("itemName") != null)
+            if (!detailItemNTransform.name.Equals(detailItemTransform.name))
             {
                 Debug.Log("added detailItemNTransform: " + detailItemNTransform.name);
                 detailItemList.Add(detailItemNTransform);
+                // detailItemの位置を一つにまとう
+                detailItemNTransform.anchoredPosition = new Vector2(detailItemSample.anchoredPosition.x, detailItemSample.anchoredPosition.y);
             }
         }
+
 
         // 配列のdetailItemの位置変更
         for(int i=0; i< detailItemList.Count; i++)
         {
-            Transform detailItem = (Transform)detailItemList[i];
-            if (i == 0)
+            // ★Canvas(UI)を親にしている子objectのpositionを取り出すときはRectTransformのanchoredPositionを利用する
+            RectTransform detailItemSample = (RectTransform)detailBack.Find("detailItemSample");
+            RectTransform detailItem = (RectTransform)detailItemList[i];
+            Debug.Log("detailItem.name: " + detailItem.name);
+            // 二番目のdetailItemから徐々に位置を調整する
+            if(i != 0)
             {
-                // ★Canvas(UI)を親にしている子objectのpositionを取り出すときはRectTransformのanchoredPositionを利用する
-                RectTransform detailItemSample = (RectTransform)detailBack.Find("detailItemSample");
-                detailItem.Translate(detailItemSample.anchoredPosition.x, detailItemSample.anchoredPosition.y, 0);
-            }
-            else
-            {
-
+                RectTransform detailItemBefore = (RectTransform)detailItemList[i-1];
+                Debug.Log("detailItemBefore: " + detailItemBefore.name);
+                Debug.Log("detailItemBefore.anchoredPosition.y: " + detailItemBefore.anchoredPosition.y);
+                Debug.Log("detailItem(!=0): " + detailItem);
+                Debug.Log("(int)detailItemBefore.anchoredPosition.y-45f: " + ((int)detailItemBefore.anchoredPosition.y + 50));
+                detailItem.anchoredPosition = new Vector2(detailItemBefore.anchoredPosition.x, detailItemBefore.anchoredPosition.y - 50);
+                
             }
         }
-            
-
-
-
     }
 
     public void SetShopItem()
