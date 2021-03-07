@@ -18,9 +18,12 @@ public class ShopItem
 
 public class ShopItemSetManager : MonoBehaviour
 {
+    public bool checkDestroyedChild;
+
     // Start is called before the first frame update
     void Start()
     {
+
         // タイトルで
         SetShopItem();
 
@@ -30,6 +33,7 @@ public class ShopItemSetManager : MonoBehaviour
         //読み込んだclassファイルをショップUIにセットする
         SetShopItemUI(loadedShopItemArray);
     }
+
 
     public void SetShopItemUI(ShopItem[] loadedShopItemArray)
     {
@@ -115,11 +119,45 @@ public class ShopItemSetManager : MonoBehaviour
 
             Transform detailBackTransform = GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").transform.Find("Viewport").transform.Find("detailBack");
             GameObject detailItemSample = detailBackTransform.transform.Find("detailItemSample").gameObject;
+            RectTransform detailItemSampleRect = detailItemSample.GetComponent<RectTransform>();
+
             int detailItemCount = detailBackTransform.childCount;
             Debug.Log("detailItemCount: " + detailItemCount);
 
-            // detailItemが0なら(sampleを除いて)detailItemSampleの位置に最初のdetailItemを作る
-            if(detailItemCount-1 == 0)
+            // detailBackのchildCountが4以上ならdetailBackのサイズを伸ばして全体detailItemの位置を調整する
+            if (detailItemCount - 1 > 2)
+            {
+                // detailBackのサイズが伸ばすことに備えてdetailSampleの位置を調整
+                Debug.Log("detailItemSampleRect.anchoredPosition.y: " + detailItemSampleRect.anchoredPosition.y);
+                detailItemSampleRect.anchoredPosition = new Vector2((int)detailItemSampleRect.anchoredPosition.x, (int)detailItemSampleRect.anchoredPosition.y + 25);
+
+                Debug.Log("add size");
+                RectTransform detailBack = GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").transform.Find("Viewport").transform.Find("detailBack").GetComponent<RectTransform>();
+                Debug.Log("detailBack.rect.width: " + detailBack.rect.width);
+                Debug.Log("detailBack.rect.height: " + detailBack.rect.height);
+                Debug.Log("detailBack.rect.x: " + detailBack.rect.x);
+                Debug.Log("detailBack.rect.y: " + detailBack.rect.y);
+                detailBack.sizeDelta = new Vector2((int)detailBack.rect.x, (int)detailBack.rect.height + 50);
+                Debug.Log("detailBack.rect.y final: " + detailBack.rect.height + 50);
+
+
+                // 全体detailItemの位置を再調整
+                for (int i=1; i< detailItemCount;i++)
+                {
+                    RectTransform detailItem = (RectTransform)detailBackTransform.GetChild(i);
+                    detailItem.anchoredPosition = new Vector2(detailItem.anchoredPosition.x, detailItem.anchoredPosition.y+25);
+
+                }
+            }
+            // detailSampleの位置を調整元位置に
+            else
+            {
+                detailItemSampleRect.anchoredPosition = new Vector2((int)detailItemSampleRect.anchoredPosition.x, 45.6f);
+            }
+
+
+            // detailItemが一番目なら(sampleを除いて)detailItemSampleの位置に最初のdetailItemを作る
+            if (detailItemCount-1 == 0)
             {
                 GameObject detailItem = Instantiate(detailItemSample, new Vector3(detailItemSample.transform.position.x, detailItemSample.transform.position.y, detailItemSample.transform.position.z), Quaternion.identity);
                 detailItem.gameObject.name = "detailItem"+ r.Next().ToString();
@@ -151,8 +189,8 @@ public class ShopItemSetManager : MonoBehaviour
                 detailItemN.SetActive(true);
                 
             }
-            
-            // detailBackのchildCountが3以上ならdetailBackのサイズを伸ばす
+
+
         }
     }
 
@@ -171,11 +209,27 @@ public class ShopItemSetManager : MonoBehaviour
         // ★Destoryを後オブジェクトすぐに破壊されない、フレームアプデ後(1frame)OnDestroyが作用される
         Destroy(detailItemTransform.gameObject);
 
+        checkDestroyedChild = true;
         Debug.Log("detailBack.childCount: " + detailBack.childCount);
 
         ArrayList detailItemList = new ArrayList();
-   
-        for (int i=1; i< detailBack.childCount; i++)
+
+        RectTransform detailItemSample = (RectTransform)detailBack.Find("detailItemSample");
+
+        // detailから削除ボタンを押した時detailItemが4以上ならdetailBackのheightを縮めるあとdetailItem初期位置設定に基準になるdetailItemSampleの位置を調整する
+        if (detailBack.childCount > 4)
+        {
+            Debug.Log("reduce detailback");
+            RectTransform detailBack2 = GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").transform.Find("Viewport").transform.Find("detailBack").GetComponent<RectTransform>();
+            detailBack2.sizeDelta = new Vector2((int)detailBack2.rect.x, (int)detailBack2.rect.height - 50);
+
+            RectTransform detailItemSampleRect = detailItemSample.GetComponent<RectTransform>();
+            detailItemSampleRect.anchoredPosition = new Vector2((int)detailItemSampleRect.anchoredPosition.x, (int)detailItemSampleRect.anchoredPosition.y - 25);
+        }
+
+
+
+            for (int i=1; i< detailBack.childCount; i++)
         {
             /*
             Transform detailItemNTransform = detailBack.GetChild(i);
@@ -197,7 +251,7 @@ public class ShopItemSetManager : MonoBehaviour
             }
             */
 
-            RectTransform detailItemSample = (RectTransform)detailBack.Find("detailItemSample");
+
             RectTransform detailItemNTransform = (RectTransform)detailBack.GetChild(i);
             // オブジェクトを配列に移る(detailSampleと削除されたdetailItem除外)
             if (!detailItemNTransform.name.Equals(detailItemTransform.name))
@@ -214,7 +268,7 @@ public class ShopItemSetManager : MonoBehaviour
         for(int i=0; i< detailItemList.Count; i++)
         {
             // ★Canvas(UI)を親にしている子objectのpositionを取り出すときはRectTransformのanchoredPositionを利用する
-            RectTransform detailItemSample = (RectTransform)detailBack.Find("detailItemSample");
+            //RectTransform detailItemSample = (RectTransform)detailBack.Find("detailItemSample");
             RectTransform detailItem = (RectTransform)detailItemList[i];
             Debug.Log("detailItem.name: " + detailItem.name);
             // 二番目のdetailItemから徐々に位置を調整する
@@ -233,7 +287,7 @@ public class ShopItemSetManager : MonoBehaviour
 
     public void SetShopItem()
     {
-        ShopItem[] shopItemArray = new ShopItem[10];
+        ShopItem[] shopItemArray = new ShopItem[40];
 
         shopItemArray[0] = new ShopItem();
         shopItemArray[0].itemName = "コーヒー";
