@@ -24,6 +24,9 @@ public class CafeManager : MonoBehaviour
         cafeMenuCanvasPos = GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").position;
         detailOrderCanvasPos = GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").position;
 
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        GameObject.Find("MoneyValue").GetComponent<Text>().text = playerData.money+"円";
+
         LoadEventAndShow("EV009");
 
 
