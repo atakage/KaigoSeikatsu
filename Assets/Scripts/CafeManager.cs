@@ -27,6 +27,8 @@ public class CafeManager : MonoBehaviour
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
         GameObject.Find("MoneyValue").GetComponent<Text>().text = playerData.money+"円";
 
+        GameObject.Find("orderPanel").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(ClickOrderPanelConfirmBtn);
+
         LoadEventAndShow("EV009");
 
 
@@ -80,6 +82,15 @@ public class CafeManager : MonoBehaviour
         }
     }
 
+    public void ClickOrderPanelConfirmBtn()
+    {
+        Transform detailBackTransform = GameObject.Find("DetailOrderScrollView").transform.Find("Viewport").transform.Find("detailBack");
+        // detailにアイテムが一つ以上いるのを確認する(detailSampleを除いて)
+        if(detailBackTransform.childCount > 1)
+        {
+
+        }
+    }
 
     public void SetItemDes(string itemBoxName)
     {
