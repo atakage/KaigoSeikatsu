@@ -2057,7 +2057,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2105696832}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.00000017198683
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3066,6 +3066,14 @@ MonoBehaviour:
   chatManager: {fileID: 0}
   cafeMenuCanvasPos: {x: 0, y: 0, z: 0}
   detailOrderCanvasPos: {x: 0, y: 0, z: 0}
+  playerData:
+    money: 
+    time: 
+    eventCodeArray: []
+    progress: 0
+    fatigue: 0
+    satisfaction: 0
+    action: 0
 --- !u!4 &832069668
 Transform:
   m_ObjectHideFlags: 0
@@ -5947,7 +5955,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1480623619}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

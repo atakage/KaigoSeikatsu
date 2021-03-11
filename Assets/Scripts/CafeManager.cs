@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System;
 public class CafeManager : MonoBehaviour
 {
     public Camera uiCamera;
@@ -11,6 +11,7 @@ public class CafeManager : MonoBehaviour
     public ChatManager chatManager;
     public Vector3 cafeMenuCanvasPos;
     public Vector3 detailOrderCanvasPos;
+    public PlayerData playerData;
 
     // Start is called before the first frame update
     void Start()
@@ -24,11 +25,11 @@ public class CafeManager : MonoBehaviour
         cafeMenuCanvasPos = GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").position;
         detailOrderCanvasPos = GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").position;
 
-        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        playerData = playerSaveDataManager.LoadPlayerData();
         GameObject.Find("MoneyValue").GetComponent<Text>().text = playerData.money+"円";
 
         GameObject.Find("orderPanel").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(ClickOrderPanelConfirmBtn);
-
+        
         LoadEventAndShow("EV009");
 
 
@@ -88,7 +89,30 @@ public class CafeManager : MonoBehaviour
         // detailにアイテムが一つ以上いるのを確認する(detailSampleを除いて)
         if(detailBackTransform.childCount > 1)
         {
+            GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").gameObject.SetActive(false);
+            GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").gameObject.SetActive(false);
+            GameObject.Find("Canvas").transform.Find("ConfirmAlertBox").gameObject.SetActive(true);
 
+            GameObject.Find("ConfirmAlertBox").transform.Find("MoneyValue").GetComponent<Text>().text = playerData.money + "円";
+
+            // detailItemの合計(detailSampleを除いて)
+            int totalValue = 0;
+            for(int i=1; i<detailBackTransform.childCount; i++)
+            {
+                Transform detailItem = detailBackTransform.GetChild(i);
+                string itemPrice =  detailItem.transform.Find("itemPrice").GetComponent<Text>().text;
+                totalValue += Int32.Parse(itemPrice.Replace("円", ""));
+            }
+
+            GameObject.Find("ConfirmAlertBox").transform.Find("TotalValue").GetComponent<Text>().text = totalValue.ToString() + "円";
+
+            int resultMoney = Int32.Parse(playerData.money) - totalValue;
+            GameObject.Find("ConfirmAlertBox").transform.Find("resultMoney").GetComponent<Text>().text = resultMoney.ToString() + "円";
+            // resultMoneyがマイナスならボタンを隠す
+            if (0 > resultMoney)
+            {
+                
+            }
         }
     }
 
