@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class FadeInOutManager : MonoBehaviour
+
+public class FadeOutPersistManager : MonoBehaviour
 {
     public FacilityManager facilityManager;
     Image fadeImage;
@@ -28,9 +29,8 @@ public class FadeInOutManager : MonoBehaviour
         StartCoroutine("FadeIn");
         if (fadeSW)
         {
-            GameObject.Find("Canvas").transform.Find("fadeOutEventCheck").GetComponent<Text>().text = "Y";
+            GameObject.Find("Canvas").transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text = "Y";
             Destroy(this.gameObject);
-            fadeImage.gameObject.SetActive(false);
             facilityManager.FacilityUISetActive(true);
         }
     }
@@ -39,12 +39,12 @@ public class FadeInOutManager : MonoBehaviour
     {
         Color color = fadeImage.color;
 
-        for (int i=0; i<100; i++)
+        for (int i = 0; i < 100; i++)
         {
             color.a += Time.deltaTime * 0.007f;
             fadeImage.color = color;
 
-            if(fadeImage.color.a > 1)
+            if (fadeImage.color.a > 1)
             {
                 fadeSW = true;
             }

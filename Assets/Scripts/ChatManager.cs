@@ -70,6 +70,9 @@ public class ChatManager : MonoBehaviour
                     }else if (afterEvent.Equals("Text"))
                     {
                         GameObject.Find("Canvas").transform.Find("textEventEndSW").GetComponent<Text>().text = "END";
+                    }else if(afterEvent.Equals("Fade Out Persist"))
+                    {
+                        executeFadeOutPersist();
                     }
                 }
                 else
@@ -150,6 +153,13 @@ public class ChatManager : MonoBehaviour
 
         // イベントの重複呼びを防止
         this.eventCode = "EV999";
+    }
+
+    public void executeFadeOutPersist()
+    {
+        GameObject FadeInOutManager = new GameObject("FadeInOutManager");
+        GameObject fadeObj = GameObject.Find("FadeInOutManager");
+        fadeObj.AddComponent<FadeOutPersistManager>();
     }
 
     public void executeFadeOutSimple()

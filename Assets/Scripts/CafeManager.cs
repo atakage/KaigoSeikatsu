@@ -9,6 +9,7 @@ public class CafeManager : MonoBehaviour
     public PlayerSaveDataManager playerSaveDataManager;
     public EventManager eventManager;
     public ChatManager chatManager;
+    public SceneTransitionManager sceneTransitionManager;
     public Vector3 cafeMenuCanvasPos;
     public Vector3 detailOrderCanvasPos;
     public PlayerData playerData;
@@ -21,6 +22,7 @@ public class CafeManager : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         eventManager = new EventManager();
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
+        sceneTransitionManager = new SceneTransitionManager();
 
         cafeMenuCanvasPos = GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").position;
         detailOrderCanvasPos = GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").position;
@@ -29,7 +31,9 @@ public class CafeManager : MonoBehaviour
         GameObject.Find("MoneyValue").GetComponent<Text>().text = playerData.money+"円";
 
         GameObject.Find("orderPanel").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(ClickOrderPanelConfirmBtn);
-        
+        GameObject.Find("Canvas").transform.Find("ConfirmAlertBox").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(delegate { ClickConfirmBtn(playerData); });
+        GameObject.Find("Canvas").transform.Find("ConfirmAlertBox").transform.Find("cancleButton").GetComponent<Button>().onClick.AddListener(ClickConfirmCancleBtn);
+
         LoadEventAndShow("EV009");
 
 
@@ -81,10 +85,58 @@ public class CafeManager : MonoBehaviour
                 }
             }
         }
+
+        // カフェを出るときの1次挨拶イベントチェック
+        if(GameObject.Find("Canvas").transform.Find("greetingCheck").GetComponent<Text>().text.Equals("Y") && GameObject.Find("Canvas").transform.Find("fadeOutEventCheck").GetComponent<Text>().text.Equals("Y"))
+        {
+            Debug.Log("CALL 2");
+            GameObject.Find("Canvas").transform.Find("fadeOutEventCheck").GetComponent<Text>().text = "";
+            GameObject.Find("Canvas").transform.Find("greetingCheck").GetComponent<Text>().text = "C";
+            // 2次挨拶イベントを呼び出す
+            LoadEventAndShow("EV011");
+            GameObject.Find("Canvas").transform.Find("greeting2Check").GetComponent<Text>().text = "Y";
+        }
+        // カフェを出るときの2次挨拶イベントの完了をチェック
+        if (GameObject.Find("Canvas").transform.Find("greeting2Check").GetComponent<Text>().text.Equals("Y") && GameObject.Find("Canvas").transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y"))
+        {
+            sceneTransitionManager.LoadTo("AtHomeScene");
+        }
+    }
+
+    public void ClickConfirmBtn(PlayerData playerData)
+    {
+        // +sound effect(money)
+
+        GameObject.Find("ConfirmAlertBox").gameObject.SetActive(false);
+        GameObject.Find("Money").gameObject.SetActive(false);
+        GameObject.Find("MoneyValue").gameObject.SetActive(false);
+
+        // プレイヤーデータをセーブ
+        string resultMoney = GameObject.Find("Canvas").transform.Find("ConfirmAlertBox").transform.Find("resultMoney").GetComponent<Text>().text;
+        playerData.money = resultMoney.Replace("円", "");
+        playerData.time = "19:00";
+        playerSaveDataManager.SavePlayerData(playerData);
+
+        // fade out event(+ sound effect(dish))
+        LoadEventAndShow("EV010");
+        GameObject.Find("Canvas").transform.Find("greetingCheck").GetComponent<Text>().text = "Y";
+
+    }
+
+    public void ClickConfirmCancleBtn()
+    {
+        GameObject.Find("ConfirmAlertBox").transform.Find("confirmButton").GetComponent<Button>().interactable = true;
+        GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = true;
+        GameObject.Find("ConfirmAlertBox").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "";
     }
 
     public void ClickOrderPanelConfirmBtn()
     {
+        GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = false;
+        GameObject.Find("Canvas").transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "注文しますか?";
         Transform detailBackTransform = GameObject.Find("DetailOrderScrollView").transform.Find("Viewport").transform.Find("detailBack");
         // detailにアイテムが一つ以上いるのを確認する(detailSampleを除いて)
         if(detailBackTransform.childCount > 1)
@@ -111,7 +163,7 @@ public class CafeManager : MonoBehaviour
             // resultMoneyがマイナスならボタンを隠す
             if (0 > resultMoney)
             {
-                
+                GameObject.Find("ConfirmAlertBox").transform.Find("confirmButton").GetComponent<Button>().interactable = false;
             }
         }
     }
