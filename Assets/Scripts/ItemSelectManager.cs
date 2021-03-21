@@ -69,12 +69,12 @@ public class ItemSelectManager : MonoBehaviour
 
             // 最初のアイテムの情報を読み出す
             GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text =
-            "[ " + "<color=#93DAFF>" + GameObject.Find("item0").transform.Find("itemName").GetComponent<Text>().text + "</color>" + "(" + "x" + GameObject.Find("item0").transform.Find("itemQty").GetComponent<Text>().text + ")" + " ]" +
+            "[ " + "<color=#93DAFF>" + GameObject.Find("itemSlotCanvas").transform.Find("item0").transform.Find("itemName").GetComponent<Text>().text + "</color>" + "(" + "x" + GameObject.Find("itemSlotCanvas").transform.Find("item0").transform.Find("itemQty").GetComponent<Text>().text + ")" + " ]" +
             "\n" +
-            GameObject.Find("item0").transform.Find("itemDesc").GetComponent<Text>().text;
+            GameObject.Find("itemSlotCanvas").transform.Find("item0").transform.Find("itemDesc").GetComponent<Text>().text;
 
             // set item outline
-            GameObject.Find("itemSlotCanvas").transform.Find(GameObject.Find("item0").transform.gameObject.name).GetComponent<Outline>().effectDistance = new Vector2(10, 10);
+            GameObject.Find("itemSlotCanvas").transform.Find(GameObject.Find("itemSlotCanvas").transform.Find("item0").transform.gameObject.name).GetComponent<Outline>().effectDistance = new Vector2(10, 10);
         }
 
     }

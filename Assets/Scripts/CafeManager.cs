@@ -28,7 +28,12 @@ public class CafeManager : MonoBehaviour
         detailOrderCanvasPos = GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").position;
 
         playerData = playerSaveDataManager.LoadPlayerData();
+        GameObject.Find("time").GetComponent<Text>().text = playerData.time;
         GameObject.Find("MoneyValue").GetComponent<Text>().text = playerData.money+"円";
+
+        GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextButton);
+        GameObject.Find("Canvas").transform.Find("NextAlertBox").transform.Find("goButton").GetComponent<Button>().onClick.AddListener(delegate { ClickNextAlertGoButton(playerData); });
+        GameObject.Find("Canvas").transform.Find("NextAlertBox").transform.Find("cancleButton").GetComponent<Button>().onClick.AddListener(ClickNextAlertCancleButton);
 
         GameObject.Find("orderPanel").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(ClickOrderPanelConfirmBtn);
         GameObject.Find("Canvas").transform.Find("ConfirmAlertBox").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(delegate { ClickConfirmBtn(playerData); });
@@ -45,6 +50,8 @@ public class CafeManager : MonoBehaviour
         // あかねさんとカフェメニューをセット
         if (GameObject.Find("Canvas").transform.Find("textEventEndSW").GetComponent<Text>().text.Equals("END"))
         {
+            menuAndNextButtonInteractable(true);
+
             Vector3 velo = Vector3.zero;
             GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").position = Vector3.MoveTowards(GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").position, cafeMenuCanvasPos, 10f);
             GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").position = Vector3.MoveTowards(GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").position, detailOrderCanvasPos, 10f);
@@ -103,10 +110,51 @@ public class CafeManager : MonoBehaviour
         }
     }
 
+    public void ClickNextAlertGoButton(PlayerData playerData)
+    {
+        GameObject.Find("Canvas").transform.Find("NextAlertBox").gameObject.SetActive(false);
+
+        playerData.time = "19:00";
+        playerSaveDataManager.SavePlayerData(playerData);
+
+        GameObject.Find("Canvas").transform.Find("greetingCheck").GetComponent<Text>().text = "Y";
+        GameObject.Find("Canvas").transform.Find("fadeOutEventCheck").GetComponent<Text>().text = "Y";
+
+    }
+
+    public void ClickNextAlertCancleButton()
+    {
+        menuAndNextButtonInteractable(true);
+        menuAndOrderCanvasActive(true);
+
+        GameObject.Find("Canvas").transform.Find("NextAlertBox").gameObject.SetActive(false);
+    }
+
+    public void ClickNextButton()
+    {
+        menuAndNextButtonInteractable(false);
+        menuAndOrderCanvasActive(false);
+
+        GameObject.Find("Canvas").transform.Find("NextAlertBox").gameObject.SetActive(true);
+    }
+
+    public void menuAndOrderCanvasActive(bool sw)
+    {
+        GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").gameObject.SetActive(sw);
+        GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").gameObject.SetActive(sw);
+    }
+
+    public void menuAndNextButtonInteractable(bool sw)
+    {
+        GameObject.Find("Canvas").transform.Find("menuButton").GetComponent<Button>().interactable = sw;
+        GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = sw;
+    }
+
     public void ClickConfirmBtn(PlayerData playerData)
     {
         // +sound effect(money)
 
+        GameObject.Find("Canvas").transform.Find("menuButton").GetComponent<Button>().interactable = false;
         GameObject.Find("ConfirmAlertBox").gameObject.SetActive(false);
         GameObject.Find("Money").gameObject.SetActive(false);
         GameObject.Find("MoneyValue").gameObject.SetActive(false);
@@ -125,6 +173,8 @@ public class CafeManager : MonoBehaviour
 
     public void ClickConfirmCancleBtn()
     {
+        menuAndNextButtonInteractable(true);
+
         GameObject.Find("ConfirmAlertBox").transform.Find("confirmButton").GetComponent<Button>().interactable = true;
         GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = true;
         GameObject.Find("ConfirmAlertBox").gameObject.SetActive(false);
@@ -135,7 +185,8 @@ public class CafeManager : MonoBehaviour
 
     public void ClickOrderPanelConfirmBtn()
     {
-        GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = false;
+        menuAndNextButtonInteractable(false);
+
         GameObject.Find("Canvas").transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "注文しますか?";
         Transform detailBackTransform = GameObject.Find("DetailOrderScrollView").transform.Find("Viewport").transform.Find("detailBack");
         // detailにアイテムが一つ以上いるのを確認する(detailSampleを除いて)

@@ -45,6 +45,22 @@ public class ItemCheckManager : MonoBehaviour
         itemListData2[3].itemName = "財布";
         itemListData2[3].itemDescription = "お金を保つ";
         itemListData2[3].quantity = 2;
+        /*
+        itemListData2[4] = new ItemListData();
+        itemListData2[4].itemName = "侍";
+        itemListData2[4].itemDescription = "誇り高い";
+        itemListData2[4].quantity = 2;
+
+        itemListData2[5] = new ItemListData();
+        itemListData2[5].itemName = "キーブレード";
+        itemListData2[5].itemDescription = "勇気の象徴";
+        itemListData2[5].quantity = 2;
+
+        itemListData2[6] = new ItemListData();
+        itemListData2[6].itemName = "花束";
+        itemListData2[6].itemDescription = "きれいだ";
+        itemListData2[6].quantity = 2;
+        */
         playerSaveDataManager.SaveItemListData(itemListData2);
 
         Debug.Log("ItemCheckManager START");
@@ -114,12 +130,16 @@ public class ItemCheckManager : MonoBehaviour
     {
         for(int i=0; i<6; i++)
         {
+            GameObject.Find("itemSlotCanvas").transform.Find("item" + i).gameObject.SetActive(true);
+
             GameObject.Find("itemSlotCanvas").transform.Find("item" + i).GetComponent<Image>().sprite = null;
 
             // アイテム情報
             GameObject.Find("item" + i).transform.Find("itemName").GetComponent<Text>().text = "";
             GameObject.Find("item" + i).transform.Find("itemQty").GetComponent<Text>().text = "";
             GameObject.Find("item" + i).transform.Find("itemDesc").GetComponent<Text>().text = "";
+
+            GameObject.Find("itemSlotCanvas").transform.Find("item" + i).gameObject.SetActive(false);
         }
     }
 
@@ -150,6 +170,8 @@ public class ItemCheckManager : MonoBehaviour
             itemSlotPage = 1;
             Debug.Log("Exception itemSlotPage!!  " + e);
         }
+        
+
 
         Texture2D texture = null;
         //ロードしたアイテムをスロットに配置する
@@ -172,10 +194,13 @@ public class ItemCheckManager : MonoBehaviour
             Rect rect = new Rect(0, 0, texture.width, texture.height);
             GameObject.Find("itemSlotCanvas").transform.Find("item" + i).GetComponent<Image>().sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
 
+            // アイテム情報があるオブジェクトは表示する
+            GameObject.Find("itemSlotCanvas").transform.Find("item" + i).gameObject.SetActive(true);
+
             // アイテム情報
-            GameObject.Find("item" + i).transform.Find("itemName").GetComponent<Text>().text = itemListData[i].itemName;
-            GameObject.Find("item" + i).transform.Find("itemQty").GetComponent<Text>().text = itemListData[i].quantity.ToString();
-            GameObject.Find("item" + i).transform.Find("itemDesc").GetComponent<Text>().text = itemListData[i].itemDescription;
+            GameObject.Find("itemSlotCanvas").transform.Find("item" + i).transform.Find("itemName").GetComponent<Text>().text = itemListData[i].itemName;
+            GameObject.Find("itemSlotCanvas").transform.Find("item" + i).transform.Find("itemQty").GetComponent<Text>().text = itemListData[i].quantity.ToString();
+            GameObject.Find("itemSlotCanvas").transform.Find("item" + i).transform.Find("itemDesc").GetComponent<Text>().text = itemListData[i].itemDescription;
         }
 
         // 最初はindex0のアイテム情報を基準にする

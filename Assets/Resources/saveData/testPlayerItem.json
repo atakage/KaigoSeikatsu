@@ -1,12 +1,24 @@
 {
     "Items": [
         {
-            "eventCode": "EE00",
-            "script": "EESCRIPT"
+            "itemName": "ios",
+            "itemDescription": "this is ios",
+            "quantity": 30
         },
         {
-            "eventCode": "EE01",
-            "script": "EESCIPRT222"
+            "itemName": "messi",
+            "itemDescription": "i'm messi",
+            "quantity": 50
+        },
+        {
+            "itemName": "カタリナ",
+            "itemDescription": "いいところ",
+            "quantity": 1
+        },
+        {
+            "itemName": "財布",
+            "itemDescription": "お金を保つ",
+            "quantity": 2
         }
     ]
 }
