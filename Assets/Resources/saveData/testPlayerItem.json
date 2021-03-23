@@ -3,22 +3,44 @@
         {
             "itemName": "ios",
             "itemDescription": "this is ios",
-            "quantity": 30
+            "quantity": 30,
+            "keyItem": "Y"
         },
         {
             "itemName": "messi",
             "itemDescription": "i'm messi",
-            "quantity": 50
+            "quantity": 50,
+            "keyItem": "Y"
         },
         {
             "itemName": "カタリナ",
             "itemDescription": "いいところ",
-            "quantity": 1
+            "quantity": 1,
+            "keyItem": "N"
         },
         {
             "itemName": "財布",
             "itemDescription": "お金を保つ",
-            "quantity": 2
+            "quantity": 2,
+            "keyItem": "N"
+        },
+        {
+            "itemName": "侍",
+            "itemDescription": "誇り高い",
+            "quantity": 2,
+            "keyItem": "Y"
+        },
+        {
+            "itemName": "キーブレード",
+            "itemDescription": "勇気の象徴",
+            "quantity": 2,
+            "keyItem": "N"
+        },
+        {
+            "itemName": "花束",
+            "itemDescription": "きれいだ",
+            "quantity": 2,
+            "keyItem": "N"
         }
     ]
 }

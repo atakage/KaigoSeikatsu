@@ -42,6 +42,10 @@ public class ItemSelectManager : MonoBehaviour
                     Debug.Log("SELECTED ITEM INDEX: " + Convert.ToInt32(findedItem.name.Substring(4)));
                     ItemCheckManager.itemSelectIndex = Convert.ToInt32(findedItem.name.Substring(4));
 
+                    //選択したアイテムがキーアイテムじゃないならボタンをいかす
+                    if (findedItem.transform.Find("keyItem").GetComponent<Text>().text.Equals("N")) ItemUseAndDropButtonInteractable(true);
+                    else ItemUseAndDropButtonInteractable(false);
+
                     // クリックしたアイテムの情報を読み出す
                     GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text =
                     "[ " + "<color=#93DAFF>" + findedItem.transform.Find("itemName").GetComponent<Text>().text + "</color>" + "(" + "x" + findedItem.transform.Find("itemQty").GetComponent<Text>().text + ")" + " ]" +
@@ -55,17 +59,23 @@ public class ItemSelectManager : MonoBehaviour
                 else
                 {
                     CleanItemSlotUI();
+                    ItemUseAndDropButtonInteractable(false);
                 }
             }
             // クリックした位置に物体がなかったら
             else
             {
                 CleanItemSlotUI();
+                ItemUseAndDropButtonInteractable(false);
             }
         }
+        // 最初のアイテム
         else
         {
             CleanItemSlotUI();
+
+            //キーアイテムじゃないならボタンをいかす
+            if (GameObject.Find("itemSlotCanvas").transform.Find("item0").transform.Find("keyItem").GetComponent<Text>().text.Equals("N")) ItemUseAndDropButtonInteractable(true);
 
             // 最初のアイテムの情報を読み出す
             GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text =
@@ -77,6 +87,12 @@ public class ItemSelectManager : MonoBehaviour
             GameObject.Find("itemSlotCanvas").transform.Find(GameObject.Find("itemSlotCanvas").transform.Find("item0").transform.gameObject.name).GetComponent<Outline>().effectDistance = new Vector2(10, 10);
         }
 
+    }
+
+    public void ItemUseAndDropButtonInteractable(bool sw)
+    {
+        GameObject.Find("Canvas").transform.Find("itemUseButton").GetComponent<Button>().interactable = sw;
+        GameObject.Find("Canvas").transform.Find("itemDropButton").GetComponent<Button>().interactable = sw;
     }
 
     public void CleanItemSlotUI()

@@ -8,6 +8,7 @@ public class ItemCheckManager : MonoBehaviour
 {
     public PlayerSaveDataManager playerSaveDataManager;
     public ItemSelectManager itemSelectManager;
+    public SceneTransitionManager sceneTransitionManager;
     public PlayerData playerData;
     public ItemListData[] allItemListData;
     public ItemListData[] itemListData;
@@ -25,42 +26,53 @@ public class ItemCheckManager : MonoBehaviour
     {
 
         PlayerSaveDataManager playerSaveDataManager = new PlayerSaveDataManager();
-        ItemListData[] itemListData2 = new ItemListData[4];
+        sceneTransitionManager = new SceneTransitionManager();
+
+        ItemListData[] itemListData2 = new ItemListData[7];
         itemListData2[0] = new ItemListData();
         itemListData2[0].itemName = "ios";
         itemListData2[0].itemDescription = "this is ios";
         itemListData2[0].quantity = 30;
+        itemListData2[0].keyItem = "Y";
 
         itemListData2[1] = new ItemListData();
         itemListData2[1].itemName = "messi";
         itemListData2[1].itemDescription = "i'm messi";
         itemListData2[1].quantity = 50;
+        itemListData2[1].keyItem = "Y";
 
         itemListData2[2] = new ItemListData();
         itemListData2[2].itemName = "カタリナ";
         itemListData2[2].itemDescription = "いいところ";
         itemListData2[2].quantity = 1;
+        itemListData2[2].keyItem = "N";
 
         itemListData2[3] = new ItemListData();
         itemListData2[3].itemName = "財布";
         itemListData2[3].itemDescription = "お金を保つ";
         itemListData2[3].quantity = 2;
-        /*
+        itemListData2[3].keyItem = "N";
+
+        
         itemListData2[4] = new ItemListData();
         itemListData2[4].itemName = "侍";
         itemListData2[4].itemDescription = "誇り高い";
         itemListData2[4].quantity = 2;
+        itemListData2[4].keyItem = "Y";
 
         itemListData2[5] = new ItemListData();
         itemListData2[5].itemName = "キーブレード";
         itemListData2[5].itemDescription = "勇気の象徴";
         itemListData2[5].quantity = 2;
+        itemListData2[5].keyItem = "N";
 
         itemListData2[6] = new ItemListData();
         itemListData2[6].itemName = "花束";
         itemListData2[6].itemDescription = "きれいだ";
         itemListData2[6].quantity = 2;
-        */
+        itemListData2[6].keyItem = "N";
+
+        
         playerSaveDataManager.SaveItemListData(itemListData2);
 
         Debug.Log("ItemCheckManager START");
@@ -69,6 +81,14 @@ public class ItemCheckManager : MonoBehaviour
 
         onePageItemQty = 6;
         loadItemPage = 1;
+
+        // 戻るボタンの目的地を設定
+        if(GameObject.Find("SceneChangeManager") != null)
+        {
+            string goBackScene = GameObject.Find("SceneChangeManager").transform.Find("SceneChangeCanvas").transform.Find("destinationFrom-toItemCheckScene").GetComponent<Text>().text;
+            GameObject.Find("Canvas").transform.Find("returnButton").GetComponent<Button>().onClick.AddListener(delegate { ClickReturnButton(goBackScene); });
+        }
+
 
         // ボタンにmethodをつける
         GameObject.Find("itemPageCanvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextPage);
@@ -91,7 +111,12 @@ public class ItemCheckManager : MonoBehaviour
 
     }
 
-
+    public void ClickReturnButton(string goBackScene)
+    {
+        // 破壊しない場合増加する
+        Destroy(GameObject.Find("SceneChangeManager"));
+        sceneTransitionManager.LoadTo(goBackScene);
+    }
 
     // item next page
     public void ClickNextPage()
@@ -138,6 +163,7 @@ public class ItemCheckManager : MonoBehaviour
             GameObject.Find("item" + i).transform.Find("itemName").GetComponent<Text>().text = "";
             GameObject.Find("item" + i).transform.Find("itemQty").GetComponent<Text>().text = "";
             GameObject.Find("item" + i).transform.Find("itemDesc").GetComponent<Text>().text = "";
+            GameObject.Find("item" + i).transform.Find("keyItem").GetComponent<Text>().text = "";
 
             GameObject.Find("itemSlotCanvas").transform.Find("item" + i).gameObject.SetActive(false);
         }
@@ -201,6 +227,7 @@ public class ItemCheckManager : MonoBehaviour
             GameObject.Find("itemSlotCanvas").transform.Find("item" + i).transform.Find("itemName").GetComponent<Text>().text = itemListData[i].itemName;
             GameObject.Find("itemSlotCanvas").transform.Find("item" + i).transform.Find("itemQty").GetComponent<Text>().text = itemListData[i].quantity.ToString();
             GameObject.Find("itemSlotCanvas").transform.Find("item" + i).transform.Find("itemDesc").GetComponent<Text>().text = itemListData[i].itemDescription;
+            GameObject.Find("itemSlotCanvas").transform.Find("item" + i).transform.Find("keyItem").GetComponent<Text>().text = itemListData[i].keyItem;
         }
 
         // 最初はindex0のアイテム情報を基準にする

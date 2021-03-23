@@ -26,6 +26,7 @@ public class ItemListData
     public string itemName;
     public string itemDescription;
     public int quantity;
+    public string keyItem;
 }
 
 [System.Serializable]
