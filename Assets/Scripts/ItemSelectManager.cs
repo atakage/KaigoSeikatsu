@@ -20,7 +20,7 @@ public class ItemSelectManager : MonoBehaviour
 
     public void DisplayItemSlotUI(bool begin)
     {
-        CleanItemSlotUI();
+        //CleanItemSlotUI();
         // 最初のアイテムindexを呼び出すのかを決める
         if (!begin)
         {
@@ -32,7 +32,7 @@ public class ItemSelectManager : MonoBehaviour
             {
                 Debug.Log(hit.transform.gameObject.name);
                 // クリックしたアイテムスロットに情報(アイテムネーム)がいれば取り出す
-                if (!GameObject.Find(hit.transform.gameObject.name).transform.Find("itemName").GetComponent<Text>().text.Equals(""))
+                if (!hit.transform.gameObject.name.Equals("preventClickScreen") && !GameObject.Find(hit.transform.gameObject.name).transform.Find("itemName").GetComponent<Text>().text.Equals(""))
                 {
                     findedItem = GameObject.Find(hit.transform.gameObject.name);
 
@@ -43,8 +43,8 @@ public class ItemSelectManager : MonoBehaviour
                     ItemCheckManager.itemSelectIndex = Convert.ToInt32(findedItem.name.Substring(4));
 
                     //選択したアイテムがキーアイテムじゃないならボタンをいかす
-                    if (findedItem.transform.Find("keyItem").GetComponent<Text>().text.Equals("N")) ItemUseAndDropButtonInteractable(true);
-                    else ItemUseAndDropButtonInteractable(false);
+                    //if (findedItem.transform.Find("keyItem").GetComponent<Text>().text.Equals("N")) ItemUseAndDropButtonInteractable(true);
+                    //else ItemUseAndDropButtonInteractable(false);
 
                     // クリックしたアイテムの情報を読み出す
                     GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text =
@@ -54,19 +54,28 @@ public class ItemSelectManager : MonoBehaviour
 
                     // set item outline
                     GameObject.Find("itemSlotCanvas").transform.Find(hit.transform.gameObject.name).GetComponent<Outline>().effectDistance = new Vector2(10, 10);
+
+                    // 選択されたアイテムがキーアイテムじゃないなら情報を保管
+                    if (findedItem.transform.Find("keyItem").GetComponent<Text>().text.Equals("N"))
+                    {
+                        GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemName").GetComponent<Text>().text = findedItem.transform.Find("itemName").GetComponent<Text>().text;
+                        GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemQty").GetComponent<Text>().text = findedItem.transform.Find("itemQty").GetComponent<Text>().text;
+                        GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("keyItem").GetComponent<Text>().text = findedItem.transform.Find("keyItem").GetComponent<Text>().text;
+                    }
+
                 }
                 // クリックしたアイテムスロットに情報がなかったら
-                else
+                else if((!hit.transform.gameObject.name.Equals("preventClickScreen")))
                 {
                     CleanItemSlotUI();
-                    ItemUseAndDropButtonInteractable(false);
+                    //ItemUseAndDropButtonInteractable(false);
                 }
             }
             // クリックした位置に物体がなかったら
             else
             {
-                CleanItemSlotUI();
-                ItemUseAndDropButtonInteractable(false);
+                //CleanItemSlotUI();
+                //ItemUseAndDropButtonInteractable(false);
             }
         }
         // 最初のアイテム
@@ -74,8 +83,18 @@ public class ItemSelectManager : MonoBehaviour
         {
             CleanItemSlotUI();
 
-            //キーアイテムじゃないならボタンをいかす
-            if (GameObject.Find("itemSlotCanvas").transform.Find("item0").transform.Find("keyItem").GetComponent<Text>().text.Equals("N")) ItemUseAndDropButtonInteractable(true);
+            //キーアイテムじゃないなら
+            if (GameObject.Find("itemSlotCanvas").transform.Find("item0").transform.Find("keyItem").GetComponent<Text>().text.Equals("N"))
+            {
+                // ボタンをいかす
+                ItemUseAndDropButtonInteractable(true);
+                // 情報を保管
+                GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemName").GetComponent<Text>().text = GameObject.Find("itemSlotCanvas").transform.Find("item0").transform.Find("itemName").GetComponent<Text>().text;
+                GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemQty").GetComponent<Text>().text = GameObject.Find("itemSlotCanvas").transform.Find("item0").transform.Find("itemQty").GetComponent<Text>().text;
+                GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("keyItem").GetComponent<Text>().text = GameObject.Find("itemSlotCanvas").transform.Find("item0").transform.Find("keyItem").GetComponent<Text>().text;
+            }
+
+                
 
             // 最初のアイテムの情報を読み出す
             GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text =
@@ -97,6 +116,8 @@ public class ItemSelectManager : MonoBehaviour
 
     public void CleanItemSlotUI()
     {
+        Debug.Log("CALL CleanItemSlotUI");
+
         // UI Clear(outline)
         for (int i = 0; i < 6; i++)
         {
@@ -107,5 +128,10 @@ public class ItemSelectManager : MonoBehaviour
 
         // 選択されたアイテムのindex
         ItemCheckManager.itemSelectIndex = 0;
+
+        // 選択されたアイテムの情報を初期化
+        GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemName").GetComponent<Text>().text = "";
+        GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemQty").GetComponent<Text>().text = "";
+        GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("keyItem").GetComponent<Text>().text = "";
     }
 }

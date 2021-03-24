@@ -91,11 +91,9 @@ public class ItemCheckManager : MonoBehaviour
 
 
         // ボタンにmethodをつける
+        GameObject.Find("Canvas").transform.Find("itemUseButton").GetComponent<Button>().onClick.AddListener(ItemUseButtonClick);
         GameObject.Find("itemPageCanvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextPage);
         GameObject.Find("itemPageCanvas").transform.Find("prevButton").GetComponent<Button>().onClick.AddListener(ClickPrevPage);
-
-        // プレイヤーが持っているアイテムを読み出す
-        //playerData = playerSaveDataManager.LoadPlayerData();
 
         // 全体アイテムリスト
         allItemListData = playerSaveDataManager.LoadItemListData();
@@ -109,6 +107,31 @@ public class ItemCheckManager : MonoBehaviour
         itemSelectManager.DisplayItemSlotUI(true);
         Debug.Log("SELECTED ITEM INDEX: " + itemSelectIndex);
 
+    }
+
+    public void ItemUseButtonClick()
+    {
+        Debug.Log("CLICK ItemUseButtonClick");
+        // 選択されたアイテムがキーアイテムじゃないなら
+        if (GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("keyItem").GetComponent<Text>().text.Equals("N"))
+        {
+            // ray(collider)クリックを防止する
+            GameObject.Find("Canvas").transform.Find("preventClickScreen").gameObject.SetActive(true);
+            // alert
+            GameObject.Find("Canvas").transform.Find("itemUseAlertBox").gameObject.SetActive(true);
+            // sceneにあるボタンクリック機能を防ぐ
+            ItemCheckSceneButtonInteractable(false);
+        }
+
+    }
+
+    public void ItemCheckSceneButtonInteractable(bool sw)
+    {
+        GameObject.Find("Canvas").transform.Find("returnButton").GetComponent<Button>().interactable = sw;
+        GameObject.Find("Canvas").transform.Find("itemUseButton").GetComponent<Button>().interactable = sw;
+        GameObject.Find("Canvas").transform.Find("itemDropButton").GetComponent<Button>().interactable = sw;
+        if(GameObject.Find("Canvas").transform.Find("itemPageCanvas").transform.Find("prevButton") != null) GameObject.Find("Canvas").transform.Find("itemPageCanvas").transform.Find("prevButton").GetComponent<Button>().interactable = sw;
+        if(GameObject.Find("Canvas").transform.Find("itemPageCanvas").transform.Find("nextButton") != null) GameObject.Find("Canvas").transform.Find("itemPageCanvas").transform.Find("nextButton").GetComponent<Button>().interactable = sw;
     }
 
     public void ClickReturnButton(string goBackScene)
