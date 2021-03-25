@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System;
 
 public class ItemCheckManager : MonoBehaviour
@@ -92,6 +93,9 @@ public class ItemCheckManager : MonoBehaviour
 
         // ボタンにmethodをつける
         GameObject.Find("Canvas").transform.Find("itemUseButton").GetComponent<Button>().onClick.AddListener(ItemUseButtonClick);
+        GameObject.Find("Canvas").transform.Find("itemUseAlertBox").transform.Find("useButton").GetComponent<Button>().onClick.AddListener(ClickAlertUseButton);
+        GameObject.Find("Canvas").transform.Find("itemUseAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickAlertCancelButton);
+        GameObject.Find("Canvas").transform.Find("CanNotUseAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickAlertCancelButton);
         GameObject.Find("itemPageCanvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextPage);
         GameObject.Find("itemPageCanvas").transform.Find("prevButton").GetComponent<Button>().onClick.AddListener(ClickPrevPage);
 
@@ -109,6 +113,25 @@ public class ItemCheckManager : MonoBehaviour
 
     }
 
+    public void ClickAlertUseButton()
+    {
+        // 全体アイテムリスト(allItemListData)で使うアイテムのquantityを探して一つ減らす
+
+        // 新しいアイテムリストファイルをセーブ
+
+        // UIをセットする
+    }
+
+    public void ClickAlertCancelButton()
+    {
+        // クリックしたオブジェクトの母親を探して隠す
+        EventSystem.current.currentSelectedGameObject.transform.parent.gameObject.SetActive(false);
+        // ray(collider)クリックを防止するオブジェクトを隠す
+        GameObject.Find("Canvas").transform.Find("preventClickScreen").gameObject.SetActive(false);
+        // sceneにあるボタンをもとに戻す
+        ItemCheckSceneButtonInteractable(true);
+    }
+
     public void ItemUseButtonClick()
     {
         Debug.Log("CLICK ItemUseButtonClick");
@@ -119,6 +142,21 @@ public class ItemCheckManager : MonoBehaviour
             GameObject.Find("Canvas").transform.Find("preventClickScreen").gameObject.SetActive(true);
             // alert
             GameObject.Find("Canvas").transform.Find("itemUseAlertBox").gameObject.SetActive(true);
+            // sceneにあるボタンクリック機能を防ぐ
+            ItemCheckSceneButtonInteractable(false);
+            // 選択されたアイテムの情報を移す
+            GameObject.Find("Canvas").transform.Find("itemUseAlertBox").transform.Find("itemName").GetComponent<Text>().text
+                = GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemName").GetComponent<Text>().text;
+            GameObject.Find("Canvas").transform.Find("itemUseAlertBox").transform.Find("itemQty").GetComponent<Text>().text
+                = GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemQty").GetComponent<Text>().text + "個";
+        }
+        // キーアイテムなら
+        else
+        {
+            // ray(collider)クリックを防止する
+            GameObject.Find("Canvas").transform.Find("preventClickScreen").gameObject.SetActive(true);
+            // alert
+            GameObject.Find("Canvas").transform.Find("CanNotUseAlertBox").gameObject.SetActive(true);
             // sceneにあるボタンクリック機能を防ぐ
             ItemCheckSceneButtonInteractable(false);
         }
