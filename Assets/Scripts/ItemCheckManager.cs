@@ -8,6 +8,7 @@ using System;
 public class ItemCheckManager : MonoBehaviour
 {
     public PlayerSaveDataManager playerSaveDataManager;
+    public PlayerItemUpdateManager playerItemUpdateManager;
     public ItemSelectManager itemSelectManager;
     public SceneTransitionManager sceneTransitionManager;
     public PlayerData playerData;
@@ -26,8 +27,9 @@ public class ItemCheckManager : MonoBehaviour
     void Start()
     {
 
-        PlayerSaveDataManager playerSaveDataManager = new PlayerSaveDataManager();
+        playerSaveDataManager = new PlayerSaveDataManager();
         sceneTransitionManager = new SceneTransitionManager();
+        playerItemUpdateManager = new PlayerItemUpdateManager();
 
         ItemListData[] itemListData2 = new ItemListData[7];
         itemListData2[0] = new ItemListData();
@@ -115,11 +117,49 @@ public class ItemCheckManager : MonoBehaviour
 
     public void ClickAlertUseButton()
     {
-        // 全体アイテムリスト(allItemListData)で使うアイテムのquantityを探して一つ減らす
+        // 使うアイテムの名前をとる
+        string useItemName = GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemName").GetComponent<Text>().text;
+        if(useItemName != null && !useItemName.Equals(""))
+        {
+            // 全体アイテムリスト(allItemListData)で使うアイテムのquantityを探して一つ減らす
+            playerItemUpdateManager.UpdateItemQty(allItemListData, useItemName);
 
-        // 新しいアイテムリストファイルをセーブ
+            // UIをセットする
+            GameObject.Find("Canvas").transform.Find("itemUseAlertBox").gameObject.SetActive(false);
+            UseItemAndRefreshItemSlotUI();
 
-        // UIをセットする
+        }
+
+
+    }
+
+    // アイテム使用後
+    public void UseItemAndRefreshItemSlotUI()
+    {
+        // 全体アイテムリスト
+        allItemListData = playerSaveDataManager.LoadItemListData();
+
+        // 現在ページのアイテムリスト
+        itemListData = playerSaveDataManager.LoadItemListData(1);
+
+        // 1ページから表示する
+        loadItemPage = 1;
+
+        // itemSlotCanvasのitemオブジェクトを初期化
+        RefreshItemSlot();
+        // アイテムクリックUIを初期化
+        itemSelectManager.CleanItemSlotUI();
+
+        // アイテム表示
+        if (itemListData != null && itemListData.Length > 0) ItemSlotPage();
+
+        // アイテムスロットUI初期化
+        //itemSelectManager.DisplayItemSlotUI(true);
+
+        // ボタンをいかす
+        ItemCheckSceneButtonInteractable(true);
+        // ray(collider)クリックを防止するオブジェクトを隠す
+        GameObject.Find("Canvas").transform.Find("preventClickScreen").gameObject.SetActive(false);
     }
 
     public void ClickAlertCancelButton()

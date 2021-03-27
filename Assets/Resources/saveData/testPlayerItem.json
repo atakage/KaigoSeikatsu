@@ -13,18 +13,6 @@
             "keyItem": "Y"
         },
         {
-            "itemName": "カタリナ",
-            "itemDescription": "いいところ",
-            "quantity": 1,
-            "keyItem": "N"
-        },
-        {
-            "itemName": "財布",
-            "itemDescription": "お金を保つ",
-            "quantity": 2,
-            "keyItem": "N"
-        },
-        {
             "itemName": "侍",
             "itemDescription": "誇り高い",
             "quantity": 2,
@@ -33,6 +21,12 @@
         {
             "itemName": "キーブレード",
             "itemDescription": "勇気の象徴",
+            "quantity": 2,
+            "keyItem": "N"
+        },
+        {
+            "itemName": "財布",
+            "itemDescription": "お金を保つ",
             "quantity": 2,
             "keyItem": "N"
         },

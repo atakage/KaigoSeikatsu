@@ -149,7 +149,14 @@ public class PlayerSaveDataManager : MonoBehaviour
         }
         return returnEventListData;
     }
-    
+
+    public void SavePlayerItemList(ItemListData[] itemListDataArray)
+    {
+        string itemListDataJson = JsonHelper.ToJson(itemListDataArray, true);
+        Debug.Log("SAVEDATA: " + itemListDataJson);
+        File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json", itemListDataJson);
+    }
+
 
     public void SaveItemListData(ItemListData[] itemListData)
     {
