@@ -11,6 +11,7 @@ public class ItemCheckManager : MonoBehaviour
     public PlayerItemUpdateManager playerItemUpdateManager;
     public ItemSelectManager itemSelectManager;
     public SceneTransitionManager sceneTransitionManager;
+    public CSVManager csvManager;
     public PlayerData playerData;
     public ItemListData[] allItemListData;
     public ItemListData[] itemListData;
@@ -30,6 +31,7 @@ public class ItemCheckManager : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         sceneTransitionManager = new SceneTransitionManager();
         playerItemUpdateManager = new PlayerItemUpdateManager();
+        csvManager = new CSVManager();
 
         ItemListData[] itemListData2 = new ItemListData[7];
         itemListData2[0] = new ItemListData();
@@ -123,6 +125,9 @@ public class ItemCheckManager : MonoBehaviour
         {
             // 全体アイテムリスト(allItemListData)で使うアイテムのquantityを探して一つ減らす
             playerItemUpdateManager.UpdateItemQty(allItemListData, useItemName);
+
+            // ゲーム内全体アイテムリストを読み出す
+            csvManager.GetGameItemList();
 
             // UIをセットする
             GameObject.Find("Canvas").transform.Find("itemUseAlertBox").gameObject.SetActive(false);

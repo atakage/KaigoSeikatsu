@@ -14,7 +14,7 @@ public class PlayerData
     public string time;
     public string[] eventCodeArray; // クリアしたイベント
     public int progress; // 進行度
-    public float fatigue; // 疲労、ゼロになったらゲームオーバー
+    public float fatigue; // 疲労、100になったらゲームオーバー
     public int satisfaction; // ending
     public int action; // 行動力
 }
