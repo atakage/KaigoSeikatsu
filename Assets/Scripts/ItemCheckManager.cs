@@ -12,6 +12,7 @@ public class ItemCheckManager : MonoBehaviour
     public ItemSelectManager itemSelectManager;
     public SceneTransitionManager sceneTransitionManager;
     public CSVManager csvManager;
+    public ItemUseManager itemUseManager;
     public PlayerData playerData;
     public ItemListData[] allItemListData;
     public ItemListData[] itemListData;
@@ -32,14 +33,15 @@ public class ItemCheckManager : MonoBehaviour
         sceneTransitionManager = new SceneTransitionManager();
         playerItemUpdateManager = new PlayerItemUpdateManager();
         csvManager = new CSVManager();
+        itemUseManager = new ItemUseManager();
 
-        ItemListData[] itemListData2 = new ItemListData[7];
+        ItemListData[] itemListData2 = new ItemListData[1];
         itemListData2[0] = new ItemListData();
-        itemListData2[0].itemName = "ios";
-        itemListData2[0].itemDescription = "this is ios";
+        itemListData2[0].itemName = "エナジードリンク";
+        itemListData2[0].itemDescription = "飲むと少しだけ元気が出る";
         itemListData2[0].quantity = 30;
-        itemListData2[0].keyItem = "Y";
-
+        itemListData2[0].keyItem = "N";
+        /*
         itemListData2[1] = new ItemListData();
         itemListData2[1].itemName = "messi";
         itemListData2[1].itemDescription = "i'm messi";
@@ -76,7 +78,7 @@ public class ItemCheckManager : MonoBehaviour
         itemListData2[6].itemDescription = "きれいだ";
         itemListData2[6].quantity = 2;
         itemListData2[6].keyItem = "N";
-
+        */
         
         playerSaveDataManager.SaveItemListData(itemListData2);
 
@@ -126,8 +128,11 @@ public class ItemCheckManager : MonoBehaviour
             // 全体アイテムリスト(allItemListData)で使うアイテムのquantityを探して一つ減らす
             playerItemUpdateManager.UpdateItemQty(allItemListData, useItemName);
 
-            // ゲーム内全体アイテムリストを読み出す
-            csvManager.GetGameItemList();
+            // ゲーム内全体アイテムリストを読み出す(key=itemName, value=itemName,itemDescription,itemEffect,key)
+            Dictionary<string, Dictionary<string, object>> allItemDic = csvManager.GetGameItemList();
+
+            // 使うアイテムの効果を全体アイテムリストから探して適用する
+            itemUseManager.UseItem(useItemName, allItemDic);
 
             // UIをセットする
             GameObject.Find("Canvas").transform.Find("itemUseAlertBox").gameObject.SetActive(false);

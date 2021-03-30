@@ -12,19 +12,20 @@ public class CSVManager : MonoBehaviour
         
     }
 
-    public List<Dictionary<string, object>> GetGameItemList()
+    public Dictionary<string, Dictionary<string, object>> GetGameItemList()
     {
         string split_re = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
         string line_split_re = @"\r\n|\n\r|\n|\r";
         char[] trim_chars = { '\"' };
 
-        var list = new List<Dictionary<string, object>>();
+        string returnDicKey = "";
+        Dictionary<string, Dictionary<string, object>> allItemDic = new Dictionary<string, Dictionary<string, object>>();
+        
         TextAsset itemTextAsset = Resources.Load("excelData/AllItem") as TextAsset;
         var lines = Regex.Split(itemTextAsset.text, line_split_re);
 
-        if (1 > lines.Length) return list;
+        if (1 > lines.Length) return allItemDic;
 
-        // header[itemName, itemDescription, itemEffect, Key]
         var header = Regex.Split(lines[0], split_re);
         // アイテム数くらい繰り返す(lines[0]はheader, lines[1]からアイテム)
         for (var i = 1; i < lines.Length; i++)
@@ -51,10 +52,13 @@ public class CSVManager : MonoBehaviour
                     finalLineValue = f;
                 }
                 entry[header[j]] = finalLineValue;
-            }
-            list.Add(entry);
-        }
 
-        return list;
+                // 'lineValues[0] = itemName'なら return Dictionaryのkeyとして込める
+                if (j == 0) returnDicKey = lineValue;
+            }
+            allItemDic.Add(returnDicKey, entry);
+            returnDicKey = "";
+        }
+        return allItemDic;
     }
 }

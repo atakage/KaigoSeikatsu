@@ -1,0 +1,64 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System;
+using UnityEngine;
+
+public class ItemUseManager : MonoBehaviour
+{
+    public void UseItem(string useItemName, Dictionary<string, Dictionary<string, object>> allItemDic)
+    {
+        // 使うアイテムの情報を読み出す
+        Dictionary<string, object> useItemDic = allItemDic[useItemName];
+        // アイテムの効果を読み出す
+        string useItemEffect = (string)useItemDic["itemEffect"];
+        // アイテム効果を適用
+        ApplyItem(useItemEffect);
+
+    }
+
+    public void ApplyItem(string useItemEffect)
+    {
+        // プレイヤーの情報を読み出す
+        PlayerSaveDataManager playerSaveDataManager = new PlayerSaveDataManager();
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+
+        // itemEffectを分ける
+        string itemEffect = useItemEffect.Substring(0, 2); // SA:satisfaction, FA:fatigue
+        string itemOperator = useItemEffect.Substring(2, 1); // add or subtract
+        int itemValue = Convert.ToInt32(useItemEffect.Substring(3)); // value
+
+        // satisfactionなら
+        if ("SA".Equals(itemEffect))
+        {
+            // plus(+)なら
+            if ("+".Equals(itemOperator))
+            {
+                // satisfactionをvalueくらい足す
+                playerData.satisfaction += itemValue;
+            }
+            // それ以外(minus)なら
+            else
+            {
+                playerData.satisfaction -= itemValue;
+            }
+        }
+        // fatigueなら
+        else if ("FA".Equals(itemEffect))
+        {
+            // plus(+)なら
+            if ("+".Equals(itemOperator))
+            {
+                // satisfactionをvalueくらい足す
+                playerData.fatigue += itemValue;
+            }
+            // それ以外(minus)なら
+            else
+            {
+                playerData.fatigue -= itemValue;
+            }
+        }
+
+        // 変更されたプレイヤーの情報をセーブする
+        playerSaveDataManager.SavePlayerData(playerData);
+    }
+}
