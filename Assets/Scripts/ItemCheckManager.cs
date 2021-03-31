@@ -35,19 +35,19 @@ public class ItemCheckManager : MonoBehaviour
         csvManager = new CSVManager();
         itemUseManager = new ItemUseManager();
 
-        ItemListData[] itemListData2 = new ItemListData[1];
+        ItemListData[] itemListData2 = new ItemListData[2];
         itemListData2[0] = new ItemListData();
         itemListData2[0].itemName = "エナジードリンク";
         itemListData2[0].itemDescription = "飲むと少しだけ元気が出る";
         itemListData2[0].quantity = 30;
         itemListData2[0].keyItem = "N";
-        /*
+        
         itemListData2[1] = new ItemListData();
-        itemListData2[1].itemName = "messi";
-        itemListData2[1].itemDescription = "i'm messi";
-        itemListData2[1].quantity = 50;
+        itemListData2[1].itemName = "名刺";
+        itemListData2[1].itemDescription = "介護福祉士の名刺だ";
+        itemListData2[1].quantity = 1;
         itemListData2[1].keyItem = "Y";
-
+        /*
         itemListData2[2] = new ItemListData();
         itemListData2[2].itemName = "カタリナ";
         itemListData2[2].itemDescription = "いいところ";
@@ -102,6 +102,11 @@ public class ItemCheckManager : MonoBehaviour
         GameObject.Find("Canvas").transform.Find("itemUseAlertBox").transform.Find("useButton").GetComponent<Button>().onClick.AddListener(ClickAlertUseButton);
         GameObject.Find("Canvas").transform.Find("itemUseAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickAlertCancelButton);
         GameObject.Find("Canvas").transform.Find("CanNotUseAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickAlertCancelButton);
+        GameObject.Find("Canvas").transform.Find("itemDropButton").GetComponent<Button>().onClick.AddListener(ClickItemDropButton);
+        GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemQtyMinusBtn").GetComponent<Button>().onClick.AddListener(ClickItemQtyMinusBtn);
+        GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemQtyPlusBtn").GetComponent<Button>().onClick.AddListener(ClickItemQtyPlusBtn);
+        GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickAlertCancelButton);
+        GameObject.Find("Canvas").transform.Find("CanNotDropAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickAlertCancelButton);
         GameObject.Find("itemPageCanvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextPage);
         GameObject.Find("itemPageCanvas").transform.Find("prevButton").GetComponent<Button>().onClick.AddListener(ClickPrevPage);
 
@@ -117,6 +122,69 @@ public class ItemCheckManager : MonoBehaviour
         itemSelectManager.DisplayItemSlotUI(true);
         Debug.Log("SELECTED ITEM INDEX: " + itemSelectIndex);
 
+    }
+
+    public void ClickItemDropButton()
+    {
+        
+
+        // 選択されたアイテムがkeyじゃないなら
+        if (GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("keyItem").GetComponent<Text>().text.Equals("N"))
+        {
+
+            // ray(collider)クリックを防止する
+            GameObject.Find("Canvas").transform.Find("preventClickScreen").gameObject.SetActive(true);
+
+            GameObject.Find("Canvas").transform.Find("itemDropAlertBox").gameObject.SetActive(true);
+            // sceneにあるボタンクリック機能を防ぐ
+            ItemCheckSceneButtonInteractable(false);
+
+            // 選択されたアイテムの情報を移す
+            GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemName").GetComponent<Text>().text
+                = GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemName").GetComponent<Text>().text;
+            // 選択されたアイテムの情報を移す
+            GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemQty").GetComponent<Text>().text = "1";
+
+
+        }
+        // 選択されたアイテムがkeyなら
+        else
+        {
+            // ray(collider)クリックを防止する
+            GameObject.Find("Canvas").transform.Find("preventClickScreen").gameObject.SetActive(true);
+
+            GameObject.Find("Canvas").transform.Find("CanNotDropAlertBox").gameObject.SetActive(true);
+            // sceneにあるボタンクリック機能を防ぐ
+            ItemCheckSceneButtonInteractable(false);
+        }
+        
+    }
+
+    public void ClickItemQtyMinusBtn()
+    {
+        int itemQtyInt = Int32.Parse(GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemQty").GetComponent<Text>().text);
+
+        // alertのitemQtyが2以上なら
+        if (itemQtyInt > 1)
+        {
+            // itemQtyを一つ減らす
+            itemQtyInt -= 1;
+            GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemQty").GetComponent<Text>().text = itemQtyInt.ToString();
+        }
+    }
+
+    public void ClickItemQtyPlusBtn()
+    {
+        int itemQtyMax = Int32.Parse(GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemQty").GetComponent<Text>().text);
+        int itemQtyInt = Int32.Parse(GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemQty").GetComponent<Text>().text);
+
+        // alertのitemQtyが最大数未満なら
+        if(itemQtyMax > itemQtyInt)
+        {
+            // itemQtyを一つ足す
+            itemQtyInt += 1;
+            GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemQty").GetComponent<Text>().text = itemQtyInt.ToString();
+        }
     }
 
     public void ClickAlertUseButton()
@@ -138,6 +206,10 @@ public class ItemCheckManager : MonoBehaviour
             GameObject.Find("Canvas").transform.Find("itemUseAlertBox").gameObject.SetActive(false);
             UseItemAndRefreshItemSlotUI();
 
+            // アイテムを使うサウンド++
+
+            // アイテム使用テキスト
+            GameObject.Find("Canvas").transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = useItemName + "を使った!";
         }
 
 
