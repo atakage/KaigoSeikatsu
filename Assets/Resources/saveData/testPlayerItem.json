@@ -1,12 +1,6 @@
 {
     "Items": [
         {
-            "itemName": "エナジードリンク",
-            "itemDescription": "飲むと少しだけ元気が出る",
-            "quantity": 30,
-            "keyItem": "N"
-        },
-        {
             "itemName": "名刺",
             "itemDescription": "介護福祉士の名刺だ",
             "quantity": 1,

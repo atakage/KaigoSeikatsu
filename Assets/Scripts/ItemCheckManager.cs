@@ -105,6 +105,7 @@ public class ItemCheckManager : MonoBehaviour
         GameObject.Find("Canvas").transform.Find("itemDropButton").GetComponent<Button>().onClick.AddListener(ClickItemDropButton);
         GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemQtyMinusBtn").GetComponent<Button>().onClick.AddListener(ClickItemQtyMinusBtn);
         GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemQtyPlusBtn").GetComponent<Button>().onClick.AddListener(ClickItemQtyPlusBtn);
+        GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("useButton").GetComponent<Button>().onClick.AddListener(ClickItemDropUseButton);
         GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickAlertCancelButton);
         GameObject.Find("Canvas").transform.Find("CanNotDropAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickAlertCancelButton);
         GameObject.Find("itemPageCanvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextPage);
@@ -122,6 +123,26 @@ public class ItemCheckManager : MonoBehaviour
         itemSelectManager.DisplayItemSlotUI(true);
         Debug.Log("SELECTED ITEM INDEX: " + itemSelectIndex);
 
+    }
+
+    public void ClickItemDropUseButton()
+    {
+        // 全体アイテムリスト
+        allItemListData = playerSaveDataManager.LoadItemListData();
+
+            // 選択されたitemNameとitemQtyを移す
+        string dropItemName = GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemName").GetComponent<Text>().text;
+        string dropItemQty = GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemQty").GetComponent<Text>().text;
+
+        // アイテムを捨てる
+        itemUseManager.DropItem(dropItemName, dropItemQty, allItemListData);
+
+        // UIをセットする
+        GameObject.Find("Canvas").transform.Find("itemDropAlertBox").gameObject.SetActive(false);
+        UseItemAndRefreshItemSlotUI();
+
+        // テキスト適用
+        GameObject.Find("Canvas").transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = dropItemName + "を" + dropItemQty + "個捨てた!";
     }
 
     public void ClickItemDropButton()

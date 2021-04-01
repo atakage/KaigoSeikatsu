@@ -5,6 +5,30 @@ using UnityEngine;
 
 public class ItemUseManager : MonoBehaviour
 {
+    private PlayerSaveDataManager playerSaveDataManager;
+
+    public void DropItem(string dropItemName, string dropItemQty, ItemListData[] allItemListData)
+    {
+        ArrayList itemListDataList = new ArrayList();
+
+        // 現在プレイヤーが持ってるアイテム数くらい繰り返す
+        foreach(ItemListData item in allItemListData)
+        {
+            // 捨てるアイテムの名前と一致したら
+            if (item.itemName.Equals(dropItemName))
+            {
+                // dropItemQtyだけ抜く
+                item.quantity -= Int32.Parse(dropItemQty);
+            }
+
+            // itemQtyが1以上ならリストに追加する
+            if(item.quantity > 0) itemListDataList.Add(item);
+        }
+
+        playerSaveDataManager = new PlayerSaveDataManager();
+        playerSaveDataManager.SavePlayerItemList((ItemListData[])itemListDataList.ToArray(typeof(ItemListData)));
+    }
+
     public void UseItem(string useItemName, Dictionary<string, Dictionary<string, object>> allItemDic)
     {
         // 使うアイテムの情報を読み出す
