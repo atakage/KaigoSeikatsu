@@ -34,12 +34,14 @@ public class FacilityManager : MonoBehaviour
 
         // イベントコードセット
         morningrequiredEvent = new string[]{ "EV001", "EV002", "EV003" };  // 08:00 ~ 09:00
-        careQuizEvent = new string[]{ "ET000","NO"}; // 9:00 ~ 11:50
+        //careQuizEvent = new string[]{ "ET000","NO"}; // 9:00 ~ 11:50
+        //careQuizEvent = new string[] { "ET000"}; // 9:00 ~ 11:50
+        careQuizEvent = new string[] {"NO" }; // 9:00 ~ 11:50
         lunchEvent = new string[] {"EV004"}; // 11:50 ~ 12:50
         recreationEvent = new string[] {"EV005","EV006","EV007" }; // 14:00 ~ 17:00
         afternoonEvent = new string[] {"EV008"}; // 17:00
 
-        timeCheckSW = false;
+        timeCheckSW = true;
         // Panelを除いたUI Display off
         FacilityUISetActive(false);
 
@@ -73,6 +75,14 @@ public class FacilityManager : MonoBehaviour
                 SetPanelText("もうすぐお昼の時間だ");
                 timeCheckSW = false;
             }
+            // careQuizEventがNOのとき
+            else if (timeStr.Equals("11:50") && GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call"))
+            {
+                FacilityUISetActive(true);
+                SetPanelText("もうすぐお昼の時間だ");
+                timeCheckSW = false;
+                GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text = "";
+            }
             else if (timeStr.Equals("14:00") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
             {
                 SetPanelText("まもなく午後のスケジュールが始まる");
@@ -90,22 +100,20 @@ public class FacilityManager : MonoBehaviour
                 GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "帰宅";
                 timeCheckSW = false;
             }
-            // 18:00 -> 家へ
+            // 17:20 -> 家へ
             else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
                 GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("帰宅"))
             {
                 playerData.time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
                 playerSaveDataManager.SavePlayerData(playerData);
-                Debug.Log("18:00");
                 sceneTransitionManager.LoadTo("AtHomeScene");
             }
-            // 18:00 -> カフェへ
+            // 17:20 -> カフェへ
             else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
                 GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("カフェ"))
             {
                 playerData.time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
                 playerSaveDataManager.SavePlayerData(playerData);
-                Debug.Log("18:00");
                 sceneTransitionManager.LoadTo("CafeScene");
             }
         }
@@ -138,6 +146,9 @@ public class FacilityManager : MonoBehaviour
                     else
                     {
                         // fade out
+                        FacilityUISetActive(false);
+                        chatManager.executeFadeOutSimple();
+                        chatManager.SetTime();
                     }
                     timeCheckSW = true;
                     break;
