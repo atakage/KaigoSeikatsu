@@ -35,8 +35,8 @@ public class FacilityManager : MonoBehaviour
         // イベントコードセット
         morningrequiredEvent = new string[]{ "EV001", "EV002", "EV003" };  // 08:00 ~ 09:00
         //careQuizEvent = new string[]{ "ET000","NO"}; // 9:00 ~ 11:50
-        //careQuizEvent = new string[] { "ET000"}; // 9:00 ~ 11:50
-        careQuizEvent = new string[] {"NO" }; // 9:00 ~ 11:50
+        careQuizEvent = new string[] { "ET000"}; // 9:00 ~ 11:50
+        //careQuizEvent = new string[] {"NO" }; // 9:00 ~ 11:50
         lunchEvent = new string[] {"EV004"}; // 11:50 ~ 12:50
         recreationEvent = new string[] {"EV005","EV006","EV007" }; // 14:00 ~ 17:00
         afternoonEvent = new string[] {"EV008"}; // 17:00
@@ -137,7 +137,7 @@ public class FacilityManager : MonoBehaviour
                 // ９時なら(-> 11:00)
                 case "09:00":
                     // ランダムで介護クイズイベント発動
-                    string eventCode = CallRandomEvent(careQuizEvent);
+                    string eventCode = CallRandomEventAddNone(careQuizEvent);
                     if (!eventCode.Equals("NO"))
                     {
                         LoadEventAndShow(eventCode);
@@ -289,5 +289,26 @@ public class FacilityManager : MonoBehaviour
         int randomIndex = random.Next(0, randomrequiredEvent.Length);
         Debug.Log("Random EventCode: " + randomrequiredEvent[randomIndex]);
         return randomrequiredEvent[randomIndex];
+    }
+
+    public string CallRandomEventAddNone(string[] randomrequiredEvent)
+    {
+        System.Random random = new System.Random();
+        int randomIndex = random.Next(0, randomrequiredEvent.Length);
+        Debug.Log("Random EventCode: " + randomrequiredEvent[randomIndex]);
+
+
+        // 50%確率でイベントを決める
+        int randomValue = random.Next(0, 2);
+        Debug.Log("randomValue: " + randomValue);
+        if(randomValue == 0)
+        {
+            return "NO";
+        }
+        else
+        {
+            return randomrequiredEvent[randomIndex];
+        }
+        
     }
 }
