@@ -9,6 +9,8 @@ public class AtHomeManager : MonoBehaviour
     public PlayerSaveDataManager playerSaveDataManager;
     PlayerData playerData = null;
 
+    bool goToConvenienceSW;
+
     private void Start()
     {
         playerSaveDataManager = new PlayerSaveDataManager();
@@ -28,13 +30,14 @@ public class AtHomeManager : MonoBehaviour
         GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("Yes").GetComponent<Button>().onClick.AddListener(ClickGoToAlertYesButton);
         GameObject.Find("Canvas").transform.Find("itemCheckButton").GetComponent<Button>().onClick.AddListener(ClickItemCheckButton);
         GameObject.Find("Canvas").transform.Find("goOutButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoOutButton(time); });
+        GameObject.Find("Canvas").transform.Find("GoOutBox").transform.Find("goToConvenienceButton").GetComponent<Button>().onClick.AddListener(ClickGoToConvenienceBtn);
         GameObject.Find("Canvas").transform.Find("GoOutBox").transform.Find("closeButton").GetComponent<Button>().onClick.AddListener(ClickGoOutCloseBtn);
         GameObject.Find("Canvas").transform.Find("GoOutAlertNoBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickGoOutCancelBtn);
     }
 
     private void Update()
     {
-
+        // 出勤する
         if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
             GameObject.Find("Canvas").transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("出勤する"))
         {
@@ -52,7 +55,30 @@ public class AtHomeManager : MonoBehaviour
             GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = playerData.time;
             MenuButtonActive(true);
             UIDisplay(true);
+        // コンビニへ行く
+        }else if (GameObject.Find("Canvas").transform.Find("FadeCompleteValue").GetComponent<Text>().text.Equals("convenience"))
+        {
+            sceneTransitionManager.LoadTo("ConvenienceScene");
         }
+    }
+
+    public void ClickGoToConvenienceBtn()
+    {
+        GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("nextButton").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("goOutButton").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("itemCheckButton").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("time").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("GoOutBox").gameObject.SetActive(false);
+        ExecuteFadeInOutV2();
+    }
+
+    public void ExecuteFadeInOutV2()
+    {
+        GameObject FadeInOutManager = new GameObject("FadeInOutManager");
+        GameObject fadeObj = GameObject.Find("FadeInOutManager");
+        SimpleFadeInOutManagerV2 simpleFadeInOutManagerV2 = fadeObj.AddComponent<SimpleFadeInOutManagerV2>();
+        simpleFadeInOutManagerV2.PassParameter(true, "convenience");
     }
 
     public void ClickGoOutButton(string time)
