@@ -124,7 +124,6 @@ public class FacilityManager : MonoBehaviour
     public void ClickNextButton()
     {
         string timeStr = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
-        Debug.Log(timeStr);
 
         string nextBtnText = GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text;
 

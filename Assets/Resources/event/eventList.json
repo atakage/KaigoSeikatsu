@@ -61,6 +61,11 @@
             "optionSW": "ON"
         },
         {
+            "eventCode": "EV012",
+            "script": "\"いらっしゃいませ!\"",
+            "optionSW": "ON"
+        },
+        {
             "eventCode": "ET000",
             "script": "\"あんたは誰?\"",
             "optionSW": "ON"

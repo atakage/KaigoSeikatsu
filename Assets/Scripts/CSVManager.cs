@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class CSVManager : MonoBehaviour
 {
+    public ConvenienceItemSetManager convenienceItemSetManager;
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
-    public Dictionary<string, Dictionary<string, object>> GetGameItemList()
+    public Dictionary<string, Dictionary<string, object>> GetTxtItemList(string textFileName)
     {
         string split_re = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
         string line_split_re = @"\r\n|\n\r|\n|\r";
@@ -21,7 +22,7 @@ public class CSVManager : MonoBehaviour
         string returnDicKey = "";
         Dictionary<string, Dictionary<string, object>> allItemDic = new Dictionary<string, Dictionary<string, object>>();
         
-        TextAsset itemTextAsset = Resources.Load("excelData/AllItem") as TextAsset;
+        TextAsset itemTextAsset = Resources.Load("excelData/"+ textFileName) as TextAsset;
         var lines = Regex.Split(itemTextAsset.text, line_split_re);
 
         if (1 > lines.Length) return allItemDic;
@@ -60,5 +61,31 @@ public class CSVManager : MonoBehaviour
             returnDicKey = "";
         }
         return allItemDic;
+    }
+
+    public void ReadConvenienceInitFileAndCreateJson()
+    {
+        bool checkJsonSW;  
+        try
+        {
+                // jsonファイルを読み込む
+            File.ReadAllText(Application.dataPath + "/Resources/saveData/convenienceItem.json");
+            checkJsonSW = true;
+        }
+        // jsonファイルがないと
+        catch (Exception e)
+        {
+            checkJsonSW = false;
+        }
+
+        // jsonファイルがないと
+        if (!checkJsonSW)
+        {
+                  // ConvenienceItemInit.txtからデータを読み込む
+            Dictionary<string, Dictionary<string, object>> ConItemListDic = GetTxtItemList("ConvenienceItemInit");
+            // convenienceItem.jsonを作る
+            convenienceItemSetManager = new ConvenienceItemSetManager();
+            convenienceItemSetManager.CreateConvenienceItem(ConItemListDic);
+        }
     }
 }

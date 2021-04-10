@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class AtHomeManager : MonoBehaviour
 {
     public SceneTransitionManager sceneTransitionManager;
     public PlayerSaveDataManager playerSaveDataManager;
     PlayerData playerData = null;
-
-    bool goToConvenienceSW;
 
     private void Start()
     {
@@ -58,6 +57,12 @@ public class AtHomeManager : MonoBehaviour
         // コンビニへ行く
         }else if (GameObject.Find("Canvas").transform.Find("FadeCompleteValue").GetComponent<Text>().text.Equals("convenience"))
         {
+                  // 時間増加後scene転換
+            string[] playerTimeArray = playerData.time.Split(':');
+            int timeGoesMinuteInt = Int32.Parse(playerTimeArray[1]) + 10;
+            playerData.time = playerTimeArray[0] + ":" + timeGoesMinuteInt.ToString();
+            playerSaveDataManager.SavePlayerData(playerData);
+
             sceneTransitionManager.LoadTo("ConvenienceScene");
         }
     }

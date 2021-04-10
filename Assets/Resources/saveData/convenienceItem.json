@@ -1,0 +1,53 @@
+{
+    "Items": [
+        {
+            "itemName": "テストアイテムA",
+            "itemDescription": "test item",
+            "itemQuantity": 5,
+            "itemPrice": 12345,
+            "itemSale": "Y"
+        },
+        {
+            "itemName": "テストアイテムB",
+            "itemDescription": "test item",
+            "itemQuantity": 5,
+            "itemPrice": 5000,
+            "itemSale": "Y"
+        },
+        {
+            "itemName": "テストアイテムC",
+            "itemDescription": "test item",
+            "itemQuantity": 5,
+            "itemPrice": 3000,
+            "itemSale": "Y"
+        },
+        {
+            "itemName": "テストアイテムD",
+            "itemDescription": "test item",
+            "itemQuantity": 5,
+            "itemPrice": 2000,
+            "itemSale": "Y"
+        },
+        {
+            "itemName": "テストアイテムE",
+            "itemDescription": "test item",
+            "itemQuantity": 5,
+            "itemPrice": 1000,
+            "itemSale": "Y"
+        },
+        {
+            "itemName": "テストアイテムF",
+            "itemDescription": "test item",
+            "itemQuantity": 5,
+            "itemPrice": 5000,
+            "itemSale": "Y"
+        },
+        {
+            "itemName": "テストアイテムG",
+            "itemDescription": "test item",
+            "itemQuantity": 5,
+            "itemPrice": 700,
+            "itemSale": "Y"
+        }
+    ]
+}

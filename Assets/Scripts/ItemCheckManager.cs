@@ -218,7 +218,7 @@ public class ItemCheckManager : MonoBehaviour
             playerItemUpdateManager.UpdateItemQty(allItemListData, useItemName);
 
             // ゲーム内全体アイテムリストを読み出す(key=itemName, value=itemName,itemDescription,itemEffect,key)
-            Dictionary<string, Dictionary<string, object>> allItemDic = csvManager.GetGameItemList();
+            Dictionary<string, Dictionary<string, object>> allItemDic = csvManager.GetTxtItemList("AllItem");
 
             // 使うアイテムの効果を全体アイテムリストから探して適用する
             itemUseManager.UseItem(useItemName, allItemDic);

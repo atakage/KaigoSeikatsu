@@ -94,42 +94,9 @@ public class PlayerSaveDataManager : MonoBehaviour
 
     public void SaveEventListData(EventListData[] eventListData)
     {
-        //Dictionary<string, string> EventListDic = new Dictionary<string, string>();
-
-        // セーブ前にデータをロードする
-        //EventListData[] loadedEventListData = LoadedEventListData();
-        //for(int i = 0; i < loadedEventListData.Length; i++)
-        //{
-        //   Debug.Log("loadedEventListData: " + loadedEventListData[i].eventCode);
-        //}
-
-        // もしロードしたデータがなかったら新しいイベントリストをセーブする
-        //if (loadedEventListData == null)
-        //{
-        //    Debug.Log("NEW SAVE EVENTLIST: " + eventListData.ToString());
-        //    string eventAsStr = JsonHelper.ToJson(eventListData, true);
-        //    File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
-        //}
-        // ロードデータがあるなら既存イベントリストに新しいイベントリストを追加してセーブする
-        //else
-        //{
-            //Debug.Log("loadedEventListData EVENTLIST: " + loadedEventListData.ToString());
-
-        //    foreach (EventListData loadedEvent in loadedEventListData)
-        //    {
-        //        EventListDic.Add(loadedEvent.eventCode, loadedEvent.script);
-        //    }
-        //    foreach (EventListData eventList in eventListData)
-        //    {
-                // dictionary same key different value update
-        //        EventListDic[eventList.eventCode] = eventList.script; 
-        //    }
-        //    Debug.Log("MERGED eventList: " + EventListDic.ToString());
-        //    string eventAsStr = JsonConvert.SerializeObject(EventListDic);
-            string eventAsStr = JsonHelper.ToJson(eventListData, true);
-            Debug.Log("dictionary to string: " + eventAsStr);
-            File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
-        //}
+        string eventAsStr = JsonHelper.ToJson(eventListData, true);
+        Debug.Log("dictionary to string: " + eventAsStr);
+        File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
     }
 
     
