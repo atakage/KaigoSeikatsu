@@ -25,6 +25,9 @@ public class ConvenienceItemSetManager : MonoBehaviour
                 convenienceItemData.itemQuantity = (int)convenienceItemDic["itemQty"];
                 convenienceItemData.itemSale = (string)convenienceItemDic["itemSale"];
 
+                // アイテムネームでイメージファイルがあるかチェックしてそのpathを獲得しておく
+                GetItemImagePath(convenienceItemData.itemName);
+
                 convenienceList.Add(convenienceItemData);
             }
 
@@ -40,11 +43,19 @@ public class ConvenienceItemSetManager : MonoBehaviour
 
     }
 
+    public ConvenienceItemData[] GetConvenienceJsonFile()
+    {
+        string jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/convenienceItem.json");
+        Debug.Log("jsonStr Convenience: " + jsonStr);
+        ConvenienceItemData[] convenienceItemDataArray = JsonHelper.FromJson<ConvenienceItemData>(jsonStr);
+
+        return convenienceItemDataArray;
+    }
+
     public void CreateConvenienceJsonFile(List<ConvenienceItemData> convenienceList)
     {
         string jsonStr = JsonHelper.ToJson(convenienceList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);
         File.WriteAllText(Application.dataPath + "/Resources/saveData/convenienceItem.json", jsonStr);
-        
     }
 }

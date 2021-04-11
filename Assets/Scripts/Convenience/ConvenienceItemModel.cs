@@ -10,4 +10,5 @@ public class ConvenienceItemData
     public int itemQuantity;
     public int itemPrice;
     public string itemSale;
+    public string itemImage;
 }
