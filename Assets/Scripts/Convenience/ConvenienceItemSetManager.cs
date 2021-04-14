@@ -26,7 +26,7 @@ public class ConvenienceItemSetManager : MonoBehaviour
                 convenienceItemData.itemSale = (string)convenienceItemDic["itemSale"];
 
                 // アイテムネームでイメージファイルがあるかチェックしてそのpathを獲得しておく
-                GetItemImagePath(convenienceItemData.itemName);
+                convenienceItemData.itemImagePath = GetItemImagePath(convenienceItemData.itemName);
 
                 convenienceList.Add(convenienceItemData);
             }
@@ -41,6 +41,20 @@ public class ConvenienceItemSetManager : MonoBehaviour
         }
 
 
+    }
+
+    public string GetItemImagePath(string itemName)
+    {
+        string imagePath = "img/item/" + itemName;
+        Texture2D texture = Resources.Load(imagePath, typeof(Texture2D)) as Texture2D;
+
+        // イメージがないならdefaultイメージを設定
+        if (texture == null)
+        {
+            imagePath = "img/item/unity";
+        }
+
+        return imagePath;
     }
 
     public ConvenienceItemData[] GetConvenienceJsonFile()

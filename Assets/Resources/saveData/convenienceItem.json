@@ -5,49 +5,56 @@
             "itemDescription": "test item",
             "itemQuantity": 5,
             "itemPrice": 12345,
-            "itemSale": "Y"
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
         },
         {
             "itemName": "テストアイテムB",
             "itemDescription": "test item",
             "itemQuantity": 5,
             "itemPrice": 5000,
-            "itemSale": "Y"
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
         },
         {
             "itemName": "テストアイテムC",
             "itemDescription": "test item",
             "itemQuantity": 5,
             "itemPrice": 3000,
-            "itemSale": "Y"
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
         },
         {
             "itemName": "テストアイテムD",
             "itemDescription": "test item",
             "itemQuantity": 5,
             "itemPrice": 2000,
-            "itemSale": "Y"
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
         },
         {
             "itemName": "テストアイテムE",
             "itemDescription": "test item",
             "itemQuantity": 5,
             "itemPrice": 1000,
-            "itemSale": "Y"
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
         },
         {
             "itemName": "テストアイテムF",
             "itemDescription": "test item",
             "itemQuantity": 5,
             "itemPrice": 5000,
-            "itemSale": "Y"
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
         },
         {
-            "itemName": "テストアイテムG",
+            "itemName": "android",
             "itemDescription": "test item",
             "itemQuantity": 5,
             "itemPrice": 700,
-            "itemSale": "Y"
+            "itemSale": "Y",
+            "itemImagePath": "img/item/android.png"
         }
     ]
 }

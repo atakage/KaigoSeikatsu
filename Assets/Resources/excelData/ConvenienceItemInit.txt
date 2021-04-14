@@ -5,4 +5,4 @@ itemName,itemPrice,itemDescription,itemQty,itemSale
 テストアイテムD,2000,test item,5,Y
 テストアイテムE,1000,test item,5,Y
 テストアイテムF,5000,test item,5,Y
-テストアイテムG,700,test item,5,Y
+android,700,test item,5,Y
