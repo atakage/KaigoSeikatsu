@@ -44,6 +44,8 @@ public class ConvenienManager : MonoBehaviour
         // 店員さん挨拶イベント
         if ("END".Equals(canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text))
         {
+            canvasGameObj.transform.Find("menuBox").gameObject.SetActive(true);
+            convenienceUIManager.ItemClickPanelUISetting(true);
             MenuAndNextButtonInteractable(true);
             canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text = "";
         }

@@ -54,7 +54,7 @@
             "itemQuantity": 5,
             "itemPrice": 700,
             "itemSale": "Y",
-            "itemImagePath": "img/item/android.png"
+            "itemImagePath": "img/item/android"
         }
     ]
 }
