@@ -8,7 +8,7 @@ public class ConvenienManager : MonoBehaviour
     public PlayerSaveDataManager playerSaveDataManager;
     public EventManager eventManager;
     public ChatManager chatManager;
-    public ConvenienceItemSetManager convenienceItemSetManager;
+    //public ConvenienceItemSetManager convenienceItemSetManager;
     public ConvenienceUIManager convenienceUIManager;
     public GameObject canvasGameObj;
     public PlayerData playerData;
@@ -19,7 +19,7 @@ public class ConvenienManager : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         eventManager = new EventManager();
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
-        convenienceItemSetManager = new ConvenienceItemSetManager();
+        //convenienceItemSetManager = new ConvenienceItemSetManager();
         convenienceUIManager = new ConvenienceUIManager();
 
         canvasGameObj = GameObject.Find("Canvas");
@@ -33,10 +33,10 @@ public class ConvenienManager : MonoBehaviour
         LoadEventAndShow("EV012");
 
         // コンビニで販売するアイテムリストを読み込む(json)
-        convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
+        //convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
 
         // 最初のUIセット
-        convenienceUIManager.FirstUISetting(convenienceItemDataArray);
+        //convenienceUIManager.FirstUISetting(convenienceItemDataArray);
     }
 
     void Update()

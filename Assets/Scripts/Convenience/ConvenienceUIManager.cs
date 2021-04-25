@@ -1,10 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ConvenienceUIManager : MonoBehaviour
 {
+    public ConvenienceItemSetManager convenienceItemSetManager;
+
+    private void Start()
+    {
+        convenienceItemSetManager = new ConvenienceItemSetManager();
+        // コンビニで販売するアイテムリストを読み込む(json)
+        ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
+        // 最初のUIセット
+        FirstUISetting(convenienceItemDataArray);
+    }
     public void Update()
     {
         if (Input.GetMouseButton(0))
@@ -114,6 +126,9 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
                 contentGameObj.transform.Find("itemBox" + i).transform.Find("itemDescription").GetComponent<Text>().text = convenienceItemDataArray[i].itemDescription;
                 contentGameObj.transform.Find("itemBox" + i).transform.Find("itemQuantity").GetComponent<Text>().text = convenienceItemDataArray[i].itemQuantity.ToString();
                 contentGameObj.transform.Find("itemBox" + i).transform.Find("itemPrice").GetComponent<Text>().text = convenienceItemDataArray[i].itemPrice.ToString();
+
+                // itemAddButtonに注文追加イベントをつける
+                contentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").GetComponent<Button>().onClick.AddListener(ClickItemAddButton);
             }
             //最初のアイテムじゃないなら
             else if(i != 0 && convenienceItemDataArray[i].itemSale.Equals("Y"))
@@ -133,7 +148,84 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
                 itemBox.transform.Find("itemQuantity").GetComponent<Text>().text = convenienceItemDataArray[i].itemQuantity.ToString();
                 itemBox.transform.Find("itemPrice").GetComponent<Text>().text = convenienceItemDataArray[i].itemPrice.ToString();
 
+                // itemAddButtonに注文追加イベントをつける
+                itemBox.transform.Find("itemAddButton").GetComponent<Button>().onClick.AddListener(ClickItemAddButton);
             }
         }
+    }
+
+    public void ClickItemAddButton()
+    {
+        GameObject canvasGameObj = GameObject.Find("Canvas");
+        Transform addItemAlertBoxTransform = canvasGameObj.transform.Find("addItemAlertBox");
+        // クリックしたオブジェクトを取り出す
+        Transform selectedItemBox = EventSystem.current.currentSelectedGameObject.transform.parent;
+        Debug.Log("itemBoxTransform: " + selectedItemBox);
+
+        canvasGameObj.transform.Find("menuBox").gameObject.SetActive(false);
+        addItemAlertBoxTransform.gameObject.SetActive(true);
+
+        // 選択されたアイテムの情報を移す
+        addItemAlertBoxTransform.transform.Find("itemImage").GetComponent<Image>().sprite = selectedItemBox.Find("itemImage").GetComponent<Image>().sprite;
+        addItemAlertBoxTransform.transform.Find("itemName").GetComponent<Text>().text = selectedItemBox.Find("itemName").GetComponent<Text>().text;
+        addItemAlertBoxTransform.transform.Find("itemPrice").GetComponent<Text>().text = selectedItemBox.Find("itemPrice").GetComponent<Text>().text+"円";
+        addItemAlertBoxTransform.transform.Find("itemQuantity").GetComponent<Text>().text = "1";
+
+        // quantityのminus, plusButtonAddListener
+        addItemAlertBoxTransform.transform.Find("minusButton").GetComponent<Button>().onClick.AddListener(() => ClickMinusButton(addItemAlertBoxTransform, selectedItemBox));
+        addItemAlertBoxTransform.transform.Find("plusButton").GetComponent<Button>().onClick.AddListener(() => ClickPlusButton(addItemAlertBoxTransform, selectedItemBox));
+
+        // cancelButtonにAddListener
+        addItemAlertBoxTransform.transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(() => ClickCancelButton());
+    }
+
+    public void ClickCancelButton()
+    {
+        GameObject canvasGameObj = GameObject.Find("Canvas");
+        Transform addItemAlertBoxTransform = canvasGameObj.transform.Find("addItemAlertBox");
+
+        // onClick.AddListenerのイベントが積もるのを防止する
+        addItemAlertBoxTransform.transform.Find("minusButton").GetComponent<Button>().onClick.RemoveAllListeners();
+        addItemAlertBoxTransform.transform.Find("plusButton").GetComponent<Button>().onClick.RemoveAllListeners();
+        addItemAlertBoxTransform.transform.Find("cancelButton").GetComponent<Button>().onClick.RemoveAllListeners();
+
+        canvasGameObj.transform.Find("menuBox").gameObject.SetActive(true);
+        addItemAlertBoxTransform.gameObject.SetActive(false);
+    }
+
+    public void ClickPlusButton(Transform addItemAlertBoxTransform, Transform selectedItemBox)
+    {
+        int presentQty = Int32.Parse(addItemAlertBoxTransform.transform.Find("itemQuantity").GetComponent<Text>().text);
+        Debug.Log("presentQty: " + presentQty);
+
+        int maxQty = Int32.Parse(selectedItemBox.transform.Find("itemQuantity").GetComponent<Text>().text);
+        // もしalertのquantityがmaxQuantity未満なら
+        if (maxQty > presentQty)
+        {
+            // 数を1増やす
+            addItemAlertBoxTransform.transform.Find("itemQuantity").GetComponent<Text>().text = (presentQty + 1).ToString();
+        }
+
+        // 価格をセッティング
+        int itemPrice = Int32.Parse(selectedItemBox.transform.Find("itemPrice").GetComponent<Text>().text.Replace("円", ""));
+        presentQty = Int32.Parse(addItemAlertBoxTransform.transform.Find("itemQuantity").GetComponent<Text>().text);
+        addItemAlertBoxTransform.transform.Find("itemPrice").GetComponent<Text>().text = (itemPrice * presentQty).ToString()+"円";
+    }
+
+    public void ClickMinusButton(Transform addItemAlertBoxTransform, Transform selectedItemBox)
+    {
+        int presentQty = Int32.Parse(addItemAlertBoxTransform.transform.Find("itemQuantity").GetComponent<Text>().text);
+        Debug.Log("presentQty: " + presentQty);
+        // もしalertのquantityが2以上なら
+        if (presentQty > 1)
+        {
+            // 数を1減らす
+            addItemAlertBoxTransform.transform.Find("itemQuantity").GetComponent<Text>().text = (presentQty - 1).ToString();
+        }
+
+        // 価格をセッティング
+        int itemPrice = Int32.Parse(selectedItemBox.transform.Find("itemPrice").GetComponent<Text>().text.Replace("円",""));
+        presentQty = Int32.Parse(addItemAlertBoxTransform.transform.Find("itemQuantity").GetComponent<Text>().text);
+        addItemAlertBoxTransform.transform.Find("itemPrice").GetComponent<Text>().text = (itemPrice * presentQty).ToString() + "円";
     }
 }
