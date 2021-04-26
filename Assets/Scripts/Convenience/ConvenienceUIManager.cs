@@ -163,6 +163,9 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         Debug.Log("itemBoxTransform: " + selectedItemBox);
 
         canvasGameObj.transform.Find("menuBox").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("orderBox").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("orderConfirmButton").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("specificationBox").gameObject.SetActive(false);
         addItemAlertBoxTransform.gameObject.SetActive(true);
 
         // 選択されたアイテムの情報を移す
@@ -190,6 +193,9 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         addItemAlertBoxTransform.transform.Find("cancelButton").GetComponent<Button>().onClick.RemoveAllListeners();
 
         canvasGameObj.transform.Find("menuBox").gameObject.SetActive(true);
+        canvasGameObj.transform.Find("orderBox").gameObject.SetActive(true);
+        canvasGameObj.transform.Find("orderConfirmButton").gameObject.SetActive(true);
+        canvasGameObj.transform.Find("specificationBox").gameObject.SetActive(false);
         addItemAlertBoxTransform.gameObject.SetActive(false);
     }
 

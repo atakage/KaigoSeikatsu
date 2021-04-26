@@ -45,6 +45,9 @@ public class ConvenienManager : MonoBehaviour
         if ("END".Equals(canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text))
         {
             canvasGameObj.transform.Find("menuBox").gameObject.SetActive(true);
+            canvasGameObj.transform.Find("orderBox").gameObject.SetActive(true);
+            canvasGameObj.transform.Find("orderConfirmButton").gameObject.SetActive(true);
+            canvasGameObj.transform.Find("specificationBox").gameObject.SetActive(true);
             convenienceUIManager.ItemClickPanelUISetting(true);
             MenuAndNextButtonInteractable(true);
             canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text = "";
