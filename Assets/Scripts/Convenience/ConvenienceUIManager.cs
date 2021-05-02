@@ -178,11 +178,67 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         addItemAlertBoxTransform.transform.Find("minusButton").GetComponent<Button>().onClick.AddListener(() => ClickMinusButton(addItemAlertBoxTransform, selectedItemBox));
         addItemAlertBoxTransform.transform.Find("plusButton").GetComponent<Button>().onClick.AddListener(() => ClickPlusButton(addItemAlertBoxTransform, selectedItemBox));
 
+        // addButtonにAddListener
+        addItemAlertBoxTransform.transform.Find("addButton").GetComponent<Button>().onClick.AddListener(() => ClickAddButton(selectedItemBox));
         // cancelButtonにAddListener
-        addItemAlertBoxTransform.transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(() => ClickCancelButton());
+        addItemAlertBoxTransform.transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(() => ClickCancelButton(selectedItemBox));
+
     }
 
-    public void ClickCancelButton()
+    public void ClickAddButton(Transform selectedItemBox)
+    {
+        ClickCancelButton(selectedItemBox);
+        GameObject canvasGameObj = GameObject.Find("Canvas");
+        GameObject addItemGameObj = canvasGameObj.transform.Find("addItemAlertBox").gameObject;
+        
+        // menuBoxからアイテムaddButton機能を防ぐ
+        selectedItemBox.transform.Find("itemAddButton").GetComponent<Button>().interactable = false;
+        selectedItemBox.transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "選択中";
+
+        // orderBoxにアイテムを追加する
+        
+        GameObject ContentGameObj = canvasGameObj.transform.Find("orderBox").transform.Find("Scroll View").transform.Find("Viewport").transform.Find("Content").gameObject;
+        // orderBoxのContentのchildCountを取り出す
+        int contentChildCount = ContentGameObj.transform.childCount;
+        Debug.Log("contentChildCount: " + contentChildCount);
+
+        // default itemBoxを取り出す
+        Transform defaultItemBox = ContentGameObj.transform.GetChild(0);
+
+        // 新しいitemBoxよ作る
+        GameObject itemBoxGameObj = Instantiate(defaultItemBox.gameObject);
+        itemBoxGameObj.name = "itemBox" + (contentChildCount).ToString();
+        itemBoxGameObj.transform.SetParent(ContentGameObj.transform);
+        itemBoxGameObj.SetActive(true);
+
+        // default　objectに情報セット
+        itemBoxGameObj.transform.Find("itemName").GetComponent<Text>().text = addItemGameObj.transform.Find("itemName").GetComponent<Text>().text;
+        itemBoxGameObj.transform.Find("itemQty").GetComponent<Text>().text = addItemGameObj.transform.Find("itemQuantity").GetComponent<Text>().text;
+        itemBoxGameObj.transform.Find("itemPrice").GetComponent<Text>().text = addItemGameObj.transform.Find("itemPrice").GetComponent<Text>().text;
+
+
+        // onClick.AddListenerのイベントが積もるのを防止する
+        RemoveButtonListeners();
+
+        // specificationBox !!
+    }
+
+    public void ClickCancelButton(Transform selectedItemBox)
+    {
+        GameObject canvasGameObj = GameObject.Find("Canvas");
+        Transform addItemAlertBoxTransform = canvasGameObj.transform.Find("addItemAlertBox");
+
+        // onClick.AddListenerのイベントが積もるのを防止する
+        RemoveButtonListeners();
+
+        canvasGameObj.transform.Find("menuBox").gameObject.SetActive(true);
+        canvasGameObj.transform.Find("orderBox").gameObject.SetActive(true);
+        canvasGameObj.transform.Find("orderConfirmButton").gameObject.SetActive(true);
+        canvasGameObj.transform.Find("specificationBox").gameObject.SetActive(false);
+        addItemAlertBoxTransform.gameObject.SetActive(false);
+    }
+
+    public void RemoveButtonListeners()
     {
         GameObject canvasGameObj = GameObject.Find("Canvas");
         Transform addItemAlertBoxTransform = canvasGameObj.transform.Find("addItemAlertBox");
@@ -191,12 +247,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         addItemAlertBoxTransform.transform.Find("minusButton").GetComponent<Button>().onClick.RemoveAllListeners();
         addItemAlertBoxTransform.transform.Find("plusButton").GetComponent<Button>().onClick.RemoveAllListeners();
         addItemAlertBoxTransform.transform.Find("cancelButton").GetComponent<Button>().onClick.RemoveAllListeners();
-
-        canvasGameObj.transform.Find("menuBox").gameObject.SetActive(true);
-        canvasGameObj.transform.Find("orderBox").gameObject.SetActive(true);
-        canvasGameObj.transform.Find("orderConfirmButton").gameObject.SetActive(true);
-        canvasGameObj.transform.Find("specificationBox").gameObject.SetActive(false);
-        addItemAlertBoxTransform.gameObject.SetActive(false);
+        addItemAlertBoxTransform.transform.Find("addButton").GetComponent<Button>().onClick.RemoveAllListeners();
     }
 
     public void ClickPlusButton(Transform addItemAlertBoxTransform, Transform selectedItemBox)
