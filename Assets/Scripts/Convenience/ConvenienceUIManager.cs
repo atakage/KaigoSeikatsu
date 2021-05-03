@@ -8,9 +8,20 @@ using UnityEngine.UI;
 public class ConvenienceUIManager : MonoBehaviour
 {
     public ConvenienceItemSetManager convenienceItemSetManager;
-
+    public PlayerSaveDataManager playerSaveDataManager;
+    public PlayerData playerData;
+    public GameObject canvasGameObj;
+    public GameObject contentGameObj;
+    public GameObject specificationBoxGameObj;
     private void Start()
     {
+        playerSaveDataManager = new PlayerSaveDataManager();
+        playerData = playerSaveDataManager.LoadPlayerData();
+
+        canvasGameObj = GameObject.Find("Canvas");
+        contentGameObj = canvasGameObj.transform.Find("orderBox").transform.Find("Scroll View").transform.Find("Viewport").transform.Find("Content").gameObject;
+        specificationBoxGameObj = canvasGameObj.transform.Find("specificationBox").gameObject;
+
         convenienceItemSetManager = new ConvenienceItemSetManager();
         // コンビニで販売するアイテムリストを読み込む(json)
         ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
@@ -22,6 +33,20 @@ public class ConvenienceUIManager : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             ItemClickPanelUISetting(false);
+        }
+
+        // orderConfirmButtonのinteractable
+        // orderBox->Contentの子が1以下なら(defaultを含め)またはspecificationBox->resultMoneyが0未満なら
+        if (contentGameObj.transform.childCount < 2 ||
+            0 > Int32.Parse(specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text.Replace("円", "")))
+        {
+            // 購入ボタンを防ぐ
+            canvasGameObj.transform.Find("orderConfirmButton").GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            // 購入ボタンをいかす
+            canvasGameObj.transform.Find("orderConfirmButton").GetComponent<Button>().interactable = true;
         }
     }
 
@@ -105,6 +130,10 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
     {
         GameObject canvasGameObj = GameObject.Find("Canvas");
         GameObject contentGameObj = GameObject.Find("Canvas").transform.Find("menuBox").transform.Find("Scroll View").transform.Find("Viewport").transform.Find("Content").gameObject;
+
+        canvasGameObj.transform.Find("specificationBox").transform.Find("moneyValueStr").GetComponent<Text>().text = playerData.money + "円";
+        canvasGameObj.transform.Find("specificationBox").transform.Find("totalPriceValueStr").GetComponent<Text>().text = "0円";
+        canvasGameObj.transform.Find("specificationBox").transform.Find("resultMoneyValueStr").GetComponent<Text>().text = playerData.money + "円";
 
         // itemBoxの基準になるオブジェクトを蓄える
         GameObject itemBox = canvasGameObj.transform.Find("menuBox")
@@ -190,7 +219,8 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         ClickCancelButton(selectedItemBox);
         GameObject canvasGameObj = GameObject.Find("Canvas");
         GameObject addItemGameObj = canvasGameObj.transform.Find("addItemAlertBox").gameObject;
-        
+        GameObject specificationBoxGameObj = canvasGameObj.transform.Find("specificationBox").gameObject;
+
         // menuBoxからアイテムaddButton機能を防ぐ
         selectedItemBox.transform.Find("itemAddButton").GetComponent<Button>().interactable = false;
         selectedItemBox.transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "選択中";
@@ -216,11 +246,39 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         itemBoxGameObj.transform.Find("itemQty").GetComponent<Text>().text = addItemGameObj.transform.Find("itemQuantity").GetComponent<Text>().text;
         itemBoxGameObj.transform.Find("itemPrice").GetComponent<Text>().text = addItemGameObj.transform.Find("itemPrice").GetComponent<Text>().text;
 
+        // specificationBoxに金額を反映する
+        int orderedPrice = Int32.Parse(itemBoxGameObj.transform.Find("itemPrice").GetComponent<Text>().text.Replace("円", ""));
+        orderedPrice += Int32.Parse(specificationBoxGameObj.transform.Find("totalPriceValueStr").GetComponent<Text>().text.Replace("円", ""));
+        specificationBoxGameObj.transform.Find("totalPriceValueStr").GetComponent<Text>().text = orderedPrice.ToString() + "円";
+        int money = Int32.Parse(specificationBoxGameObj.transform.Find("moneyValueStr").GetComponent<Text>().text.Replace("円", ""));
+        int resultMoney = (money - orderedPrice);
+        specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text = resultMoney.ToString() + "円";
+        
+        // itemDeleteButton AddListener(orderBox->itemBox削除)
+        itemBoxGameObj.transform.Find("itemDeleteButton").GetComponent<Button>().onClick.AddListener(() => ClickItemDeleteButton(itemBoxGameObj, selectedItemBox, specificationBoxGameObj));
 
         // onClick.AddListenerのイベントが積もるのを防止する
         RemoveButtonListeners();
 
-        // specificationBox !!
+
+        
+
+    }
+
+    public void ClickItemDeleteButton(GameObject itemBoxGameObj, Transform selectedItemBox, GameObject specificationBoxGameObj)
+    {
+        // orderBoxのアイテムを削除する
+        Destroy(itemBoxGameObj);
+        // menuBoxのアイテム追加ボタンをいかす
+        selectedItemBox.transform.Find("itemAddButton").GetComponent<Button>().interactable = true;
+        selectedItemBox.transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "追加";
+        // specificationBoxで金額を減らす
+        int totalPrice = Int32.Parse(specificationBoxGameObj.transform.Find("totalPriceValueStr").GetComponent<Text>().text.Replace("円", ""));
+        int orderedPrice = Int32.Parse(itemBoxGameObj.transform.Find("itemPrice").GetComponent<Text>().text.Replace("円", ""));
+        int newTotalPrice = (totalPrice - orderedPrice);
+        specificationBoxGameObj.transform.Find("totalPriceValueStr").GetComponent<Text>().text = newTotalPrice.ToString() + "円";
+        int resultMoney = Int32.Parse(specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text.Replace("円", ""));
+        specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text = (resultMoney += orderedPrice).ToString() + "円";
     }
 
     public void ClickCancelButton(Transform selectedItemBox)
@@ -234,7 +292,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         canvasGameObj.transform.Find("menuBox").gameObject.SetActive(true);
         canvasGameObj.transform.Find("orderBox").gameObject.SetActive(true);
         canvasGameObj.transform.Find("orderConfirmButton").gameObject.SetActive(true);
-        canvasGameObj.transform.Find("specificationBox").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("specificationBox").gameObject.SetActive(true);
         addItemAlertBoxTransform.gameObject.SetActive(false);
     }
 
