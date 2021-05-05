@@ -13,6 +13,7 @@ public class ConvenienceUIManager : MonoBehaviour
     public GameObject canvasGameObj;
     public GameObject contentGameObj;
     public GameObject specificationBoxGameObj;
+    public GameObject clickBlockGameObj;
     private void Start()
     {
         playerSaveDataManager = new PlayerSaveDataManager();
@@ -21,12 +22,17 @@ public class ConvenienceUIManager : MonoBehaviour
         canvasGameObj = GameObject.Find("Canvas");
         contentGameObj = canvasGameObj.transform.Find("orderBox").transform.Find("Scroll View").transform.Find("Viewport").transform.Find("Content").gameObject;
         specificationBoxGameObj = canvasGameObj.transform.Find("specificationBox").gameObject;
+        clickBlockGameObj = canvasGameObj.transform.Find("clickBlock").gameObject;
 
         convenienceItemSetManager = new ConvenienceItemSetManager();
         // コンビニで販売するアイテムリストを読み込む(json)
         ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
         // 最初のUIセット
         FirstUISetting(convenienceItemDataArray);
+
+        canvasGameObj.transform.Find("orderConfirmButton").GetComponent<Button>().onClick.AddListener(() => ClickOrderConfirmBtn());
+        canvasGameObj.transform.Find("orderConfirmAlertBox").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(() => ClickOrderConfirmAlertBoxConfirmBtn());
+        canvasGameObj.transform.Find("orderConfirmAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(() => ClickOrderConfirmAlertBoxCancelBtn());
     }
     public void Update()
     {
@@ -61,7 +67,7 @@ public class ConvenienceUIManager : MonoBehaviour
             Ray ray = uiCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
             // クリックした位置に物体があったら
-            if (hit.collider != null)
+            if (hit.collider != null && !clickBlockGameObj.activeSelf)
             {
                 Debug.Log("hit.transform.gameObject.name: " + hit.transform.gameObject.name);
                 // クリックしたオブジェクトの親が'Content'なら
@@ -135,6 +141,8 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         canvasGameObj.transform.Find("specificationBox").transform.Find("totalPriceValueStr").GetComponent<Text>().text = "0円";
         canvasGameObj.transform.Find("specificationBox").transform.Find("resultMoneyValueStr").GetComponent<Text>().text = playerData.money + "円";
 
+
+
         // itemBoxの基準になるオブジェクトを蓄える
         GameObject itemBox = canvasGameObj.transform.Find("menuBox")
             .transform.Find("Scroll View").transform.Find("Viewport").transform.Find("Content")
@@ -181,6 +189,32 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
                 itemBox.transform.Find("itemAddButton").GetComponent<Button>().onClick.AddListener(ClickItemAddButton);
             }
         }
+    }
+
+    public void ClickOrderConfirmBtn()
+    {
+        ClickBlockAndAlertBoxSetActive(true);
+    }
+
+    public void ClickOrderConfirmAlertBoxConfirmBtn()
+    {
+        ClickBlockAndAlertBoxSetActive(false);
+
+        // orderBoxにあるアイテムをプレイヤーに移す(json)
+        // specificationBoxのresultMoneyValueStrをプレイヤー所持金に反映する
+        // call FirstUISetting()
+    }
+
+    public void ClickOrderConfirmAlertBoxCancelBtn()
+    {
+        ClickBlockAndAlertBoxSetActive(false);
+    }
+
+    public void ClickBlockAndAlertBoxSetActive(bool sw)
+    {
+        // 外部クリック防ぐオブジェクトを管理
+        canvasGameObj.transform.Find("clickBlock").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("orderConfirmAlertBox").gameObject.SetActive(sw);
     }
 
     public void ClickItemAddButton()
