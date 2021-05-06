@@ -125,6 +125,7 @@ public class PlayerSaveDataManager : MonoBehaviour
     }
 
 
+    // 2021.05.06使用
     public void SaveItemListData(ItemListData[] itemListData)
     {
         // セーブ前にデータをロードする
@@ -155,7 +156,7 @@ public class PlayerSaveDataManager : MonoBehaviour
                 {
                     if (itemListData[j] != null && loadedItemListData[i].itemName.Equals(itemListData[j].itemName))
                     {
-                        loadedItemListData[i].quantity = itemListData[j].quantity;
+                        loadedItemListData[i].quantity += itemListData[j].quantity;
                         itemListData[j].itemName = null;
                         itemListData[j].quantity = 0;
                     }

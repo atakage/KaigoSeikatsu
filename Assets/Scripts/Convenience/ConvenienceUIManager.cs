@@ -200,7 +200,25 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
     {
         ClickBlockAndAlertBoxSetActive(false);
 
+        ItemListData itemListData = null;
+        ArrayList itemListDataList = new ArrayList();
         // orderBoxにあるアイテムをプレイヤーに移す(json)
+        // orderBox -> Contentの子が2以上なら(defaultを含め)
+        if(contentGameObj.transform.childCount > 1)
+        {
+            for(int i=1; i< contentGameObj.transform.childCount; i++)
+            {
+                itemListData = new ItemListData();
+                itemListData.itemName = contentGameObj.transform.Find("itemBox" + i).transform.Find("itemName").GetComponent<Text>().text;
+                itemListData.itemDescription = contentGameObj.transform.Find("itemBox" + i).transform.Find("itemDescription").GetComponent<Text>().text;
+                itemListData.quantity = Int32.Parse(contentGameObj.transform.Find("itemBox" + i).transform.Find("itemQty").GetComponent<Text>().text);
+                itemListData.keyItem = "N";
+
+                itemListDataList.Add(itemListData);
+            }
+            playerSaveDataManager.SaveItemListData((ItemListData[])itemListDataList.ToArray(typeof(ItemListData)));
+        }
+
         // specificationBoxのresultMoneyValueStrをプレイヤー所持金に反映する
         // call FirstUISetting()
     }
@@ -234,6 +252,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         // 選択されたアイテムの情報を移す
         addItemAlertBoxTransform.transform.Find("itemImage").GetComponent<Image>().sprite = selectedItemBox.Find("itemImage").GetComponent<Image>().sprite;
         addItemAlertBoxTransform.transform.Find("itemName").GetComponent<Text>().text = selectedItemBox.Find("itemName").GetComponent<Text>().text;
+        addItemAlertBoxTransform.transform.Find("itemDescription").GetComponent<Text>().text = selectedItemBox.Find("itemDescription").GetComponent<Text>().text;
         addItemAlertBoxTransform.transform.Find("itemPrice").GetComponent<Text>().text = selectedItemBox.Find("itemPrice").GetComponent<Text>().text+"円";
         addItemAlertBoxTransform.transform.Find("itemQuantity").GetComponent<Text>().text = "1";
 
@@ -277,6 +296,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
 
         // default　objectに情報セット
         itemBoxGameObj.transform.Find("itemName").GetComponent<Text>().text = addItemGameObj.transform.Find("itemName").GetComponent<Text>().text;
+        itemBoxGameObj.transform.Find("itemDescription").GetComponent<Text>().text = addItemGameObj.transform.Find("itemDescription").GetComponent<Text>().text;
         itemBoxGameObj.transform.Find("itemQty").GetComponent<Text>().text = addItemGameObj.transform.Find("itemQuantity").GetComponent<Text>().text;
         itemBoxGameObj.transform.Find("itemPrice").GetComponent<Text>().text = addItemGameObj.transform.Find("itemPrice").GetComponent<Text>().text;
 

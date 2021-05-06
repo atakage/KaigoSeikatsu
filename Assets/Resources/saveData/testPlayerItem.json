@@ -11,6 +11,24 @@
             "itemDescription": "飲むと少しだけ元気が出る",
             "quantity": 30,
             "keyItem": "N"
+        },
+        {
+            "itemName": "android",
+            "itemDescription": "test item",
+            "quantity": 5,
+            "keyItem": "N"
+        },
+        {
+            "itemName": "テストアイテムC",
+            "itemDescription": "test item",
+            "quantity": 2,
+            "keyItem": "N"
+        },
+        {
+            "itemName": "テストアイテムF",
+            "itemDescription": "test item",
+            "quantity": 2,
+            "keyItem": "N"
         }
     ]
 }
