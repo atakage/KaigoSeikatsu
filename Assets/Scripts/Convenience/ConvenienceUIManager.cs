@@ -200,27 +200,52 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
     {
         ClickBlockAndAlertBoxSetActive(false);
 
-        ItemListData itemListData = null;
-        ArrayList itemListDataList = new ArrayList();
+        // ★itemListDataを共有することでitemListData(オブジェクト)が変更されたりしたらあとの作業で影響があるので
+        // ★別のオブジェクトとリストに分けて詰める
+        ItemListData itemListDataForPlayer = null;
+        ItemListData itemListDataForConvenience = null;
+        List<ItemListData> itemListDataList = new List<ItemListData>();
+        List<ItemListData> itemListDataListForConvenience = new List<ItemListData>();
         // orderBoxにあるアイテムをプレイヤーに移す(json)
         // orderBox -> Contentの子が2以上なら(defaultを含め)
         if(contentGameObj.transform.childCount > 1)
         {
             for(int i=1; i< contentGameObj.transform.childCount; i++)
             {
-                itemListData = new ItemListData();
-                itemListData.itemName = contentGameObj.transform.Find("itemBox" + i).transform.Find("itemName").GetComponent<Text>().text;
-                itemListData.itemDescription = contentGameObj.transform.Find("itemBox" + i).transform.Find("itemDescription").GetComponent<Text>().text;
-                itemListData.quantity = Int32.Parse(contentGameObj.transform.Find("itemBox" + i).transform.Find("itemQty").GetComponent<Text>().text);
-                itemListData.keyItem = "N";
+                itemListDataForPlayer = new ItemListData();
+                itemListDataForPlayer.itemName = contentGameObj.transform.Find("itemBox" + i).transform.Find("itemName").GetComponent<Text>().text;
+                itemListDataForPlayer.itemDescription = contentGameObj.transform.Find("itemBox" + i).transform.Find("itemDescription").GetComponent<Text>().text;
+                itemListDataForPlayer.quantity = Int32.Parse(contentGameObj.transform.Find("itemBox" + i).transform.Find("itemQty").GetComponent<Text>().text);
+                itemListDataForPlayer.keyItem = "N";
 
-                itemListDataList.Add(itemListData);
+                itemListDataList.Add(itemListDataForPlayer);
+
+                itemListDataForConvenience = new ItemListData();
+                itemListDataForConvenience.itemName = contentGameObj.transform.Find("itemBox" + i).transform.Find("itemName").GetComponent<Text>().text;
+                itemListDataForConvenience.itemDescription = contentGameObj.transform.Find("itemBox" + i).transform.Find("itemDescription").GetComponent<Text>().text;
+                itemListDataForConvenience.quantity = Int32.Parse(contentGameObj.transform.Find("itemBox" + i).transform.Find("itemQty").GetComponent<Text>().text);
+                itemListDataForConvenience.keyItem = "N";
+
+                itemListDataListForConvenience.Add(itemListDataForConvenience);
+
+                Debug.Log("added itemName: " + itemListDataForPlayer.itemName);
+                
+                
             }
-            playerSaveDataManager.SaveItemListData((ItemListData[])itemListDataList.ToArray(typeof(ItemListData)));
-        }
+            playerSaveDataManager.SaveItemListData(itemListDataList.ToArray());
 
-        // specificationBoxのresultMoneyValueStrをプレイヤー所持金に反映する
-        // call FirstUISetting()
+            // specificationBoxのresultMoneyValueStrをプレイヤー所持金に反映する
+            string resultMoney = specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text.Replace("円", "");
+            playerData.money = resultMoney;
+            playerSaveDataManager.SavePlayerData(playerData);
+
+            // 購買したアイテムの数反映(convenienceItem.json)
+            convenienceItemSetManager.SetConvenienceJsonFile(itemListDataListForConvenience.ToArray());
+
+            // call FirstUISetting()
+
+
+        }
     }
 
     public void ClickOrderConfirmAlertBoxCancelBtn()
