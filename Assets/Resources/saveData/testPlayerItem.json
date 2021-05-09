@@ -15,19 +15,13 @@
         {
             "itemName": "テストアイテムA",
             "itemDescription": "test item",
-            "quantity": 2,
+            "quantity": 5,
             "keyItem": "N"
         },
         {
             "itemName": "android",
             "itemDescription": "test item",
-            "quantity": 3,
-            "keyItem": "N"
-        },
-        {
-            "itemName": "テストアイテムB",
-            "itemDescription": "test item",
-            "quantity": 1,
+            "quantity": 5,
             "keyItem": "N"
         }
     ]

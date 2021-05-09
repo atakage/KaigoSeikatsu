@@ -3,7 +3,7 @@
         {
             "itemName": "テストアイテムA",
             "itemDescription": "test item",
-            "itemQuantity": 3,
+            "itemQuantity": 0,
             "itemPrice": 12345,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
@@ -11,7 +11,7 @@
         {
             "itemName": "テストアイテムB",
             "itemDescription": "test item",
-            "itemQuantity": 4,
+            "itemQuantity": 5,
             "itemPrice": 5000,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
@@ -36,7 +36,7 @@
             "itemName": "テストアイテムE",
             "itemDescription": "test item",
             "itemQuantity": 5,
-            "itemPrice": 1000,
+            "itemPrice": 100,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
         },
@@ -44,14 +44,14 @@
             "itemName": "テストアイテムF",
             "itemDescription": "test item",
             "itemQuantity": 5,
-            "itemPrice": 5000,
+            "itemPrice": 1000,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
         },
         {
             "itemName": "android",
             "itemDescription": "test item",
-            "itemQuantity": 2,
+            "itemQuantity": 0,
             "itemPrice": 700,
             "itemSale": "Y",
             "itemImagePath": "img/item/android"

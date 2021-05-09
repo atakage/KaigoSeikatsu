@@ -12,6 +12,7 @@ public class ConvenienceUIManager : MonoBehaviour
     public PlayerData playerData;
     public GameObject canvasGameObj;
     public GameObject contentGameObj;
+    public GameObject menuBoxContentGameObj;
     public GameObject specificationBoxGameObj;
     public GameObject clickBlockGameObj;
     private void Start()
@@ -20,6 +21,7 @@ public class ConvenienceUIManager : MonoBehaviour
         playerData = playerSaveDataManager.LoadPlayerData();
 
         canvasGameObj = GameObject.Find("Canvas");
+        menuBoxContentGameObj = canvasGameObj.transform.Find("menuBox").transform.Find("Scroll View").transform.Find("Viewport").transform.Find("Content").gameObject;
         contentGameObj = canvasGameObj.transform.Find("orderBox").transform.Find("Scroll View").transform.Find("Viewport").transform.Find("Content").gameObject;
         specificationBoxGameObj = canvasGameObj.transform.Find("specificationBox").gameObject;
         clickBlockGameObj = canvasGameObj.transform.Find("clickBlock").gameObject;
@@ -166,6 +168,14 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
 
                 // itemAddButtonに注文追加イベントをつける
                 contentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").GetComponent<Button>().onClick.AddListener(ClickItemAddButton);
+
+                // アイテムがないならアイテム追加ボタンを防ぐ
+                if (convenienceItemDataArray[i].itemQuantity < 1)
+                {
+                    contentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").GetComponent<Button>().interactable = false;
+                    contentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "売り切り";
+                }
+                    
             }
             //最初のアイテムじゃないなら
             else if(i != 0 && convenienceItemDataArray[i].itemSale.Equals("Y"))
@@ -187,8 +197,78 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
 
                 // itemAddButtonに注文追加イベントをつける
                 itemBox.transform.Find("itemAddButton").GetComponent<Button>().onClick.AddListener(ClickItemAddButton);
+
+                // アイテムがないならアイテム追加ボタンを防ぐ(最初はitemBox0からのアイテム追加ボタン変更点が反映されている)
+                if (convenienceItemDataArray[i].itemQuantity < 1)
+                {
+                   itemBox.transform.Find("itemAddButton").GetComponent<Button>().interactable = false;
+                   itemBox.transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "売り切り";
+                }
+                // アイテムがいるならアイテム追加ボタンをいかす
+                else
+                {
+                   itemBox.transform.Find("itemAddButton").GetComponent<Button>().interactable = true;
+                   itemBox.transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "追加";
+                }
             }
         }
+    }
+
+    public void ResetUI()
+    {
+        // orderBox初期化
+        for (int i=1; i< contentGameObj.transform.childCount; i++)
+        {
+            Destroy(contentGameObj.transform.GetChild(i).gameObject);
+        }
+
+        // specificationBox初期化
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        specificationBoxGameObj.transform.Find("moneyValueStr").GetComponent<Text>().text = playerData.money+"円";
+        specificationBoxGameObj.transform.Find("totalPriceValueStr").GetComponent<Text>().text = "0円";
+        specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text = playerData.money + "円";
+
+        // コンビニで販売するアイテムリストを読み込む(json)
+        ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
+
+
+        for (int i = 0; i < convenienceItemDataArray.Length; i++)
+        {
+            // 最初のアイテムなら && アイテムがセール状態なら
+            if (convenienceItemDataArray[i].itemSale.Equals("Y"))
+            {
+                Debug.Log("reset ui itemName: " + convenienceItemDataArray[i].itemName);
+                Debug.Log("reset ui itemqty: " + convenienceItemDataArray[i].itemQuantity);
+
+                // オブジェクトを作らないで情報だけ移す(itemBox0)
+                Texture2D texture = Resources.Load(convenienceItemDataArray[i].itemImagePath, typeof(Texture2D)) as Texture2D;
+                Rect rect = new Rect(0, 0, texture.width, texture.height);
+                menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemImage").GetComponent<Image>().sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+
+                menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemName").GetComponent<Text>().text = convenienceItemDataArray[i].itemName;
+                menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemDescription").GetComponent<Text>().text = convenienceItemDataArray[i].itemDescription;
+                menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemQuantity").GetComponent<Text>().text = convenienceItemDataArray[i].itemQuantity.ToString();
+                menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemPrice").GetComponent<Text>().text = convenienceItemDataArray[i].itemPrice.ToString();
+
+                // ボタンクリックイベントは最初のときすでに設定されているので追加しない
+
+                // アイテムがないならアイテム追加ボタンを防ぐ
+                if (convenienceItemDataArray[i].itemQuantity < 1)
+                {
+                    menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").GetComponent<Button>().interactable = false;
+                    menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "売り切り";
+                }
+                // アイテムがないならアイテム追加ボタンを防ぐ
+                else
+                {
+                    menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").GetComponent<Button>().interactable = true;
+                    menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "追加";
+                }
+            }
+        }
+
+        // cursorとPanelテキスト初期化
+        ItemClickPanelUISetting(true);
     }
 
     public void ClickOrderConfirmBtn()
@@ -199,7 +279,6 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
     public void ClickOrderConfirmAlertBoxConfirmBtn()
     {
         ClickBlockAndAlertBoxSetActive(false);
-
         // ★itemListDataを共有することでitemListData(オブジェクト)が変更されたりしたらあとの作業で影響があるので
         // ★別のオブジェクトとリストに分けて詰める
         ItemListData itemListDataForPlayer = null;
@@ -242,8 +321,8 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
             // 購買したアイテムの数反映(convenienceItem.json)
             convenienceItemSetManager.SetConvenienceJsonFile(itemListDataListForConvenience.ToArray());
 
-            // call FirstUISetting()
-
+            // UIをリセットする
+            ResetUI();
 
         }
     }
