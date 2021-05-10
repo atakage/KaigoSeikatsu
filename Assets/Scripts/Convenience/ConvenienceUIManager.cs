@@ -9,6 +9,10 @@ public class ConvenienceUIManager : MonoBehaviour
 {
     public ConvenienceItemSetManager convenienceItemSetManager;
     public PlayerSaveDataManager playerSaveDataManager;
+    public UtilManager utilManager;
+    public EventManager eventManager;
+    public ChatManager chatManager;
+    public SceneTransitionManager sceneTransitionManager;
     public PlayerData playerData;
     public GameObject canvasGameObj;
     public GameObject contentGameObj;
@@ -27,10 +31,19 @@ public class ConvenienceUIManager : MonoBehaviour
         clickBlockGameObj = canvasGameObj.transform.Find("clickBlock").gameObject;
 
         convenienceItemSetManager = new ConvenienceItemSetManager();
+        utilManager = new UtilManager();
+        eventManager = new EventManager();
+        chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
+        sceneTransitionManager = new SceneTransitionManager();
+
         // コンビニで販売するアイテムリストを読み込む(json)
         ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
         // 最初のUIセット
         FirstUISetting(convenienceItemDataArray);
+
+        canvasGameObj.transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(() => ClickNextButton());
+        canvasGameObj.transform.Find("goToHomeAlertBox").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(() => ClickgoToHomeConfirmButton());
+        canvasGameObj.transform.Find("goToHomeAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(() => ClickgoToHomeCancelButton());
 
         canvasGameObj.transform.Find("orderConfirmButton").GetComponent<Button>().onClick.AddListener(() => ClickOrderConfirmBtn());
         canvasGameObj.transform.Find("orderConfirmAlertBox").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(() => ClickOrderConfirmAlertBoxConfirmBtn());
@@ -55,6 +68,13 @@ public class ConvenienceUIManager : MonoBehaviour
         {
             // 購入ボタンをいかす
             canvasGameObj.transform.Find("orderConfirmButton").GetComponent<Button>().interactable = true;
+        }
+
+        // 店員さんの挨拶イベントが終わるとシーン転換
+        if ("EV013".Equals(canvasGameObj.transform.Find("eventCodeSW").GetComponent<Text>().text) &&
+            "Y".Equals(canvasGameObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text))
+        {
+            sceneTransitionManager.LoadTo("AtHomeScene");
         }
     }
 
@@ -173,7 +193,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
                 if (convenienceItemDataArray[i].itemQuantity < 1)
                 {
                     contentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").GetComponent<Button>().interactable = false;
-                    contentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "売り切り";
+                    contentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "売り切れ";
                 }
                     
             }
@@ -202,7 +222,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
                 if (convenienceItemDataArray[i].itemQuantity < 1)
                 {
                    itemBox.transform.Find("itemAddButton").GetComponent<Button>().interactable = false;
-                   itemBox.transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "売り切り";
+                   itemBox.transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "売り切れ";
                 }
                 // アイテムがいるならアイテム追加ボタンをいかす
                 else
@@ -256,7 +276,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
                 if (convenienceItemDataArray[i].itemQuantity < 1)
                 {
                     menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").GetComponent<Button>().interactable = false;
-                    menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "売り切り";
+                    menuBoxContentGameObj.transform.Find("itemBox" + i).transform.Find("itemAddButton").transform.Find("Text").GetComponent<Text>().text = "売り切れ";
                 }
                 // アイテムがないならアイテム追加ボタンを防ぐ
                 else
@@ -269,6 +289,53 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
 
         // cursorとPanelテキスト初期化
         ItemClickPanelUISetting(true);
+    }
+
+    public void SetActiveUI(bool sw)
+    {
+        canvasGameObj.transform.Find("menuButton").GetComponent<Button>().interactable = sw;
+        canvasGameObj.transform.Find("nextButton").GetComponent<Button>().interactable = sw;
+        canvasGameObj.transform.Find("menuBox").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("orderBox").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("orderConfirmButton").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("specificationBox").gameObject.SetActive(sw);
+    }
+
+    public void LoadEventAndShow(string eventCode)
+    {
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
+        List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
+        chatManager.ShowDialogue(scriptList, eventCode);
+    }
+
+    public void ClickgoToHomeConfirmButton()
+    {
+        canvasGameObj.transform.Find("goToHomeAlertBox").gameObject.SetActive(false);
+        SetActiveUI(false);
+
+        playerData = playerSaveDataManager.LoadPlayerData();
+        
+            // 現在プレイヤーデータの時間を変更する(add minute)
+        DateTime addedDateTime = utilManager.TimeCal(playerData.time, 45);
+        playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
+        playerSaveDataManager.SavePlayerData(playerData);
+
+        // イベントを呼び出す(店員さん挨拶イベント)
+        canvasGameObj.transform.Find("eventCodeSW").GetComponent<Text>().text = "EV013";
+        LoadEventAndShow("EV013");
+    }
+
+    public void ClickNextButton()
+    {
+        canvasGameObj.transform.Find("goToHomeAlertBox").gameObject.SetActive(true);
+        SetActiveUI(false);
+    }
+
+    public void ClickgoToHomeCancelButton()
+    {
+        canvasGameObj.transform.Find("goToHomeAlertBox").gameObject.SetActive(false);
+        SetActiveUI(true);
     }
 
     public void ClickOrderConfirmBtn()
@@ -347,10 +414,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         Transform selectedItemBox = EventSystem.current.currentSelectedGameObject.transform.parent;
         Debug.Log("itemBoxTransform: " + selectedItemBox);
 
-        canvasGameObj.transform.Find("menuBox").gameObject.SetActive(false);
-        canvasGameObj.transform.Find("orderBox").gameObject.SetActive(false);
-        canvasGameObj.transform.Find("orderConfirmButton").gameObject.SetActive(false);
-        canvasGameObj.transform.Find("specificationBox").gameObject.SetActive(false);
+        SetActiveUI(false);
         addItemAlertBoxTransform.gameObject.SetActive(true);
 
         // 選択されたアイテムの情報を移す
@@ -447,10 +511,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         // onClick.AddListenerのイベントが積もるのを防止する
         RemoveButtonListeners();
 
-        canvasGameObj.transform.Find("menuBox").gameObject.SetActive(true);
-        canvasGameObj.transform.Find("orderBox").gameObject.SetActive(true);
-        canvasGameObj.transform.Find("orderConfirmButton").gameObject.SetActive(true);
-        canvasGameObj.transform.Find("specificationBox").gameObject.SetActive(true);
+        SetActiveUI(true);
         addItemAlertBoxTransform.gameObject.SetActive(false);
     }
 

@@ -32,11 +32,6 @@ public class ConvenienManager : MonoBehaviour
         // 挨拶イベント
         LoadEventAndShow("EV012");
 
-        // コンビニで販売するアイテムリストを読み込む(json)
-        //convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
-
-        // 最初のUIセット
-        //convenienceUIManager.FirstUISetting(convenienceItemDataArray);
     }
 
     void Update()

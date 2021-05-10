@@ -249,10 +249,11 @@ public class ChatManager : MonoBehaviour
         {
 
         }
-        Debug.Log("EVENTCODE: " + eventCode);
         // リストにある配列の数を読み込む
         textCount = textList.Count;
         this.textList = textList;
+        // ★ ChatManager chatManager = new ChatManager; (X)
+        // ★ ChatManager chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager; (O)
         StartCoroutine(StartDialogueCoroutine());
     }
 
