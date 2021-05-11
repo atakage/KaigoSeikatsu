@@ -116,6 +116,14 @@ public class FacilityManager : MonoBehaviour
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("CafeScene");
             }
+            // 17:20 -> 公園へ
+            else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
+                GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("公園"))
+            {
+                playerData.time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+                playerSaveDataManager.SavePlayerData(playerData);
+                sceneTransitionManager.LoadTo("ParkScene");
+            }
         }
         
         

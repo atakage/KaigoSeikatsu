@@ -317,7 +317,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         playerData = playerSaveDataManager.LoadPlayerData();
         
             // 現在プレイヤーデータの時間を変更する(add minute)
-        DateTime addedDateTime = utilManager.TimeCal(playerData.time, 45);
+        DateTime addedDateTime = utilManager.TimeCal(playerData.time, 20);
         playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
         playerSaveDataManager.SavePlayerData(playerData);
 

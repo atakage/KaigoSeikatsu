@@ -8,22 +8,29 @@ public class AtHomeManager : MonoBehaviour
 {
     public SceneTransitionManager sceneTransitionManager;
     public PlayerSaveDataManager playerSaveDataManager;
-    PlayerData playerData = null;
-
+    public PlayerData playerData = null;
+    public GameObject canvasGameObj;
+    public Boolean timeCheckResult;
     private void Start()
     {
         playerSaveDataManager = new PlayerSaveDataManager();
         sceneTransitionManager = new SceneTransitionManager();
 
+        canvasGameObj = GameObject.Find("Canvas").gameObject;
+
         playerData = playerSaveDataManager.LoadPlayerData();
         string time = playerData.time;
-        GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = time;
+        canvasGameObj.transform.Find("time").GetComponent<Text>().text = time;
+
+        // 現在外出禁止時間なのか確認する
+        timeCheckResult = CheckBanTime(playerData.time);
 
         // 朝なら出勤する、夜なら寝るにボタン変更
         GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text 
                            = (time.Equals("08:00")) ? "出勤する" : "寝る";
 
-        
+
+
         GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextButton);
         GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("No").GetComponent<Button>().onClick.AddListener(delegate { ActiveAlert(false); });
         GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("Yes").GetComponent<Button>().onClick.AddListener(ClickGoToAlertYesButton);
@@ -65,6 +72,38 @@ public class AtHomeManager : MonoBehaviour
 
             sceneTransitionManager.LoadTo("ConvenienceScene");
         }
+
+        // 朝は外出禁止
+        if ("08:00".Equals(playerData.time)) canvasGameObj.transform.Find("goOutButton").GetComponent<Button>().interactable = false;
+
+        // 現在時間が23:00以上なら外出禁止
+        if(timeCheckResult) canvasGameObj.transform.Find("goOutButton").GetComponent<Button>().interactable = false;
+    }
+    public bool CheckBanTime(string playerDataTime)
+    {
+        // 23:00 default time setting
+        DateTime dateTimeDefault = new DateTime();
+        TimeSpan timeSpanDefault = new TimeSpan(23,0,0);
+        dateTimeDefault = dateTimeDefault + timeSpanDefault;
+
+        // プレイヤー時間
+        string[] timeArray = playerDataTime.Split(':');
+        DateTime dateTime = new DateTime();
+        TimeSpan timeSpan = new TimeSpan(Int32.Parse(timeArray[0]), Int32.Parse(timeArray[1]), 0);
+        dateTime = dateTime + timeSpan;
+
+        // 23:00 - プレイヤー時間
+        // 現在時間が23:00以上ならtrue
+        TimeSpan gapTime = dateTimeDefault - dateTime;
+        if(gapTime.TotalMinutes < 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
     }
 
     public void ClickGoToConvenienceBtn()
