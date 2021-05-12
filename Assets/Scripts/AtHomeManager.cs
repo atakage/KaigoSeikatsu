@@ -8,6 +8,7 @@ public class AtHomeManager : MonoBehaviour
 {
     public SceneTransitionManager sceneTransitionManager;
     public PlayerSaveDataManager playerSaveDataManager;
+    public ConvenienceItemSetManager convenienceItemSetManager;
     public PlayerData playerData = null;
     public GameObject canvasGameObj;
     public Boolean timeCheckResult;
@@ -15,6 +16,7 @@ public class AtHomeManager : MonoBehaviour
     {
         playerSaveDataManager = new PlayerSaveDataManager();
         sceneTransitionManager = new SceneTransitionManager();
+        convenienceItemSetManager = new ConvenienceItemSetManager();
 
         canvasGameObj = GameObject.Find("Canvas").gameObject;
 
@@ -166,6 +168,9 @@ public class AtHomeManager : MonoBehaviour
         // 寝る
         else
         {
+            // コンビニにのアイテム補充
+            convenienceItemSetManager.ResetConvenienceQuantity();
+
             SetAlertForSleep();
             ActiveAlert(true);
             MenuButtonActive(false);

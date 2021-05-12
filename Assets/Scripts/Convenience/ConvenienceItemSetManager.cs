@@ -2,10 +2,28 @@
 using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class ConvenienceItemSetManager : MonoBehaviour
 {
+    // 毎晩コンビニにアイテムを補充
+    public void ResetConvenienceQuantity()
+    {
+        System.Random random = new System.Random();
+        // アイテムリストロード
+        ConvenienceItemData[] getConvenienceItemDataArray = GetConvenienceJsonFile();
+
+        // アイテム数くらい繰り返す
+        for (int i=0; i < getConvenienceItemDataArray.Length; i++)
+        {
+            // 3と5のあいだ
+            getConvenienceItemDataArray[i].itemQuantity = random.Next(1, 6);
+        }
+
+        CreateConvenienceJsonFile(getConvenienceItemDataArray.OfType<ConvenienceItemData>().ToList());
+    }
+
     public void CreateConvenienceItem(Dictionary<string, Dictionary<string, object>> ConItemListDic)
     {
         ConvenienceItemData convenienceItemData;
