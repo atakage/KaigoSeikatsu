@@ -10,6 +10,7 @@ public class FacilityManager : MonoBehaviour
     public EventManager eventManager;
     public ChatManager chatManager;
     public SceneTransitionManager sceneTransitionManager;
+    public UtilManager utilManager;
     public Button nextButton;
     public PlayerData playerData = null;
     public string[] morningrequiredEvent = null;
@@ -25,6 +26,7 @@ public class FacilityManager : MonoBehaviour
         eventManager = new EventManager();
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
         sceneTransitionManager = new SceneTransitionManager();
+        utilManager = new UtilManager();
         nextButton = GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>();
         nextButton.onClick.AddListener(ClickNextButton);
         GameObject.Find("Canvas").transform.Find("GoToCafeButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoToButton("カフェ"); });

@@ -3,13 +3,13 @@
         {
             "itemName": "名刺",
             "itemDescription": "介護福祉士の名刺だ",
-            "quantity": 17,
+            "quantity": 19,
             "keyItem": "Y"
         },
         {
             "itemName": "エナジードリンク",
             "itemDescription": "飲むと少しだけ元気が出る",
-            "quantity": 488,
+            "quantity": 548,
             "keyItem": "N"
         },
         {

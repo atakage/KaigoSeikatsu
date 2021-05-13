@@ -71,6 +71,11 @@
             "optionSW": "ON"
         },
         {
+            "eventCode": "EV014",
+            "script": "\"公園に到着した\"",
+            "optionSW": "ON"
+        },
+        {
             "eventCode": "ET000",
             "script": "\"あんたは誰?\"",
             "optionSW": "ON"
