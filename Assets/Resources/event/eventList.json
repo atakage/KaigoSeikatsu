@@ -76,6 +76,16 @@
             "optionSW": "ON"
         },
         {
+            "eventCode": "EV015",
+            "script": "え?/道に何か落ちている",
+            "optionSW": "ON"
+        },
+        {
+            "eventCode": "EV016",
+            "script": "公園をひとまわりした私は家に帰ることにした",
+            "optionSW": "ON"
+        },
+        {
             "eventCode": "ET000",
             "script": "\"あんたは誰?\"",
             "optionSW": "ON"

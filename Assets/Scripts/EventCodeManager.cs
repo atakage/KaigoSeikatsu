@@ -6,6 +6,7 @@ using UnityEngine;
 public class EventCodeManager : MonoBehaviour
 {
     public Dictionary<string, string> EventCodeDic;
+    public List<string> parkWalkEventCodeList;
 
     public string FindAfterEventByEventCode(string eventCode)
     {
@@ -25,9 +26,21 @@ public class EventCodeManager : MonoBehaviour
         EventCodeDic.Add("EV012", "Text");
         EventCodeDic.Add("EV013", "Fade Out Persist");
         EventCodeDic.Add("EV014", "Text");
+        EventCodeDic.Add("EV015", "Action");
+        EventCodeDic.Add("EV016", "Fade Out Persist");
         EventCodeDic.Add("ET000", "Choice");
         EventCodeDic.Add("EV999", "None");
 
         return EventCodeDic[eventCode];
+    }
+
+    public string GetParkWalkEventCode()
+    {
+        System.Random random = new System.Random();
+
+        parkWalkEventCodeList = new List<string>();
+        parkWalkEventCodeList.Add("EV015");
+
+        return parkWalkEventCodeList[random.Next(0, parkWalkEventCodeList.Count)];
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 
@@ -44,36 +45,57 @@ public class ChatManager : MonoBehaviour
                 {
                     StopAllCoroutines();
                     ExitDialogue();
-                    // イベントスクリプトが終わったことを示す
-                    if (this.completeEventSW != null) this.completeEventSW[this.eventCode] = true;
 
-                    //イベントスクリプト後にFade OutやUI変更
-                    string afterEvent = eventCodeManager.FindAfterEventByEventCode(eventCode);
-                    if(afterEvent.Equals("Fade Out"))
+                    // 普通のイベントのスクリプト終了のとき
+                    if (eventCode != null)
                     {
-                        executeFadeOut();
+                        // イベントスクリプトが終わったことを示す
+                        if (this.completeEventSW != null) this.completeEventSW[this.eventCode] = true;
+
+                        //イベントスクリプト後にFade OutやUI変更
+                        string afterEvent = eventCodeManager.FindAfterEventByEventCode(eventCode);
+                        if (afterEvent.Equals("Fade Out"))
+                        {
+                            executeFadeOut();
+                        }
+                        else if (afterEvent.Equals("Choice"))
+                        {
+                            // チョイスイベントを読み込む
+                            string choiceEvent = eventManager.GetChoiceEvent(eventCode);
+                            // チョイスボタンをセット
+                            SetChoiceButtonUI(choiceEvent, true);
+                            // メニューボタンと進行ボタンを隠す
+                            SetActiveMenuAndNextButton(false);
+                            // チョイスボタンクリックイベント
+                            ClickChoiceButton(eventCode);
+                            // 終了信号イベントならFadeOut && UIをdisplay
+                        }
+                        else if (afterEvent.Equals("None"))
+                        {
+                            executeFadeOut();
+                        }
+                        else if (afterEvent.Equals("Text"))
+                        {
+                            GameObject.Find("Canvas").transform.Find("textEventEndSW").GetComponent<Text>().text = "END";
+                        }
+                        else if (afterEvent.Equals("Fade Out Persist"))
+                        {
+                            executeFadeOutPersist();
+                            // 一つのイベントが終わったあと追加的なイベントやactionが発動
+                        }
+                        else if (afterEvent.Equals("Action"))
+                        {
+                            Debug.Log("Action Input Code: " + eventCode);
+                            GameObject.Find("Canvas").transform.Find("endedActionEventCode").GetComponent<Text>().text = eventCode;
+                        }
+                    // イベントコードがなきスクリプトだけを読み込んだとき
+                    }else if (eventCode == null)
+                    {
+                        Debug.Log("only script completed");
+                        GameObject.Find("Canvas").transform.Find("onlyScriptEventEnd").GetComponent<Text>().text = "END";
                     }
-                    else if (afterEvent.Equals("Choice"))
-                    {
-                        // チョイスイベントを読み込む
-                        string choiceEvent = eventManager.GetChoiceEvent(eventCode);
-                        // チョイスボタンをセット
-                        SetChoiceButtonUI(choiceEvent, true);
-                        // メニューボタンと進行ボタンを隠す
-                        SetActiveMenuAndNextButton(false);
-                        // チョイスボタンクリックイベント
-                        ClickChoiceButton(eventCode);
-                    // 終了信号イベントならFadeOut && UIをdisplay
-                    }else if (afterEvent.Equals("None"))
-                    {
-                        executeFadeOut();
-                    }else if (afterEvent.Equals("Text"))
-                    {
-                        GameObject.Find("Canvas").transform.Find("textEventEndSW").GetComponent<Text>().text = "END";
-                    }else if(afterEvent.Equals("Fade Out Persist"))
-                    {
-                        executeFadeOutPersist();
-                    }
+
+
                 }
                 else
                 {
@@ -237,6 +259,7 @@ public class ChatManager : MonoBehaviour
 
     public void ShowDialogue(List<string[]> textList, string eventCode)
     {
+        Debug.Log("call ShowDialogue: " + eventCode);
         // イベントコードがあるなら(選択肢活用)
         if (!eventCode.Equals(""))
         {
@@ -247,13 +270,13 @@ public class ChatManager : MonoBehaviour
         // スクリプトだけなら
         else
         {
-
+            // eventCodeが余ることを防止する
+            this.eventCode = null;
         }
         // リストにある配列の数を読み込む
         textCount = textList.Count;
         this.textList = textList;
-        // ★ ChatManager chatManager = new ChatManager; (X)
-        // ★ ChatManager chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager; (O)
+
         StartCoroutine(StartDialogueCoroutine());
     }
 
