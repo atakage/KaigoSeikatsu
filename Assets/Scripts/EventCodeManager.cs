@@ -28,6 +28,7 @@ public class EventCodeManager : MonoBehaviour
         EventCodeDic.Add("EV014", "Text");
         EventCodeDic.Add("EV015", "Action");
         EventCodeDic.Add("EV016", "Fade Out Persist");
+        EventCodeDic.Add("EV017", "Text");
         EventCodeDic.Add("ET000", "Choice");
         EventCodeDic.Add("EV999", "None");
 
@@ -40,6 +41,7 @@ public class EventCodeManager : MonoBehaviour
 
         parkWalkEventCodeList = new List<string>();
         parkWalkEventCodeList.Add("EV015");
+        parkWalkEventCodeList.Add("EV017");
 
         return parkWalkEventCodeList[random.Next(0, parkWalkEventCodeList.Count)];
     }

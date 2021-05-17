@@ -11,6 +11,7 @@ public class ParkManager : MonoBehaviour
     public EventCodeManager eventCodeManager;
     public ChatManager chatManager;
     public UtilManager utilManager;
+    public ConvenienceItemSetManager convenienceItemSetManager;
     public SceneTransitionManager sceneTransitionManager;
     public GameObject canvasGameObj;
     void Start()
@@ -21,6 +22,7 @@ public class ParkManager : MonoBehaviour
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
         utilManager = new UtilManager();
         sceneTransitionManager = new SceneTransitionManager();
+        convenienceItemSetManager = new ConvenienceItemSetManager();
 
         canvasGameObj = GameObject.Find("Canvas");
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
@@ -35,13 +37,22 @@ public class ParkManager : MonoBehaviour
 
     private void Update()
     {
-        // 最初のTextイベント終了後
-        if ("END".Equals(canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text))
+        // テキストイベント終了後
+        if ("END".Equals(canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text)
+            && canvasGameObj.transform.Find("endedTextEventCode").GetComponent<Text>().text.Equals("EV014"))
         {
             SetButtonUI(true);
             SetActiveWalkAndExerciseBtn(true);
             canvasGameObj.transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "何をしようか?";
             canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text = "";
+
+        }else if ("END".Equals(canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text)
+            && canvasGameObj.transform.Find("endedTextEventCode").GetComponent<Text>().text.Equals("EV017"))
+        {
+            canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text = "";
+            // 家に帰るイベント
+            LoadEventAndShow("EV016");
+            
         }
 
         // Actionイベントの終了を確認
@@ -52,7 +63,7 @@ public class ParkManager : MonoBehaviour
             {
                 canvasGameObj.transform.Find("endedActionEventCode").GetComponent<Text>().text = "";
                 Debug.Log("before call PickUpItemOrMoneyEvent");
-                PickUpItemOrMoneyEvent();
+                PickUpMoneyOrItemEvent();
 
             }    
         }
@@ -132,17 +143,15 @@ public class ParkManager : MonoBehaviour
         canvasGameObj.transform.Find("nextButton").GetComponent<Button>().interactable = sw;
     }
 
-    public void PickUpItemOrMoneyEvent()
+    public void PickUpMoneyOrItemEvent()
     {
-        Debug.Log("call PickUpItemOrMoneyEvent()");
         System.Random random = new System.Random();
-        int moneyOrItem = random.Next(0, 1);
+        int eventInt = random.Next(0, 2);
         // 0ならお金獲得
-        if (0 == moneyOrItem)
+        if (0 == eventInt)
         {
             // 100円 ~ 500円
             int money = random.Next(1, 6) * 100;
-            Debug.Log(money + "円獲得");
             PlayerData playerData = playerSaveDataManager.LoadPlayerData();
             playerData.money = (Int32.Parse(playerData.money) + money).ToString();
             playerSaveDataManager.SavePlayerData(playerData);
@@ -151,10 +160,39 @@ public class ParkManager : MonoBehaviour
             chatManager.ShowDialogue(scriptList, "");
         }
         // 1ならアイテム獲得
-        else if (1 == moneyOrItem)
+        else if (1 == eventInt)
         {
+            // コンビニのアイテムリストを取り出す
+            ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
+            // アイテムリストから一つをランダムで取り出す
+            string pickUpItemName = SearchluckyItemToConvenience(convenienceItemDataArray);
 
+            List<string[]> scriptList = eventManager.SingleScriptSaveToList(pickUpItemName + "を拾った!");
+            chatManager.ShowDialogue(scriptList, "");
         }
+    }
+
+    public string SearchluckyItemToConvenience(ConvenienceItemData[] convenienceItemDataArray)
+    {
+        System.Random random = new System.Random();
+        Debug.Log("convenienceItemDataArray.length: " + convenienceItemDataArray.Length);
+        // ランダムアイテム１つを取り出す
+        ConvenienceItemData convenienceItemData = convenienceItemDataArray[random.Next(0, convenienceItemDataArray.Length)];
+        Debug.Log(convenienceItemData.itemName + "を獲得");
+        // プレイヤーアイテムに追加する
+        ItemListData itemListData = new ItemListData();
+        itemListData.itemDescription = convenienceItemData.itemDescription;
+        itemListData.itemName = convenienceItemData.itemName;
+        itemListData.keyItem = "N";
+        itemListData.quantity = random.Next(1, 4);
+        Debug.Log("ランダムアイテム数: " + itemListData.quantity);
+
+        ItemListData[] itemListDataArray = new ItemListData[1];
+        itemListDataArray[0] = itemListData;
+
+        playerSaveDataManager.SaveItemListData(itemListDataArray);
+
+        return convenienceItemData.itemName;
     }
     public void LoadEventAndShow(string eventCode)
     {

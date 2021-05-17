@@ -86,6 +86,11 @@
             "optionSW": "ON"
         },
         {
+            "eventCode": "EV017",
+            "script": "散歩しながら眺める公園の景色が大好きだ",
+            "optionSW": "ON"
+        },
+        {
             "eventCode": "ET000",
             "script": "\"あんたは誰?\"",
             "optionSW": "ON"
