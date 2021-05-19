@@ -3,25 +3,19 @@
         {
             "itemName": "名刺",
             "itemDescription": "介護福祉士の名刺だ",
-            "quantity": 22,
+            "quantity": 31,
             "keyItem": "Y"
         },
         {
             "itemName": "エナジードリンク",
             "itemDescription": "飲むと少しだけ元気が出る",
-            "quantity": 638,
-            "keyItem": "N"
-        },
-        {
-            "itemName": "android",
-            "itemDescription": "test item",
-            "quantity": 4,
+            "quantity": 908,
             "keyItem": "N"
         },
         {
             "itemName": "テストアイテムC",
             "itemDescription": "test item",
-            "quantity": 2,
+            "quantity": 1,
             "keyItem": "N"
         },
         {
@@ -34,6 +28,12 @@
             "itemName": "テストアイテムF",
             "itemDescription": "test item",
             "quantity": 9,
+            "keyItem": "N"
+        },
+        {
+            "itemName": "テストアイテムD",
+            "itemDescription": "test item",
+            "quantity": 1,
             "keyItem": "N"
         }
     ]

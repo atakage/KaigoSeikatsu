@@ -165,6 +165,8 @@ public class CafeManager : MonoBehaviour
         playerData.time = "19:00";
         playerSaveDataManager.SavePlayerData(playerData);
 
+        // 注文したアイテム効果適用
+
         // fade out event(+ sound effect(dish))
         LoadEventAndShow("EV010");
         GameObject.Find("Canvas").transform.Find("greetingCheck").GetComponent<Text>().text = "Y";

@@ -52,9 +52,25 @@ public class ParkManager : MonoBehaviour
             canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text = "";
             // 家に帰るイベント
             LoadEventAndShow("EV016");
-            
+        
+        // 運動イベント
+        }else if ("END".Equals(canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text)
+            && (canvasGameObj.transform.Find("endedTextEventCode").GetComponent<Text>().text.Equals("EV018")
+               || canvasGameObj.transform.Find("endedTextEventCode").GetComponent<Text>().text.Equals("EV019")))
+        {
+            string endedTextEventCode = canvasGameObj.transform.Find("endedTextEventCode").GetComponent<Text>().text;
+            // プレイヤーの疲れ数値変更
+            PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+            if (endedTextEventCode.Equals("EV018")) playerData.fatigue -= (float)3;
+            else if (endedTextEventCode.Equals("EV019")) playerData.satisfaction += 3;
+            playerSaveDataManager.SavePlayerData(playerData);
+
+            canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text = "";
+            // 家に帰るイベント
+            LoadEventAndShow("EV016");
         }
 
+        // 散歩イベント
         // Actionイベントの終了を確認
         if (!canvasGameObj.transform.Find("endedActionEventCode").GetComponent<Text>().text.Equals(""))
         {
@@ -115,7 +131,7 @@ public class ParkManager : MonoBehaviour
         }
         else if ("運動".Equals(action))
         {
-
+            eventCode = eventCodeManager.GetExerciseEventCode();
         }
         // イベント発動
         LoadEventAndShow(eventCode);
