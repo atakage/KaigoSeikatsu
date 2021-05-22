@@ -25,19 +25,19 @@ public class ShopItemSetManager : MonoBehaviour
     {
 
         // タイトルで
-        SetShopItem();
+        //SetShopItem();
 
         // ショップアイテムファイルをclassに読み込む
-        ShopItem[] loadedShopItemArray = LoadShopItemJsonFile();
+        ConvenienceItemData[] loadedCafeItemArray = LoadCafeItemJsonFile();
 
         //読み込んだclassファイルをショップUIにセットする
-        SetShopItemUI(loadedShopItemArray);
+        SetShopItemUI(loadedCafeItemArray);
     }
 
 
-    public void SetShopItemUI(ShopItem[] loadedShopItemArray)
+    public void SetShopItemUI(ConvenienceItemData[] loadedCafeItemArray)
     {
-        int shopItemCount = loadedShopItemArray.Length;
+        int shopItemCount = loadedCafeItemArray.Length;
         int addmenuBackSizeCount = shopItemCount - 3;
         Transform menuBackTransform = GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").transform.Find("Viewport").transform.Find("menuBack").transform;
 
@@ -59,43 +59,55 @@ public class ShopItemSetManager : MonoBehaviour
             // アイテムの数だけオブジェクトを作る
         for (int i=0; i< shopItemCount; i++)
         {
+
+            
+
             // 0番目アイテムの情報をセッティング
                   // アイテム数が3以下default
             if (i == 0 && 4 > shopItemCount)
             {
-                itemBox.transform.Find("itemNameBox").transform.Find("Text").GetComponent<Text>().text = loadedShopItemArray[i].itemName;
-                itemBox.transform.Find("itemPriceBox").transform.Find("Text").GetComponent<Text>().text = loadedShopItemArray[i].price.ToString()+"円";
-                itemBox.transform.Find("itemDescription").GetComponent<Text>().text = loadedShopItemArray[i].description;
-                itemBox.transform.Translate(0, menuBackPos.y - 401, 0);
+                // 販売中のアイテムだけ表示する
+                if (loadedCafeItemArray[i].itemSale.Equals("Y"))
+                {
+                    itemBox.transform.Find("itemNameBox").transform.Find("Text").GetComponent<Text>().text = loadedCafeItemArray[i].itemName;
+                    itemBox.transform.Find("itemPriceBox").transform.Find("Text").GetComponent<Text>().text = loadedCafeItemArray[i].itemPrice.ToString() + "円";
+                    itemBox.transform.Find("itemDescription").GetComponent<Text>().text = loadedCafeItemArray[i].itemDescription;
+                    itemBox.transform.Translate(0, menuBackPos.y - 401, 0);
+                }
             }
             // 最初のdefaultオブジェクトにはアイテム情報をセット(バッググラウンドが伸びることによって最後のアイテムボックスの位置を調整する)
             else if (i == 0 && shopItemCount > 3)
             {
-                
-                itemBox.transform.Find("itemNameBox").transform.Find("Text").GetComponent<Text>().text = loadedShopItemArray[i].itemName;
-                itemBox.transform.Find("itemPriceBox").transform.Find("Text").GetComponent<Text>().text = loadedShopItemArray[i].price.ToString() + "円";
-                itemBox.transform.Find("itemDescription").GetComponent<Text>().text = loadedShopItemArray[i].description;
-                itemBox.transform.Translate(0, (addmenuBackSizeCount * 100) - 50, 0);
-                //Debug.Log(" menuBackPos.y: " + cafeMenuScrollViewPos.y);
-                //Debug.Log("(shopItemCount-3)*50: " + cafeMenuScrollViewPos.y / shopItemCount);
-                //Debug.Log("menuBackPos.y - (shopItemCount-3)*50: " + menuBackPos.y + (menuBackPos.y * shopItemCount - 3) * 10));
-                //itemBox.transform.Translate(0, menuBackPos.y - 400, 0);
-
+                // 販売中のアイテムだけ表示する
+                if (loadedCafeItemArray[i].itemSale.Equals("Y"))
+                {
+                    itemBox.transform.Find("itemNameBox").transform.Find("Text").GetComponent<Text>().text = loadedCafeItemArray[i].itemName;
+                    itemBox.transform.Find("itemPriceBox").transform.Find("Text").GetComponent<Text>().text = loadedCafeItemArray[i].itemPrice.ToString() + "円";
+                    itemBox.transform.Find("itemDescription").GetComponent<Text>().text = loadedCafeItemArray[i].itemDescription;
+                    itemBox.transform.Translate(0, (addmenuBackSizeCount * 100) - 50, 0);
+                    //Debug.Log(" menuBackPos.y: " + cafeMenuScrollViewPos.y);
+                    //Debug.Log("(shopItemCount-3)*50: " + cafeMenuScrollViewPos.y / shopItemCount);
+                    //Debug.Log("menuBackPos.y - (shopItemCount-3)*50: " + menuBackPos.y + (menuBackPos.y * shopItemCount - 3) * 10));
+                    //itemBox.transform.Translate(0, menuBackPos.y - 400, 0);
+                }
             }
             else
             {
-                // オブジェクトを作る
-                itemBox = Instantiate(itemBox, new Vector3(itemBox.transform.position.x, itemBox.transform.position.y - 200, itemBox.transform.position.z), Quaternion.identity);
-                // オブジェクトネームを変更する
-                itemBox.gameObject.name = "itemBox"+i;
-                // オブジェクトの位置を決める
-                itemBox.transform.SetParent(GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").transform.Find("Viewport").transform.Find("menuBack").transform);
-                // アイテム情報をセット
-                itemBox.transform.Find("itemNameBox").transform.Find("Text").GetComponent<Text>().text = loadedShopItemArray[i].itemName;
-                itemBox.transform.Find("itemPriceBox").transform.Find("Text").GetComponent<Text>().text = loadedShopItemArray[i].price.ToString() + "円";
-                itemBox.transform.Find("itemDescription").GetComponent<Text>().text = loadedShopItemArray[i].description;
+                // 販売中のアイテムだけ表示する
+                if (loadedCafeItemArray[i].itemSale.Equals("Y"))
+                {
+                    // オブジェクトを作る
+                    itemBox = Instantiate(itemBox, new Vector3(itemBox.transform.position.x, itemBox.transform.position.y - 200, itemBox.transform.position.z), Quaternion.identity);
+                    // オブジェクトネームを変更する
+                    itemBox.gameObject.name = "itemBox" + i;
+                    // オブジェクトの位置を決める
+                    itemBox.transform.SetParent(GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").transform.Find("Viewport").transform.Find("menuBack").transform);
+                    // アイテム情報をセット
+                    itemBox.transform.Find("itemNameBox").transform.Find("Text").GetComponent<Text>().text = loadedCafeItemArray[i].itemName;
+                    itemBox.transform.Find("itemPriceBox").transform.Find("Text").GetComponent<Text>().text = loadedCafeItemArray[i].itemPrice.ToString() + "円";
+                    itemBox.transform.Find("itemDescription").GetComponent<Text>().text = loadedCafeItemArray[i].itemDescription;
+                }
             }
-
             // オーダーボタンにイベント追加
             itemBox.transform.Find("orderButton").GetComponent<Button>().onClick.AddListener(addOrderButtonEvent);
         }
@@ -327,26 +339,26 @@ public class ShopItemSetManager : MonoBehaviour
         File.WriteAllText(Application.dataPath + "/Resources/saveData/shopItem.json", itemAsStr);
     }
 
-    public ShopItem[] LoadShopItemJsonFile()
+    public ConvenienceItemData[] LoadCafeItemJsonFile()
     {
-        ShopItem[] loadedShopItemArray = null;
+        ConvenienceItemData[] loadedCafeItemArray = null;
         try
         {
-            string itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/shopItem.json");
+            string itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/cafeItem.json");
             Debug.Log("itemAsStr: " + itemAsStr);
-            loadedShopItemArray = JsonHelper.FromJson<ShopItem>(itemAsStr);
-            Debug.Log("loadedShopItemArray.Length: " + loadedShopItemArray.Length);
+            loadedCafeItemArray = JsonHelper.FromJson<ConvenienceItemData>(itemAsStr);
+            Debug.Log("loadedCafeItemArray.Length: " + loadedCafeItemArray.Length);
         }
         catch(Exception e)
         {
             Debug.Log("EXCEPTION: " + e);
-            loadedShopItemArray = null;
+            loadedCafeItemArray = null;
         }
 
         // アイテムのsaleがfalseなら除いて詰める
 
 
-        return loadedShopItemArray;
+        return loadedCafeItemArray;
     }
 
 }

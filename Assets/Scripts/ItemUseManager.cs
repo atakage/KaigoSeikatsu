@@ -40,49 +40,85 @@ public class ItemUseManager : MonoBehaviour
 
     }
 
-    public void ApplyItem(string useItemEffect)
+    public void UseItem(List<string> useItemNameList, Dictionary<string, Dictionary<string, object>> allItemDic)
     {
-        // プレイヤーの情報を読み出す
-        PlayerSaveDataManager playerSaveDataManager = new PlayerSaveDataManager();
-        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
-
-        // itemEffectを分ける
-        string itemEffect = useItemEffect.Substring(0, 2); // SA:satisfaction, FA:fatigue
-        string itemOperator = useItemEffect.Substring(2, 1); // add or subtract
-        int itemValue = Convert.ToInt32(useItemEffect.Substring(3)); // value
-
-        // satisfactionなら
-        if ("SA".Equals(itemEffect))
+        // アイテム数だけ繰り返す
+        foreach(string useItemName in useItemNameList)
         {
-            // plus(+)なら
-            if ("+".Equals(itemOperator))
-            {
-                // satisfactionをvalueくらい足す
-                playerData.satisfaction += itemValue;
-            }
-            // それ以外(minus)なら
-            else
-            {
-                playerData.satisfaction -= itemValue;
-            }
+            // 使うアイテムの情報を読み出す
+            Dictionary<string, object> useItemDic = allItemDic[useItemName];
+            // アイテムの効果を読み出す
+            string useItemEffect = (string)useItemDic["itemEffect"];
+            // アイテム効果を適用
+            ApplyItem(useItemEffect);
         }
-        // fatigueなら
-        else if ("FA".Equals(itemEffect))
-        {
-            // plus(+)なら
-            if ("+".Equals(itemOperator))
-            {
-                // satisfactionをvalueくらい足す
-                playerData.fatigue += itemValue;
-            }
-            // それ以外(minus)なら
-            else
-            {
-                playerData.fatigue -= itemValue;
-            }
-        }
+    }
 
-        // 変更されたプレイヤーの情報をセーブする
-        playerSaveDataManager.SavePlayerData(playerData);
+    public void ApplyItem(string useItemEffectParam)
+    {
+        string[] useItemEffectArray = useItemEffectParam.Split('|');
+        // アイテムの効果を次第に適用
+        foreach(string useItemEffect in useItemEffectArray)
+        {
+            Debug.Log("useItemEffect: " + useItemEffect);
+
+            // プレイヤーの情報を読み出す
+            PlayerSaveDataManager playerSaveDataManager = new PlayerSaveDataManager();
+            PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+
+            // itemEffectを分ける
+            string itemEffect = useItemEffect.Substring(0, 2); // SA:satisfaction, FA:fatigue
+            string itemOperator = useItemEffect.Substring(2, 1); // add or subtract
+            int itemValue = Convert.ToInt32(useItemEffect.Substring(3)); // value
+
+            // satisfactionなら
+            if ("SA".Equals(itemEffect))
+            {
+                // plus(+)なら
+                if ("+".Equals(itemOperator))
+                {
+                    // satisfactionをvalueくらい足す
+                    playerData.satisfaction += itemValue;
+                }
+                // それ以外(minus)なら
+                else
+                {
+                    playerData.satisfaction -= itemValue;
+                }
+            }
+            // fatigueなら
+            else if ("FA".Equals(itemEffect))
+            {
+                // plus(+)なら
+                if ("+".Equals(itemOperator))
+                {
+                    // fatigueをvalueくらい足す
+                    playerData.fatigue += itemValue;
+                }
+                // それ以外(minus)なら
+                else
+                {
+                    playerData.fatigue -= itemValue;
+                }
+            }
+            // feelingなら
+            else if ("FL".Equals(itemEffect))
+            {
+                // plus(+)なら
+                if ("+".Equals(itemOperator))
+                {
+                    // feelingをvalueくらい足す
+                    playerData.feeling += itemValue;
+                }
+                // それ以外(minus)なら
+                else
+                {
+                    playerData.feeling -= itemValue;
+                }
+            }
+
+            // 変更されたプレイヤーの情報をセーブする
+            playerSaveDataManager.SavePlayerData(playerData);
+        }
     }
 }

@@ -8,6 +8,7 @@ using UnityEngine;
 public class CSVManager : MonoBehaviour
 {
     public ConvenienceItemSetManager convenienceItemSetManager;
+    public CafeItemSetManager cafeItemSetManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -88,4 +89,31 @@ public class CSVManager : MonoBehaviour
             convenienceItemSetManager.CreateConvenienceItem(ConItemListDic);
         }
     }
+    
+    public void ReadCafeItemInitFileAndCreateJson()
+    {
+        bool checkJsonSW;
+        try
+        {
+            // jsonファイルを読み込む
+            File.ReadAllText(Application.dataPath + "/Resources/saveData/cafeItem.json");
+            checkJsonSW = true;
+        }
+        // jsonファイルがないと
+        catch (Exception e)
+        {
+            checkJsonSW = false;
+        }
+
+        // jsonファイルがないと
+        if (!checkJsonSW)
+        {
+            // CafeItemInit.txtからデータを読み込む
+            Dictionary<string, Dictionary<string, object>> CafeItemListDic = GetTxtItemList("CafeItemInit");
+            // cafeItem.jsonを作る
+            cafeItemSetManager = new CafeItemSetManager();
+            cafeItemSetManager.CreateCafeItem(CafeItemListDic);
+        }
+    }
+    
 }

@@ -13,10 +13,10 @@ public class PlayerData
     public string money;
     public string time;
     public string[] eventCodeArray; // クリアしたイベント
-    public int progress; // 進行度
+    public int progress; // ゲームの進行度
     public float fatigue; // 疲労、100になったらゲームオーバー
-    public int satisfaction; // ending
-    public int action; // 行動力
+    public int satisfaction; // 仕事の満足度, endingに影響
+    public int feeling; // 気分
 }
 
 

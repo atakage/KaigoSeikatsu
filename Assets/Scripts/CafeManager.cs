@@ -10,6 +10,8 @@ public class CafeManager : MonoBehaviour
     public EventManager eventManager;
     public ChatManager chatManager;
     public SceneTransitionManager sceneTransitionManager;
+    public CSVManager csvManager;
+    public ItemUseManager itemUseManager;
     public Vector3 cafeMenuCanvasPos;
     public Vector3 detailOrderCanvasPos;
     public PlayerData playerData;
@@ -23,6 +25,8 @@ public class CafeManager : MonoBehaviour
         eventManager = new EventManager();
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
         sceneTransitionManager = new SceneTransitionManager();
+        csvManager = new CSVManager();
+        itemUseManager = new ItemUseManager();
 
         cafeMenuCanvasPos = GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").position;
         detailOrderCanvasPos = GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").position;
@@ -166,10 +170,28 @@ public class CafeManager : MonoBehaviour
         playerSaveDataManager.SavePlayerData(playerData);
 
         // 注文したアイテム効果適用
+        // 注文したアイテムをリストに追加する
+        Transform detailBackTransForm = GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").transform.Find("Viewport")
+            .transform.Find("detailBack");
+        int detailOrderChildCount = detailBackTransForm.childCount;
+        List<string> orderedItemNameList = new List<string>();
+
+        for(int i=1; i< detailOrderChildCount; i++)
+        {
+            Transform detailItemTransForm = detailBackTransForm.GetChild(i);
+            orderedItemNameList.Add(detailItemTransForm.transform.Find("itemName").GetComponent<Text>().text);
+        }
+
+        // ゲーム内全体アイテムリストを読み出す(key=itemName, value=itemName,itemDescription,itemEffect,key)
+        Dictionary<string, Dictionary<string, object>> allItemDic = csvManager.GetTxtItemList("AllItem");
+
+        // 使うアイテムの効果を全体アイテムリストから探して適用する
+        itemUseManager.UseItem(orderedItemNameList, allItemDic);
 
         // fade out event(+ sound effect(dish))
         LoadEventAndShow("EV010");
         GameObject.Find("Canvas").transform.Find("greetingCheck").GetComponent<Text>().text = "Y";
+
 
     }
 
@@ -187,13 +209,14 @@ public class CafeManager : MonoBehaviour
 
     public void ClickOrderPanelConfirmBtn()
     {
-        menuAndNextButtonInteractable(false);
-
-        GameObject.Find("Canvas").transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "注文しますか?";
         Transform detailBackTransform = GameObject.Find("DetailOrderScrollView").transform.Find("Viewport").transform.Find("detailBack");
         // detailにアイテムが一つ以上いるのを確認する(detailSampleを除いて)
-        if(detailBackTransform.childCount > 1)
+        if (detailBackTransform.childCount > 1)
         {
+            menuAndNextButtonInteractable(false);
+
+            GameObject.Find("Canvas").transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "注文しますか?";
+
             GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").gameObject.SetActive(false);
             GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").gameObject.SetActive(false);
             GameObject.Find("Canvas").transform.Find("ConfirmAlertBox").gameObject.SetActive(true);

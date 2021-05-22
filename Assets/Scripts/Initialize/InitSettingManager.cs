@@ -15,6 +15,9 @@ public class InitSettingManager : MonoBehaviour
         // itemSaleを変更したいときはそのSceneでConvenienceItem.jsonを読み込んで変更したあとセーブすればいい
         // ConvenienceItem.jsonがあると作らない(最初だけ作る)
         csvManager.ReadConvenienceInitFileAndCreateJson();
+
+        // カフェで販売するアイテムをセットする
+        csvManager.ReadCafeItemInitFileAndCreateJson();
     }
 
 

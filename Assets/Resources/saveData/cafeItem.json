@@ -28,7 +28,7 @@
             "itemName": "ハムサンド",
             "itemDescription": "定番のハムサンド",
             "itemQuantity": 0,
-            "itemPrice": 5000,
+            "itemPrice": 500,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
         }
