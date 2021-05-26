@@ -95,6 +95,7 @@ public class ParkManager : MonoBehaviour
         {
             PlayerData playerData = playerSaveDataManager.LoadPlayerData();
             DateTime addedDateTime = utilManager.TimeCal(playerData.time, 60);
+            playerData.currentScene = "AtHomeScene";
             playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
             playerSaveDataManager.SavePlayerData(playerData);
 

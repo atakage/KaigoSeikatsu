@@ -1,36 +1,60 @@
 {
     "Items": [
         {
-            "itemName": "コーヒー",
-            "itemDescription": "温かいコーヒーだ",
-            "itemQuantity": 0,
-            "itemPrice": 400,
+            "itemName": "テストアイテムA",
+            "itemDescription": "test item",
+            "itemQuantity": 5,
+            "itemPrice": 12345,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
         },
         {
-            "itemName": "カフェ・ラッテ",
-            "itemDescription": "ミルクたっぷりのカフェ・ラッテ",
-            "itemQuantity": 0,
-            "itemPrice": 550,
-            "itemSale": "Y",
-            "itemImagePath": "img/item/unity"
-        },
-        {
-            "itemName": "アイスティー",
-            "itemDescription": "冷たくて甘い",
-            "itemQuantity": 0,
-            "itemPrice": 350,
-            "itemSale": "Y",
-            "itemImagePath": "img/item/unity"
-        },
-        {
-            "itemName": "ハムサンド",
-            "itemDescription": "定番のハムサンド",
-            "itemQuantity": 0,
+            "itemName": "テストアイテムB",
+            "itemDescription": "test item",
+            "itemQuantity": 5,
             "itemPrice": 5000,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
+        },
+        {
+            "itemName": "テストアイテムC",
+            "itemDescription": "test item",
+            "itemQuantity": 1,
+            "itemPrice": 3000,
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
+        },
+        {
+            "itemName": "テストアイテムD",
+            "itemDescription": "test item",
+            "itemQuantity": 4,
+            "itemPrice": 2000,
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
+        },
+        {
+            "itemName": "テストアイテムE",
+            "itemDescription": "test item",
+            "itemQuantity": 2,
+            "itemPrice": 1000,
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
+        },
+        {
+            "itemName": "テストアイテムF",
+            "itemDescription": "test item",
+            "itemQuantity": 4,
+            "itemPrice": 5000,
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
+        },
+        {
+            "itemName": "android",
+            "itemDescription": "test item",
+            "itemQuantity": 0,
+            "itemPrice": 700,
+            "itemSale": "Y",
+            "itemImagePath": "img/item/android"
         }
     ]
 }

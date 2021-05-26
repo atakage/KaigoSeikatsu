@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 
@@ -49,6 +50,8 @@ public class AtHomeManager : MonoBehaviour
         if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
             GameObject.Find("Canvas").transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("出勤する"))
         {
+            // 次のシーンをプレイヤーデータにセーブ
+            playerData.currentScene = "FacilityScene";
             playerData.time = "09:00";
             playerSaveDataManager.SavePlayerData(playerData);
             sceneTransitionManager.LoadTo("FacilityScene");
@@ -66,9 +69,11 @@ public class AtHomeManager : MonoBehaviour
         // コンビニへ行く
         }else if (GameObject.Find("Canvas").transform.Find("FadeCompleteValue").GetComponent<Text>().text.Equals("convenience"))
         {
-                  // 時間増加後scene転換
+            // 時間増加後scene転換
             string[] playerTimeArray = playerData.time.Split(':');
             int timeGoesMinuteInt = Int32.Parse(playerTimeArray[1]) + 10;
+            // 次のシーンをプレイヤーデータにセーブ
+            playerData.currentScene = "ConvenienceScene";
             playerData.time = playerTimeArray[0] + ":" + timeGoesMinuteInt.ToString();
             playerSaveDataManager.SavePlayerData(playerData);
 
@@ -81,6 +86,7 @@ public class AtHomeManager : MonoBehaviour
         // 現在時間が23:00以上なら外出禁止
         if(timeCheckResult) canvasGameObj.transform.Find("goOutButton").GetComponent<Button>().interactable = false;
     }
+
     public bool CheckBanTime(string playerDataTime)
     {
         // 23:00 default time setting

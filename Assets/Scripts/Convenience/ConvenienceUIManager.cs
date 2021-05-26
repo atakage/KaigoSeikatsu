@@ -74,6 +74,10 @@ public class ConvenienceUIManager : MonoBehaviour
         if ("EV013".Equals(canvasGameObj.transform.Find("eventCodeSW").GetComponent<Text>().text) &&
             "Y".Equals(canvasGameObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text))
         {
+            playerData = playerSaveDataManager.LoadPlayerData();
+            playerData.currentScene = "AtHomeScene";
+            playerSaveDataManager.SavePlayerData(playerData);
+
             sceneTransitionManager.LoadTo("AtHomeScene");
         }
     }

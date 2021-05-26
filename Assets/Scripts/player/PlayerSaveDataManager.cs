@@ -10,6 +10,7 @@ using System;
 [System.Serializable]
 public class PlayerData
 {
+    public string currentScene;
     public string money;
     public string time;
     public string[] eventCodeArray; // クリアしたイベント
@@ -255,10 +256,17 @@ public class PlayerSaveDataManager : MonoBehaviour
 
     public PlayerData LoadPlayerData()
     {
-        string dataStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerData.json");
-        PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(dataStr);
-        Debug.Log("LOADDATA: " + playerData.money +","+ playerData.progress);
+        PlayerData playerData = null;
+        try
+        {
+            string dataStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerData.json");
+            playerData = JsonConvert.DeserializeObject<PlayerData>(dataStr);
+            Debug.Log("LOADDATA: " + playerData.money + "," + playerData.progress);
+        }
+        catch(Exception e)
+        {
 
+        }
         return playerData;
     }
 }

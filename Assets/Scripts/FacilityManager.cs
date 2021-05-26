@@ -107,6 +107,7 @@ public class FacilityManager : MonoBehaviour
                 GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("帰宅"))
             {
                 playerData.time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+                playerData.currentScene = "AtHomeScene";
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("AtHomeScene");
             }
@@ -115,6 +116,7 @@ public class FacilityManager : MonoBehaviour
                 GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("カフェ"))
             {
                 playerData.time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+                playerData.currentScene = "CafeScene";
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("CafeScene");
             }
@@ -123,6 +125,7 @@ public class FacilityManager : MonoBehaviour
                 GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("公園"))
             {
                 playerData.time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+                playerData.currentScene = "ParkScene";
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("ParkScene");
             }

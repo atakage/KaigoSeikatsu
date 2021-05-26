@@ -2842,15 +2842,17 @@ MonoBehaviour:
   playerSaveDataManager: {fileID: 0}
   convenienceItemSetManager: {fileID: 0}
   playerData:
+    currentScene: 
     money: 
     time: 
     eventCodeArray: []
     progress: 0
     fatigue: 0
     satisfaction: 0
-    action: 0
+    feeling: 0
   canvasGameObj: {fileID: 0}
   timeCheckResult: 0
+  displaySavingObj: {fileID: 0}
 --- !u!4 &1936288517
 Transform:
   m_ObjectHideFlags: 0

@@ -110,6 +110,9 @@ public class CafeManager : MonoBehaviour
         // カフェを出るときの2次挨拶イベントの完了をチェック
         if (GameObject.Find("Canvas").transform.Find("greeting2Check").GetComponent<Text>().text.Equals("Y") && GameObject.Find("Canvas").transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y"))
         {
+            playerData = playerSaveDataManager.LoadPlayerData();
+            playerData.currentScene = "AtHomeScene";
+            playerSaveDataManager.SavePlayerData(playerData);
             sceneTransitionManager.LoadTo("AtHomeScene");
         }
     }
