@@ -13,6 +13,7 @@ public class FacilityManager : MonoBehaviour
     public UtilManager utilManager;
     public Button nextButton;
     public PlayerData playerData = null;
+    public GameObject canvasObj;
     public string[] morningrequiredEvent = null;
     public string[] careQuizEvent = null;
     public string[] lunchEvent = null;
@@ -29,10 +30,16 @@ public class FacilityManager : MonoBehaviour
         utilManager = new UtilManager();
         nextButton = GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>();
         nextButton.onClick.AddListener(ClickNextButton);
-        GameObject.Find("Canvas").transform.Find("GoToCafeButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoToButton("カフェ"); });
-        GameObject.Find("Canvas").transform.Find("GoToParkButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoToButton("公園"); });
-        GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("No").GetComponent<Button>().onClick.AddListener(ClickGoToAlertNoButton);
-        GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("Yes").GetComponent<Button>().onClick.AddListener(ClickGoToAlertYesButton);
+
+        canvasObj = GameObject.Find("Canvas");
+
+        playerData = playerSaveDataManager.LoadPlayerData();
+        Debug.Log("playerData: " + playerData.ToString());
+
+        canvasObj.transform.Find("GoToCafeButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoToButton("カフェ"); });
+        canvasObj.transform.Find("GoToParkButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoToButton("公園"); });
+        canvasObj.transform.Find("AlertGoing").transform.Find("No").GetComponent<Button>().onClick.AddListener(ClickGoToAlertNoButton);
+        canvasObj.transform.Find("AlertGoing").transform.Find("Yes").GetComponent<Button>().onClick.AddListener(ClickGoToAlertYesButton);
 
         // イベントコードセット
         morningrequiredEvent = new string[]{ "EV001", "EV002", "EV003" };  // 08:00 ~ 09:00
@@ -48,11 +55,18 @@ public class FacilityManager : MonoBehaviour
         FacilityUISetActive(false);
 
         // ランダムで朝のイベント
-        string morningEventCode = CallRandomEvent(morningrequiredEvent);
-        LoadEventAndShow(morningEventCode);
+        if (playerData.time.Equals("09:00"))
+        {
+            string morningEventCode = CallRandomEvent(morningrequiredEvent);
+            LoadEventAndShow(morningEventCode);
+        }
+        else
+        {
+            FacilityUISetActive(true);
+        }
+        
 
-        playerData = playerSaveDataManager.LoadPlayerData();
-        Debug.Log("playerData: " + playerData.ToString());
+        
 
         // UI setting
         GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = playerData.time;
@@ -162,6 +176,12 @@ public class FacilityManager : MonoBehaviour
                         chatManager.executeFadeOutSimple();
                         chatManager.SetTime();
                     }
+                    // ゲームロードをしながらイベントを繰り返す行為を防ぐために
+                    // プレイヤーデータに時間をアプデ
+                    playerData = playerSaveDataManager.LoadPlayerData();
+                    playerData.time = "11:50";
+                    playerSaveDataManager.SavePlayerData(playerData);
+
                     timeCheckSW = true;
                     break;
                 // 11時なら食事に (-> 12:00(昼ご飯) -> 12:50)
@@ -169,6 +189,10 @@ public class FacilityManager : MonoBehaviour
                     FacilityUISetActive(false);
                     eventCode = CallRandomEvent(lunchEvent);
                     LoadEventAndShow(eventCode);
+
+                    playerData = playerSaveDataManager.LoadPlayerData();
+                    playerData.time = "12:50";
+                    playerSaveDataManager.SavePlayerData(playerData);
 
                     // 時間が経つ
                     chatManager.SetTime();
@@ -178,15 +202,24 @@ public class FacilityManager : MonoBehaviour
                 case "12:50":
                     FacilityUISetActive(false);
                     SetPanelText("");
+
+                    playerData = playerSaveDataManager.LoadPlayerData();
+                    playerData.time = "14:00";
+                    playerSaveDataManager.SavePlayerData(playerData);
+
                     chatManager.SetTime();
                     chatManager.executeFadeOut();
                     timeCheckSW = true;
                     break;
-                // 14時ならレクリエーションの時間( -> 16:00)
+                // 14時ならレクリエーションの時間( -> 17:00)
                 case "14:00":
                     FacilityUISetActive(false);
                     eventCode = CallRandomEvent(recreationEvent);
                     LoadEventAndShow(eventCode);
+
+                    playerData = playerSaveDataManager.LoadPlayerData();
+                    playerData.time = "17:00";
+                    playerSaveDataManager.SavePlayerData(playerData);
 
                     // 時間が経つ
                     chatManager.SetTime();
@@ -197,6 +230,10 @@ public class FacilityManager : MonoBehaviour
                     FacilityUISetActive(false);
                     eventCode = CallRandomEvent(afternoonEvent);
                     LoadEventAndShow(eventCode);
+
+                    playerData = playerSaveDataManager.LoadPlayerData();
+                    playerData.time = "17:20";
+                    playerSaveDataManager.SavePlayerData(playerData);
 
                     // 時間が経つ
                     chatManager.SetTime();

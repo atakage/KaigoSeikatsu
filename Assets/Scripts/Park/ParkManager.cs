@@ -117,6 +117,13 @@ public class ParkManager : MonoBehaviour
 
     public void ClickActionReadyAlertConfirmButton(string action)
     {
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        // TimeCal(playerDataTime, addingMinute)
+        DateTime addedDateTime = utilManager.TimeCal(playerData.time, 60);
+        playerData.currentScene = "AtHomeScene";
+        playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
+        playerSaveDataManager.SavePlayerData(playerData);
+
         canvasGameObj.transform.Find("actionReadyAlertBox").gameObject.SetActive(false);
         SetButtonUI(true);
         SetActiveWalkAndExerciseBtn(false);
