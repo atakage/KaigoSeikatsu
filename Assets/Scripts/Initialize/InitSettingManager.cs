@@ -10,7 +10,8 @@ public class InitSettingManager : MonoBehaviour
     public SceneTransitionManager sceneTransitionManager;
     public GameObject canvasObj;
     public GameObject loadButtonObj;
-
+    public GameObject newGameAlertBoxObj;
+    public int msgCheckIntVal;
     void Start()
     {
         csvManager = new CSVManager();
@@ -18,6 +19,8 @@ public class InitSettingManager : MonoBehaviour
         sceneTransitionManager = new SceneTransitionManager();
 
         canvasObj = GameObject.Find("Canvas");
+        newGameAlertBoxObj = canvasObj.transform.Find("newGameAlertBox").gameObject;
+        msgCheckIntVal = 0;
 
         // コンビニで販売するアイテムをセットする(最初)
         // ConvenienceItemInit.txtにある情報をResource/saveData/ConvenienceItem.jsonに移す
@@ -28,14 +31,64 @@ public class InitSettingManager : MonoBehaviour
         // カフェで販売するアイテムをセットする
         csvManager.ReadCafeItemInitFileAndCreateJson();
 
-        // プレイヤーデータがある場合ロードボタンを表示する
+        
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+
+        canvasObj.transform.Find("PlayButton").GetComponent<Button>().onClick.AddListener(() => ClickPlayButton(playerData));
+        newGameAlertBoxObj.transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(() => ClickNewGameAlertBoxConfirmBtn(this.msgCheckIntVal));
+        newGameAlertBoxObj.transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(() => ClickNewGameAlertBoxCancelBtn());
+
+        // プレイヤーデータがある場合ロードボタンを表示する
         if (playerData != null)
         {
             loadButtonObj = canvasObj.transform.Find("loadButton").gameObject;
             loadButtonObj.SetActive(true);
             loadButtonObj.GetComponent<Button>().onClick.AddListener(() => ClickLoadButton(playerData.currentScene));
         }
+
+        
+    }
+
+    public void ClickNewGameAlertBoxConfirmBtn(int msgCheckIntVal)
+    {
+        Debug.Log("msgCheckIntVal: " + msgCheckIntVal);
+
+        // 追加メッセージ
+        if (msgCheckIntVal == 0)
+        {
+            string msg = "ゲームを始めますか?";
+            newGameAlertBoxObj.transform.Find("message").GetComponent<Text>().text = msg;
+            this.msgCheckIntVal = 1;
+        }
+        // ゲームが始まるnew game
+        else if (msgCheckIntVal == 1)
+        {
+
+        }
+
+    }
+
+    public void ClickNewGameAlertBoxCancelBtn()
+    {
+        newGameAlertBoxObj.SetActive(false);
+        string msg = "新しいデータが作成されると\n現在セーブデータは削除されます";
+        newGameAlertBoxObj.transform.Find("message").GetComponent<Text>().text = msg;
+        this.msgCheckIntVal = 0;
+    }
+
+    public void ClickPlayButton(PlayerData playerData)
+    {
+        // プレイヤーデータがあるとメッセージを表示する
+        if (playerData != null)
+        {
+            newGameAlertBoxObj.SetActive(true);
+        }
+        // プレイヤーデータがないとnew game
+        else
+        {
+
+        }
+
     }
 
     public void ClickLoadButton(string currentScene)
