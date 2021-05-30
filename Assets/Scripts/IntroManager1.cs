@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IntroManager1 : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class IntroManager1 : MonoBehaviour
     public EventManager eventManager;
     public PlayerSaveDataManager playerSaveDataManager;
     public PlayerData playerData;
+    public GameObject canvasObj;
     private void Start()
     {
         playerSaveDataManager = new PlayerSaveDataManager();
@@ -19,14 +21,7 @@ public class IntroManager1 : MonoBehaviour
 
         // 外部componentからスクリプトを読み込む
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
-        msgChoiceManager = GameObject.Find("MsgChoiceManager").GetComponent("MsgChoiceManager") as MsgChoiceManager;
-
-        // 最初のプレイヤーデータをセーブ
-        playerData.money = "15000"; // 円
-        playerData.time = "10:00";
-        playerData.progress = 1;
-        playerData.fatigue = 50f;
-        playerSaveDataManager.SavePlayerData(playerData);
+        canvasObj = GameObject.Find("Canvas");
 
         // イベントリストファイルを読み込む(.json)
         EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
@@ -40,13 +35,17 @@ public class IntroManager1 : MonoBehaviour
 
     private void Update()
     {
-        // イベントが終わったら
-        if(chatManager.completeEventSW["EV000"] == true)
+        if (canvasObj.transform.Find("fadeOutEventCheck").GetComponent<Text>().text.Equals("Y"))
         {
-            // 選択肢表示
-            msgChoiceManager.DisplayChoiceBoxes("EV000");
-            chatManager.completeEventSW["EV000"] = false;
-            sceneTransitionManager.LoadTo("AtHomeScene");
+            if (canvasObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV000"))
+            {
+                canvasObj.transform.Find("fadeOutEventCheck").GetComponent<Text>().text = "";
+                canvasObj.transform.Find("endedEventCode").GetComponent<Text>().text = "";
+                playerData = playerSaveDataManager.LoadPlayerData();
+                playerData.currentScene = "AtHomeScene";
+                playerSaveDataManager.SavePlayerData(playerData);
+                sceneTransitionManager.LoadTo("AtHomeScene");
+            }
         }
     }
 }

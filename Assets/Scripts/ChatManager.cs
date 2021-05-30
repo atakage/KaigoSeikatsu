@@ -57,6 +57,12 @@ public class ChatManager : MonoBehaviour
                         if (afterEvent.Equals("Fade Out"))
                         {
                             executeFadeOut();
+                            // 終わったイベントコードをつけるオブジェクトを作る(すでに存在すると削除する)
+                            if (GameObject.Find("Canvas").transform.Find("endedEventCode")) Destroy(GameObject.Find("Canvas").transform.Find("endedEventCode").gameObject);
+                            GameObject endedTextEventCode = new GameObject("endedEventCode");
+                            endedTextEventCode.SetActive(false);
+                            endedTextEventCode.AddComponent<Text>().text = eventCode;
+                            endedTextEventCode.transform.SetParent(GameObject.Find("Canvas").transform);
                         }
                         else if (afterEvent.Equals("Choice"))
                         {

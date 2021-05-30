@@ -324,12 +324,12 @@ public class FacilityManager : MonoBehaviour
 
     public void FacilityUISetActive(bool setActive)
     {
-        GameObject.Find("Canvas").transform.Find("menuButton").gameObject.SetActive(setActive);
-        GameObject.Find("Canvas").transform.Find("nextButton").gameObject.SetActive(setActive);
-        GameObject.Find("Canvas").transform.Find("Image").gameObject.SetActive(setActive);
-        GameObject.Find("Canvas").transform.Find("time").gameObject.SetActive(setActive);
-        GameObject.Find("Canvas").transform.Find("fatigueText").gameObject.SetActive(setActive);
-        GameObject.Find("Canvas").transform.Find("fatigueBar").gameObject.SetActive(setActive);
+        if(GameObject.Find("Canvas").transform.Find("menuButton") != null) GameObject.Find("Canvas").transform.Find("menuButton").gameObject.SetActive(setActive);
+        if(GameObject.Find("Canvas").transform.Find("nextButton") != null) GameObject.Find("Canvas").transform.Find("nextButton").gameObject.SetActive(setActive);
+        if(GameObject.Find("Canvas").transform.Find("Image") != null) GameObject.Find("Canvas").transform.Find("Image").gameObject.SetActive(setActive);
+        if(GameObject.Find("Canvas").transform.Find("time") != null) GameObject.Find("Canvas").transform.Find("time").gameObject.SetActive(setActive);
+        if(GameObject.Find("Canvas").transform.Find("fatigueText") != null) GameObject.Find("Canvas").transform.Find("fatigueText").gameObject.SetActive(setActive);
+        if(GameObject.Find("Canvas").transform.Find("fatigueBar") != null) GameObject.Find("Canvas").transform.Find("fatigueBar").gameObject.SetActive(setActive);
     }
     
     public string CallRandomEvent(string[] randomrequiredEvent)

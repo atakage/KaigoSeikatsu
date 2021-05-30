@@ -35,53 +35,6 @@ public class ItemCheckManager : MonoBehaviour
         csvManager = new CSVManager();
         itemUseManager = new ItemUseManager();
 
-        ItemListData[] itemListData2 = new ItemListData[2];
-        itemListData2[0] = new ItemListData();
-        itemListData2[0].itemName = "エナジードリンク";
-        itemListData2[0].itemDescription = "飲むと少しだけ元気が出る";
-        itemListData2[0].quantity = 30;
-        itemListData2[0].keyItem = "N";
-        
-        itemListData2[1] = new ItemListData();
-        itemListData2[1].itemName = "名刺";
-        itemListData2[1].itemDescription = "介護福祉士の名刺だ";
-        itemListData2[1].quantity = 1;
-        itemListData2[1].keyItem = "Y";
-        /*
-        itemListData2[2] = new ItemListData();
-        itemListData2[2].itemName = "カタリナ";
-        itemListData2[2].itemDescription = "いいところ";
-        itemListData2[2].quantity = 1;
-        itemListData2[2].keyItem = "N";
-
-        itemListData2[3] = new ItemListData();
-        itemListData2[3].itemName = "財布";
-        itemListData2[3].itemDescription = "お金を保つ";
-        itemListData2[3].quantity = 2;
-        itemListData2[3].keyItem = "N";
-
-        
-        itemListData2[4] = new ItemListData();
-        itemListData2[4].itemName = "侍";
-        itemListData2[4].itemDescription = "誇り高い";
-        itemListData2[4].quantity = 2;
-        itemListData2[4].keyItem = "Y";
-
-        itemListData2[5] = new ItemListData();
-        itemListData2[5].itemName = "キーブレード";
-        itemListData2[5].itemDescription = "勇気の象徴";
-        itemListData2[5].quantity = 2;
-        itemListData2[5].keyItem = "N";
-
-        itemListData2[6] = new ItemListData();
-        itemListData2[6].itemName = "花束";
-        itemListData2[6].itemDescription = "きれいだ";
-        itemListData2[6].quantity = 2;
-        itemListData2[6].keyItem = "N";
-        */
-        
-        playerSaveDataManager.SaveItemListData(itemListData2);
-
         Debug.Log("ItemCheckManager START");
         playerSaveDataManager = new PlayerSaveDataManager();
         itemSelectManager = new ItemSelectManager();

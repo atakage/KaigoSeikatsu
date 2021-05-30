@@ -12,6 +12,7 @@ public class EventCodeManager : MonoBehaviour
     {
         // Fade Out : fade out
         EventCodeDic = new Dictionary<string, string>();
+        EventCodeDic.Add("EV000", "Fade Out");
         EventCodeDic.Add("EV001", "Fade Out");
         EventCodeDic.Add("EV002", "Fade Out");
         EventCodeDic.Add("EV003", "Fade Out");

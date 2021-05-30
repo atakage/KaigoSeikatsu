@@ -246,6 +246,11 @@ public class PlayerSaveDataManager : MonoBehaviour
         return itemListData;
     }
 
+    public void RemoveItemListDataJsonFile()
+    {
+        File.Delete(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
+    }
+
     public void SavePlayerData(PlayerData playerData)
     {
        
