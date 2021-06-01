@@ -19,7 +19,7 @@
         {
             "itemName": "テストアイテムC",
             "itemDescription": "test item",
-            "itemQuantity": 1,
+            "itemQuantity": 0,
             "itemPrice": 3000,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
@@ -43,7 +43,7 @@
         {
             "itemName": "テストアイテムF",
             "itemDescription": "test item",
-            "itemQuantity": 1,
+            "itemQuantity": 0,
             "itemPrice": 5000,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"

@@ -316,6 +316,13 @@ public class FacilityManager : MonoBehaviour
 
     public void LoadEventAndShow(string eventCode)
     {
+        // 条件に合うMainEventを先に発動する
+
+        // 条件に合うMainEventを発動させる前にすでに完了になっているかを確認する
+
+        // 終わったMainEventはプレイヤーデータに記録する
+
+
         EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);

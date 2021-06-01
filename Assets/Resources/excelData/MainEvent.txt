@@ -1,0 +1,2 @@
+eventCode,requiredProgress,requiredSatisfaction,requiredScene,addingProgress
+EV020,1,0,FacilityScene,4
