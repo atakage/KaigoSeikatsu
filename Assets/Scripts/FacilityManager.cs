@@ -10,6 +10,7 @@ public class FacilityManager : MonoBehaviour
     public EventManager eventManager;
     public ChatManager chatManager;
     public SceneTransitionManager sceneTransitionManager;
+    public MainEventManager mainEventManager;
     public UtilManager utilManager;
     public Button nextButton;
     public PlayerData playerData = null;
@@ -28,6 +29,7 @@ public class FacilityManager : MonoBehaviour
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
         sceneTransitionManager = new SceneTransitionManager();
         utilManager = new UtilManager();
+        mainEventManager = new MainEventManager();
         nextButton = GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>();
         nextButton.onClick.AddListener(ClickNextButton);
 
@@ -316,17 +318,29 @@ public class FacilityManager : MonoBehaviour
 
     public void LoadEventAndShow(string eventCode)
     {
-        // 条件に合うMainEventを先に発動する
+        // 条件に合うMainEventを探す
+        playerData = playerSaveDataManager.LoadPlayerData();
+        string mainEventCode = mainEventManager.findMainEvent(playerData);
+        if(mainEventCode != null)
+        {
+            // 条件に合うMainEventを発動させる前にすでに完了になっているかを確認する
 
-        // 条件に合うMainEventを発動させる前にすでに完了になっているかを確認する
-
-        // 終わったMainEventはプレイヤーデータに記録する
 
 
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
-        EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
-        List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
-        chatManager.ShowDialogue(scriptList, eventCode);
+            // 終わったMainEventはプレイヤーデータに記録する
+        }
+        // MainEventがない場合普通のイベント
+        else
+        {
+            EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+            EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
+            List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
+            chatManager.ShowDialogue(scriptList, eventCode);
+        }
+        
+
+        
+
     }
 
     public void FacilityUISetActive(bool setActive)

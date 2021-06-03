@@ -101,6 +101,11 @@
             "optionSW": "ON"
         },
         {
+            "eventCode": "EV020",
+            "script": "今日も不安な気持ちを抱えて施設にについた/自分に向いてる仕事がまだ分からない...",
+            "optionSW": "ON"
+        },
+        {
             "eventCode": "ET000",
             "script": "\"あんたは誰?\"",
             "optionSW": "ON"

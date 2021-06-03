@@ -1,2 +1,4 @@
-eventCode,requiredProgress,requiredSatisfaction,requiredScene,addingProgress
-EV020,1,0,FacilityScene,4
+eventCode,requiredProgress,requiredSatisfaction,requiredScene,requiredCompletedEvent,addingProgress
+EV020,3,0,FacilityScene,,4
+EV021,2,0,FacilityScene,,4
+EV022,1,0,FacilityScene,,4

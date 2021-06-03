@@ -9,6 +9,7 @@ public class CSVManager : MonoBehaviour
 {
     public ConvenienceItemSetManager convenienceItemSetManager;
     public CafeItemSetManager cafeItemSetManager;
+    public MainEventSetManager mainEventSetManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -62,6 +63,32 @@ public class CSVManager : MonoBehaviour
             returnDicKey = "";
         }
         return allItemDic;
+    }
+
+    public void ReadMainEventInitFileAndCreateJson()
+    {
+        bool checkJsonSW;
+        try
+        {
+            // jsonファイルを読み込む
+            File.ReadAllText(Application.dataPath + "/Resources/saveData/mainEvent.json");
+            checkJsonSW = true;
+        }
+        // jsonファイルがないと
+        catch (Exception e)
+        {
+            checkJsonSW = false;
+        }
+
+        // jsonファイルがないと
+        if (!checkJsonSW)
+        {
+            // ConvenienceItemInit.txtからデータを読み込む
+            Dictionary<string, Dictionary<string, object>> mainEventListDic = GetTxtItemList("MainEvent");
+            // convenienceItem.jsonを作る
+            mainEventSetManager = new MainEventSetManager();
+            mainEventSetManager.CreateMainEventJson(mainEventListDic);
+        }
     }
 
     public void ReadConvenienceInitFileAndCreateJson()

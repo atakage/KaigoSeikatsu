@@ -9,5 +9,6 @@ public class MainEventModel
     public int requiredProgress;
     public int requiredSatisfaction;
     public string requiredScene;
+    public string requiredCompletedEvent;  // EV000:EV001:EV002
     public int addingProgress;
 }

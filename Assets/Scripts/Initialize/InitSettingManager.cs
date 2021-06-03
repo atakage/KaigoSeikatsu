@@ -32,6 +32,8 @@ public class InitSettingManager : MonoBehaviour
         // カフェで販売するアイテムをセットする
         csvManager.ReadCafeItemInitFileAndCreateJson();
 
+        // MainEvent.jsonを作る
+        csvManager.ReadMainEventInitFileAndCreateJson();
         
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
 
