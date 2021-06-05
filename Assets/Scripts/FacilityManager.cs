@@ -324,10 +324,21 @@ public class FacilityManager : MonoBehaviour
         if(mainEventCode != null)
         {
             // 条件に合うMainEventを発動させる前にすでに完了になっているかを確認する
+            bool completedEventBool = mainEventManager.CheckCompletedMainEvent(mainEventCode);
+
+            // 完了されたイベントがないならメインイベント発動
+            if(!completedEventBool)
+            {
+                EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+                EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, mainEventCode);
+                List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
+                chatManager.ShowDialogueForMainEvent(scriptList, mainEventCode);
+
+                // 終わったMainEventはプレイヤーデータに記録する
+
+            }
 
 
-
-            // 終わったMainEventはプレイヤーデータに記録する
         }
         // MainEventがない場合普通のイベント
         else

@@ -6,7 +6,30 @@ using System;
 public class MainEventManager : MonoBehaviour
 {
     public MainEventSetManager mainEventSetManager;
+    public PlayerSaveDataManager playerSaveDataManager;
 
+    public bool CheckCompletedMainEvent(string mainEventCode)
+    {
+        playerSaveDataManager = new PlayerSaveDataManager();
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+
+        bool completedEventBool = false;
+
+        if(playerData.eventCodeArray != null && playerData.eventCodeArray.Length > 0)
+        {
+            //　完了されたイベントリストからイベントを探す
+            foreach (string eventCode in playerData.eventCodeArray)
+            {
+                if (eventCode.Equals(mainEventCode))
+                {
+                    completedEventBool = true;
+                    break;
+                }
+            }
+        }
+
+        return completedEventBool;
+    }
 
     public string findMainEvent(PlayerData playerdata)
     {

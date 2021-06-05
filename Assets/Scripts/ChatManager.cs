@@ -271,6 +271,36 @@ public class ChatManager : MonoBehaviour
         GameObject.Find("ChoiceButtonC").transform.Find("Text").GetComponent<Text>().text = choiceEventArray[2];
     }
 
+    public void ShowDialogueForMainEvent(List<string[]> textList, string eventCode)
+    {
+        Debug.Log("call ShowDialogueForMainEvent: " + eventCode);
+
+        // 画面にメインイベントeffect
+        CreateMainEventBlackBox();
+
+        /*
+        // イベントコードがあるなら(選択肢活用)
+        if (!eventCode.Equals(""))
+        {
+            this.completeEventSW = new Dictionary<string, bool>();
+            this.eventCode = eventCode;
+            this.completeEventSW.Add(eventCode, false);
+        }
+        // スクリプトだけなら
+        else
+        {
+            // eventCodeが余ることを防止する
+            this.eventCode = null;
+        }
+        // リストにある配列の数を読み込む
+        textCount = textList.Count;
+        this.textList = textList;
+
+        StartCoroutine(StartDialogueCoroutine());
+        */
+        
+    }
+
     public void ShowDialogue(List<string[]> textList, string eventCode)
     {
         Debug.Log("call ShowDialogue: " + eventCode);
@@ -313,5 +343,18 @@ public class ChatManager : MonoBehaviour
             Debug.Log("panelText.text: " + GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text);
             yield return new WaitForSeconds(0.05f);
         }
+    }
+
+    public void CreateMainEventBlackBox()
+    {
+        GameObject mainEventUpperBlackBox = new GameObject("mainEventUpperBlackBox");
+        GameObject mainEventLowerBlackBox = new GameObject("mainEventLowerBlackBox");
+        mainEventUpperBlackBox.SetActive(true);
+        mainEventLowerBlackBox.SetActive(true);
+        mainEventUpperBlackBox.transform.SetParent(GameObject.Find("Canvas").transform);
+        mainEventLowerBlackBox.transform.SetParent(GameObject.Find("Canvas").transform);
+
+        mainEventUpperBlackBox.AddComponent<Image>().color = new Color32(0,0,0,255);
+        mainEventUpperBlackBox.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
     }
 }

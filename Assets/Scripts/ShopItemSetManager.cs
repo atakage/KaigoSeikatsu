@@ -85,10 +85,6 @@ public class ShopItemSetManager : MonoBehaviour
                     itemBox.transform.Find("itemPriceBox").transform.Find("Text").GetComponent<Text>().text = loadedCafeItemArray[i].itemPrice.ToString() + "円";
                     itemBox.transform.Find("itemDescription").GetComponent<Text>().text = loadedCafeItemArray[i].itemDescription;
                     itemBox.transform.Translate(0, (addmenuBackSizeCount * 100) - 50, 0);
-                    //Debug.Log(" menuBackPos.y: " + cafeMenuScrollViewPos.y);
-                    //Debug.Log("(shopItemCount-3)*50: " + cafeMenuScrollViewPos.y / shopItemCount);
-                    //Debug.Log("menuBackPos.y - (shopItemCount-3)*50: " + menuBackPos.y + (menuBackPos.y * shopItemCount - 3) * 10));
-                    //itemBox.transform.Translate(0, menuBackPos.y - 400, 0);
                 }
             }
             else

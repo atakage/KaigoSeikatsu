@@ -2,27 +2,11 @@
     "Items": [
         {
             "eventCode": "EV020",
-            "requiredProgress": 3,
-            "requiredSatisfaction": 0,
-            "requiredScene": "FacilityScene",
-            "requiredCompletedEvent": "EE000:EE001",
-            "addingProgress": 4
-        },
-        {
-            "eventCode": "EV021",
-            "requiredProgress": 2,
+            "requiredProgress": 0,
             "requiredSatisfaction": 0,
             "requiredScene": "FacilityScene",
             "requiredCompletedEvent": "",
-            "addingProgress": 4
-        },
-        {
-            "eventCode": "EV022",
-            "requiredProgress": 1,
-            "requiredSatisfaction": 0,
-            "requiredScene": "FacilityScene",
-            "requiredCompletedEvent": "",
-            "addingProgress": 4
+            "addingProgress": 1
         }
     ]
 }
