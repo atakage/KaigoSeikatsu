@@ -332,6 +332,15 @@ public class FacilityManager : MonoBehaviour
                 EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
                 EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, mainEventCode);
                 List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
+
+                foreach (string[] scriptarray in scriptList)
+                {
+                    foreach (string script in scriptarray)
+                    {
+                        Debug.Log("dd: " + script);
+                    }
+                }
+
                 chatManager.ShowDialogueForMainEvent(scriptList, mainEventCode);
 
                 // 終わったMainEventはプレイヤーデータに記録する

@@ -65,7 +65,9 @@ public class EventManager : MonoBehaviour
             {
                 scriptArray[j] = new string(chars[j], 1);
             }
+            
             returnScriptArrList.Add(scriptArray);
+            scriptArray = null;
         }
         return returnScriptArrList;
     }

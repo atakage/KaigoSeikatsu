@@ -102,19 +102,32 @@ public class ChatManager : MonoBehaviour
                             Debug.Log("Action Input Code: " + eventCode);
                             GameObject.Find("Canvas").transform.Find("endedActionEventCode").GetComponent<Text>().text = eventCode;
                         }
+                        // メインイベントが終わると
                     // イベントコードがなきスクリプトだけを読み込んだとき
                     }else if (eventCode == null)
                     {
                         Debug.Log("only script completed");
                         GameObject.Find("Canvas").transform.Find("onlyScriptEventEnd").GetComponent<Text>().text = "END";
                     }
-
-
                 }
                 else
                 {
-                    StopAllCoroutines();
-                    StartCoroutine(StartDialogueCoroutine());
+                    
+                    string afterEvent = eventCodeManager.FindAfterEventByEventCode(this.eventCode);
+                               // メインイベントなら専用Coroutineを続ける
+                    if (afterEvent.Equals("Main Fade Out Persist"))
+                    {
+                        StopAllCoroutines();
+                        StartCoroutine(StartMainEventDialogueCoroutine());
+                    }
+                               // メインイベントじゃないなら普通のCoroutineを続ける
+                    else
+                    {
+                        StopAllCoroutines();
+                        StartCoroutine(StartDialogueCoroutine());
+                    }
+
+                    
                 }
             }
         }
@@ -274,11 +287,12 @@ public class ChatManager : MonoBehaviour
     public void ShowDialogueForMainEvent(List<string[]> textList, string eventCode)
     {
         Debug.Log("call ShowDialogueForMainEvent: " + eventCode);
+        Debug.Log("event script line: " + textList.Count);
 
         // 画面にメインイベントeffect
         CreateMainEventBlackBox();
 
-        /*
+        
         // イベントコードがあるなら(選択肢活用)
         if (!eventCode.Equals(""))
         {
@@ -296,14 +310,16 @@ public class ChatManager : MonoBehaviour
         textCount = textList.Count;
         this.textList = textList;
 
-        StartCoroutine(StartDialogueCoroutine());
-        */
+        StartCoroutine(StartMainEventDialogueCoroutine());
+        
         
     }
 
     public void ShowDialogue(List<string[]> textList, string eventCode)
     {
         Debug.Log("call ShowDialogue: " + eventCode);
+        Debug.Log("event script line: " + textList.Count);
+
         // イベントコードがあるなら(選択肢活用)
         if (!eventCode.Equals(""))
         {
@@ -331,6 +347,20 @@ public class ChatManager : MonoBehaviour
         panelText.text = "";
     }
 
+    IEnumerator StartMainEventDialogueCoroutine()
+    {
+        Debug.Log("StartMainEventDialogueCoroutine");
+        dialogueSW = true;
+        GameObject.Find("mainEventLowerBlackBox").transform.Find("mainEventText").GetComponent<Text>().text = "";
+
+        for (int i = 0; i < textList[clickCount].Length; i++)
+        {
+            GameObject.Find("mainEventLowerBlackBox").transform.Find("mainEventText").GetComponent<Text>().text += textList[clickCount][i];
+            Debug.Log("mainEventText.text: " + GameObject.Find("mainEventLowerBlackBox").transform.Find("mainEventText").GetComponent<Text>().text);
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+
     IEnumerator StartDialogueCoroutine()
     {
         Debug.Log("StartDialogueCoroutine");
@@ -347,14 +377,37 @@ public class ChatManager : MonoBehaviour
 
     public void CreateMainEventBlackBox()
     {
+        GameObject canvasGameObj = GameObject.Find("Canvas");
+        Vector2 canvasSizeVector = canvasGameObj.transform.GetComponent<RectTransform>().sizeDelta;
+
         GameObject mainEventUpperBlackBox = new GameObject("mainEventUpperBlackBox");
         GameObject mainEventLowerBlackBox = new GameObject("mainEventLowerBlackBox");
+        GameObject mainEventText = new GameObject("mainEventText");
+
         mainEventUpperBlackBox.SetActive(true);
         mainEventLowerBlackBox.SetActive(true);
-        mainEventUpperBlackBox.transform.SetParent(GameObject.Find("Canvas").transform);
-        mainEventLowerBlackBox.transform.SetParent(GameObject.Find("Canvas").transform);
+        mainEventText.SetActive(true);
+
+        mainEventUpperBlackBox.transform.SetParent(canvasGameObj.transform);
+        mainEventLowerBlackBox.transform.SetParent(canvasGameObj.transform);
+        mainEventText.transform.SetParent(mainEventLowerBlackBox.transform);
 
         mainEventUpperBlackBox.AddComponent<Image>().color = new Color32(0,0,0,255);
-        mainEventUpperBlackBox.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+        mainEventUpperBlackBox.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(canvasSizeVector.x, 380);
+        mainEventUpperBlackBox.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, (Screen.height / 2) - (mainEventUpperBlackBox.transform.GetComponent<RectTransform>().sizeDelta.y / 2) );
+
+        mainEventLowerBlackBox.AddComponent<Image>().color = new Color32(0, 0, 0, 255);
+        mainEventLowerBlackBox.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(canvasSizeVector.x, 380);
+        mainEventLowerBlackBox.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, ((Screen.height / 2) - (mainEventUpperBlackBox.transform.GetComponent<RectTransform>().sizeDelta.y / 2)) * -1);
+
+        Vector2 mainEventLowerBlackBoxSize = mainEventLowerBlackBox.GetComponent<RectTransform>().sizeDelta;
+
+        mainEventText.AddComponent<Text>();
+        mainEventText.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        mainEventText.GetComponent<Text>().fontStyle = FontStyle.Bold;
+        mainEventText.GetComponent<Text>().fontSize = 40;
+        mainEventText.GetComponent<Text>().alignment = TextAnchor.UpperLeft;
+        // 0.2f == 20%
+        mainEventText.transform.GetComponent<RectTransform>().sizeDelta = new Vector2((mainEventLowerBlackBoxSize.x) - (mainEventLowerBlackBoxSize.x * 0.2f), (mainEventLowerBlackBoxSize.y) - (mainEventLowerBlackBoxSize.y * 0.2f));
     }
 }
