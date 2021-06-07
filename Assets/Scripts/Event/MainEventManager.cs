@@ -20,6 +20,8 @@ public class MainEventManager : MonoBehaviour
             //　完了されたイベントリストからイベントを探す
             foreach (string eventCode in playerData.eventCodeArray)
             {
+                Debug.Log("player completed eventCode: " + eventCode);
+                Debug.Log("mainEventCode: " + mainEventCode);
                 if (eventCode.Equals(mainEventCode))
                 {
                     completedEventBool = true;
@@ -41,6 +43,7 @@ public class MainEventManager : MonoBehaviour
         // 全体メインイベント数くらい繰り返す
         foreach (MainEventModel mainEventModel in mainEventModelArray)
         {
+            Debug.Log("mainEventModel.eventCode: " + mainEventModel.eventCode);
             // 完了したイベントコードチェックフラグ
             bool checkCompletedEventBool = false;
 

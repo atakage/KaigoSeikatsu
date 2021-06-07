@@ -259,6 +259,25 @@ public class PlayerSaveDataManager : MonoBehaviour
         File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerData.json", strPlayerData);
     }
 
+    public string[] SaveCompletedEvent(string[] eventCodeArray, string completedEventCode)
+    {
+        List<string> eventCodelist = null;
+
+        // 完了した全体イベントリストに追加する
+        if (eventCodeArray != null && eventCodeArray.Length > 0)
+        {
+            eventCodelist = new List<string>(eventCodeArray);
+        }
+        // 最初に追加する完了イベントなら新しくリストを作る
+        else
+        {
+            eventCodelist = new List<string>();
+        }
+        eventCodelist.Add(completedEventCode);
+
+        return eventCodelist.ToArray();
+    }
+
     public PlayerData LoadPlayerData()
     {
         PlayerData playerData = null;

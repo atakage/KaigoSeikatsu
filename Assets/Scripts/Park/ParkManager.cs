@@ -93,12 +93,6 @@ public class ParkManager : MonoBehaviour
         // 家へ帰る
         if (canvasGameObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y"))
         {
-            PlayerData playerData = playerSaveDataManager.LoadPlayerData();
-            DateTime addedDateTime = utilManager.TimeCal(playerData.time, 60);
-            playerData.currentScene = "AtHomeScene";
-            playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
-            playerSaveDataManager.SavePlayerData(playerData);
-
             sceneTransitionManager.LoadTo("AtHomeScene");
         }
     }

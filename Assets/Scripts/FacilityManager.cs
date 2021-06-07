@@ -81,9 +81,17 @@ public class FacilityManager : MonoBehaviour
     {
         if (timeCheckSW)
         {
-            string timeStr = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+            string timeStr = canvasObj.transform.Find("time").GetComponent<Text>().text;
 
-            if (timeStr.Equals("12:50") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
+            // メインイベントが終わった場合
+            if (canvasObj.transform.Find("mainEventCompleteSW") != null
+                && canvasObj.transform.Find("mainEventCompleteSW").GetComponent<Text>().text.Equals("Y")
+                && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
+            {
+                chatManager.DestroyMainEventBlackBox();
+                Destroy(canvasObj.transform.Find("mainEventCompleteSW").gameObject);
+            }
+            else if (timeStr.Equals("12:50") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
             {
                 SetPanelText("休憩時間だ\n何をしようかな?");
                 timeCheckSW = false;
@@ -325,29 +333,34 @@ public class FacilityManager : MonoBehaviour
         {
             // 条件に合うMainEventを発動させる前にすでに完了になっているかを確認する
             bool completedEventBool = mainEventManager.CheckCompletedMainEvent(mainEventCode);
+            Debug.Log("completedEventBool: " + completedEventBool);
 
             // 完了されたイベントがないならメインイベント発動
-            if(!completedEventBool)
+            if (!completedEventBool)
             {
                 EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
                 EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, mainEventCode);
                 List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
 
-                foreach (string[] scriptarray in scriptList)
-                {
-                    foreach (string script in scriptarray)
-                    {
-                        Debug.Log("dd: " + script);
-                    }
-                }
-
                 chatManager.ShowDialogueForMainEvent(scriptList, mainEventCode);
 
                 // 終わったMainEventはプレイヤーデータに記録する
+                playerData = playerSaveDataManager.LoadPlayerData();
+                // addingprogress
 
+
+                string[] eventCodeArray = playerSaveDataManager.SaveCompletedEvent(playerData.eventCodeArray, mainEventCode);
+                playerData.eventCodeArray = eventCodeArray;
+                playerSaveDataManager.SavePlayerData(playerData);
             }
-
-
+            // 完了したイベントなら普通のイベント発動
+            else
+            {
+                EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+                EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
+                List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
+                chatManager.ShowDialogue(scriptList, eventCode);
+            }
         }
         // MainEventがない場合普通のイベント
         else
@@ -357,10 +370,6 @@ public class FacilityManager : MonoBehaviour
             List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
             chatManager.ShowDialogue(scriptList, eventCode);
         }
-        
-
-        
-
     }
 
     public void FacilityUISetActive(bool setActive)

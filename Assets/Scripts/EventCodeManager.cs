@@ -10,6 +10,7 @@ public class EventCodeManager : MonoBehaviour
 
     public string FindAfterEventByEventCode(string eventCode)
     {
+        Debug.Log("eventCode: " + eventCode);
         // Fade Out : fade out
         EventCodeDic = new Dictionary<string, string>();
         EventCodeDic.Add("EV000", "Fade Out");

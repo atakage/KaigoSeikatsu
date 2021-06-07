@@ -44,7 +44,12 @@ public class ChatManager : MonoBehaviour
                 if (clickCount == textCount)
                 {
                     StopAllCoroutines();
-                    ExitDialogue();
+                    if(this.eventCode != null)
+                    {
+                        string afterEventStr = eventCodeManager.FindAfterEventByEventCode(this.eventCode);
+                        if (!afterEventStr.Equals("Main Fade Out")) ExitDialogue();
+                        else ExitMainEventDialogue();
+                    }
 
                     // 普通のイベントのスクリプト終了のとき
                     if (eventCode != null)
@@ -103,9 +108,20 @@ public class ChatManager : MonoBehaviour
                             GameObject.Find("Canvas").transform.Find("endedActionEventCode").GetComponent<Text>().text = eventCode;
                         }
                         // メインイベントが終わると
+                        else if (afterEvent.Equals("Main Fade Out"))
+                        {
+                            executeFadeOut();
+                            // 終わったイベントコードをつけるオブジェクトを作る(すでに存在すると削除する)
+                            if (GameObject.Find("Canvas").transform.Find("mainEventCompleteSW")) Destroy(GameObject.Find("Canvas").transform.Find("mainEventCompleteSW").gameObject);
+                            GameObject mainEventCompleteSW = new GameObject("mainEventCompleteSW");
+                            mainEventCompleteSW.SetActive(false);
+                            mainEventCompleteSW.AddComponent<Text>().text = "Y";
+                            mainEventCompleteSW.transform.SetParent(GameObject.Find("Canvas").transform);
+                        }
                     // イベントコードがなきスクリプトだけを読み込んだとき
                     }else if (eventCode == null)
                     {
+                        ExitDialogue();
                         Debug.Log("only script completed");
                         GameObject.Find("Canvas").transform.Find("onlyScriptEventEnd").GetComponent<Text>().text = "END";
                     }
@@ -115,7 +131,7 @@ public class ChatManager : MonoBehaviour
                     
                     string afterEvent = eventCodeManager.FindAfterEventByEventCode(this.eventCode);
                                // メインイベントなら専用Coroutineを続ける
-                    if (afterEvent.Equals("Main Fade Out Persist"))
+                    if (afterEvent.Equals("Main Fade Out"))
                     {
                         StopAllCoroutines();
                         StartCoroutine(StartMainEventDialogueCoroutine());
@@ -342,9 +358,17 @@ public class ChatManager : MonoBehaviour
 
     public void ExitDialogue()
     {
+        Debug.Log("ExitDialogue");
         dialogueSW = false;
         clickCount = 0;
         panelText.text = "";
+    }
+
+    public void ExitMainEventDialogue()
+    {
+        dialogueSW = false;
+        clickCount = 0;
+        GameObject.Find("mainEventText").GetComponent<Text>().text = "";
     }
 
     IEnumerator StartMainEventDialogueCoroutine()
@@ -366,13 +390,21 @@ public class ChatManager : MonoBehaviour
         Debug.Log("StartDialogueCoroutine");
         dialogueSW = true;
         GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "";
-
+        Debug.Log("textList.Count" + textList.Count);
+        Debug.Log("clickCount" + clickCount);
         for (int i=0; i< textList[clickCount].Length; i++)
         {
             GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text += textList[clickCount][i];
             Debug.Log("panelText.text: " + GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text);
             yield return new WaitForSeconds(0.05f);
         }
+    }
+
+    public void DestroyMainEventBlackBox()
+    {
+        GameObject canvasObj = GameObject.Find("Canvas");
+        Destroy(canvasObj.transform.Find("mainEventUpperBlackBox").gameObject);
+        Destroy(canvasObj.transform.Find("mainEventLowerBlackBox").gameObject);
     }
 
     public void CreateMainEventBlackBox()
