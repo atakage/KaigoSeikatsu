@@ -8,6 +8,23 @@ public class MainEventManager : MonoBehaviour
     public MainEventSetManager mainEventSetManager;
     public PlayerSaveDataManager playerSaveDataManager;
 
+    public int getAddingProgressFromMainEventJsonFile(string mainEventCode)
+    {
+        int addingProgress = 0;
+        MainEventModel[] mainEventModelArray = mainEventSetManager.GetMainEventJsonFile();
+
+        foreach(MainEventModel mainEventModel in mainEventModelArray)
+        {
+            if (mainEventModel.eventCode.Equals(mainEventCode))
+            {
+                addingProgress = mainEventModel.addingProgress;
+                break;
+            }
+                
+        }
+        return addingProgress;
+    }
+
     public bool CheckCompletedMainEvent(string mainEventCode)
     {
         playerSaveDataManager = new PlayerSaveDataManager();

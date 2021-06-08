@@ -344,11 +344,13 @@ public class FacilityManager : MonoBehaviour
 
                 chatManager.ShowDialogueForMainEvent(scriptList, mainEventCode);
 
-                // 終わったMainEventはプレイヤーデータに記録する
+                
                 playerData = playerSaveDataManager.LoadPlayerData();
                 // addingprogress
+                int addingProgress = mainEventManager.getAddingProgressFromMainEventJsonFile(mainEventCode);
+                playerData.progress += addingProgress;
 
-
+                // 終わったMainEventはプレイヤーデータに記録する
                 string[] eventCodeArray = playerSaveDataManager.SaveCompletedEvent(playerData.eventCodeArray, mainEventCode);
                 playerData.eventCodeArray = eventCodeArray;
                 playerSaveDataManager.SavePlayerData(playerData);
