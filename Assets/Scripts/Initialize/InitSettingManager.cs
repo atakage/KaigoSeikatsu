@@ -34,6 +34,9 @@ public class InitSettingManager : MonoBehaviour
 
         // MainEvent.jsonを作る
         csvManager.ReadMainEventInitFileAndCreateJson();
+
+        // JobEvent.jsonを作る
+        csvManager.ReadJobEventInitFileAndCreateJson();
         
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
 

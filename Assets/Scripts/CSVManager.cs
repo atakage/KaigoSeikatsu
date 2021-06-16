@@ -10,6 +10,7 @@ public class CSVManager : MonoBehaviour
     public ConvenienceItemSetManager convenienceItemSetManager;
     public CafeItemSetManager cafeItemSetManager;
     public MainEventSetManager mainEventSetManager;
+    public JobEventSetManager jobEventSetManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +64,32 @@ public class CSVManager : MonoBehaviour
             returnDicKey = "";
         }
         return allItemDic;
+    }
+
+    public void ReadJobEventInitFileAndCreateJson()
+    {
+        bool checkJsonSW;
+        try
+        {
+            // jsonファイルを読み込む
+            File.ReadAllText(Application.dataPath + "/Resources/saveData/jobEvent.json");
+            checkJsonSW = true;
+        }
+        // jsonファイルがないと
+        catch (Exception e)
+        {
+            checkJsonSW = false;
+        }
+
+        // jsonファイルがないと
+        if (!checkJsonSW)
+        {
+            // JobEventInit.txtからデータを読み込む
+            Dictionary<string, Dictionary<string, object>> jobEventListDic = GetTxtItemList("JobEvent");
+            // JobEvent.jsonを作る
+            jobEventSetManager = new JobEventSetManager();
+            jobEventSetManager.CreateJobEventJson(jobEventListDic);
+        }
     }
 
     public void ReadMainEventInitFileAndCreateJson()

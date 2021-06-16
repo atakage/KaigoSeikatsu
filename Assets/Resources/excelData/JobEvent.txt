@@ -1,0 +1,2 @@
+eventCode,eventScript,choiceA,choiceB,choiceC,choiceAEffect,choiceBEffect,choiceCEffect
+EC000,ある一人の利用者から暴言が続けている。どうしよう…,明日から録音しておこう:-1,放置する:1,強い口調で注意する:0,SA-1:FA+1,FA+1,FA+1:FL+1
