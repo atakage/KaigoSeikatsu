@@ -42,6 +42,15 @@ public class JobEventSetManager : MonoBehaviour
         }
     }
 
+    public JobEventModel[] GetJobEventJsonFile()
+    {
+        string jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/jobEvent.json");
+        Debug.Log("jsonStr jobEvent: " + jsonStr);
+        JobEventModel[] jobEventModelArray = JsonHelper.FromJson<JobEventModel>(jsonStr);
+
+        return jobEventModelArray;
+    }
+
     public void CreateJobEventJsonFile(List<JobEventModel> jobEventModelList)
     {
         string jsonStr = JsonHelper.ToJson(jobEventModelList.ToArray(), true);

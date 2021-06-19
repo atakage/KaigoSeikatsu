@@ -12,15 +12,18 @@ public class FacilityManager : MonoBehaviour
     public SceneTransitionManager sceneTransitionManager;
     public MainEventManager mainEventManager;
     public UtilManager utilManager;
+    public JobEventManager jobEventManager;
+    public JobEventSetManager jobEventSetManager;
     public Button nextButton;
     public PlayerData playerData = null;
     public GameObject canvasObj;
     public string[] morningrequiredEvent = null;
-    public string[] careQuizEvent = null;
+    //public string[] careQuizEvent = null;
     public string[] lunchEvent = null;
     public string[] recreationEvent = null;
     public string[] afternoonEvent = null;
     public bool timeCheckSW;
+    public bool jobEventDayCompletedBool;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +33,9 @@ public class FacilityManager : MonoBehaviour
         sceneTransitionManager = new SceneTransitionManager();
         utilManager = new UtilManager();
         mainEventManager = new MainEventManager();
+        jobEventManager = new JobEventManager();
+        jobEventSetManager = new JobEventSetManager();
+
         nextButton = GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>();
         nextButton.onClick.AddListener(ClickNextButton);
 
@@ -45,9 +51,7 @@ public class FacilityManager : MonoBehaviour
 
         // イベントコードセット
         morningrequiredEvent = new string[]{ "EV001", "EV002", "EV003" };  // 08:00 ~ 09:00
-        //careQuizEvent = new string[]{ "ET000","NO"}; // 9:00 ~ 11:50
-        careQuizEvent = new string[] { "ET000"}; // 9:00 ~ 11:50
-        //careQuizEvent = new string[] {"NO" }; // 9:00 ~ 11:50
+        //careQuizEvent = new string[] { "ET000"}; // 9:00 ~ 11:50
         lunchEvent = new string[] {"EV004"}; // 11:50 ~ 12:50
         recreationEvent = new string[] {"EV005","EV006","EV007" }; // 14:00 ~ 17:00
         afternoonEvent = new string[] {"EV008"}; // 17:00
@@ -86,7 +90,9 @@ public class FacilityManager : MonoBehaviour
             // メインイベントが終わった場合
             if (canvasObj.transform.Find("mainEventCompleteSW") != null
                 && canvasObj.transform.Find("mainEventCompleteSW").GetComponent<Text>().text.Equals("Y")
-                && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
+                && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy
+                && canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
                 chatManager.DestroyMainEventBlackBox();
                 Destroy(canvasObj.transform.Find("mainEventCompleteSW").gameObject);
@@ -153,6 +159,10 @@ public class FacilityManager : MonoBehaviour
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("ParkScene");
             }
+            else if (canvasObj.transform.Find("fadeOutEndMomentSW") != null)
+            {
+              Destroy(canvasObj.transform.Find("fadeOutEndMomentSW").gameObject);
+            }
         }
         
         
@@ -172,7 +182,34 @@ public class FacilityManager : MonoBehaviour
             {
                 // ９時なら(-> 11:00)
                 case "09:00":
-                    // ランダムで介護クイズイベント発動
+                        // ランダムで介護クイズイベント発動
+
+                              // 発動できるメインイベントがあるならメインイベントを先にする
+                    bool completeMainEvent = RunMainEvent();
+                              // jobEventを発動させるかを決める
+                    string callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
+
+                              // メインイベントを発動しない状態そしてjobEventを発動すると
+                    if (completeMainEvent != true && "YES".Equals(callEventFlag))
+                    {
+                        // jobEventの中でactiveされているイベントをランダムで呼び出す
+                        JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                        JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
+                        LoadJobEventAndShow(jobEvent);
+
+                                    // 他の時間にjobEventが発動しないようにフラグ処理
+                        jobEventDayCompletedBool = true;
+                    }
+                              // イベントを発動させないとそのまま進行する
+                    else if(completeMainEvent != true && !"YES".Equals(callEventFlag))
+                    {
+                        // fade out
+                        FacilityUISetActive(false);
+                        chatManager.executeFadeOutSimple();
+                        chatManager.SetTime();
+                    }
+
+                    /*
                     string eventCode = CallRandomEventAddNone(careQuizEvent);
                     if (!eventCode.Equals("NO"))
                     {
@@ -186,6 +223,8 @@ public class FacilityManager : MonoBehaviour
                         chatManager.executeFadeOutSimple();
                         chatManager.SetTime();
                     }
+                    */
+
                     // ゲームロードをしながらイベントを繰り返す行為を防ぐために
                     // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();
@@ -197,8 +236,7 @@ public class FacilityManager : MonoBehaviour
                 // 11時なら食事に (-> 12:00(昼ご飯) -> 12:50)
                 case "11:50":
                     FacilityUISetActive(false);
-                    eventCode = CallRandomEvent(lunchEvent);
-                    LoadEventAndShow(eventCode);
+                    LoadEventAndShow(CallRandomEvent(lunchEvent));
 
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "12:50";
@@ -224,8 +262,7 @@ public class FacilityManager : MonoBehaviour
                 // 14時ならレクリエーションの時間( -> 17:00)
                 case "14:00":
                     FacilityUISetActive(false);
-                    eventCode = CallRandomEvent(recreationEvent);
-                    LoadEventAndShow(eventCode);
+                    LoadEventAndShow(CallRandomEvent(recreationEvent));
 
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "17:00";
@@ -238,8 +275,7 @@ public class FacilityManager : MonoBehaviour
                 // 17時なら帰宅準備( -> 仕事終り)
                 case "17:00":
                     FacilityUISetActive(false);
-                    eventCode = CallRandomEvent(afternoonEvent);
-                    LoadEventAndShow(eventCode);
+                    LoadEventAndShow(CallRandomEvent(afternoonEvent));
 
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "17:20";
@@ -324,17 +360,18 @@ public class FacilityManager : MonoBehaviour
         GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text = text;    
     }
 
-    public void LoadEventAndShow(string eventCode)
+    public bool RunMainEvent()
     {
+        bool returnValue;
+
         // 条件に合うMainEventを探す
         playerData = playerSaveDataManager.LoadPlayerData();
         string mainEventCode = mainEventManager.findMainEvent(playerData);
-        if(mainEventCode != null)
+        if (mainEventCode != null)
         {
             // 条件に合うMainEventを発動させる前にすでに完了になっているかを確認する
             bool completedEventBool = mainEventManager.CheckCompletedMainEvent(mainEventCode);
             Debug.Log("completedEventBool: " + completedEventBool);
-
             // 完了されたイベントがないならメインイベント発動
             if (!completedEventBool)
             {
@@ -344,7 +381,7 @@ public class FacilityManager : MonoBehaviour
 
                 chatManager.ShowDialogueForMainEvent(scriptList, mainEventCode);
 
-                
+
                 playerData = playerSaveDataManager.LoadPlayerData();
                 // addingprogress
                 int addingProgress = mainEventManager.getAddingProgressFromMainEventJsonFile(mainEventCode);
@@ -354,24 +391,35 @@ public class FacilityManager : MonoBehaviour
                 string[] eventCodeArray = playerSaveDataManager.SaveCompletedEvent(playerData.eventCodeArray, mainEventCode);
                 playerData.eventCodeArray = eventCodeArray;
                 playerSaveDataManager.SavePlayerData(playerData);
+
+                returnValue = true;
             }
-            // 完了したイベントなら普通のイベント発動
             else
             {
-                EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
-                EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
-                List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
-                chatManager.ShowDialogue(scriptList, eventCode);
+                returnValue = false;
             }
         }
-        // MainEventがない場合普通のイベント
         else
         {
-            EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
-            EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
-            List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
-            chatManager.ShowDialogue(scriptList, eventCode);
+            returnValue = false;
         }
+        return returnValue;
+    }
+
+    public void LoadJobEventAndShow(JobEventModel jobEvent)
+    {
+        EventListData eventListData = new EventListData();
+        eventListData.script = jobEvent.eventScript;
+        List<string[]> scriptList = eventManager.ScriptSaveToList(eventListData);
+        chatManager.ShowDialogueForJobEvent(scriptList, jobEvent);
+    }
+
+    public void LoadEventAndShow(string eventCode)
+    {
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
+        List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
+        chatManager.ShowDialogue(scriptList, eventCode);
     }
 
     public void FacilityUISetActive(bool setActive)
@@ -410,6 +458,5 @@ public class FacilityManager : MonoBehaviour
         {
             return randomrequiredEvent[randomIndex];
         }
-        
     }
 }

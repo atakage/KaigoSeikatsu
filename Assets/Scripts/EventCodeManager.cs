@@ -35,6 +35,7 @@ public class EventCodeManager : MonoBehaviour
         EventCodeDic.Add("EV019", "Text");
         EventCodeDic.Add("EV020", "Main Fade Out");
         EventCodeDic.Add("ET000", "Choice");
+        EventCodeDic.Add("EC000", "Job Event");
         EventCodeDic.Add("EV999", "None");
 
         return EventCodeDic[eventCode];

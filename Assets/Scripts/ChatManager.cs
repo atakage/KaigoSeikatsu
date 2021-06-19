@@ -17,6 +17,7 @@ public class ChatManager : MonoBehaviour
     public bool dialogueSW;
     public int clickCount;
     public int textCount;   // テキスト配列リストの配列の数
+    public JobEventModel jobEvent;
     // Start is called before the first frame update
     void Start()
     {
@@ -117,6 +118,11 @@ public class ChatManager : MonoBehaviour
                             mainEventCompleteSW.SetActive(false);
                             mainEventCompleteSW.AddComponent<Text>().text = "Y";
                             mainEventCompleteSW.transform.SetParent(GameObject.Find("Canvas").transform);
+                        }
+                        // jobEventが終わると
+                        else if (afterEvent.Equals("Job Event"))
+                        {
+                            Debug.Log("Job Event Next");
                         }
                     // イベントコードがなきスクリプトだけを読み込んだとき
                     }else if (eventCode == null)
@@ -298,6 +304,23 @@ public class ChatManager : MonoBehaviour
         GameObject.Find("ChoiceButtonA").transform.Find("Text").GetComponent<Text>().text = choiceEventArray[0];
         GameObject.Find("ChoiceButtonB").transform.Find("Text").GetComponent<Text>().text = choiceEventArray[1];
         GameObject.Find("ChoiceButtonC").transform.Find("Text").GetComponent<Text>().text = choiceEventArray[2];
+    }
+
+    public void ShowDialogueForJobEvent(List<string[]> textList, JobEventModel jobEvent)
+    {
+        Debug.Log("call ShowDialogueForJobEvent: " + jobEvent.eventCode);
+
+        // イベントコードがあるなら(選択肢活用)
+        this.completeEventSW = new Dictionary<string, bool>();
+        this.eventCode = jobEvent.eventCode;
+        this.completeEventSW.Add(jobEvent.eventCode, false);
+        this.jobEvent = jobEvent;
+
+        // リストにある配列の数を読み込む
+        textCount = textList.Count;
+        this.textList = textList;
+
+        StartCoroutine(StartDialogueCoroutine());
     }
 
     public void ShowDialogueForMainEvent(List<string[]> textList, string eventCode)
