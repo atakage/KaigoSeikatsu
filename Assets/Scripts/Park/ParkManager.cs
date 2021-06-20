@@ -41,7 +41,7 @@ public class ParkManager : MonoBehaviour
         if ("END".Equals(canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text)
             && canvasGameObj.transform.Find("endedTextEventCode").GetComponent<Text>().text.Equals("EV014"))
         {
-            SetButtonUI(true);
+            SetMenuBtnAndNextBtnUI(true);
             SetActiveWalkAndExerciseBtn(true);
             canvasGameObj.transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "何をしようか?";
             canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text = "";
@@ -99,7 +99,7 @@ public class ParkManager : MonoBehaviour
 
     public void ClickWalkAndExerciseButton(string action)
     {
-        SetButtonUI(false);
+        SetMenuBtnAndNextBtnUI(false);
         SetActiveWalkAndExerciseBtn(false);
         canvasGameObj.transform.Find("actionReadyAlertBox").transform.Find("Text").GetComponent<Text>().text = action + "をしながら時間を過ごしますか?";
         canvasGameObj.transform.Find("actionReadyAlertBox").gameObject.SetActive(true);
@@ -119,7 +119,6 @@ public class ParkManager : MonoBehaviour
         playerSaveDataManager.SavePlayerData(playerData);
 
         canvasGameObj.transform.Find("actionReadyAlertBox").gameObject.SetActive(false);
-        SetButtonUI(true);
         SetActiveWalkAndExerciseBtn(false);
         // ボタンのlistenerが積もるのを防止するためにイベント後呼び出されたもとのボタンのlistenerをすべて削除する
         canvasGameObj.transform.Find("actionReadyAlertBox").transform.Find("confirmButton").GetComponent<Button>().onClick.RemoveAllListeners();
@@ -143,7 +142,7 @@ public class ParkManager : MonoBehaviour
     public void ClickActionReadyAlertCancelButton()
     {
         canvasGameObj.transform.Find("actionReadyAlertBox").gameObject.SetActive(false);
-        SetButtonUI(true);
+        SetMenuBtnAndNextBtnUI(true);
         SetActiveWalkAndExerciseBtn(true);
         // ボタンのlistenerが積もるのを防止するためにイベント後呼び出されたもとのボタンのlistenerをすべて削除する
         canvasGameObj.transform.Find("actionReadyAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.RemoveAllListeners();
@@ -155,7 +154,7 @@ public class ParkManager : MonoBehaviour
         canvasGameObj.transform.Find("walkButton").gameObject.SetActive(sw);
     }
 
-    public void SetButtonUI(bool sw)
+    public void SetMenuBtnAndNextBtnUI(bool sw)
     {
         canvasGameObj.transform.Find("menuButton").GetComponent<Button>().interactable = sw;
         canvasGameObj.transform.Find("nextButton").GetComponent<Button>().interactable = sw;

@@ -21,6 +21,12 @@ public class SimpleFadeInOutManager : MonoBehaviour
         StartCoroutine("FadeIn");
         if (fadeSW)
         {
+            // fade out後のあいだ作られるオブジェクトでこのオブジェクト(fadeOutEndMomentSW)を使ったあと必ず削除しなければならない
+            GameObject fadeOutEndMomentSW = new GameObject("fadeOutEndMomentSW");
+            fadeOutEndMomentSW.SetActive(false);
+            fadeOutEndMomentSW.AddComponent<Text>().text = "Y";
+            fadeOutEndMomentSW.transform.SetParent(GameObject.Find("Canvas").transform);
+
             fadeImage.gameObject.SetActive(false);
             GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text = "call";
             Destroy(this.gameObject);

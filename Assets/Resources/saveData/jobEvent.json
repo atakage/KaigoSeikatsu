@@ -9,7 +9,7 @@
             "choiceAEffect": "SA-1:FA+1",
             "choiceBEffect": "FA+1",
             "choiceCEffect": "FA+1:FL+1",
-            "eventActive": true
+            "eventActive": false
         }
     ]
 }

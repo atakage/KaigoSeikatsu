@@ -10,6 +10,8 @@ public class ChatManager : MonoBehaviour
     public EventCodeManager eventCodeManager;
     public EventManager eventManager;
     public PlayerSaveDataManager playerSaveDataManager;
+    public JobEventSetManager jobEventSetManager;
+    public JobEventManager jobEventManager;
     public List<string[]> textList;
     public string eventCode;
     public Dictionary<string, bool> completeEventSW; // イベントスクリプトの完了確認
@@ -18,14 +20,18 @@ public class ChatManager : MonoBehaviour
     public int clickCount;
     public int textCount;   // テキスト配列リストの配列の数
     public JobEventModel jobEvent;
+    public GameObject canvasGameObj;
     // Start is called before the first frame update
     void Start()
     {
         eventCodeManager = new EventCodeManager();
         eventManager = new EventManager();
         playerSaveDataManager = new PlayerSaveDataManager();
+        jobEventSetManager = new JobEventSetManager();
+        jobEventManager = new JobEventManager();
 
         Debug.Log("Start ChatManager");
+        canvasGameObj = GameObject.Find("Canvas");
         panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
         clickCount = 0;
 
@@ -122,14 +128,30 @@ public class ChatManager : MonoBehaviour
                         // jobEventが終わると
                         else if (afterEvent.Equals("Job Event"))
                         {
-                            Debug.Log("Job Event Next");
+                            // チョイスボタンをセット
+                            SetChoiceButtonUIForJobEvent(true);
+                            // チョイスボタンにaddListener
+                            ClickChoiceButtonForJobEvent();
+
+                            if (canvasGameObj.transform.Find("jobEventCompleteSW")) Destroy(canvasGameObj.transform.Find("jobEventCompleteSW").gameObject);
+                            GameObject jobEventCompleteSW = new GameObject("jobEventCompleteSW");
+                            jobEventCompleteSW.SetActive(false);
+                            jobEventCompleteSW.AddComponent<Text>().text = "Y";
+                            jobEventCompleteSW.transform.SetParent(canvasGameObj.transform);
                         }
                     // イベントコードがなきスクリプトだけを読み込んだとき
                     }else if (eventCode == null)
                     {
                         ExitDialogue();
                         Debug.Log("only script completed");
-                        GameObject.Find("Canvas").transform.Find("onlyScriptEventEnd").GetComponent<Text>().text = "END";
+
+                        if (canvasGameObj.transform.Find("onlyScriptEventEnd")) Destroy(canvasGameObj.transform.Find("onlyScriptEventEnd").gameObject);
+                        GameObject onlyScriptEventEnd = new GameObject("onlyScriptEventEnd");
+                        onlyScriptEventEnd.SetActive(false);
+                        onlyScriptEventEnd.AddComponent<Text>().text = "END";
+                        onlyScriptEventEnd.transform.SetParent(canvasGameObj.transform);
+
+                        //GameObject.Find("Canvas").transform.Find("onlyScriptEventEnd").GetComponent<Text>().text = "END";
                     }
                 }
                 else
@@ -155,6 +177,13 @@ public class ChatManager : MonoBehaviour
         }
     }
 
+    public void ClickChoiceButtonForJobEvent()
+    {
+        canvasGameObj.transform.Find("ChoiceButtonA").GetComponent<Button>().onClick.AddListener(delegate { ClickChoiceButtonAfterForJobEvent(this.jobEvent.choiceA, this.jobEvent.choiceAEffect, this.jobEvent.eventCode); });
+        canvasGameObj.transform.Find("ChoiceButtonB").GetComponent<Button>().onClick.AddListener(delegate { ClickChoiceButtonAfterForJobEvent(this.jobEvent.choiceB, this.jobEvent.choiceBEffect, this.jobEvent.eventCode); });
+        canvasGameObj.transform.Find("ChoiceButtonC").GetComponent<Button>().onClick.AddListener(delegate { ClickChoiceButtonAfterForJobEvent(this.jobEvent.choiceC, this.jobEvent.choiceCEffect, this.jobEvent.eventCode); });
+    }
+
     public void ClickChoiceButton(string eventCode)
     {
         switch (eventCode)
@@ -165,6 +194,81 @@ public class ChatManager : MonoBehaviour
                 GameObject.Find("Canvas").transform.Find("ChoiceButtonC").GetComponent<Button>().onClick.AddListener(delegate { ClickChoiceButtonAfter("satisfaction", -1, "そうか/いいね"); });
                 break;
         }
+    }
+
+    public void ClickChoiceButtonAfterForJobEvent(string choosingTextAndNumberValue, string choosingAfterEffect, string eventCode)
+    {
+        Debug.Log("Call ClickChoiceButtonAfterForJobEvent()");
+
+        // プレイヤーデータ更新(progress, fatigue, satisfaction, feeling...)
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        playerData.progress += 1;
+
+        // SA-1
+        string[] effectValueArray = choosingAfterEffect.Split(':');
+
+        // 反映するeffect数くらい繰り返す
+        foreach(string effectValue in effectValueArray)
+        {
+            Debug.Log("effectValue: " + effectValue);
+
+            string effectName = effectValue.Substring(0, 2);
+            string plusOrMinus = effectValue.Substring(2, 1);
+            int effectValueInt = Int32.Parse(effectValue.Substring(3));
+
+            Debug.Log("effectName: " + effectName + "\n" + "plusOrMinus: " + plusOrMinus + "\n" + "effectValueInt: " + effectValueInt);
+
+
+            switch (effectName)
+            {
+                case "SA":
+                    if ("+".Equals(plusOrMinus)) playerData.satisfaction += effectValueInt;
+                    else playerData.satisfaction -= effectValueInt;
+                    break;
+
+                case "FA":
+                    if ("+".Equals(plusOrMinus)) playerData.fatigue += effectValueInt;
+                    else playerData.fatigue -= effectValueInt;
+                    break;
+
+                case "FL":
+                    if ("+".Equals(plusOrMinus)) playerData.feeling += effectValueInt;
+                    else playerData.feeling -= effectValueInt;
+                    break;
+            }
+        }
+
+        string[] choosingTextAndNumberArray = choosingTextAndNumberValue.Split(':');
+
+        // 選択肢のvalue(-1, 0, 1)による画面effectを適用する
+        // -1: レッド
+        // 0: オレンジ
+        // 1: グリーン
+
+        // JobEvent.jsonにイベントのactiveをfalse処理
+        JobEventModel[] jobEventModelArray = jobEventSetManager.GetJobEventJsonFile();
+        List<JobEventModel> newJobEventModelList = jobEventManager.SetEventActiveAndReturnAll(jobEventModelArray, eventCode, false);
+        jobEventSetManager.CreateJobEventJsonFile(newJobEventModelList);
+
+        // プレイヤーデータにクリアーイベントで追加する
+
+        // JobDiary.jsonファイルに記録
+
+        // panelに選択肢のテキストを表示する
+        // スクリプトをディスプレイする
+        List<string[]> scriptArrList = eventManager.SingleScriptSaveToList(choosingTextAndNumberArray[0]);
+        ShowDialogue(scriptArrList, "");
+
+
+        playerSaveDataManager.SavePlayerData(playerData);
+
+        SetActiveChoiceButton(false);
+
+        // 初期化
+        jobEvent = null;
+        canvasGameObj.transform.Find("ChoiceButtonA").GetComponent<Button>().onClick.RemoveAllListeners();
+        canvasGameObj.transform.Find("ChoiceButtonB").GetComponent<Button>().onClick.RemoveAllListeners();
+        canvasGameObj.transform.Find("ChoiceButtonC").GetComponent<Button>().onClick.RemoveAllListeners();
     }
 
     public void ClickChoiceButtonAfter(string parameter, float value, string panelText)
@@ -292,6 +396,16 @@ public class ChatManager : MonoBehaviour
         GameObject.Find("Canvas").transform.Find("ChoiceButtonA").gameObject.SetActive(sw);
         GameObject.Find("Canvas").transform.Find("ChoiceButtonB").gameObject.SetActive(sw);
         GameObject.Find("Canvas").transform.Find("ChoiceButtonC").gameObject.SetActive(sw);
+    }
+
+    public void SetChoiceButtonUIForJobEvent(bool sw)
+    {
+        SetActiveChoiceButton(sw);
+        SetActiveUI(false);
+
+        GameObject.Find("ChoiceButtonA").transform.Find("Text").GetComponent<Text>().text = this.jobEvent.choiceA.Split(':')[0];
+        GameObject.Find("ChoiceButtonB").transform.Find("Text").GetComponent<Text>().text = this.jobEvent.choiceB.Split(':')[0];
+        GameObject.Find("ChoiceButtonC").transform.Find("Text").GetComponent<Text>().text = this.jobEvent.choiceC.Split(':')[0];
     }
 
     public void SetChoiceButtonUI(string choiceEvent, bool sw)

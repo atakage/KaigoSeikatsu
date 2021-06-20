@@ -89,13 +89,29 @@ public class FacilityManager : MonoBehaviour
 
             // メインイベントが終わった場合
             if (canvasObj.transform.Find("mainEventCompleteSW") != null
-                && canvasObj.transform.Find("mainEventCompleteSW").GetComponent<Text>().text.Equals("Y")
-                && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy
                 && canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("mainEventCompleteSW").GetComponent<Text>().text.Equals("Y")
+                && canvasObj.transform.Find("time").gameObject.activeInHierarchy
                 && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
                 chatManager.DestroyMainEventBlackBox();
                 Destroy(canvasObj.transform.Find("mainEventCompleteSW").gameObject);
+            }
+            // jobEventが終わった場合
+            else if (canvasObj.transform.Find("jobEventCompleteSW") != null
+                && canvasObj.transform.Find("onlyScriptEventEnd") != null
+                && canvasObj.transform.Find("jobEventCompleteSW").GetComponent<Text>().text.Equals("Y")
+                && canvasObj.transform.Find("onlyScriptEventEnd").GetComponent<Text>().text.Equals("END"))
+            {
+                // 初期化
+                canvasObj.transform.Find("jobEventCompleteSW").GetComponent<Text>().text = "N";
+                canvasObj.transform.Find("onlyScriptEventEnd").GetComponent<Text>().text = "";
+
+                // UI時間更新
+                chatManager.SetTime();
+                // fade out 
+                chatManager.executeFadeOutSimple();
+                // uiをActive
             }
             else if (timeStr.Equals("12:50") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
             {
@@ -159,7 +175,18 @@ public class FacilityManager : MonoBehaviour
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("ParkScene");
             }
-            else if (canvasObj.transform.Find("fadeOutEndMomentSW") != null)
+
+            // UI初期化---------------------------------------------------------------------------------------------------------------
+            // fade out後menuButtonとnextButtonのinteractableをtrue
+            if (canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
+            {
+                menuBtnAndNextBtnInteractable(true);
+
+            }
+
+            // 初期化------------------------------------------------------------------------------------------------------------------
+            if (canvasObj.transform.Find("fadeOutEndMomentSW") != null)
             {
               Destroy(canvasObj.transform.Find("fadeOutEndMomentSW").gameObject);
             }
@@ -195,12 +222,23 @@ public class FacilityManager : MonoBehaviour
                         // jobEventの中でactiveされているイベントをランダムで呼び出す
                         JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
                         JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
-                        LoadJobEventAndShow(jobEvent);
 
-                                    // 他の時間にjobEventが発動しないようにフラグ処理
+                        if(jobEvent != null)
+                        {
+                            LoadJobEventAndShow(jobEvent);
+                            menuBtnAndNextBtnInteractable(false);
+                        }
+                        else
+                        {
+                            // fade out
+                            FacilityUISetActive(false);
+                            chatManager.executeFadeOutSimple();
+                            chatManager.SetTime();
+                        }
+                        // 他の時間にjobEventが発動しないようにフラグ処理
                         jobEventDayCompletedBool = true;
                     }
-                              // イベントを発動させないとそのまま進行する
+                    // イベントを発動させないとそのまま進行する
                     else if(completeMainEvent != true && !"YES".Equals(callEventFlag))
                     {
                         // fade out
@@ -420,6 +458,12 @@ public class FacilityManager : MonoBehaviour
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         chatManager.ShowDialogue(scriptList, eventCode);
+    }
+
+    public void menuBtnAndNextBtnInteractable(bool sw)
+    {
+        canvasObj.transform.Find("menuButton").GetComponent<Button>().interactable = sw;
+        canvasObj.transform.Find("nextButton").GetComponent<Button>().interactable = sw;
     }
 
     public void FacilityUISetActive(bool setActive)
