@@ -94,6 +94,7 @@ public class FacilityManager : MonoBehaviour
                 && canvasObj.transform.Find("time").gameObject.activeInHierarchy
                 && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
+                chatManager.SetTime(); // 時間がすぎる
                 chatManager.DestroyMainEventBlackBox();
                 Destroy(canvasObj.transform.Find("mainEventCompleteSW").gameObject);
             }
@@ -213,6 +214,7 @@ public class FacilityManager : MonoBehaviour
 
                               // 発動できるメインイベントがあるならメインイベントを先にする
                     bool completeMainEvent = RunMainEvent();
+                    Debug.Log("completeMainEvent: " + completeMainEvent);
                               // jobEventを発動させるかを決める
                     string callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
 
@@ -426,8 +428,8 @@ public class FacilityManager : MonoBehaviour
                 playerData.progress += addingProgress;
 
                 // 終わったMainEventはプレイヤーデータに記録する
-                string[] eventCodeArray = playerSaveDataManager.SaveCompletedEvent(playerData.eventCodeArray, mainEventCode);
-                playerData.eventCodeArray = eventCodeArray;
+                string[] mainEventCodeArray = playerSaveDataManager.SaveCompletedEvent(playerData.eventCodeObject.completedMainEventArray, mainEventCode);
+                playerData.eventCodeObject.completedMainEventArray = mainEventCodeArray;
                 playerSaveDataManager.SavePlayerData(playerData);
 
                 returnValue = true;

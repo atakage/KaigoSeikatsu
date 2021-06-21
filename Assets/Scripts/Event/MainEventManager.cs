@@ -32,10 +32,11 @@ public class MainEventManager : MonoBehaviour
 
         bool completedEventBool = false;
 
-        if(playerData.eventCodeArray != null && playerData.eventCodeArray.Length > 0)
+        if(playerData.eventCodeObject != null 
+            && playerData.eventCodeObject.completedMainEventArray != null && playerData.eventCodeObject.completedMainEventArray.Length > 0)
         {
             //　完了されたイベントリストからイベントを探す
-            foreach (string eventCode in playerData.eventCodeArray)
+            foreach (string eventCode in playerData.eventCodeObject.completedMainEventArray)
             {
                 Debug.Log("player completed eventCode: " + eventCode);
                 Debug.Log("mainEventCode: " + mainEventCode);
@@ -74,9 +75,9 @@ public class MainEventManager : MonoBehaviour
             {
                 foreach (string requiredCompletedEvent in requiredCompletedEventArray)
                 {
-                    if(playerdata.eventCodeArray != null)
+                    if(playerdata.eventCodeObject.completedMainEventArray != null)
                     {
-                        int resultInt = Array.IndexOf(playerdata.eventCodeArray, requiredCompletedEvent);
+                        int resultInt = Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, requiredCompletedEvent);
                         if (resultInt < 0)
                         {
                             checkCompletedEventBool = false;

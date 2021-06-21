@@ -251,6 +251,8 @@ public class ChatManager : MonoBehaviour
         jobEventSetManager.CreateJobEventJsonFile(newJobEventModelList);
 
         // プレイヤーデータにクリアーイベントで追加する
+        string[] jobEventCodeArray = playerSaveDataManager.SaveCompletedEvent(playerData.eventCodeObject.completedJobEventArray, eventCode);
+        playerData.eventCodeObject.completedJobEventArray = jobEventCodeArray;
 
         // JobDiary.jsonファイルに記録
 

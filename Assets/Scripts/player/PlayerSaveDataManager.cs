@@ -13,11 +13,18 @@ public class PlayerData
     public string currentScene;
     public string money;
     public string time;
-    public string[] eventCodeArray; // クリアしたイベント
+    public EventCodeObject eventCodeObject = new EventCodeObject(); // クリアしたイベント
     public int progress; // ゲームの進行度
     public float fatigue; // 疲労、100になったらゲームオーバー
     public int satisfaction; // 仕事の満足度, endingに影響
     public int feeling; // 気分
+}
+
+[System.Serializable]
+public class EventCodeObject
+{
+    public string[] completedMainEventArray;
+    public string[] completedJobEventArray;
 }
 
 
