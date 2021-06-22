@@ -12,6 +12,8 @@ public class ChatManager : MonoBehaviour
     public PlayerSaveDataManager playerSaveDataManager;
     public JobEventSetManager jobEventSetManager;
     public JobEventManager jobEventManager;
+    public JobDiarySetManager jobDiarySetManager;
+    public JobDiaryManager jobDiaryManager;
     public List<string[]> textList;
     public string eventCode;
     public Dictionary<string, bool> completeEventSW; // イベントスクリプトの完了確認
@@ -29,6 +31,8 @@ public class ChatManager : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         jobEventSetManager = new JobEventSetManager();
         jobEventManager = new JobEventManager();
+        jobDiarySetManager = new JobDiarySetManager();
+        jobDiaryManager = new JobDiaryManager();
 
         Debug.Log("Start ChatManager");
         canvasGameObj = GameObject.Find("Canvas");
@@ -255,6 +259,11 @@ public class ChatManager : MonoBehaviour
         playerData.eventCodeObject.completedJobEventArray = jobEventCodeArray;
 
         // JobDiary.jsonファイルに記録
+        // jobDiary.jsonを読み込む
+        JobDiaryModel[] jobDiaryModelArray = jobDiarySetManager.GetJobDiaryJsonFile();
+        // jobDiary.jsonにイベントを追加する
+        List<JobDiaryModel> jobDiaryModelList = jobDiaryManager.AddEventToJobDiary(jobDiaryModelArray, eventCode, this.jobEvent.eventScript, choosingTextAndNumberArray[0]);
+        jobDiarySetManager.CreateJobDiaryJsonFile(jobDiaryModelList);
 
         // panelに選択肢のテキストを表示する
         // スクリプトをディスプレイする

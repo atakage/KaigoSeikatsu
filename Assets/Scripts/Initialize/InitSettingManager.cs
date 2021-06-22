@@ -8,6 +8,7 @@ public class InitSettingManager : MonoBehaviour
     public CSVManager csvManager;
     public PlayerSaveDataManager playerSaveDataManager;
     public SceneTransitionManager sceneTransitionManager;
+    public JobDiarySetManager jobDiarySetManager;
     public GameObject canvasObj;
     public GameObject loadButtonObj;
     public GameObject newGameAlertBoxObj;
@@ -18,6 +19,7 @@ public class InitSettingManager : MonoBehaviour
         csvManager = new CSVManager();
         playerSaveDataManager = new PlayerSaveDataManager();
         sceneTransitionManager = new SceneTransitionManager();
+        jobDiarySetManager = new JobDiarySetManager();
 
         canvasObj = GameObject.Find("Canvas");
         newGameAlertBoxObj = canvasObj.transform.Find("newGameAlertBox").gameObject;
@@ -37,7 +39,10 @@ public class InitSettingManager : MonoBehaviour
 
         // JobEvent.jsonを作る
         csvManager.ReadJobEventInitFileAndCreateJson();
-        
+
+        // JobDiary.jsonを作る
+        jobDiarySetManager.CreateJobDiaryJsonFile(new List<JobDiaryModel>());
+
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
 
         canvasObj.transform.Find("PlayButton").GetComponent<Button>().onClick.AddListener(() => ClickPlayButton(playerData));
