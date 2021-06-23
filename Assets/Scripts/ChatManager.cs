@@ -14,6 +14,7 @@ public class ChatManager : MonoBehaviour
     public JobEventManager jobEventManager;
     public JobDiarySetManager jobDiarySetManager;
     public JobDiaryManager jobDiaryManager;
+    public FlashEffectManager flashEffectManager;
     public List<string[]> textList;
     public string eventCode;
     public Dictionary<string, bool> completeEventSW; // イベントスクリプトの完了確認
@@ -33,6 +34,7 @@ public class ChatManager : MonoBehaviour
         jobEventManager = new JobEventManager();
         jobDiarySetManager = new JobDiarySetManager();
         jobDiaryManager = new JobDiaryManager();
+        flashEffectManager = GameObject.Find("FlashEffectManager").GetComponent("FlashEffectManager") as FlashEffectManager;
 
         Debug.Log("Start ChatManager");
         canvasGameObj = GameObject.Find("Canvas");
@@ -245,9 +247,25 @@ public class ChatManager : MonoBehaviour
         string[] choosingTextAndNumberArray = choosingTextAndNumberValue.Split(':');
 
         // 選択肢のvalue(-1, 0, 1)による画面effectを適用する
-        // -1: レッド
-        // 0: オレンジ
-        // 1: グリーン
+        switch (choosingTextAndNumberArray[1])
+        {
+            // -1: レッド
+            case "-1":
+                Debug.Log("call -1");
+                flashEffectManager.StartFlashEffect(new Color(255,0,0,0.1f));
+                break;
+            // 1: グリーン
+            case "0":
+                break;
+            // 0: オレンジ
+            case "1":
+                break;
+        }
+        
+
+
+
+
 
         // JobEvent.jsonにイベントのactiveをfalse処理
         JobEventModel[] jobEventModelArray = jobEventSetManager.GetJobEventJsonFile();

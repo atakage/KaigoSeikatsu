@@ -34,14 +34,15 @@ public class AtHomeManager : MonoBehaviour
 
 
 
-        GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextButton);
-        GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("No").GetComponent<Button>().onClick.AddListener(delegate { ActiveAlert(false); });
-        GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("Yes").GetComponent<Button>().onClick.AddListener(ClickGoToAlertYesButton);
-        GameObject.Find("Canvas").transform.Find("itemCheckButton").GetComponent<Button>().onClick.AddListener(ClickItemCheckButton);
-        GameObject.Find("Canvas").transform.Find("goOutButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoOutButton(time); });
-        GameObject.Find("Canvas").transform.Find("GoOutBox").transform.Find("goToConvenienceButton").GetComponent<Button>().onClick.AddListener(ClickGoToConvenienceBtn);
-        GameObject.Find("Canvas").transform.Find("GoOutBox").transform.Find("closeButton").GetComponent<Button>().onClick.AddListener(ClickGoOutCloseBtn);
-        GameObject.Find("Canvas").transform.Find("GoOutAlertNoBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickGoOutCancelBtn);
+        canvasGameObj.transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextButton);
+        canvasGameObj.transform.Find("AlertGoing").transform.Find("No").GetComponent<Button>().onClick.AddListener(delegate { ActiveAlert(false); });
+        canvasGameObj.transform.Find("AlertGoing").transform.Find("Yes").GetComponent<Button>().onClick.AddListener(ClickGoToAlertYesButton);
+        canvasGameObj.transform.Find("itemCheckButton").GetComponent<Button>().onClick.AddListener(ClickItemCheckButton);
+        canvasGameObj.transform.Find("jobDiaryButton").GetComponent<Button>().onClick.AddListener(ClickJobDiaryButton);
+        canvasGameObj.transform.Find("goOutButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoOutButton(time); });
+        canvasGameObj.transform.Find("GoOutBox").transform.Find("goToConvenienceButton").GetComponent<Button>().onClick.AddListener(ClickGoToConvenienceBtn);
+        canvasGameObj.transform.Find("GoOutBox").transform.Find("closeButton").GetComponent<Button>().onClick.AddListener(ClickGoOutCloseBtn);
+        canvasGameObj.transform.Find("GoOutAlertNoBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickGoOutCancelBtn);
     }
 
     private void Update()
@@ -112,6 +113,11 @@ public class AtHomeManager : MonoBehaviour
             return false;
         }
         
+    }
+
+    public void ClickJobDiaryButton()
+    {
+        sceneTransitionManager.LoadTo("JobDiaryScene");
     }
 
     public void ClickGoToConvenienceBtn()
@@ -199,17 +205,19 @@ public class AtHomeManager : MonoBehaviour
 
     public void UIDisplay(bool sw)
     {
-        GameObject.Find("Canvas").transform.Find("nextButton").gameObject.SetActive(sw);
-        GameObject.Find("Canvas").transform.Find("goOutButton").gameObject.SetActive(sw);
-        GameObject.Find("Canvas").transform.Find("itemCheckButton").gameObject.SetActive(sw);
-        GameObject.Find("Canvas").transform.Find("time").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("nextButton").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("goOutButton").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("itemCheckButton").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("time").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("jobDiaryButton").gameObject.SetActive(sw);
     }
 
     public void MenuButtonActive(bool sw)
     {
-        GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = sw;
-        GameObject.Find("Canvas").transform.Find("goOutButton").GetComponent<Button>().interactable = sw;
-        GameObject.Find("Canvas").transform.Find("itemCheckButton").GetComponent<Button>().interactable = sw;
+        canvasGameObj.transform.Find("nextButton").GetComponent<Button>().interactable = sw;
+        canvasGameObj.transform.Find("goOutButton").GetComponent<Button>().interactable = sw;
+        canvasGameObj.transform.Find("itemCheckButton").GetComponent<Button>().interactable = sw;
+        canvasGameObj.transform.Find("jobDiaryButton").GetComponent<Button>().interactable = sw;
     }
 
     public void ExecuteFadeInOut()
@@ -221,11 +229,12 @@ public class AtHomeManager : MonoBehaviour
 
     public void ClickGoToAlertYesButton()
     {
-        GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("nextButton").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("goOutButton").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("itemCheckButton").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("time").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("nextButton").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("goOutButton").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("itemCheckButton").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("jobDiaryButton").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("time").gameObject.SetActive(false);
         ExecuteFadeInOut();
     }
 
