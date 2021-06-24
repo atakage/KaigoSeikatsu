@@ -2114,8 +2114,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashImage: {fileID: 0}
-  duration: 10
-  smoothness: 0.02
   flashImageColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!4 &1505004951
 Transform:

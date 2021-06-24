@@ -34,7 +34,8 @@ public class ChatManager : MonoBehaviour
         jobEventManager = new JobEventManager();
         jobDiarySetManager = new JobDiarySetManager();
         jobDiaryManager = new JobDiaryManager();
-        flashEffectManager = GameObject.Find("FlashEffectManager").GetComponent("FlashEffectManager") as FlashEffectManager;
+        if(GameObject.Find("FlashEffectManager") != null) flashEffectManager = GameObject.Find("FlashEffectManager").GetComponent("FlashEffectManager") as FlashEffectManager;
+
 
         Debug.Log("Start ChatManager");
         canvasGameObj = GameObject.Find("Canvas");
@@ -251,21 +252,17 @@ public class ChatManager : MonoBehaviour
         {
             // -1: レッド
             case "-1":
-                Debug.Log("call -1");
                 flashEffectManager.StartFlashEffect(new Color(255,0,0,0.1f));
                 break;
-            // 1: グリーン
-            case "0":
-                break;
             // 0: オレンジ
+            case "0":
+                flashEffectManager.StartFlashEffect(new Color(255, 125, 0, 0.1f));
+                break;
+            // 1: グリーン
             case "1":
+                flashEffectManager.StartFlashEffect(new Color(0, 255, 0, 0.1f));
                 break;
         }
-        
-
-
-
-
 
         // JobEvent.jsonにイベントのactiveをfalse処理
         JobEventModel[] jobEventModelArray = jobEventSetManager.GetJobEventJsonFile();

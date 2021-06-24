@@ -32,8 +32,8 @@ public class FlashEffectManager : MonoBehaviour
         {
             this.flashImage.color = Color.Lerp(this.flashImageColor, Color.clear, progress);
             progress += increment;
-            Debug.Log("color progress: " + progress);
             yield return new WaitForSeconds(smoothness);
         }
+        this.flashImage.gameObject.SetActive(false);
     }
 }
