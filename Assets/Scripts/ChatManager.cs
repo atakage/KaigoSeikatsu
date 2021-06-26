@@ -75,7 +75,8 @@ public class ChatManager : MonoBehaviour
                         string afterEvent = eventCodeManager.FindAfterEventByEventCode(eventCode);
                         if (afterEvent.Equals("Fade Out"))
                         {
-                            executeFadeOut();
+                            //executeFadeOut();
+                            executeFadeOutSimple();
                             // 終わったイベントコードをつけるオブジェクトを作る(すでに存在すると削除する)
                             if (GameObject.Find("Canvas").transform.Find("endedEventCode")) Destroy(GameObject.Find("Canvas").transform.Find("endedEventCode").gameObject);
                             GameObject endedTextEventCode = new GameObject("endedEventCode");
@@ -124,7 +125,7 @@ public class ChatManager : MonoBehaviour
                         // メインイベントが終わると
                         else if (afterEvent.Equals("Main Fade Out"))
                         {
-                            executeFadeOut();
+                            executeFadeOutSimple();
                             // 終わったイベントコードをつけるオブジェクトを作る(すでに存在すると削除する)
                             if (GameObject.Find("Canvas").transform.Find("mainEventCompleteSW")) Destroy(GameObject.Find("Canvas").transform.Find("mainEventCompleteSW").gameObject);
                             GameObject mainEventCompleteSW = new GameObject("mainEventCompleteSW");
@@ -157,8 +158,6 @@ public class ChatManager : MonoBehaviour
                         onlyScriptEventEnd.SetActive(false);
                         onlyScriptEventEnd.AddComponent<Text>().text = "END";
                         onlyScriptEventEnd.transform.SetParent(canvasGameObj.transform);
-
-                        //GameObject.Find("Canvas").transform.Find("onlyScriptEventEnd").GetComponent<Text>().text = "END";
                     }
                 }
                 else

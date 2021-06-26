@@ -18,6 +18,13 @@ public class PlayerData
     public float fatigue; // 疲労、100になったらゲームオーバー
     public int satisfaction; // 仕事の満足度, endingに影響
     public int feeling; // 気分
+    public Tip tip = new Tip();
+}
+
+[System.Serializable]
+public class Tip
+{
+    public bool checkedJobDiaryTip;
 }
 
 [System.Serializable]

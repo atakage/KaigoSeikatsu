@@ -23,6 +23,8 @@ public class FacilityManager : MonoBehaviour
     public string[] recreationEvent = null;
     public string[] afternoonEvent = null;
     public bool timeCheckSW;
+    bool completeMainEvent;
+    string callEventFlag = null;
     public bool jobEventDayCompletedBool;
     // Start is called before the first frame update
     void Start()
@@ -104,6 +106,7 @@ public class FacilityManager : MonoBehaviour
                 && canvasObj.transform.Find("jobEventCompleteSW").GetComponent<Text>().text.Equals("Y")
                 && canvasObj.transform.Find("onlyScriptEventEnd").GetComponent<Text>().text.Equals("END"))
             {
+                Debug.Log("ENDED JOBEVENT CLICK");
                 // 初期化
                 canvasObj.transform.Find("jobEventCompleteSW").GetComponent<Text>().text = "N";
                 canvasObj.transform.Find("onlyScriptEventEnd").GetComponent<Text>().text = "";
@@ -114,64 +117,67 @@ public class FacilityManager : MonoBehaviour
                 chatManager.executeFadeOutSimple();
                 // uiをActive
             }
-            else if (timeStr.Equals("12:50") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
-            {
-                SetPanelText("休憩時間だ\n何をしようかな?");
-                timeCheckSW = false;
-            }
-            else if (timeStr.Equals("11:50") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
-            {
-                SetPanelText("もうすぐお昼の時間だ");
-                timeCheckSW = false;
-            }
-            // careQuizEventがNOのとき
-            else if (timeStr.Equals("11:50") && GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call"))
+
+            if (timeStr.Equals("11:50")
+                && canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
                 FacilityUISetActive(true);
                 SetPanelText("もうすぐお昼の時間だ");
-                timeCheckSW = false;
-                GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text = "";
             }
-            else if (timeStr.Equals("14:00") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
+            else if (timeStr.Equals("12:50")
+                && canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
+            {
+                SetPanelText("休憩時間だ\n何をしようかな?");
+            }
+            else if (timeStr.Equals("14:00")
+                && canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
                 SetPanelText("まもなく午後のスケジュールが始まる");
-                timeCheckSW = false;
             }
-            else if (timeStr.Equals("17:00") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
+            else if (timeStr.Equals("17:00")
+                && canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
                 SetPanelText("午後のスケジュールが終わった");
-                timeCheckSW = false;
             }
-            else if (timeStr.Equals("17:20") && GameObject.Find("Canvas").transform.Find("time").gameObject.activeInHierarchy)
+            else if (timeStr.Equals("17:20")
+                && canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
                 SetPanelText("これからどうする?");
                 SetGoToButton(true);
-                GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "帰宅";
-                timeCheckSW = false;
+                canvasObj.transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "帰宅";
+                //timeCheckSW = false;
             }
-            // 17:20 -> 家へ
-            else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
-                GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("帰宅"))
+            //  fade out後 17:20 -> 家へ
+            else if (canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y") &&
+                canvasObj.transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("帰宅"))
             {
-                playerData.time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+                playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "AtHomeScene";
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("AtHomeScene");
             }
-            // 17:20 -> カフェへ
-            else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
-                GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("カフェ"))
+            // fade out後 17:20 -> カフェへ
+            else if (canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y") &&
+                canvasObj.transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("カフェ"))
             {
-                playerData.time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+                playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "CafeScene";
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("CafeScene");
             }
-            // 17:20 -> 公園へ
-            else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
-                GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("公園"))
+            //  fade out後 17:20 -> 公園へ
+            else if (canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y") &&
+                canvasObj.transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("公園"))
             {
-                playerData.time = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
+                playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "ParkScene";
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("ParkScene");
@@ -182,6 +188,7 @@ public class FacilityManager : MonoBehaviour
             if (canvasObj.transform.Find("fadeOutEndMomentSW") != null
                 && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
+                FacilityUISetActive(true);
                 menuBtnAndNextBtnInteractable(true);
 
             }
@@ -198,8 +205,8 @@ public class FacilityManager : MonoBehaviour
 
     public void ClickNextButton()
     {
-        string timeStr = GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text;
-
+        canvasObj.transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "";
+        string timeStr = canvasObj.transform.Find("time").GetComponent<Text>().text;
         string nextBtnText = GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text;
 
         // nextButtonのテキストが進行なら
@@ -210,13 +217,12 @@ public class FacilityManager : MonoBehaviour
             {
                 // ９時なら(-> 11:00)
                 case "09:00":
-                        // ランダムで介護クイズイベント発動
 
                               // 発動できるメインイベントがあるならメインイベントを先にする
-                    bool completeMainEvent = RunMainEvent();
+                    completeMainEvent = RunMainEvent();
                     Debug.Log("completeMainEvent: " + completeMainEvent);
                               // jobEventを発動させるかを決める
-                    string callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
+                    callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
 
                               // メインイベントを発動しない状態そしてjobEventを発動すると
                     if (completeMainEvent != true && "YES".Equals(callEventFlag))
@@ -237,10 +243,10 @@ public class FacilityManager : MonoBehaviour
                             chatManager.executeFadeOutSimple();
                             chatManager.SetTime();
                         }
-                        // 他の時間にjobEventが発動しないようにフラグ処理
+                                    // 他の時間にjobEventが発動しないようにフラグ処理
                         jobEventDayCompletedBool = true;
                     }
-                    // イベントを発動させないとそのまま進行する
+                               // イベントを発動させないとそのまま進行する(MainEventだけ発動するときは除いて)
                     else if(completeMainEvent != true && !"YES".Equals(callEventFlag))
                     {
                         // fade out
@@ -249,71 +255,147 @@ public class FacilityManager : MonoBehaviour
                         chatManager.SetTime();
                     }
 
-                    /*
-                    string eventCode = CallRandomEventAddNone(careQuizEvent);
-                    if (!eventCode.Equals("NO"))
+                              // ゲームロードをしながらイベントを繰り返す行為を防ぐために
+                              // プレイヤーデータに時間をアプデ
+                    playerData = playerSaveDataManager.LoadPlayerData();
+                    playerData.time = "11:50";
+                    playerSaveDataManager.SavePlayerData(playerData);
+
+                    break;
+                        // 11時なら食事に (-> 12:00(昼ご飯) -> 12:50)
+                case "11:50":
+
+                               // 発動できるメインイベントがあるならメインイベントを先にする
+                    completeMainEvent = RunMainEvent();
+                               // jobEventを発動させるかを決める
+                    callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
+
+                              // メインイベントを発動しない状態そしてjobEventを発動できる状態 && 以前時間にjobEventを発動させたことがなかったら
+                    if (completeMainEvent != true && "YES".Equals(callEventFlag) && jobEventDayCompletedBool != true)
                     {
-                        LoadEventAndShow(eventCode);
+                        // jobEventの中でactiveされているイベントをランダムで呼び出す
+                        JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                        JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
+
+                        if (jobEvent != null)
+                        {
+                            LoadJobEventAndShow(jobEvent);
+                            menuBtnAndNextBtnInteractable(false);
+                        }
+                        else
+                        {
+                            // fade out
+                            FacilityUISetActive(false);
+                            LoadEventAndShow(CallRandomEvent(lunchEvent));
+                            chatManager.SetTime();
+                        }
+                                     // 他の時間にjobEventが発動しないようにフラグ処理
+                        jobEventDayCompletedBool = true;
                     }
-                    // クイズイベントなかったら時間がたつ(->11:50)
-                    else
+                              // イベントを発動させないとそのまま進行する
+                    else if(completeMainEvent != true && !"YES".Equals(callEventFlag))
+                    {
+                        FacilityUISetActive(false);
+                        LoadEventAndShow(CallRandomEvent(lunchEvent));
+                        chatManager.SetTime();
+                    }
+
+                    playerData = playerSaveDataManager.LoadPlayerData();
+                    playerData.time = "12:50";
+                    playerSaveDataManager.SavePlayerData(playerData);
+
+                    break;
+                // 12:50なら休憩時間( -> 14:00)
+                case "12:50":
+
+                              // 発動できるメインイベントがあるならメインイベントを先にする
+                    completeMainEvent = RunMainEvent();
+                              // jobEventを発動させるかを決める
+                    callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
+
+                              // メインイベントを発動しない状態そしてjobEventを発動できる状態 && 以前時間にjobEventを発動させたことがなかったら
+                    if (completeMainEvent != true && "YES".Equals(callEventFlag) && jobEventDayCompletedBool != true)
+                    {
+                        // jobEventの中でactiveされているイベントをランダムで呼び出す
+                        JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                        JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
+
+                        if (jobEvent != null)
+                        {
+                            LoadJobEventAndShow(jobEvent);
+                            menuBtnAndNextBtnInteractable(false);
+                        }
+                        else
+                        {
+                            // fade out
+                            FacilityUISetActive(false);
+                            chatManager.executeFadeOutSimple();
+                            chatManager.SetTime();
+                        }
+                                    // 他の時間にjobEventが発動しないようにフラグ処理
+                        jobEventDayCompletedBool = true;
+                    }
+                              // イベントを発動させないとそのまま進行する
+                    else if (completeMainEvent != true && !"YES".Equals(callEventFlag))
                     {
                         // fade out
                         FacilityUISetActive(false);
                         chatManager.executeFadeOutSimple();
                         chatManager.SetTime();
                     }
-                    */
-
-                    // ゲームロードをしながらイベントを繰り返す行為を防ぐために
-                    // プレイヤーデータに時間をアプデ
-                    playerData = playerSaveDataManager.LoadPlayerData();
-                    playerData.time = "11:50";
-                    playerSaveDataManager.SavePlayerData(playerData);
-
-                    timeCheckSW = true;
-                    break;
-                // 11時なら食事に (-> 12:00(昼ご飯) -> 12:50)
-                case "11:50":
-                    FacilityUISetActive(false);
-                    LoadEventAndShow(CallRandomEvent(lunchEvent));
-
-                    playerData = playerSaveDataManager.LoadPlayerData();
-                    playerData.time = "12:50";
-                    playerSaveDataManager.SavePlayerData(playerData);
-
-                    // 時間が経つ
-                    chatManager.SetTime();
-                    timeCheckSW = true;
-                    break;
-                // 12:50なら休憩時間( -> 14:00)
-                case "12:50":
-                    FacilityUISetActive(false);
-                    SetPanelText("");
 
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "14:00";
                     playerSaveDataManager.SavePlayerData(playerData);
 
-                    chatManager.SetTime();
-                    chatManager.executeFadeOut();
-                    timeCheckSW = true;
                     break;
-                // 14時ならレクリエーションの時間( -> 17:00)
+                        // 14時ならレクリエーションの時間( -> 17:00)
                 case "14:00":
-                    FacilityUISetActive(false);
-                    LoadEventAndShow(CallRandomEvent(recreationEvent));
+
+                              // 発動できるメインイベントがあるならメインイベントを先にする
+                    completeMainEvent = RunMainEvent();
+                              // jobEventを発動させるかを決める
+                    callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
+
+                              // メインイベントを発動しない状態そしてjobEventを発動できる状態 && 以前時間にjobEventを発動させたことがなかったら
+                    if (completeMainEvent != true && "YES".Equals(callEventFlag) && jobEventDayCompletedBool != true)
+                    {
+                        // jobEventの中でactiveされているイベントをランダムで呼び出す
+                        JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                        JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
+
+                        if (jobEvent != null)
+                        {
+                            LoadJobEventAndShow(jobEvent);
+                            menuBtnAndNextBtnInteractable(false);
+                        }
+                        else
+                        {
+                            // fade out
+                            FacilityUISetActive(false);
+                            LoadEventAndShow(CallRandomEvent(recreationEvent));
+                            chatManager.SetTime();
+                        }
+                                    // 他の時間にjobEventが発動しないようにフラグ処理
+                        jobEventDayCompletedBool = true;
+                    }
+                               // イベントを発動させないとそのまま進行する
+                    else if (completeMainEvent != true && !"YES".Equals(callEventFlag))
+                    {
+                        // fade out
+                        FacilityUISetActive(false);
+                        LoadEventAndShow(CallRandomEvent(recreationEvent));
+                        chatManager.SetTime();
+                    }
 
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "17:00";
                     playerSaveDataManager.SavePlayerData(playerData);
 
-                    // 時間が経つ
-                    chatManager.SetTime();
-                    timeCheckSW = true;
                     break;
-                // 17時なら帰宅準備( -> 仕事終り)
+                        // 17時なら帰宅準備( -> 仕事終り)
                 case "17:00":
+
                     FacilityUISetActive(false);
                     LoadEventAndShow(CallRandomEvent(afternoonEvent));
 
@@ -321,9 +403,9 @@ public class FacilityManager : MonoBehaviour
                     playerData.time = "17:20";
                     playerSaveDataManager.SavePlayerData(playerData);
 
-                    // 時間が経つ
+                               // 時間が経つ
                     chatManager.SetTime();
-                    timeCheckSW = true;
+
                     break;
             }
         }
@@ -336,7 +418,7 @@ public class FacilityManager : MonoBehaviour
 
     }
 
-    // 17:00 -> 18:00
+    // 17:20 -> 18:00
     public void ClickGoToAlertYesButton()
     {
         // プレイヤーデータに時間をセーブ
@@ -344,8 +426,8 @@ public class FacilityManager : MonoBehaviour
         playerData.time = "18:00";
         //playerSaveDataManager.SavePlayerData(playerData);
 
-        GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("Panel").gameObject.SetActive(false);
+        canvasObj.transform.Find("AlertGoing").gameObject.SetActive(false);
+        canvasObj.transform.Find("Panel").gameObject.SetActive(false);
         FacilityUISetActive(false);
         chatManager.executeFadeOutSimple();
         chatManager.SetTime();
@@ -374,7 +456,7 @@ public class FacilityManager : MonoBehaviour
     public void ClickGoToButton(string destination)
     {
         SetGoToButton(false);
-        GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(true);
+        canvasObj.transform.Find("AlertGoing").gameObject.SetActive(true);
         GameObject.Find("AlertGoing").transform.Find("DestinationValue").gameObject.SetActive(false);
         GameObject.Find("AlertGoing").transform.Find("alertMessage").GetComponent<Text>().text =
         "<color=#f54242>" + destination + "</color>" + "に行って時間を過ごしますか?";
@@ -385,13 +467,13 @@ public class FacilityManager : MonoBehaviour
     {
         if (sw)
         {
-            GameObject.Find("Canvas").transform.Find("GoToCafeButton").gameObject.SetActive(sw);
-            GameObject.Find("Canvas").transform.Find("GoToParkButton").gameObject.SetActive(sw);
+            canvasObj.transform.Find("GoToCafeButton").gameObject.SetActive(sw);
+            canvasObj.transform.Find("GoToParkButton").gameObject.SetActive(sw);
         }
         else
         {
-            GameObject.Find("Canvas").transform.Find("GoToCafeButton").gameObject.SetActive(sw);
-            GameObject.Find("Canvas").transform.Find("GoToParkButton").gameObject.SetActive(sw);
+            canvasObj.transform.Find("GoToCafeButton").gameObject.SetActive(sw);
+            canvasObj.transform.Find("GoToParkButton").gameObject.SetActive(sw);
         }
     }
 

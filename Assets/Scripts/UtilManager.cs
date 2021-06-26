@@ -14,7 +14,7 @@ public class UtilManager : MonoBehaviour
         Debug.Log("GetYesOrNo() randomValue: " + randomValue);
         if (randomValue == 0)
         {
-            return "NO";
+            return "YES"; // NO
         }
         else
         {

@@ -3,7 +3,27 @@
         {
             "eventCode": "EC000",
             "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
+            "choosingString": "放置する"
+        },
+        {
+            "eventCode": "EC000",
+            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
             "choosingString": "明日から録音しておこう"
+        },
+        {
+            "eventCode": "EC000",
+            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
+            "choosingString": "強い口調で注意する"
+        },
+        {
+            "eventCode": "EC000",
+            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
+            "choosingString": "強い口調で注意する"
+        },
+        {
+            "eventCode": "EC000",
+            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
+            "choosingString": "放置する"
         },
         {
             "eventCode": "EC000",
@@ -38,242 +58,7 @@
         {
             "eventCode": "EC000",
             "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
+            "choosingString": "強い口調で注意する"
         },
         {
             "eventCode": "EC000",
@@ -294,11 +79,6 @@
             "eventCode": "EC000",
             "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
             "choosingString": "放置する"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "明日から録音しておこう"
         },
         {
             "eventCode": "EC000",
