@@ -162,7 +162,6 @@ public class ChatManager : MonoBehaviour
                 }
                 else
                 {
-                    
                     string afterEvent = eventCodeManager.FindAfterEventByEventCode(this.eventCode);
                                // メインイベントなら専用Coroutineを続ける
                     if (afterEvent.Equals("Main Fade Out"))
@@ -176,8 +175,6 @@ public class ChatManager : MonoBehaviour
                         StopAllCoroutines();
                         StartCoroutine(StartDialogueCoroutine());
                     }
-
-                    
                 }
             }
         }

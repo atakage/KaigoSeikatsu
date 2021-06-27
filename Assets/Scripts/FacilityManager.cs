@@ -23,8 +23,9 @@ public class FacilityManager : MonoBehaviour
     public string[] recreationEvent = null;
     public string[] afternoonEvent = null;
     public bool timeCheckSW;
-    bool completeMainEvent;
-    string callEventFlag = null;
+    public bool completeMainEvent;
+    public string callEventFlag;
+    public bool jobEventSearchSkip;
     public bool jobEventDayCompletedBool;
     // Start is called before the first frame update
     void Start()
@@ -73,12 +74,9 @@ public class FacilityManager : MonoBehaviour
             FacilityUISetActive(true);
         }
         
-
-        
-
         // UI setting
-        GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = playerData.time;
-        GameObject.Find("Canvas").transform.Find("fatigueBar").GetComponent<Slider>().value = playerData.fatigue;
+        canvasObj.transform.Find("time").GetComponent<Text>().text = playerData.time;
+        canvasObj.transform.Find("fatigueBar").GetComponent<Slider>().value = playerData.fatigue;
 
 
     }
@@ -96,7 +94,7 @@ public class FacilityManager : MonoBehaviour
                 && canvasObj.transform.Find("time").gameObject.activeInHierarchy
                 && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
-                chatManager.SetTime(); // 時間がすぎる
+                //chatManager.SetTime(); // 時間がすぎる
                 chatManager.DestroyMainEventBlackBox();
                 Destroy(canvasObj.transform.Find("mainEventCompleteSW").gameObject);
             }
@@ -122,7 +120,7 @@ public class FacilityManager : MonoBehaviour
                 && canvasObj.transform.Find("fadeOutEndMomentSW") != null
                 && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
-                FacilityUISetActive(true);
+                //FacilityUISetActive(true);
                 SetPanelText("もうすぐお昼の時間だ");
             }
             else if (timeStr.Equals("12:50")
@@ -215,45 +213,71 @@ public class FacilityManager : MonoBehaviour
             //時間による次のイベント(switch)
             switch (timeStr)
             {
-                // ９時なら(-> 11:00)
+                // ９時なら(-> 11:50)
                 case "09:00":
 
                               // 発動できるメインイベントがあるならメインイベントを先にする
-                    completeMainEvent = RunMainEvent();
-                    Debug.Log("completeMainEvent: " + completeMainEvent);
-                              // jobEventを発動させるかを決める
-                    callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
-
-                              // メインイベントを発動しない状態そしてjobEventを発動すると
-                    if (completeMainEvent != true && "YES".Equals(callEventFlag))
+                    if (completeMainEvent != true)
                     {
-                        // jobEventの中でactiveされているイベントをランダムで呼び出す
-                        JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
-                        JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
-
-                        if(jobEvent != null)
+                        completeMainEvent = RunMainEvent();
+                                     // メインイベントを実行したらこの時間にはjobEventを探さない
+                        if (completeMainEvent == true)
                         {
-                            LoadJobEventAndShow(jobEvent);
-                            menuBtnAndNextBtnInteractable(false);
-                        }
-                        else
+                            chatManager.SetTime();
+                            jobEventSearchSkip = true;
+                        }         
+                    }
+
+                               // メインイベントが実行されなかった場合
+                    if(jobEventSearchSkip == false)
+                    {
+                                     // 前の時間にjobEventが実行されたらもう実行させない
+                        if(jobEventDayCompletedBool == true)
                         {
                             // fade out
                             FacilityUISetActive(false);
                             chatManager.executeFadeOutSimple();
                             chatManager.SetTime();
                         }
-                                    // 他の時間にjobEventが発動しないようにフラグ処理
-                        jobEventDayCompletedBool = true;
+                        else
+                        {
+                                          // jobEventを発動させるかを決める
+                            callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
+
+                            switch (callEventFlag)
+                            {
+                                case "YES":
+                                    // jobEventの中でactiveされているイベントをランダムで呼び出す
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                                    JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
+
+                                    if (jobEvent != null)
+                                    {
+                                        LoadJobEventAndShow(jobEvent);
+                                        menuBtnAndNextBtnInteractable(false);
+                                                            // 他の時間にjobEventが発動しないようにフラグ処理
+                                        jobEventDayCompletedBool = true;
+                                    }
+                                    else
+                                    {
+                                        // fade out
+                                        FacilityUISetActive(false);
+                                        chatManager.executeFadeOutSimple();
+                                        chatManager.SetTime();
+                                    }
+                                    break;
+                                case "NO":
+                                    // fade out
+                                    FacilityUISetActive(false);
+                                    chatManager.executeFadeOutSimple();
+                                    chatManager.SetTime();
+                                    break;
+                            }
+                        }
                     }
-                               // イベントを発動させないとそのまま進行する(MainEventだけ発動するときは除いて)
-                    else if(completeMainEvent != true && !"YES".Equals(callEventFlag))
-                    {
-                        // fade out
-                        FacilityUISetActive(false);
-                        chatManager.executeFadeOutSimple();
-                        chatManager.SetTime();
-                    }
+
+                    // 次の時間にjobEventを探せるように初期化
+                    jobEventSearchSkip = false;
 
                               // ゲームロードをしながらイベントを繰り返す行為を防ぐために
                               // プレイヤーデータに時間をアプデ
@@ -262,138 +286,232 @@ public class FacilityManager : MonoBehaviour
                     playerSaveDataManager.SavePlayerData(playerData);
 
                     break;
+
                         // 11時なら食事に (-> 12:00(昼ご飯) -> 12:50)
                 case "11:50":
 
                                // 発動できるメインイベントがあるならメインイベントを先にする
-                    completeMainEvent = RunMainEvent();
-                               // jobEventを発動させるかを決める
-                    callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
-
-                              // メインイベントを発動しない状態そしてjobEventを発動できる状態 && 以前時間にjobEventを発動させたことがなかったら
-                    if (completeMainEvent != true && "YES".Equals(callEventFlag) && jobEventDayCompletedBool != true)
+                    if (completeMainEvent != true)
                     {
-                        // jobEventの中でactiveされているイベントをランダムで呼び出す
-                        JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
-                        JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
-
-                        if (jobEvent != null)
+                        completeMainEvent = RunMainEvent();
+                                    // メインイベントを実行したらこの時間にはjobEventを探さない
+                        if (completeMainEvent == true)
                         {
-                            LoadJobEventAndShow(jobEvent);
-                            menuBtnAndNextBtnInteractable(false);
+                            chatManager.SetTime();
+                            jobEventSearchSkip = true;
                         }
-                        else
+                            
+                    }
+
+                               // メインイベントが実行されなかった場合
+                    if (jobEventSearchSkip == false)
+                    {
+                                     // 前の時間にjobEventが実行されたらもう実行させない
+                        if (jobEventDayCompletedBool == true)
                         {
                             // fade out
                             FacilityUISetActive(false);
                             LoadEventAndShow(CallRandomEvent(lunchEvent));
                             chatManager.SetTime();
                         }
-                                     // 他の時間にjobEventが発動しないようにフラグ処理
-                        jobEventDayCompletedBool = true;
-                    }
-                              // イベントを発動させないとそのまま進行する
-                    else if(completeMainEvent != true && !"YES".Equals(callEventFlag))
-                    {
-                        FacilityUISetActive(false);
-                        LoadEventAndShow(CallRandomEvent(lunchEvent));
-                        chatManager.SetTime();
+                        else
+                        {
+                                           // jobEventを発動させるかを決める
+                            callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
+
+                            switch (callEventFlag)
+                            {
+                                case "YES":
+                                    // jobEventの中でactiveされているイベントをランダムで呼び出す
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                                    JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
+
+                                    if (jobEvent != null)
+                                    {
+                                        LoadJobEventAndShow(jobEvent);
+                                        menuBtnAndNextBtnInteractable(false);
+                                                            // 他の時間にjobEventが発動しないようにフラグ処理
+                                        jobEventDayCompletedBool = true;
+                                    }
+                                    else
+                                    {
+                                        // fade out
+                                        FacilityUISetActive(false);
+                                        LoadEventAndShow(CallRandomEvent(lunchEvent));
+                                        chatManager.SetTime();
+                                    }
+                                    break;
+                                case "NO":
+                                    // fade out
+                                    FacilityUISetActive(false);
+                                    LoadEventAndShow(CallRandomEvent(lunchEvent));
+                                    chatManager.SetTime();
+                                    break;
+                            }
+                        }
                     }
 
+                    // 次の時間にjobEventを探せるように初期化
+                    jobEventSearchSkip = false;
+
+                              // ゲームロードをしながらイベントを繰り返す行為を防ぐために
+                              // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "12:50";
                     playerSaveDataManager.SavePlayerData(playerData);
 
                     break;
+
                 // 12:50なら休憩時間( -> 14:00)
                 case "12:50":
 
                               // 発動できるメインイベントがあるならメインイベントを先にする
-                    completeMainEvent = RunMainEvent();
-                              // jobEventを発動させるかを決める
-                    callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
-
-                              // メインイベントを発動しない状態そしてjobEventを発動できる状態 && 以前時間にjobEventを発動させたことがなかったら
-                    if (completeMainEvent != true && "YES".Equals(callEventFlag) && jobEventDayCompletedBool != true)
+                    if (completeMainEvent != true)
                     {
-                        // jobEventの中でactiveされているイベントをランダムで呼び出す
-                        JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
-                        JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
-
-                        if (jobEvent != null)
+                        completeMainEvent = RunMainEvent();
+                                    // メインイベントを実行したらこの時間にはjobEventを探さない
+                        if (completeMainEvent == true)
                         {
-                            LoadJobEventAndShow(jobEvent);
-                            menuBtnAndNextBtnInteractable(false);
+                            chatManager.SetTime();
+                            jobEventSearchSkip = true;
                         }
-                        else
+                            
+                    }
+
+                              // メインイベントが実行されなかった場合
+                    if (jobEventSearchSkip == false)
+                    {
+                                    // 前の時間にjobEventが実行されたらもう実行させない
+                        if (jobEventDayCompletedBool == true)
                         {
                             // fade out
                             FacilityUISetActive(false);
                             chatManager.executeFadeOutSimple();
                             chatManager.SetTime();
                         }
-                                    // 他の時間にjobEventが発動しないようにフラグ処理
-                        jobEventDayCompletedBool = true;
-                    }
-                              // イベントを発動させないとそのまま進行する
-                    else if (completeMainEvent != true && !"YES".Equals(callEventFlag))
-                    {
-                        // fade out
-                        FacilityUISetActive(false);
-                        chatManager.executeFadeOutSimple();
-                        chatManager.SetTime();
+                        else
+                        {
+                                          // jobEventを発動させるかを決める
+                            callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
+
+                            switch (callEventFlag)
+                            {
+                                case "YES":
+                                    // jobEventの中でactiveされているイベントをランダムで呼び出す
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                                    JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
+
+                                    if (jobEvent != null)
+                                    {
+                                        LoadJobEventAndShow(jobEvent);
+                                        menuBtnAndNextBtnInteractable(false);
+                                                             // 他の時間にjobEventが発動しないようにフラグ処理
+                                        jobEventDayCompletedBool = true;
+                                    }
+                                    else
+                                    {
+                                        // fade out
+                                        FacilityUISetActive(false);
+                                        chatManager.executeFadeOutSimple();
+                                        chatManager.SetTime();
+                                    }
+                                    break;
+                                case "NO":
+                                    // fade out
+                                    FacilityUISetActive(false);
+                                    chatManager.executeFadeOutSimple();
+                                    chatManager.SetTime();
+                                    break;
+                            }
+                        }
                     }
 
+                    // 次の時間にjobEventを探せるように初期化
+                    jobEventSearchSkip = false;
+
+                              // ゲームロードをしながらイベントを繰り返す行為を防ぐために
+                              // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "14:00";
                     playerSaveDataManager.SavePlayerData(playerData);
 
                     break;
+
                         // 14時ならレクリエーションの時間( -> 17:00)
                 case "14:00":
 
                               // 発動できるメインイベントがあるならメインイベントを先にする
-                    completeMainEvent = RunMainEvent();
-                              // jobEventを発動させるかを決める
-                    callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
-
-                              // メインイベントを発動しない状態そしてjobEventを発動できる状態 && 以前時間にjobEventを発動させたことがなかったら
-                    if (completeMainEvent != true && "YES".Equals(callEventFlag) && jobEventDayCompletedBool != true)
+                    if (completeMainEvent != true)
                     {
-                        // jobEventの中でactiveされているイベントをランダムで呼び出す
-                        JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
-                        JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
-
-                        if (jobEvent != null)
+                        completeMainEvent = RunMainEvent();
+                                    // メインイベントを実行したらこの時間にはjobEventを探さない
+                        if (completeMainEvent == true)
                         {
-                            LoadJobEventAndShow(jobEvent);
-                            menuBtnAndNextBtnInteractable(false);
+                            chatManager.SetTime();
+                            jobEventSearchSkip = true;
                         }
-                        else
+                    }
+
+                              // メインイベントが実行されなかった場合
+                    if (jobEventSearchSkip == false)
+                    {
+                                     // 前の時間にjobEventが実行されたらもう実行させない
+                        if (jobEventDayCompletedBool == true)
                         {
                             // fade out
                             FacilityUISetActive(false);
                             LoadEventAndShow(CallRandomEvent(recreationEvent));
                             chatManager.SetTime();
                         }
-                                    // 他の時間にjobEventが発動しないようにフラグ処理
-                        jobEventDayCompletedBool = true;
-                    }
-                               // イベントを発動させないとそのまま進行する
-                    else if (completeMainEvent != true && !"YES".Equals(callEventFlag))
-                    {
-                        // fade out
-                        FacilityUISetActive(false);
-                        LoadEventAndShow(CallRandomEvent(recreationEvent));
-                        chatManager.SetTime();
+                        else
+                        {
+                                          // jobEventを発動させるかを決める
+                            callEventFlag = utilManager.GetYesOrNo();// 'YES' or 'NO'
+
+                            switch (callEventFlag)
+                            {
+                                case "YES":
+                                    // jobEventの中でactiveされているイベントをランダムで呼び出す
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                                    JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
+
+                                    if (jobEvent != null)
+                                    {
+                                        LoadJobEventAndShow(jobEvent);
+                                        menuBtnAndNextBtnInteractable(false);
+                                                            // 他の時間にjobEventが発動しないようにフラグ処理
+                                        jobEventDayCompletedBool = true;
+                                    }
+                                    else
+                                    {
+                                        // fade out
+                                        FacilityUISetActive(false);
+                                        LoadEventAndShow(CallRandomEvent(recreationEvent));
+                                        chatManager.SetTime();
+                                    }
+                                    break;
+                                case "NO":
+                                    // fade out
+                                    FacilityUISetActive(false);
+                                    LoadEventAndShow(CallRandomEvent(recreationEvent));
+                                    chatManager.SetTime();
+                                    break;
+                            }
+                        }
                     }
 
+                    // 次の時間にjobEventを探せるように初期化
+                    jobEventSearchSkip = false;
+
+                              // ゲームロードをしながらイベントを繰り返す行為を防ぐために
+                              // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "17:00";
                     playerSaveDataManager.SavePlayerData(playerData);
 
                     break;
-                        // 17時なら帰宅準備( -> 仕事終り)
+
+                // 17時なら帰宅準備( -> 仕事終り)
                 case "17:00":
 
                     FacilityUISetActive(false);
@@ -414,8 +532,6 @@ public class FacilityManager : MonoBehaviour
         {
             ClickGoToHomeButton();
         }
-
-
     }
 
     // 17:20 -> 18:00
@@ -429,7 +545,8 @@ public class FacilityManager : MonoBehaviour
         canvasObj.transform.Find("AlertGoing").gameObject.SetActive(false);
         canvasObj.transform.Find("Panel").gameObject.SetActive(false);
         FacilityUISetActive(false);
-        chatManager.executeFadeOutSimple();
+        //chatManager.executeFadeOutSimple();
+        chatManager.executeFadeOutPersist();
         chatManager.SetTime();
         timeCheckSW = true;
     }
