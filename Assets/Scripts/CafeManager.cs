@@ -15,10 +15,12 @@ public class CafeManager : MonoBehaviour
     public Vector3 cafeMenuCanvasPos;
     public Vector3 detailOrderCanvasPos;
     public PlayerData playerData;
+    public GameObject canvasGameObj;
 
     // Start is called before the first frame update
     void Start()
     {
+        canvasGameObj = GameObject.Find("Canvas");
         uiCamera = GameObject.Find("UICamera").GetComponent<Camera>();
 
         playerSaveDataManager = new PlayerSaveDataManager();
@@ -28,20 +30,20 @@ public class CafeManager : MonoBehaviour
         csvManager = new CSVManager();
         itemUseManager = new ItemUseManager();
 
-        cafeMenuCanvasPos = GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").position;
-        detailOrderCanvasPos = GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").position;
+        cafeMenuCanvasPos = canvasGameObj.transform.Find("CafeMenuCanvas").position;
+        detailOrderCanvasPos = canvasGameObj.transform.Find("DetailOrderCanvas").position;
 
         playerData = playerSaveDataManager.LoadPlayerData();
         GameObject.Find("time").GetComponent<Text>().text = playerData.time;
         GameObject.Find("MoneyValue").GetComponent<Text>().text = playerData.money+"円";
 
-        GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextButton);
-        GameObject.Find("Canvas").transform.Find("NextAlertBox").transform.Find("goButton").GetComponent<Button>().onClick.AddListener(delegate { ClickNextAlertGoButton(playerData); });
-        GameObject.Find("Canvas").transform.Find("NextAlertBox").transform.Find("cancleButton").GetComponent<Button>().onClick.AddListener(ClickNextAlertCancleButton);
+        canvasGameObj.transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextButton);
+        canvasGameObj.transform.Find("NextAlertBox").transform.Find("goButton").GetComponent<Button>().onClick.AddListener(delegate { ClickNextAlertGoButton(playerData); });
+        canvasGameObj.transform.Find("NextAlertBox").transform.Find("cancleButton").GetComponent<Button>().onClick.AddListener(ClickNextAlertCancleButton);
 
         GameObject.Find("orderPanel").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(ClickOrderPanelConfirmBtn);
-        GameObject.Find("Canvas").transform.Find("ConfirmAlertBox").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(delegate { ClickConfirmBtn(playerData); });
-        GameObject.Find("Canvas").transform.Find("ConfirmAlertBox").transform.Find("cancleButton").GetComponent<Button>().onClick.AddListener(ClickConfirmCancleBtn);
+        canvasGameObj.transform.Find("ConfirmAlertBox").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(delegate { ClickConfirmBtn(playerData); });
+        canvasGameObj.transform.Find("ConfirmAlertBox").transform.Find("cancleButton").GetComponent<Button>().onClick.AddListener(ClickConfirmCancleBtn);
 
         LoadEventAndShow("EV009");
 
@@ -52,18 +54,18 @@ public class CafeManager : MonoBehaviour
     private void Update()
     {
         // あかねさんとカフェメニューをセット
-        if (GameObject.Find("Canvas").transform.Find("textEventEndSW").GetComponent<Text>().text.Equals("END"))
+        if (canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text.Equals("END"))
         {
             menuAndNextButtonInteractable(true);
 
             Vector3 velo = Vector3.zero;
-            GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").position = Vector3.MoveTowards(GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").position, cafeMenuCanvasPos, 10f);
-            GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").position = Vector3.MoveTowards(GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").position, detailOrderCanvasPos, 10f);
+            canvasGameObj.transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").position = Vector3.MoveTowards(GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").position, cafeMenuCanvasPos, 10f);
+            canvasGameObj.transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").position = Vector3.MoveTowards(GameObject.Find("Canvas").transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").position, detailOrderCanvasPos, 10f);
             // メニューのセットが終わるとSW初期化
-            if (cafeMenuCanvasPos.Equals(GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").position))
+            if (cafeMenuCanvasPos.Equals(canvasGameObj.transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").position))
             {
-                GameObject.Find("Canvas").transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "ご注文は何にいたしますか?";
-                GameObject.Find("Canvas").transform.Find("textEventEndSW").GetComponent<Text>().text = "";
+                canvasGameObj.transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "ご注文は何にいたしますか?";
+                canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text = "";
             }
         }
 
@@ -75,7 +77,8 @@ public class CafeManager : MonoBehaviour
             4. 物体にBox Collider 2Dコンポーネントを追加する
         */
         // メニューのアイテムクリックイベント
-        if(GameObject.Find("Canvas").transform.Find("textEventEndSW").GetComponent<Text>().text.Equals("") && cafeMenuCanvasPos.Equals(GameObject.Find("Canvas").transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").position))
+        if(canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text.Equals("")
+            && cafeMenuCanvasPos.Equals(canvasGameObj.transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").position))
         {
             // マウスクリックしたら
             if (Input.GetMouseButton(0))
@@ -98,22 +101,32 @@ public class CafeManager : MonoBehaviour
         }
 
         // カフェを出るときの1次挨拶イベントチェック
-        if(GameObject.Find("Canvas").transform.Find("greetingCheck").GetComponent<Text>().text.Equals("Y") && GameObject.Find("Canvas").transform.Find("fadeOutEventCheck").GetComponent<Text>().text.Equals("Y"))
+        if(canvasGameObj.transform.Find("greetingCheck").GetComponent<Text>().text.Equals("Y")
+            && canvasGameObj.transform.Find("fadeOutEndMomentSW") != null
+            && canvasGameObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
         {
             Debug.Log("CALL 2");
-            GameObject.Find("Canvas").transform.Find("fadeOutEventCheck").GetComponent<Text>().text = "";
-            GameObject.Find("Canvas").transform.Find("greetingCheck").GetComponent<Text>().text = "C";
+            canvasGameObj.transform.Find("fadeOutEventCheck").GetComponent<Text>().text = "";
+            canvasGameObj.transform.Find("greetingCheck").GetComponent<Text>().text = "C";
             // 2次挨拶イベントを呼び出す
             LoadEventAndShow("EV011");
-            GameObject.Find("Canvas").transform.Find("greeting2Check").GetComponent<Text>().text = "Y";
+            canvasGameObj.transform.Find("greeting2Check").GetComponent<Text>().text = "Y";
         }
         // カフェを出るときの2次挨拶イベントの完了をチェック
-        if (GameObject.Find("Canvas").transform.Find("greeting2Check").GetComponent<Text>().text.Equals("Y") && GameObject.Find("Canvas").transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y"))
+        if (canvasGameObj.transform.Find("greeting2Check").GetComponent<Text>().text.Equals("Y")
+            && canvasGameObj.transform.Find("fadeOutPersistEventCheck") != null
+            && canvasGameObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y"))
         {
             playerData = playerSaveDataManager.LoadPlayerData();
             playerData.currentScene = "AtHomeScene";
             playerSaveDataManager.SavePlayerData(playerData);
             sceneTransitionManager.LoadTo("AtHomeScene");
+        }
+
+        // 初期化------------------------------------------------------------------------------------------------------------------
+        if (canvasGameObj.transform.Find("fadeOutEndMomentSW") != null)
+        {
+            Destroy(canvasGameObj.transform.Find("fadeOutEndMomentSW").gameObject);
         }
     }
 

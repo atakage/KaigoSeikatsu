@@ -8,6 +8,8 @@ public class FadeOutPersistManager : MonoBehaviour
     public FacilityManager facilityManager;
     Image fadeImage;
     bool fadeSW;
+    GameObject canvasGameObj;
+    GameObject fadeOutPersistEventCheck;
 
     private void Start()
     {
@@ -16,7 +18,8 @@ public class FadeOutPersistManager : MonoBehaviour
 
     void Awake()
     {
-        fadeImage = GameObject.Find("Canvas").transform.Find("fadeImage").GetComponent<Image>();
+        canvasGameObj = GameObject.Find("Canvas");
+        fadeImage = canvasGameObj.transform.Find("fadeImage").GetComponent<Image>();
         fadeImage.gameObject.SetActive(true);
         Color color = fadeImage.color;
         color.a = Time.deltaTime * 1.0f;
@@ -29,7 +32,16 @@ public class FadeOutPersistManager : MonoBehaviour
         StartCoroutine("FadeIn");
         if (fadeSW)
         {
-            GameObject.Find("Canvas").transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text = "Y";
+            if(canvasGameObj.transform.Find("fadeOutPersistEventCheck") == null)
+            {
+                fadeOutPersistEventCheck = new GameObject("fadeOutPersistEventCheck");
+                fadeOutPersistEventCheck.SetActive(false);
+                fadeOutPersistEventCheck.transform.SetParent(canvasGameObj.transform);
+                fadeOutPersistEventCheck.AddComponent<Text>().text = "Y";
+            }
+            fadeOutPersistEventCheck = canvasGameObj.transform.Find("fadeOutPersistEventCheck").gameObject;
+            fadeOutPersistEventCheck.GetComponent<Text>().text = "Y";
+
             Destroy(this.gameObject);
             facilityManager.FacilityUISetActive(true);
         }

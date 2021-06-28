@@ -5,6 +5,18 @@
             "itemDescription": "介護福祉士の名刺だ",
             "quantity": 1,
             "keyItem": "Y"
+        },
+        {
+            "itemName": "テストアイテムF",
+            "itemDescription": "test item",
+            "quantity": 1,
+            "keyItem": "N"
+        },
+        {
+            "itemName": "テストアイテムB",
+            "itemDescription": "test item",
+            "quantity": 1,
+            "keyItem": "N"
         }
     ]
 }

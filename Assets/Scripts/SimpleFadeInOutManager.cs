@@ -6,10 +6,12 @@ public class SimpleFadeInOutManager : MonoBehaviour
 {
     Image fadeImage;
     bool fadeSW;
+    GameObject canvasGameObj;
 
     void Awake()
     {
-        fadeImage = GameObject.Find("Canvas").transform.Find("fadeImage").GetComponent<Image>();
+        canvasGameObj = GameObject.Find("Canvas");
+        fadeImage = canvasGameObj.transform.Find("fadeImage").GetComponent<Image>();
         fadeImage.gameObject.SetActive(true);
         Color color = fadeImage.color;
         color.a = Time.deltaTime * 1.0f;
@@ -25,10 +27,23 @@ public class SimpleFadeInOutManager : MonoBehaviour
             GameObject fadeOutEndMomentSW = new GameObject("fadeOutEndMomentSW");
             fadeOutEndMomentSW.SetActive(false);
             fadeOutEndMomentSW.AddComponent<Text>().text = "Y";
-            fadeOutEndMomentSW.transform.SetParent(GameObject.Find("Canvas").transform);
+            fadeOutEndMomentSW.transform.SetParent(canvasGameObj.transform);
+
+            if (canvasGameObj.transform.Find("AlertGoing") == null)
+            {
+                GameObject AlertGoing = new GameObject("AlertGoing");
+                AlertGoing.SetActive(false);
+                AlertGoing.transform.SetParent(canvasGameObj.transform);
+
+                GameObject FadeSwitchText = new GameObject("FadeSwitchText");
+                FadeSwitchText.SetActive(false);
+                FadeSwitchText.transform.SetParent(AlertGoing.transform);
+                FadeSwitchText.AddComponent<Text>().text = "call";
+            }
 
             fadeImage.gameObject.SetActive(false);
-            GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text = "call";
+            canvasGameObj.transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text = "call";
+
             Destroy(this.gameObject);
         }
     }

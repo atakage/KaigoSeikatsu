@@ -151,30 +151,33 @@ public class FacilityManager : MonoBehaviour
                 //timeCheckSW = false;
             }
             //  fade out後 17:20 -> 家へ
-            else if (canvasObj.transform.Find("fadeOutEndMomentSW") != null
-                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y") &&
+            else if (canvasObj.transform.Find("fadeOutPersistEventCheck") != null
+                && canvasObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y") &&
                 canvasObj.transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("帰宅"))
             {
+                canvasObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text = "N";
                 playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "AtHomeScene";
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("AtHomeScene");
             }
             // fade out後 17:20 -> カフェへ
-            else if (canvasObj.transform.Find("fadeOutEndMomentSW") != null
-                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y") &&
+            else if (canvasObj.transform.Find("fadeOutPersistEventCheck") != null
+                && canvasObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y") &&
                 canvasObj.transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("カフェ"))
             {
+                canvasObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text = "N";
                 playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "CafeScene";
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("CafeScene");
             }
             //  fade out後 17:20 -> 公園へ
-            else if (canvasObj.transform.Find("fadeOutEndMomentSW") != null
-                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y") &&
+            else if (canvasObj.transform.Find("fadeOutPersistEventCheck") != null
+                && canvasObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y") &&
                 canvasObj.transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text.Equals("公園"))
             {
+                canvasObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text = "N";
                 playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "ParkScene";
                 playerSaveDataManager.SavePlayerData(playerData);
