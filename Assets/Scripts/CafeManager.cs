@@ -132,14 +132,14 @@ public class CafeManager : MonoBehaviour
 
     public void ClickNextAlertGoButton(PlayerData playerData)
     {
-        GameObject.Find("Canvas").transform.Find("NextAlertBox").gameObject.SetActive(false);
+        LoadEventAndShow("EV011");
+
+        canvasGameObj.transform.Find("NextAlertBox").gameObject.SetActive(false);
 
         playerData.time = "19:00";
         playerSaveDataManager.SavePlayerData(playerData);
 
-        GameObject.Find("Canvas").transform.Find("greetingCheck").GetComponent<Text>().text = "Y";
-        GameObject.Find("Canvas").transform.Find("fadeOutEventCheck").GetComponent<Text>().text = "Y";
-
+        canvasGameObj.transform.Find("greeting2Check").GetComponent<Text>().text = "Y";
     }
 
     public void ClickNextAlertCancleButton()
@@ -155,7 +155,7 @@ public class CafeManager : MonoBehaviour
         menuAndNextButtonInteractable(false);
         menuAndOrderCanvasActive(false);
 
-        GameObject.Find("Canvas").transform.Find("NextAlertBox").gameObject.SetActive(true);
+        canvasGameObj.transform.Find("NextAlertBox").gameObject.SetActive(true);
     }
 
     public void menuAndOrderCanvasActive(bool sw)
