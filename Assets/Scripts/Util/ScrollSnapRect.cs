@@ -61,12 +61,29 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     // container with Image components - one Image for each page
     private List<Image> _pageSelectionImages;
 
+    public GameObject canvasGameObj;
+    public GameObject jobDiaryViewBoxGameObj;
+    // UI
+    public GameObject currentPageGameObj;
+    public GameObject allPageGameObj;
     //------------------------------------------------------------------------
     void Start() {
         _scrollRectComponent = GetComponent<ScrollRect>();
         _scrollRectRect = GetComponent<RectTransform>();
         _container = _scrollRectComponent.content;
         _pageCount = _container.childCount;
+
+        canvasGameObj = GameObject.Find("Canvas").gameObject;
+
+        // UIセット
+        if (canvasGameObj.transform.Find("JobDiaryViewBox") != null)
+        {
+            jobDiaryViewBoxGameObj = canvasGameObj.transform.Find("JobDiaryViewBox").gameObject;
+            allPageGameObj = jobDiaryViewBoxGameObj.transform.Find("allPage").gameObject;
+            allPageGameObj.GetComponent<Text>().text = _pageCount.ToString();
+            currentPageGameObj = jobDiaryViewBoxGameObj.transform.Find("currentPage").gameObject;
+            currentPageGameObj.GetComponent<Text>().text = "1";
+        } 
 
         // is it horizontal or vertical scrollrect
         if (_scrollRectComponent.horizontal && !_scrollRectComponent.vertical) {
@@ -115,6 +132,11 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
                 SetPageSelection(GetNearestPage());
             }
         }
+    }
+
+    public void SetCurrentPageNumberUI(string currentPageNumber)
+    {
+        currentPageGameObj.GetComponent<Text>().text = currentPageNumber;
     }
 
     //------------------------------------------------------------------------
@@ -178,6 +200,9 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         _lerpTo = _pagePositions[aPageIndex];
         _lerp = true;
         _currentPage = aPageIndex;
+
+        // UIがセットされた場合
+        if(jobDiaryViewBoxGameObj != null) SetCurrentPageNumberUI((_currentPage+1).ToString());
     }
 
     //------------------------------------------------------------------------
@@ -288,7 +313,6 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
             // if not fast time, look to which page we got to
             LerpToPage(GetNearestPage());
         }
-
         _dragging = false;
     }
 

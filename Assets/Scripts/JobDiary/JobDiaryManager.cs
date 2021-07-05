@@ -46,6 +46,7 @@ public class JobDiaryManager : MonoBehaviour
     public void DisplayJobDiaryTip()
     {
         jobDiaryAlphaScreenCanvas.transform.Find("alpha30ScreenImage").gameObject.SetActive(true);
+        jobDiaryAlphaScreenCanvas.transform.Find("alphaBlockScreenImage").gameObject.SetActive(true);
         jobDiaryFlipIconCanvas.transform.Find("flipIcon").gameObject.SetActive(true);
         jobDiaryTipScriptCanvas.transform.Find("Text").gameObject.SetActive(true);
         jobDiaryTipCloseCanvas.transform.Find("Button").gameObject.SetActive(true);
@@ -114,6 +115,7 @@ public class JobDiaryManager : MonoBehaviour
     public void EndTip()
     {
         jobDiaryAlphaScreenCanvas.transform.Find("alpha30ScreenImage").gameObject.SetActive(false);
+        jobDiaryAlphaScreenCanvas.transform.Find("alphaBlockScreenImage").gameObject.SetActive(false);
         jobDiaryFlipIconCanvas.transform.Find("flipIcon").gameObject.SetActive(false);
         jobDiaryTipScriptCanvas.transform.Find("Text").gameObject.SetActive(false);
         jobDiaryTipCloseCanvas.transform.Find("Button").gameObject.SetActive(false);
