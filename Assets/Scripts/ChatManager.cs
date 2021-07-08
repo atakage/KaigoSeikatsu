@@ -78,11 +78,7 @@ public class ChatManager : MonoBehaviour
                             //executeFadeOut();
                             executeFadeOutSimple();
                             // 終わったイベントコードをつけるオブジェクトを作る(すでに存在すると削除する)
-                            if (GameObject.Find("Canvas").transform.Find("endedEventCode")) Destroy(GameObject.Find("Canvas").transform.Find("endedEventCode").gameObject);
-                            GameObject endedTextEventCode = new GameObject("endedEventCode");
-                            endedTextEventCode.SetActive(false);
-                            endedTextEventCode.AddComponent<Text>().text = eventCode;
-                            endedTextEventCode.transform.SetParent(GameObject.Find("Canvas").transform);
+                            CreateEndEventCodeGameObj();
                         }
                         else if (afterEvent.Equals("Choice"))
                         {
@@ -115,6 +111,7 @@ public class ChatManager : MonoBehaviour
                         else if (afterEvent.Equals("Fade Out Persist"))
                         {
                             executeFadeOutPersist();
+                            CreateEndEventCodeGameObj();
                             // 一つのイベントが終わったあと追加的なイベントやactionが発動
                         }
                         else if (afterEvent.Equals("Action"))
@@ -178,6 +175,15 @@ public class ChatManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void CreateEndEventCodeGameObj()
+    {
+        if (GameObject.Find("Canvas").transform.Find("endedEventCode")) Destroy(GameObject.Find("Canvas").transform.Find("endedEventCode").gameObject);
+        GameObject endedTextEventCode = new GameObject("endedEventCode");
+        endedTextEventCode.SetActive(false);
+        endedTextEventCode.AddComponent<Text>().text = eventCode;
+        endedTextEventCode.transform.SetParent(GameObject.Find("Canvas").transform);
     }
 
     public void ClickChoiceButtonForJobEvent()

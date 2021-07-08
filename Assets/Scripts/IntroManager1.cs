@@ -35,10 +35,15 @@ public class IntroManager1 : MonoBehaviour
 
     private void Update()
     {
-        if (canvasObj.transform.Find("fadeOutEventCheck").GetComponent<Text>().text.Equals("Y"))
+        
+        if (canvasObj.transform.Find("fadeOutPersistEventCheck") != null
+            && canvasObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y"))
         {
-            if (canvasObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV000"))
+            
+            if (canvasObj.transform.Find("endedEventCode") != null
+                && canvasObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV000"))
             {
+                Debug.Log("goToAtHome");
                 canvasObj.transform.Find("fadeOutEventCheck").GetComponent<Text>().text = "";
                 canvasObj.transform.Find("endedEventCode").GetComponent<Text>().text = "";
                 playerData = playerSaveDataManager.LoadPlayerData();
@@ -46,6 +51,8 @@ public class IntroManager1 : MonoBehaviour
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("AtHomeScene");
             }
+            
         }
+        
     }
 }
