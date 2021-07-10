@@ -66,8 +66,19 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     // UI
     public GameObject currentPageGameObj;
     public GameObject allPageGameObj;
+
+    private JobDiaryUIManager jobDiaryUIManager;
     //------------------------------------------------------------------------
     void Start() {
+        Debug.Log("call ScrollSnapRect");
+
+        // JobDiarySceneのUIセッティング必要な情報を格納
+        if (GameObject.Find("JobDiaryUIManager") != null)
+        {
+            jobDiaryUIManager = GameObject.Find("JobDiaryUIManager").GetComponent("JobDiaryUIManager") as JobDiaryUIManager;
+            jobDiaryUIManager.CreateJobDiaryContent();
+        }
+
         _scrollRectComponent = GetComponent<ScrollRect>();
         _scrollRectRect = GetComponent<RectTransform>();
         _container = _scrollRectComponent.content;

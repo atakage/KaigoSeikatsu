@@ -5,27 +5,50 @@ using UnityEngine.UI;
 
 public class JobDiaryUIManager : MonoBehaviour
 {
-    private JobDiarySetManager jobDiarySetManager;
+    //private JobDiarySetManager jobDiarySetManager;
     private JobDiarySharingVarManager jobDiarySharingVarManager;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        jobDiarySetManager = new JobDiarySetManager();
 
+    private void Awake()
+    {
+        Debug.Log("call JobDiarySharingVarManager");
         // jobDiarySceneで共有するgameObjectなどを一つに格納して置いたclassを取得
         jobDiarySharingVarManager = GameObject.Find("JobDiarySharingVarManager").GetComponent("JobDiarySharingVarManager") as JobDiarySharingVarManager;
-        JobDiaryModel[] jobDiaryModelArray = jobDiarySetManager.GetJobDiaryJsonFile();
-
-        // jobDiary数だけscrollSnapRect内に作る
-        CreateJobDiaryContent(jobDiaryModelArray);
     }
 
-    public void CreateJobDiaryContent(JobDiaryModel[] jobDiaryModelArray)
+    // jobDiary数だけscrollSnapRect内に作る
+    public void CreateJobDiaryContent()
     {
+        Debug.Log("call CreateJobDiaryContent");
+        JobDiarySetManager jobDiarySetManager = new JobDiarySetManager();
+        JobDiaryModel[] jobDiaryModelArray = jobDiarySetManager.GetJobDiaryJsonFile();
+
+        // jobDiaryに内容があると
         if (jobDiaryModelArray != null && jobDiaryModelArray.Length > 0)
         {
+            //  内容だけ繰り返す
+            for(int i=0; i<jobDiaryModelArray.Length; i++)
+            {
+                // 最初はdefaultObjectにセッティング
+                if (i == 0)
+                {
+                    jobDiarySharingVarManager.containerGameObj.transform.GetChild(0).Find("jobEventScript").GetComponent<Text>().text = jobDiaryModelArray[i].eventScript.Replace("/","");
+                    jobDiarySharingVarManager.containerGameObj.transform.GetChild(0).Find("jobEventChoice").GetComponent<Text>().text = jobDiaryModelArray[i].choosingString.Replace("/", "");
+                }
+                // 二番目からはobjectを作る
+                else
+                {
+                    // objectを作る
+                    GameObject itemGameObj = Instantiate(jobDiarySharingVarManager.containerGameObj.transform.GetChild(0).gameObject);
+                    itemGameObj.name = "item" + i;
+                    itemGameObj.transform.SetParent(jobDiarySharingVarManager.containerGameObj.transform);
 
+                    // objectに情報を格納
+                    itemGameObj.transform.Find("jobEventScript").GetComponent<Text>().text = jobDiaryModelArray[i].eventScript.Replace("/", "");
+                    itemGameObj.transform.Find("jobEventChoice").GetComponent<Text>().text = jobDiaryModelArray[i].choosingString.Replace("/", "");
+
+                }
+            }
         }
             // jobDiaryに内容がないなら
         else

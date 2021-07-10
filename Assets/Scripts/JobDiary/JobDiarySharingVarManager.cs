@@ -25,6 +25,7 @@ public class JobDiarySharingVarManager : MonoBehaviour
      */
     void Awake()
     {
+        Debug.Log("call JobDiarySharingVarManager Awake()");
         this.canvasGameObj = GameObject.Find("Canvas");
         this.containerGameObj = this.canvasGameObj.transform.Find("JobDiaryViewBox").GetChild(0).GetChild(0).GetChild(0).gameObject;
     }
