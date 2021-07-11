@@ -24,6 +24,9 @@ public class ChatManager : MonoBehaviour
     public int textCount;   // テキスト配列リストの配列の数
     public JobEventModel jobEvent;
     public GameObject canvasGameObj;
+    public bool endTextLineBool;
+    public int textOneLineLength;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,17 +51,19 @@ public class ChatManager : MonoBehaviour
     {
         if (dialogueSW)
         {
-            if (Input.GetMouseButtonDown(0))
+            // スクリプトライン一つをを全部読んだら
+            if (endTextLineBool && Input.GetMouseButtonDown(0))
             {
-                // マウスをクリックするとclickCountが増加して次の配列テキストを読み込む
-                ++clickCount;
-                Debug.Log("clickCount: " + clickCount);
-                Debug.Log("textCount: " + textCount);
-                // スクリプト全部読んだら
-                if (clickCount == textCount)
+                // nextIconのCoroutine中止
+
+                // Coroutine中止
+                StopAllCoroutines();
+                Debug.Log("clickCount in nextLineBool: " + clickCount);
+                Debug.Log("textCount in nextLineBool: " + textCount);
+                // スクリプトを全部読んだら
+                if (clickCount == textCount - 1)
                 {
-                    StopAllCoroutines();
-                    if(this.eventCode != null)
+                    if (this.eventCode != null)
                     {
                         string afterEventStr = eventCodeManager.FindAfterEventByEventCode(this.eventCode);
                         if (!afterEventStr.Equals("Main Fade Out")) ExitDialogue();
@@ -105,7 +110,7 @@ public class ChatManager : MonoBehaviour
                             endedTextEventCode.SetActive(false);
                             endedTextEventCode.AddComponent<Text>().text = eventCode;
                             endedTextEventCode.transform.SetParent(GameObject.Find("Canvas").transform);
-                            
+
 
                         }
                         else if (afterEvent.Equals("Fade Out Persist"))
@@ -144,8 +149,9 @@ public class ChatManager : MonoBehaviour
                             jobEventCompleteSW.AddComponent<Text>().text = "Y";
                             jobEventCompleteSW.transform.SetParent(canvasGameObj.transform);
                         }
-                    // イベントコードがなきスクリプトだけを読み込んだとき
-                    }else if (eventCode == null)
+                        // イベントコードがなきスクリプトだけを読み込んだとき
+                    }
+                    else if (eventCode == null)
                     {
                         ExitDialogue();
                         Debug.Log("only script completed");
@@ -157,19 +163,20 @@ public class ChatManager : MonoBehaviour
                         onlyScriptEventEnd.transform.SetParent(canvasGameObj.transform);
                     }
                 }
+                // 全体スクリプトがまだ終わってないならスクリプトCoroutineを続ける
                 else
                 {
                     string afterEvent = eventCodeManager.FindAfterEventByEventCode(this.eventCode);
-                               // メインイベントなら専用Coroutineを続ける
+                    // メインイベントなら専用Coroutineを続ける
                     if (afterEvent.Equals("Main Fade Out"))
                     {
-                        StopAllCoroutines();
+                        ++clickCount;
                         StartCoroutine(StartMainEventDialogueCoroutine());
                     }
-                               // メインイベントじゃないなら普通のCoroutineを続ける
+                    // メインイベントじゃないなら普通のCoroutineを続ける
                     else
                     {
-                        StopAllCoroutines();
+                        ++clickCount;
                         StartCoroutine(StartDialogueCoroutine());
                     }
                 }
@@ -540,12 +547,20 @@ public class ChatManager : MonoBehaviour
     {
         Debug.Log("StartMainEventDialogueCoroutine");
         dialogueSW = true;
+        endTextLineBool = false;
         GameObject.Find("mainEventLowerBlackBox").transform.Find("mainEventText").GetComponent<Text>().text = "";
 
         for (int i = 0; i < textList[clickCount].Length; i++)
         {
             GameObject.Find("mainEventLowerBlackBox").transform.Find("mainEventText").GetComponent<Text>().text += textList[clickCount][i];
             Debug.Log("mainEventText.text: " + GameObject.Find("mainEventLowerBlackBox").transform.Find("mainEventText").GetComponent<Text>().text);
+            if (i == textList[clickCount].Length - 1)
+            {
+                endTextLineBool = true;
+                textOneLineLength = textList[clickCount].Length;
+
+                // Panel-TextにnextIcon(Coroutine)
+            }
             yield return new WaitForSeconds(0.05f);
         }
     }
@@ -554,13 +569,22 @@ public class ChatManager : MonoBehaviour
     {
         Debug.Log("StartDialogueCoroutine");
         dialogueSW = true;
+        endTextLineBool = false;
         GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "";
         Debug.Log("textList.Count" + textList.Count);
-        Debug.Log("clickCount" + clickCount);
+        Debug.Log("clickCount in StartDialogueCoroutine" + clickCount);
         for (int i=0; i< textList[clickCount].Length; i++)
         {
             GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text += textList[clickCount][i];
             Debug.Log("panelText.text: " + GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text);
+            // スクリプトの一つラインを全部読んだら
+            if (i == textList[clickCount].Length - 1)
+            {
+                endTextLineBool = true;
+                textOneLineLength = textList[clickCount].Length;
+
+                // Panel-TextにnextIcon(Coroutine)
+            }
             yield return new WaitForSeconds(0.05f);
         }
     }
