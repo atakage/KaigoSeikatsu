@@ -26,7 +26,7 @@ public class ChatManager : MonoBehaviour
     public GameObject canvasGameObj;
     public bool endTextLineBool;
     public int textOneLineLength;
-
+    public GameObject scriptNextIconGameObj;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,13 +37,17 @@ public class ChatManager : MonoBehaviour
         jobEventManager = new JobEventManager();
         jobDiarySetManager = new JobDiarySetManager();
         jobDiaryManager = new JobDiaryManager();
-        if(GameObject.Find("FlashEffectManager") != null) flashEffectManager = GameObject.Find("FlashEffectManager").GetComponent("FlashEffectManager") as FlashEffectManager;
 
-
-        Debug.Log("Start ChatManager");
         canvasGameObj = GameObject.Find("Canvas");
         panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
         clickCount = 0;
+
+        if (GameObject.Find("FlashEffectManager") != null) flashEffectManager = GameObject.Find("FlashEffectManager").GetComponent("FlashEffectManager") as FlashEffectManager;
+        if (canvasGameObj.transform.Find("Panel").transform.Find("scriptNextIcon") != null) scriptNextIconGameObj = canvasGameObj.transform.Find("Panel").transform.Find("scriptNextIcon").gameObject;
+
+        Debug.Log("Start ChatManager");
+        
+       
 
     }
 
@@ -54,10 +58,10 @@ public class ChatManager : MonoBehaviour
             // スクリプトライン一つをを全部読んだら
             if (endTextLineBool && Input.GetMouseButtonDown(0))
             {
-                // nextIconのCoroutine中止
-
-                // Coroutine中止
+                // Coroutine中止 && icon非表示
                 StopAllCoroutines();
+                if (scriptNextIconGameObj != null) scriptNextIconGameObj.SetActive(false);
+
                 Debug.Log("clickCount in nextLineBool: " + clickCount);
                 Debug.Log("textCount in nextLineBool: " + textCount);
                 // スクリプトを全部読んだら
@@ -560,6 +564,7 @@ public class ChatManager : MonoBehaviour
                 textOneLineLength = textList[clickCount].Length;
 
                 // Panel-TextにnextIcon(Coroutine)
+                
             }
             yield return new WaitForSeconds(0.05f);
         }
@@ -584,8 +589,22 @@ public class ChatManager : MonoBehaviour
                 textOneLineLength = textList[clickCount].Length;
 
                 // Panel-TextにnextIcon(Coroutine)
+                StartCoroutine(StartScriptNextIconCoroutine());
             }
             yield return new WaitForSeconds(0.05f);
+        }
+    }
+
+    IEnumerator StartScriptNextIconCoroutine()
+    {
+        if (scriptNextIconGameObj != null)
+        {
+            while (true)
+            {
+                if (scriptNextIconGameObj.activeSelf) scriptNextIconGameObj.SetActive(false);
+                else scriptNextIconGameObj.SetActive(true);
+                yield return new WaitForSeconds(0.6f);
+            }
         }
     }
 
