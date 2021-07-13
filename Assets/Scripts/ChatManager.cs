@@ -27,6 +27,7 @@ public class ChatManager : MonoBehaviour
     public bool endTextLineBool;
     public int textOneLineLength;
     public GameObject scriptNextIconGameObj;
+    public GameObject mainEventScriptNextIcon;
     // Start is called before the first frame update
     void Start()
     {
@@ -61,6 +62,7 @@ public class ChatManager : MonoBehaviour
                 // Coroutine中止 && icon非表示
                 StopAllCoroutines();
                 if (scriptNextIconGameObj != null) scriptNextIconGameObj.SetActive(false);
+                if (mainEventScriptNextIcon != null) mainEventScriptNextIcon.SetActive(false);
 
                 Debug.Log("clickCount in nextLineBool: " + clickCount);
                 Debug.Log("textCount in nextLineBool: " + textCount);
@@ -564,7 +566,8 @@ public class ChatManager : MonoBehaviour
                 textOneLineLength = textList[clickCount].Length;
 
                 // Panel-TextにnextIcon(Coroutine)
-                
+                StartCoroutine(StartScriptNextIconCoroutine(true));
+
             }
             yield return new WaitForSeconds(0.05f);
         }
@@ -589,22 +592,39 @@ public class ChatManager : MonoBehaviour
                 textOneLineLength = textList[clickCount].Length;
 
                 // Panel-TextにnextIcon(Coroutine)
-                StartCoroutine(StartScriptNextIconCoroutine());
+                StartCoroutine(StartScriptNextIconCoroutine(false));
             }
             yield return new WaitForSeconds(0.05f);
         }
     }
 
-    IEnumerator StartScriptNextIconCoroutine()
+    IEnumerator StartScriptNextIconCoroutine(bool mainEvent)
     {
-        if (scriptNextIconGameObj != null)
+        switch (mainEvent)
         {
-            while (true)
-            {
-                if (scriptNextIconGameObj.activeSelf) scriptNextIconGameObj.SetActive(false);
-                else scriptNextIconGameObj.SetActive(true);
-                yield return new WaitForSeconds(0.6f);
-            }
+            case true:
+                if (mainEventScriptNextIcon != null)
+                {
+                    while (true)
+                    {
+                        if (mainEventScriptNextIcon.activeSelf) mainEventScriptNextIcon.SetActive(false);
+                        else mainEventScriptNextIcon.SetActive(true);
+                        yield return new WaitForSeconds(0.6f);
+                    }
+                }
+                break;
+
+            case false:
+                if (scriptNextIconGameObj != null)
+                {
+                    while (true)
+                    {
+                        if (scriptNextIconGameObj.activeSelf) scriptNextIconGameObj.SetActive(false);
+                        else scriptNextIconGameObj.SetActive(true);
+                        yield return new WaitForSeconds(0.6f);
+                    }
+                }
+                break;
         }
     }
 
@@ -623,6 +643,7 @@ public class ChatManager : MonoBehaviour
         GameObject mainEventUpperBlackBox = new GameObject("mainEventUpperBlackBox");
         GameObject mainEventLowerBlackBox = new GameObject("mainEventLowerBlackBox");
         GameObject mainEventText = new GameObject("mainEventText");
+        mainEventScriptNextIcon = new GameObject("mainEventScriptNextIcon");
 
         mainEventUpperBlackBox.SetActive(true);
         mainEventLowerBlackBox.SetActive(true);
@@ -631,6 +652,7 @@ public class ChatManager : MonoBehaviour
         mainEventUpperBlackBox.transform.SetParent(canvasGameObj.transform);
         mainEventLowerBlackBox.transform.SetParent(canvasGameObj.transform);
         mainEventText.transform.SetParent(mainEventLowerBlackBox.transform);
+        mainEventScriptNextIcon.transform.SetParent(mainEventText.transform);
 
         mainEventUpperBlackBox.AddComponent<Image>().color = new Color32(0,0,0,255);
         mainEventUpperBlackBox.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(canvasSizeVector.x, 380);
@@ -642,6 +664,8 @@ public class ChatManager : MonoBehaviour
 
         Vector2 mainEventLowerBlackBoxSize = mainEventLowerBlackBox.GetComponent<RectTransform>().sizeDelta;
 
+        mainEventText.AddComponent<RectTransform>();
+        RectTransform mainEventTextRect = mainEventText.GetComponent<RectTransform>();
         mainEventText.AddComponent<Text>();
         mainEventText.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
         mainEventText.GetComponent<Text>().fontStyle = FontStyle.Bold;
@@ -649,5 +673,20 @@ public class ChatManager : MonoBehaviour
         mainEventText.GetComponent<Text>().alignment = TextAnchor.UpperLeft;
         // 0.2f == 20%
         mainEventText.transform.GetComponent<RectTransform>().sizeDelta = new Vector2((mainEventLowerBlackBoxSize.x) - (mainEventLowerBlackBoxSize.x * 0.2f), (mainEventLowerBlackBoxSize.y) - (mainEventLowerBlackBoxSize.y * 0.2f));
+
+        mainEventScriptNextIcon.AddComponent<RectTransform>();
+        mainEventScriptNextIcon.SetActive(false);
+        RectTransform mainEventScriptNextIconRect = mainEventScriptNextIcon.GetComponent<RectTransform>();
+        /*
+         * Quaternion.Euler: Euler Angleの改善、Euler Angleは x,y,zの順番通り計算することになっているため
+         * 2つが重なる現象が発生する場合がある重なったpositionでは正確な角度の計算が不可能(2Dは問題なし)
+         * これを解決するためにQuaternion.Eulerを活用
+         *
+        */
+        mainEventScriptNextIconRect.rotation = Quaternion.Euler(0,0,150);
+        mainEventScriptNextIconRect.sizeDelta = new Vector2(35, 35);
+        mainEventScriptNextIconRect.anchoredPosition = new Vector2((mainEventTextRect.rect.width/2)-10, ((mainEventTextRect.rect.height / 2)+6)*-1);
+        mainEventScriptNextIcon.AddComponent<Image>();
+        mainEventScriptNextIcon.GetComponent<Image>().sprite = Resources.Load<Sprite>("img/etc/icon_play");
     }
 }
