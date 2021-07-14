@@ -116,11 +116,16 @@ public class FacilityManager : MonoBehaviour
                 // uiをActive
             }
 
-            if (timeStr.Equals("11:50")
+            if (timeStr.Equals("09:00")
                 && canvasObj.transform.Find("fadeOutEndMomentSW") != null
                 && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
-                //FacilityUISetActive(true);
+                SetPanelText("今日も頑張ろう");
+            }
+            else if (timeStr.Equals("11:50")
+                && canvasObj.transform.Find("fadeOutEndMomentSW") != null
+                && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
+            {
                 SetPanelText("もうすぐお昼の時間だ");
             }
             else if (timeStr.Equals("12:50")
@@ -217,8 +222,8 @@ public class FacilityManager : MonoBehaviour
             {
                 // ９時なら(-> 11:50)
                 case "09:00":
-
-                              // 発動できるメインイベントがあるならメインイベントを先にする
+                    SetPanelText("");
+                    // 発動できるメインイベントがあるならメインイベントを先にする
                     if (completeMainEvent != true)
                     {
                         completeMainEvent = RunMainEvent();
@@ -366,7 +371,7 @@ public class FacilityManager : MonoBehaviour
 
                 // 12:50なら休憩時間( -> 14:00)
                 case "12:50":
-
+                    SetPanelText("");
                               // 発動できるメインイベントがあるならメインイベントを先にする
                     if (completeMainEvent != true)
                     {
