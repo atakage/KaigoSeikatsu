@@ -10,6 +10,17 @@
             "choiceBEffect": "FA+1",
             "choiceCEffect": "FA+1:FL+1",
             "eventActive": false
+        },
+        {
+            "eventCode": "EC001",
+            "eventScript": "え？またその話?/同じ言葉を繰り返す利用者、どうする?",
+            "choiceA": "うなずくばかり:0",
+            "choiceB": "「はい」や「いいえ」だけで答える:1",
+            "choiceC": "話に耳を傾ける:-1",
+            "choiceAEffect": "SA-1:FL+1",
+            "choiceBEffect": "FL+2",
+            "choiceCEffect": "FA+3",
+            "eventActive": false
         }
     ]
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System;
 
 public class FacilityManager : MonoBehaviour
@@ -14,6 +15,7 @@ public class FacilityManager : MonoBehaviour
     public UtilManager utilManager;
     public JobEventManager jobEventManager;
     public JobEventSetManager jobEventSetManager;
+    public Button menuButton;
     public Button nextButton;
     public PlayerData playerData = null;
     public GameObject canvasObj;
@@ -39,10 +41,13 @@ public class FacilityManager : MonoBehaviour
         jobEventManager = new JobEventManager();
         jobEventSetManager = new JobEventSetManager();
 
-        nextButton = GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>();
-        nextButton.onClick.AddListener(ClickNextButton);
-
         canvasObj = GameObject.Find("Canvas");
+        nextButton = canvasObj.transform.Find("nextButton").GetComponent<Button>();
+        nextButton.onClick.AddListener(ClickNextButton);
+        menuButton = canvasObj.transform.Find("menuButton").GetComponent<Button>();
+        menuButton.onClick.AddListener(ClickMenuButton);
+
+
 
         playerData = playerSaveDataManager.LoadPlayerData();
         Debug.Log("playerData: " + playerData.ToString());
@@ -207,6 +212,23 @@ public class FacilityManager : MonoBehaviour
         }
         
         
+    }
+
+    public void ClickMenuButton()
+    {
+        // Scene転換後戻るためのsceneNameを指定
+        SetSceneDestinationValue();
+
+        sceneTransitionManager.LoadTo("MenuScene");
+    }
+
+    public void SetSceneDestinationValue()
+    {
+        // 戻るボタンの目的地を設定
+        if (GameObject.Find("SceneChangeManager") != null)
+        {
+            GameObject.Find("SceneChangeManager").transform.Find("SceneChangeCanvas").transform.Find("destinationFrom-toItemCheckScene").GetComponent<Text>().text = SceneManager.GetActiveScene().name;
+        }
     }
 
     public void ClickNextButton()

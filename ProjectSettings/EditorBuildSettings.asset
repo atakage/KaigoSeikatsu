@@ -27,8 +27,11 @@ EditorBuildSettings:
     path: Assets/Scenes/ContactingScene.unity
     guid: 37c21518d23379a4ea3f1603892f001f
   - enabled: 1
-    path: Assets/Scenes/ShopScene.unity
-    guid: cf7bfc5191e281044b69206a139297cc
+    path: Assets/Scenes/MenuScene.unity
+    guid: fc6bae0dfc7ddfb4f92d28a7637d42be
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/JobDiaryScene.unity
     guid: 4feee9a1681e8f8448a78c96e7165093

@@ -1,1 +1,1 @@
-{"currentScene":"FacilityScene","money":"14450","time":"12:50","eventCodeObject":{"completedMainEventArray":["EV020"],"completedJobEventArray":null},"progress":1,"fatigue":1.0,"satisfaction":0,"feeling":2,"tip":{"checkedJobDiaryTip":true}}
+{"currentScene":"FacilityScene","money":"15000","time":"09:00","eventCodeObject":{"completedMainEventArray":["EV020"],"completedJobEventArray":["EC001","EC000","EC001","EC001"]},"progress":5,"fatigue":1.0,"satisfaction":-2,"feeling":3,"tip":{"checkedJobDiaryTip":true}}

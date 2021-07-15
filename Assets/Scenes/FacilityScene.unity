@@ -1067,6 +1067,7 @@ MonoBehaviour:
   endTextLineBool: 0
   textOneLineLength: 0
   scriptNextIconGameObj: {fileID: 0}
+  mainEventScriptNextIcon: {fileID: 0}
 --- !u!4 &752549968
 Transform:
   m_ObjectHideFlags: 0
@@ -3177,6 +3178,7 @@ MonoBehaviour:
   utilManager: {fileID: 0}
   jobEventManager: {fileID: 0}
   jobEventSetManager: {fileID: 0}
+  menuButton: {fileID: 0}
   nextButton: {fileID: 0}
   playerData:
     currentScene: 
