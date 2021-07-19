@@ -1,0 +1,40 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class MenuManager : MonoBehaviour
+{
+    SceneTransitionManager sceneTransitionManager;
+    PlayerSaveDataManager playerSaveDataManager;
+    MenuInitVar menuInitVar;
+    //string goBackScene;
+    // Start is called before the first frame update
+    void Start()
+    {
+        sceneTransitionManager = new SceneTransitionManager();
+        playerSaveDataManager = new PlayerSaveDataManager();
+        menuInitVar = GameObject.Find("MenuInitVar").GetComponent("MenuInitVar") as MenuInitVar;
+
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+
+            // 戻るボタンの目的地を設定
+        if (GameObject.Find("SceneChangeManager") != null)
+        {
+            //goBackScene = GameObject.Find("SceneChangeManager").transform.Find("SceneChangeCanvas").transform.Find("destinationFrom-toItemCheckScene").GetComponent<Text>().text;
+        }
+
+        menuInitVar.menuGridGameObj.transform.Find("CloseButton").GetComponent<Button>().onClick.AddListener(() => ClickCloseButton(playerData.currentScene));
+
+    }
+
+    public void ClickCloseButton(string goBackScene)
+    {
+        GameObject loadValueSW = new GameObject("loadValueSW");
+        loadValueSW.AddComponent<Text>();
+        loadValueSW.transform.GetComponent<Text>().text = "Y";
+        DontDestroyOnLoad(loadValueSW);
+
+        sceneTransitionManager.LoadTo(goBackScene);
+    }
+}

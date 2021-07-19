@@ -55,7 +55,7 @@ public class AtHomeManager : MonoBehaviour
         {
             // 次のシーンをプレイヤーデータにセーブ
             playerData.currentScene = "FacilityScene";
-            playerData.time = "09:00";
+            playerData.time = "08:50";
             playerSaveDataManager.SavePlayerData(playerData);
             sceneTransitionManager.LoadTo("FacilityScene");
         // 寝て朝になる

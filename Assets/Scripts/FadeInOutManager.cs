@@ -7,6 +7,7 @@ public class FadeInOutManager : MonoBehaviour
     public FacilityManager facilityManager;
     Image fadeImage;
     bool fadeSW;
+    GameObject canvasGameObj;
 
     private void Start()
     {
@@ -15,7 +16,8 @@ public class FadeInOutManager : MonoBehaviour
 
     void Awake()
     {
-        fadeImage = GameObject.Find("Canvas").transform.Find("fadeImage").GetComponent<Image>();
+        canvasGameObj = GameObject.Find("Find");
+        fadeImage = canvasGameObj.transform.Find("fadeImage").GetComponent<Image>();
         fadeImage.gameObject.SetActive(true);
         Color color = fadeImage.color;
         color.a = Time.deltaTime * 1.0f;
@@ -28,11 +30,18 @@ public class FadeInOutManager : MonoBehaviour
         StartCoroutine("FadeIn");
         if (fadeSW)
         {
-            // fade out後のあいだ作られるオブジェクトでこのオブジェクト(fadeOutEndMomentSW)を使ったあと必ず削除しなければならない
-            GameObject fadeOutEndMomentSW = new GameObject("fadeOutEndMomentSW");
-            fadeOutEndMomentSW.SetActive(false);
-            fadeOutEndMomentSW.AddComponent<Text>().text = "Y";
-            fadeOutEndMomentSW.transform.SetParent(GameObject.Find("Canvas").transform); 
+                   // fade out後のあいだ作られるオブジェクトでこのオブジェクト(fadeOutEndMomentSW)を使ったあと必ずvalueを変更しなければならない
+            if (canvasGameObj.transform.Find("fadeOutEndMomentSW") == null)
+            {
+                GameObject fadeOutEndMomentSW = new GameObject("fadeOutEndMomentSW");
+                fadeOutEndMomentSW.SetActive(false);
+                fadeOutEndMomentSW.AddComponent<Text>().text = "Y";
+                fadeOutEndMomentSW.transform.SetParent(canvasGameObj.transform);
+            }
+            else
+            {
+                canvasGameObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text = "Y";
+            }
 
             GameObject.Find("Canvas").transform.Find("fadeOutEventCheck").GetComponent<Text>().text = "Y";
             Destroy(this.gameObject);

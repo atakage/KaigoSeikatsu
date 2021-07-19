@@ -86,7 +86,6 @@ public class ChatManager : MonoBehaviour
                         string afterEvent = eventCodeManager.FindAfterEventByEventCode(eventCode);
                         if (afterEvent.Equals("Fade Out"))
                         {
-                            //executeFadeOut();
                             executeFadeOutSimple();
                             // 終わったイベントコードをつけるオブジェクトを作る(すでに存在すると削除する)
                             CreateEndEventCodeGameObj();

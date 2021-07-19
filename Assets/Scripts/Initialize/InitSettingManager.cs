@@ -143,6 +143,11 @@ public class InitSettingManager : MonoBehaviour
 
     public void ClickLoadButton(string currentScene)
     {
+        GameObject loadValueSW = new GameObject("loadValueSW");
+        loadValueSW.AddComponent<Text>();
+        loadValueSW.transform.GetComponent<Text>().text = "Y";
+        DontDestroyOnLoad(loadValueSW);
+
         sceneTransitionManager.LoadTo(currentScene);
     }
 }

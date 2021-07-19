@@ -23,11 +23,19 @@ public class SimpleFadeInOutManager : MonoBehaviour
         StartCoroutine("FadeIn");
         if (fadeSW)
         {
-            // fade out後のあいだ作られるオブジェクトでこのオブジェクト(fadeOutEndMomentSW)を使ったあと必ず削除しなければならない
-            GameObject fadeOutEndMomentSW = new GameObject("fadeOutEndMomentSW");
-            fadeOutEndMomentSW.SetActive(false);
-            fadeOutEndMomentSW.AddComponent<Text>().text = "Y";
-            fadeOutEndMomentSW.transform.SetParent(canvasGameObj.transform);
+                  // fade out後のあいだ作られるオブジェクトでこのオブジェクト(fadeOutEndMomentSW)を使ったあと必ずvalueを変更しなければならない
+            if (canvasGameObj.transform.Find("fadeOutEndMomentSW") == null)
+            {
+                GameObject fadeOutEndMomentSW = new GameObject("fadeOutEndMomentSW");
+                fadeOutEndMomentSW.SetActive(false);
+                fadeOutEndMomentSW.AddComponent<Text>().text = "Y";
+                fadeOutEndMomentSW.transform.SetParent(canvasGameObj.transform);
+            }
+            else
+            {
+                canvasGameObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text = "Y";
+            }
+            
 
             if (canvasGameObj.transform.Find("AlertGoing") == null)
             {

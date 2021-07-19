@@ -19,6 +19,15 @@ public class PlayerData
     public int satisfaction; // 仕事の満足度, endingに影響
     public int feeling; // 気分
     public Tip tip = new Tip();
+    public Flag flag = new Flag();
+}
+
+[System.Serializable]
+public class Flag
+{
+    public bool completeMainEvent; // MainEventを探して発動する 
+    public bool jobEventSearchSkip; // メインイベントを実行したらこの時間にはjobEventを探さない
+    public bool jobEventDayCompletedBool; // 他の時間にjobEventを発動させる
 }
 
 [System.Serializable]
