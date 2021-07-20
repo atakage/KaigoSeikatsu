@@ -21,6 +21,8 @@ public class AtHomeManager : MonoBehaviour
         convenienceItemSetManager = new ConvenienceItemSetManager();
         utilManager = new UtilManager();
 
+        if (GameObject.Find("SceneChangeManager") != null) GameObject.Find("SceneChangeManager").transform.Find("SceneChangeCanvas").transform.Find("destinationFrom-toItemCheckScene").GetComponent<Text>().text = SceneManager.GetActiveScene().name;
+
         canvasGameObj = GameObject.Find("Canvas").gameObject;
 
         playerData = playerSaveDataManager.LoadPlayerData();
@@ -33,8 +35,6 @@ public class AtHomeManager : MonoBehaviour
         // 朝なら出勤する、夜なら寝るにボタン変更
         GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text 
                            = (time.Equals("08:00")) ? "出勤する" : "寝る";
-
-
 
         canvasGameObj.transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextButton);
         canvasGameObj.transform.Find("AlertGoing").transform.Find("No").GetComponent<Button>().onClick.AddListener(delegate { ActiveAlert(false); });
@@ -121,6 +121,10 @@ public class AtHomeManager : MonoBehaviour
 
     public void ClickGoToConvenienceBtn()
     {
+        playerData = playerSaveDataManager.LoadPlayerData();
+        playerData.currentScene = "ConvenienceScene";
+        playerSaveDataManager.SavePlayerData(playerData);
+
         canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(false);
         canvasGameObj.transform.Find("nextButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("goOutButton").gameObject.SetActive(false);

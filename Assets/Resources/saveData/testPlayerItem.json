@@ -7,15 +7,15 @@
             "keyItem": "Y"
         },
         {
-            "itemName": "テストアイテムE",
+            "itemName": "テストアイテムF",
             "itemDescription": "test item",
-            "quantity": 4,
+            "quantity": 3,
             "keyItem": "N"
         },
         {
-            "itemName": "android",
+            "itemName": "テストアイテムE",
             "itemDescription": "test item",
-            "quantity": 4,
+            "quantity": 3,
             "keyItem": "N"
         }
     ]

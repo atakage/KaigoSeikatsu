@@ -14,6 +14,7 @@ public class ParkManager : MonoBehaviour
     public ConvenienceItemSetManager convenienceItemSetManager;
     public SceneTransitionManager sceneTransitionManager;
     public GameObject canvasGameObj;
+    public string loadValueSW;
     void Start()
     {
         playerSaveDataManager = new PlayerSaveDataManager();
@@ -23,25 +24,30 @@ public class ParkManager : MonoBehaviour
         utilManager = new UtilManager();
         sceneTransitionManager = new SceneTransitionManager();
         convenienceItemSetManager = new ConvenienceItemSetManager();
-        
+
+             // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
+        if (GameObject.Find("loadValueSW") != null) loadValueSW = GameObject.Find("loadValueSW").transform.GetComponent<Text>().text;
+        else loadValueSW = "N";
+
         canvasGameObj = GameObject.Find("Canvas");
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
         canvasGameObj.transform.Find("time").GetComponent<Text>().text = playerData.time;
         canvasGameObj.transform.Find("fatigueBar").GetComponent<Slider>().value = playerData.fatigue;
+        canvasGameObj.transform.Find("menuButton").GetComponent<Button>().onClick.AddListener(() => ClickMenuButton());
         canvasGameObj.transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(() => ClickNextButton());
         canvasGameObj.transform.Find("nextButtonClickAlertBox").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(() => ClickConfirmButton());
         canvasGameObj.transform.Find("nextButtonClickAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(() => ClickCancelButton());
         canvasGameObj.transform.Find("walkButton").GetComponent<Button>().onClick.AddListener(() => ClickWalkAndExerciseButton("散歩"));
         canvasGameObj.transform.Find("exerciseButton").GetComponent<Button>().onClick.AddListener(() => ClickWalkAndExerciseButton("運動"));
 
-        LoadEventAndShow("EV014");
+        if(!loadValueSW.Equals("Y"))LoadEventAndShow("EV014");
     }
 
     private void Update()
     {
         // テキストイベント終了後
-        if ("END".Equals(canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text)
-            && canvasGameObj.transform.Find("endedTextEventCode").GetComponent<Text>().text.Equals("EV014"))
+        if (("END".Equals(canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text)
+            && canvasGameObj.transform.Find("endedTextEventCode").GetComponent<Text>().text.Equals("EV014")) || loadValueSW.Equals("Y"))
         {
             SetMenuBtnAndNextBtnUI(true);
             SetActiveWalkAndExerciseBtn(true);
@@ -100,6 +106,16 @@ public class ParkManager : MonoBehaviour
         {
             sceneTransitionManager.LoadTo("AtHomeScene");
         }
+        // 初期化------------------------------------------------------------------------------------------------------------------
+        if (loadValueSW.Equals("Y"))
+        {
+            loadValueSW = "N";
+            if (GameObject.Find("loadValueSW") != null) Destroy(GameObject.Find("loadValueSW"));
+        }
+    }
+    public void ClickMenuButton()
+    {
+        sceneTransitionManager.LoadTo("MenuScene");
     }
 
     public void ClickNextButton()

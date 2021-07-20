@@ -41,6 +41,7 @@ public class ConvenienceUIManager : MonoBehaviour
         // 最初のUIセット
         FirstUISetting(convenienceItemDataArray);
 
+        canvasGameObj.transform.Find("menuButton").GetComponent<Button>().onClick.AddListener(() => ClickMenuButton());
         canvasGameObj.transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(() => ClickNextButton());
         canvasGameObj.transform.Find("goToHomeAlertBox").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(() => ClickgoToHomeConfirmButton());
         canvasGameObj.transform.Find("goToHomeAlertBox").transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(() => ClickgoToHomeCancelButton());
@@ -80,6 +81,11 @@ public class ConvenienceUIManager : MonoBehaviour
 
             sceneTransitionManager.LoadTo("AtHomeScene");
         }
+    }
+
+    public void ClickMenuButton()
+    {
+        sceneTransitionManager.LoadTo("MenuScene");
     }
 
     public void ItemClickPanelUISetting(bool beginItem)

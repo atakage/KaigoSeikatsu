@@ -16,6 +16,7 @@ public class CafeManager : MonoBehaviour
     public Vector3 detailOrderCanvasPos;
     public PlayerData playerData;
     public GameObject canvasGameObj;
+    public string loadValueSW;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +31,10 @@ public class CafeManager : MonoBehaviour
         csvManager = new CSVManager();
         itemUseManager = new ItemUseManager();
 
+            // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
+        if (GameObject.Find("loadValueSW") != null) loadValueSW = GameObject.Find("loadValueSW").transform.GetComponent<Text>().text;
+        else loadValueSW = "N";
+
         cafeMenuCanvasPos = canvasGameObj.transform.Find("CafeMenuCanvas").position;
         detailOrderCanvasPos = canvasGameObj.transform.Find("DetailOrderCanvas").position;
 
@@ -37,6 +42,7 @@ public class CafeManager : MonoBehaviour
         GameObject.Find("time").GetComponent<Text>().text = playerData.time;
         GameObject.Find("MoneyValue").GetComponent<Text>().text = playerData.money+"円";
 
+        canvasGameObj.transform.Find("menuButton").GetComponent<Button>().onClick.AddListener(ClickMenuButton);
         canvasGameObj.transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextButton);
         canvasGameObj.transform.Find("NextAlertBox").transform.Find("goButton").GetComponent<Button>().onClick.AddListener(delegate { ClickNextAlertGoButton(playerData); });
         canvasGameObj.transform.Find("NextAlertBox").transform.Find("cancleButton").GetComponent<Button>().onClick.AddListener(ClickNextAlertCancleButton);
@@ -45,14 +51,22 @@ public class CafeManager : MonoBehaviour
         canvasGameObj.transform.Find("ConfirmAlertBox").transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(delegate { ClickConfirmBtn(playerData); });
         canvasGameObj.transform.Find("ConfirmAlertBox").transform.Find("cancleButton").GetComponent<Button>().onClick.AddListener(ClickConfirmCancleBtn);
 
-        LoadEventAndShow("EV009");
-
-
-
+        if(!loadValueSW.Equals("Y"))LoadEventAndShow("EV009");
     }
 
     private void Update()
     {
+        // MenuSceneから復帰した時
+        if (loadValueSW.Equals("Y"))
+        {
+            menuAndNextButtonInteractable(true);
+
+            canvasGameObj.transform.Find("CafeMenuCanvas").transform.Find("CafeMenuScrollView").position = cafeMenuCanvasPos;
+            canvasGameObj.transform.Find("DetailOrderCanvas").transform.Find("DetailOrderScrollView").position = detailOrderCanvasPos;
+
+            canvasGameObj.transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text = "ご注文は何にいたしますか?";
+        }
+
         // あかねさんとカフェメニューをセット
         if (canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text.Equals("END"))
         {
@@ -128,6 +142,17 @@ public class CafeManager : MonoBehaviour
         {
             Destroy(canvasGameObj.transform.Find("fadeOutEndMomentSW").gameObject);
         }
+
+        if (loadValueSW.Equals("Y"))
+        {
+            loadValueSW = "N";
+            if (GameObject.Find("loadValueSW") != null) Destroy(GameObject.Find("loadValueSW"));
+        }
+    }
+
+    public void ClickMenuButton()
+    {
+        sceneTransitionManager.LoadTo("MenuScene");
     }
 
     public void ClickNextAlertGoButton(PlayerData playerData)

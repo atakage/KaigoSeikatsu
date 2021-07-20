@@ -40,8 +40,7 @@ public class InitSettingManager : MonoBehaviour
         // JobEvent.jsonを作る
         csvManager.ReadJobEventInitFileAndCreateJson();
 
-        // JobDiary.jsonを作る
-        jobDiarySetManager.CreateJobDiaryJsonFile(new List<JobDiaryModel>());
+        
 
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
 
@@ -74,7 +73,10 @@ public class InitSettingManager : MonoBehaviour
         // ゲームが始まるnew game
         else if (msgCheckIntVal == 1)
         {
-            // プレイヤーアイテムデータ初期化
+            // JobDiary.jsonを作る
+            jobDiarySetManager.CreateJobDiaryJsonFile(new List<JobDiaryModel>());
+
+                  // プレイヤーアイテムデータ初期化
             playerSaveDataManager.RemoveItemListDataJsonFile();
             ItemListData[] itemListData = new ItemListData[1];
             itemListData[0] = new ItemListData();
@@ -85,7 +87,7 @@ public class InitSettingManager : MonoBehaviour
             playerSaveDataManager.SaveItemListData(itemListData);
 
 
-            // 新しいプレイヤーデータを作成
+                  // 新しいプレイヤーデータを作成
             playerData = new PlayerData();
             playerData.money = "15000"; // 円
             playerData.time = "08:00";
@@ -96,7 +98,6 @@ public class InitSettingManager : MonoBehaviour
 
             sceneTransitionManager.LoadTo("IntroScene");
         }
-
     }
 
     public void ClickNewGameAlertBoxCancelBtn()
