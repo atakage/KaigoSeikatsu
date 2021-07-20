@@ -1,14 +1,3 @@
 {
-    "Items": [
-        {
-            "eventCode": "EC001",
-            "eventScript": "え？またその話?/同じ言葉を繰り返す利用者、どうする?",
-            "choosingString": "「はい」や「いいえ」だけで答える"
-        },
-        {
-            "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
-            "choosingString": "強い口調で注意する"
-        }
-    ]
+    "Items": []
 }

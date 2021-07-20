@@ -270,6 +270,12 @@ public class ItemCheckManager : MonoBehaviour
 
     public void ClickReturnButton(string goBackScene)
     {
+        if (GameObject.Find("loadValueSW") != null) Destroy(GameObject.Find("loadValueSW"));
+        GameObject loadValueSW = new GameObject("loadValueSW");
+        loadValueSW.AddComponent<Text>();
+        loadValueSW.transform.GetComponent<Text>().text = "Y";
+        DontDestroyOnLoad(loadValueSW);
+
         // 破壊しない場合増加する
         Destroy(GameObject.Find("SceneChangeManager"));
         sceneTransitionManager.LoadTo(goBackScene);

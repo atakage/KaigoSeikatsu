@@ -29,9 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MenuScene.unity
     guid: fc6bae0dfc7ddfb4f92d28a7637d42be
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/StatusScene.unity
+    guid: ecf8e1562116fb240a5e72ac6abbac5e
   - enabled: 1
     path: Assets/Scenes/JobDiaryScene.unity
     guid: 4feee9a1681e8f8448a78c96e7165093

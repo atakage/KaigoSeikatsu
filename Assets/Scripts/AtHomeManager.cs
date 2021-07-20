@@ -14,6 +14,7 @@ public class AtHomeManager : MonoBehaviour
     public PlayerData playerData = null;
     public GameObject canvasGameObj;
     public Boolean timeCheckResult;
+    public string loadValueSW;
     private void Start()
     {
         playerSaveDataManager = new PlayerSaveDataManager();
@@ -22,6 +23,10 @@ public class AtHomeManager : MonoBehaviour
         utilManager = new UtilManager();
 
         if (GameObject.Find("SceneChangeManager") != null) GameObject.Find("SceneChangeManager").transform.Find("SceneChangeCanvas").transform.Find("destinationFrom-toItemCheckScene").GetComponent<Text>().text = SceneManager.GetActiveScene().name;
+
+        // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
+        if (GameObject.Find("loadValueSW") != null) loadValueSW = GameObject.Find("loadValueSW").transform.GetComponent<Text>().text;
+        else loadValueSW = "N";
 
         canvasGameObj = GameObject.Find("Canvas").gameObject;
 
@@ -85,6 +90,13 @@ public class AtHomeManager : MonoBehaviour
 
         // 現在時間が23:00以上なら外出禁止
         if(timeCheckResult) canvasGameObj.transform.Find("goOutButton").GetComponent<Button>().interactable = false;
+
+        // 初期化------------------------------------------------------------------------------------------------------------------
+        if (loadValueSW.Equals("Y"))
+        {
+            loadValueSW = "N";
+            if (GameObject.Find("loadValueSW") != null) Destroy(GameObject.Find("loadValueSW"));
+        }
     }
 
     public bool CheckBanTime(string playerDataTime)

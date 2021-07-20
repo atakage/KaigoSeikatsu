@@ -16,6 +16,7 @@ public class FacilityManager : MonoBehaviour
     public JobEventManager jobEventManager;
     public JobEventSetManager jobEventSetManager;
     public Button menuButton;
+    public Button useItemButton;
     public Button nextButton;
     public PlayerData playerData = null;
     public GameObject canvasObj;
@@ -42,15 +43,19 @@ public class FacilityManager : MonoBehaviour
         jobEventManager = new JobEventManager();
         jobEventSetManager = new JobEventSetManager();
 
-             // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
+        // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
         if (GameObject.Find("loadValueSW") != null) loadValueSW = GameObject.Find("loadValueSW").transform.GetComponent<Text>().text;
         else loadValueSW = "N";
+
+        if (GameObject.Find("SceneChangeManager") != null) GameObject.Find("SceneChangeManager").transform.Find("SceneChangeCanvas").transform.Find("destinationFrom-toItemCheckScene").GetComponent<Text>().text = SceneManager.GetActiveScene().name;
 
         canvasObj = GameObject.Find("Canvas");
         nextButton = canvasObj.transform.Find("nextButton").GetComponent<Button>();
         nextButton.onClick.AddListener(ClickNextButton);
         menuButton = canvasObj.transform.Find("menuButton").GetComponent<Button>();
         menuButton.onClick.AddListener(ClickMenuButton);
+        useItemButton = canvasObj.transform.Find("useItemButton").GetComponent<Button>();
+        useItemButton.onClick.AddListener(() => ClickUseItemButton());
 
         playerData = playerSaveDataManager.LoadPlayerData();
         completeMainEvent = playerData.flag.completeMainEvent;
@@ -232,6 +237,11 @@ public class FacilityManager : MonoBehaviour
         }
         
         
+    }
+
+    public void ClickUseItemButton()
+    {
+        sceneTransitionManager.LoadTo("ItemCheckScene");
     }
 
     public void ClickMenuButton()
@@ -622,21 +632,23 @@ public class FacilityManager : MonoBehaviour
 
     public void ClickGoToAlertNoButton()
     {
-        GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(false);
-        GameObject.Find("Canvas").transform.Find("GoToCafeButton").gameObject.SetActive(true);
-        GameObject.Find("Canvas").transform.Find("GoToParkButton").gameObject.SetActive(true);
-        GameObject.Find("Canvas").transform.Find("menuButton").GetComponent<Button>().interactable = true;
-        GameObject.Find("Canvas").transform.Find("nextButton").GetComponent<Button>().interactable = true;
+        canvasObj.transform.Find("AlertGoing").gameObject.SetActive(false);
+        canvasObj.transform.Find("GoToCafeButton").gameObject.SetActive(true);
+        canvasObj.transform.Find("GoToParkButton").gameObject.SetActive(true);
+        canvasObj.transform.Find("menuButton").GetComponent<Button>().interactable = true;
+        canvasObj.transform.Find("nextButton").GetComponent<Button>().interactable = true;
+        canvasObj.transform.Find("useItemButton").GetComponent<Button>().interactable = true;
     }
 
     public void ClickGoToHomeButton()
     {
         SetGoToButton(false);
-        GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(true);
+        canvasObj.transform.Find("AlertGoing").gameObject.SetActive(true);
         GameObject.Find("AlertGoing").transform.Find("DestinationValue").gameObject.SetActive(false);
         GameObject.Find("AlertGoing").transform.Find("alertMessage").GetComponent<Text>().text =
         "<color=#f54242>" + "帰宅" + "</color>"  + "しますか?";
         GameObject.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text = "帰宅";
+        menuBtnAndNextBtnInteractable(false);
     }
 
     public void ClickGoToButton(string destination)
@@ -647,6 +659,7 @@ public class FacilityManager : MonoBehaviour
         GameObject.Find("AlertGoing").transform.Find("alertMessage").GetComponent<Text>().text =
         "<color=#f54242>" + destination + "</color>" + "に行って時間を過ごしますか?";
         GameObject.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text = destination;
+        menuBtnAndNextBtnInteractable(false);
     }
 
     public void SetGoToButton(bool sw)
@@ -739,12 +752,14 @@ public class FacilityManager : MonoBehaviour
     {
         canvasObj.transform.Find("menuButton").GetComponent<Button>().interactable = sw;
         canvasObj.transform.Find("nextButton").GetComponent<Button>().interactable = sw;
+        canvasObj.transform.Find("useItemButton").GetComponent<Button>().interactable = sw;
     }
 
     public void FacilityUISetActive(bool setActive)
     {
         if(GameObject.Find("Canvas").transform.Find("menuButton") != null) GameObject.Find("Canvas").transform.Find("menuButton").gameObject.SetActive(setActive);
         if(GameObject.Find("Canvas").transform.Find("nextButton") != null) GameObject.Find("Canvas").transform.Find("nextButton").gameObject.SetActive(setActive);
+        if(GameObject.Find("Canvas").transform.Find("useItemButton") != null) GameObject.Find("Canvas").transform.Find("useItemButton").gameObject.SetActive(setActive);
         if(GameObject.Find("Canvas").transform.Find("Image") != null) GameObject.Find("Canvas").transform.Find("Image").gameObject.SetActive(setActive);
         if(GameObject.Find("Canvas").transform.Find("time") != null) GameObject.Find("Canvas").transform.Find("time").gameObject.SetActive(setActive);
         if(GameObject.Find("Canvas").transform.Find("fatigueText") != null) GameObject.Find("Canvas").transform.Find("fatigueText").gameObject.SetActive(setActive);

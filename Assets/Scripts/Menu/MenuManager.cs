@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
@@ -24,8 +25,14 @@ public class MenuManager : MonoBehaviour
             //goBackScene = GameObject.Find("SceneChangeManager").transform.Find("SceneChangeCanvas").transform.Find("destinationFrom-toItemCheckScene").GetComponent<Text>().text;
         }
 
+        menuInitVar.menuGridGameObj.transform.Find("statusButton").GetComponent<Button>().onClick.AddListener(() => ClickStatusButton());
         menuInitVar.menuGridGameObj.transform.Find("CloseButton").GetComponent<Button>().onClick.AddListener(() => ClickCloseButton(playerData.currentScene));
 
+    }
+
+    public void ClickStatusButton()
+    {
+        SceneManager.LoadScene("StatusScene", LoadSceneMode.Additive);
     }
 
     public void ClickCloseButton(string goBackScene)
