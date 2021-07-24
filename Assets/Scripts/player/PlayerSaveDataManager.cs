@@ -20,6 +20,7 @@ public class PlayerData
     public int feeling; // 気分
     public Tip tip = new Tip();
     public Flag flag = new Flag();
+    public float playTime;
 }
 
 [System.Serializable]

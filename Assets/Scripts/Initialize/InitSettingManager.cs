@@ -9,6 +9,7 @@ public class InitSettingManager : MonoBehaviour
     public PlayerSaveDataManager playerSaveDataManager;
     public SceneTransitionManager sceneTransitionManager;
     public JobDiarySetManager jobDiarySetManager;
+    public PlayTimeManager playTimeManager;
     public GameObject canvasObj;
     public GameObject loadButtonObj;
     public GameObject newGameAlertBoxObj;
@@ -20,6 +21,8 @@ public class InitSettingManager : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         sceneTransitionManager = new SceneTransitionManager();
         jobDiarySetManager = new JobDiarySetManager();
+
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
         canvasObj = GameObject.Find("Canvas");
         newGameAlertBoxObj = canvasObj.transform.Find("newGameAlertBox").gameObject;
@@ -53,7 +56,7 @@ public class InitSettingManager : MonoBehaviour
         {
             loadButtonObj = canvasObj.transform.Find("loadButton").gameObject;
             loadButtonObj.GetComponent<Button>().interactable = true;
-            loadButtonObj.GetComponent<Button>().onClick.AddListener(() => ClickLoadButton(playerData.currentScene));
+            loadButtonObj.GetComponent<Button>().onClick.AddListener(() => ClickLoadButton(playerData));
         }
 
         
@@ -73,6 +76,9 @@ public class InitSettingManager : MonoBehaviour
         // ゲームが始まるnew game
         else if (msgCheckIntVal == 1)
         {
+            // プレイ時間記録を始める
+            playTimeManager.countPlayTime = true;
+
             // JobDiary.jsonを作る
             jobDiarySetManager.CreateJobDiaryJsonFile(new List<JobDiaryModel>());
 
@@ -142,13 +148,17 @@ public class InitSettingManager : MonoBehaviour
 
     }
 
-    public void ClickLoadButton(string currentScene)
+    public void ClickLoadButton(PlayerData playerData)
     {
+        // プレイ時間記録を始める
+        playTimeManager.playTime = playerData.playTime;
+        playTimeManager.countPlayTime = true;
+
         GameObject loadValueSW = new GameObject("loadValueSW");
         loadValueSW.AddComponent<Text>();
         loadValueSW.transform.GetComponent<Text>().text = "Y";
         DontDestroyOnLoad(loadValueSW);
 
-        sceneTransitionManager.LoadTo(currentScene);
+        sceneTransitionManager.LoadTo(playerData.currentScene);
     }
 }

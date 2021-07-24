@@ -9,6 +9,7 @@ public class MenuManager : MonoBehaviour
     SceneTransitionManager sceneTransitionManager;
     PlayerSaveDataManager playerSaveDataManager;
     MenuInitVar menuInitVar;
+    PlayTimeManager playTimeManager;
     //string goBackScene;
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,7 @@ public class MenuManager : MonoBehaviour
         sceneTransitionManager = new SceneTransitionManager();
         playerSaveDataManager = new PlayerSaveDataManager();
         menuInitVar = GameObject.Find("MenuInitVar").GetComponent("MenuInitVar") as MenuInitVar;
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
 
@@ -26,8 +28,15 @@ public class MenuManager : MonoBehaviour
         }
 
         menuInitVar.menuGridGameObj.transform.Find("statusButton").GetComponent<Button>().onClick.AddListener(() => ClickStatusButton());
+        menuInitVar.menuGridGameObj.transform.Find("titleButton").GetComponent<Button>().onClick.AddListener(() => ClickTitleButton());
         menuInitVar.menuGridGameObj.transform.Find("CloseButton").GetComponent<Button>().onClick.AddListener(() => ClickCloseButton(playerData.currentScene));
 
+    }
+
+    public void ClickTitleButton()
+    {
+        playTimeManager.SavePlayTimeToPlayerDataJsonFile();
+        sceneTransitionManager.LoadTo("TitleScene");
     }
 
     public void ClickStatusButton()

@@ -1,3 +1,9 @@
 {
-    "Items": []
+    "Items": [
+        {
+            "eventCode": "EC001",
+            "eventScript": "え？またその話?/同じ言葉を繰り返す利用者、どうする?",
+            "choosingString": "うなずくばかり"
+        }
+    ]
 }
