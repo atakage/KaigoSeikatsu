@@ -238,7 +238,7 @@ public class ParkManager : MonoBehaviour
             playerSaveDataManager.SavePlayerData(playerData);
 
             List<string[]> scriptList = eventManager.SingleScriptSaveToList(money + "円を拾った!");
-            chatManager.ShowDialogue(scriptList, "");
+            chatManager.ShowDialogue(scriptList, "", null);
         }
         // 1ならアイテム獲得
         else if (1 == eventInt)
@@ -249,7 +249,7 @@ public class ParkManager : MonoBehaviour
             string pickUpItemName = SearchluckyItemToConvenience(convenienceItemDataArray);
 
             List<string[]> scriptList = eventManager.SingleScriptSaveToList(pickUpItemName + "を拾った!");
-            chatManager.ShowDialogue(scriptList, "");
+            chatManager.ShowDialogue(scriptList, "", null);
         }
     }
 
@@ -281,6 +281,6 @@ public class ParkManager : MonoBehaviour
         EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
-        chatManager.ShowDialogue(scriptList, eventCode);
+        chatManager.ShowDialogue(scriptList, eventCode, eventItem.script);
     }
 }

@@ -2,18 +2,18 @@
     "Items": [
         {
             "eventCode": "EC000",
-            "eventScript": "ある一人の利用者から暴言が続けている。/どうしよう…",
+            "eventScript": "●ある一人の利用者から暴言が続けている。/●どうしよう…",
             "choiceA": "明日から録音しておこう:-1",
             "choiceB": "放置する:1",
             "choiceC": "強い口調で注意する:0",
             "choiceAEffect": "SA-1:FA+1",
             "choiceBEffect": "FA+1",
             "choiceCEffect": "FA+1:FL+1",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC001",
-            "eventScript": "え？またその話?/同じ言葉を繰り返す利用者、どうする?",
+            "eventScript": "●え？またその話?/●同じ言葉を繰り返す利用者、どうする?",
             "choiceA": "うなずくばかり:0",
             "choiceB": "「はい」や「いいえ」だけで答える:1",
             "choiceC": "話に耳を傾ける:-1",

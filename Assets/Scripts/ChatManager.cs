@@ -28,6 +28,8 @@ public class ChatManager : MonoBehaviour
     public int textOneLineLength;
     public GameObject scriptNextIconGameObj;
     public GameObject mainEventScriptNextIcon;
+    public List<string> charImgFileNameList;
+    public bool callCharImgFuncBool;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +43,7 @@ public class ChatManager : MonoBehaviour
 
         canvasGameObj = GameObject.Find("Canvas");
         panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
+
         clickCount = 0;
 
         if (GameObject.Find("FlashEffectManager") != null) flashEffectManager = GameObject.Find("FlashEffectManager").GetComponent("FlashEffectManager") as FlashEffectManager;
@@ -69,6 +72,9 @@ public class ChatManager : MonoBehaviour
                 // スクリプトを全部読んだら
                 if (clickCount == textCount - 1)
                 {
+                    // subCharacterImageを隠す
+                    if (callCharImgFuncBool) ActiveSubCharacterImage(false); 
+
                     if (this.eventCode != null)
                     {
                         string afterEventStr = eventCodeManager.FindAfterEventByEventCode(this.eventCode);
@@ -184,6 +190,9 @@ public class ChatManager : MonoBehaviour
                         ++clickCount;
                         StartCoroutine(StartDialogueCoroutine());
                     }
+
+                    // 続いてcharacterimageを変える
+                    if (callCharImgFuncBool) CallCharacterImage();
                 }
             }
         }
@@ -297,7 +306,7 @@ public class ChatManager : MonoBehaviour
         // panelに選択肢のテキストを表示する
         // スクリプトをディスプレイする
         List<string[]> scriptArrList = eventManager.SingleScriptSaveToList(choosingTextAndNumberArray[0]);
-        ShowDialogue(scriptArrList, "");
+        ShowDialogue(scriptArrList, "", choosingTextAndNumberArray[0]);
 
 
         playerSaveDataManager.SavePlayerData(playerData);
@@ -364,7 +373,7 @@ public class ChatManager : MonoBehaviour
         // スクリプトをディスプレイする
         List<string[]> scriptArrList = eventManager.SingleScriptSaveToList(panelText);
 
-        ShowDialogue(scriptArrList, "");
+        ShowDialogue(scriptArrList, "", panelText);
 
         // イベントの重複呼びを防止
         this.eventCode = "EV999";
@@ -477,7 +486,7 @@ public class ChatManager : MonoBehaviour
         StartCoroutine(StartDialogueCoroutine());
     }
 
-    public void ShowDialogueForMainEvent(List<string[]> textList, string eventCode)
+    public void ShowDialogueForMainEvent(List<string[]> textList, string eventCode, string rawScript)
     {
         Debug.Log("call ShowDialogueForMainEvent: " + eventCode);
         Debug.Log("event script line: " + textList.Count);
@@ -508,10 +517,36 @@ public class ChatManager : MonoBehaviour
         
     }
 
-    public void ShowDialogue(List<string[]> textList, string eventCode)
+    public void ShowDialogue(List<string[]> textList, string eventCode, string rawScript)
     {
         Debug.Log("call ShowDialogue: " + eventCode);
         Debug.Log("event script line: " + textList.Count);
+
+        // eventScriptがある場合
+        if(rawScript != null)
+        {
+            charImgFileNameList = new List<string>();
+
+            // キャライメージファイル名をリストに追加
+            string[] scriptArrayPara = rawScript.Split('/');
+            for (int i=0; i< scriptArrayPara.Length; i++)
+            {
+                // characterImageファイル名がemptyならリストにnull追加
+                if (string.IsNullOrEmpty(scriptArrayPara[i].Split('●')[0]))
+                {
+                    charImgFileNameList.Add(null);
+                }
+                // ファイル名があるならリストに追加する
+                else
+                {
+                    charImgFileNameList.Add(scriptArrayPara[i].Split('●')[0]);
+                    callCharImgFuncBool = true;
+                }
+            }
+            // characterImageを変える
+            if(callCharImgFuncBool) CallCharacterImage();
+        }
+        
 
         // イベントコードがあるなら(選択肢活用)
         if (!eventCode.Equals(""))
@@ -546,6 +581,42 @@ public class ChatManager : MonoBehaviour
         dialogueSW = false;
         clickCount = 0;
         GameObject.Find("mainEventText").GetComponent<Text>().text = "";
+    }
+
+    public void ActiveDefaultCharacterImage(bool sw)
+    {
+        canvasGameObj.transform.Find("charaterImageBox").transform.Find("defaultCharacterImage").gameObject.SetActive(sw);
+    }
+    public void ActiveSubCharacterImage(bool sw)
+    {
+        canvasGameObj.transform.Find("charaterImageBox").transform.Find("characterImage").gameObject.SetActive(sw);
+    }
+
+    public void CallCharacterImage()
+    {
+        // defaultとsubCharacterImage on-off
+        ActiveDefaultCharacterImage(false);
+        ActiveSubCharacterImage(true);
+
+        Debug.Log("CallCharacterImage");
+        Debug.Log("clickCount: " + clickCount);
+        Debug.Log("charImgFileNameList.ToArray()[clickCount]: " + charImgFileNameList.ToArray()[clickCount]);
+        // characterImageFileNameがないならイメージコンポーネント初期化
+        if (charImgFileNameList.ToArray()[clickCount] == null)
+        {
+            canvasGameObj.transform.Find("charaterImageBox").transform.Find("characterImage").GetComponent<Image>().color = new Color(255, 255, 255, 0);
+            canvasGameObj.transform.Find("charaterImageBox").transform.Find("characterImage").GetComponent<Image>().sprite = null;
+
+            // fade out coroutine add
+        }
+        // characterImageFileNameがあるならイメージ表示
+        else
+        {
+            canvasGameObj.transform.Find("charaterImageBox").transform.Find("characterImage").GetComponent<Image>().sprite = Resources.Load<Sprite>("img/character/" + charImgFileNameList.ToArray()[clickCount]);
+            canvasGameObj.transform.Find("charaterImageBox").transform.Find("characterImage").GetComponent<Image>().color = new Color(255, 255, 255, 255);
+
+            // fade in coroutine add
+        }
     }
 
     IEnumerator StartMainEventDialogueCoroutine()

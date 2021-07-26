@@ -314,6 +314,6 @@ public class CafeManager : MonoBehaviour
         EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
-        chatManager.ShowDialogue(scriptList, eventCode);
+        chatManager.ShowDialogue(scriptList, eventCode, eventItem.script);
     }
 }

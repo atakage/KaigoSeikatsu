@@ -700,7 +700,7 @@ public class FacilityManager : MonoBehaviour
                 EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, mainEventCode);
                 List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
 
-                chatManager.ShowDialogueForMainEvent(scriptList, mainEventCode);
+                chatManager.ShowDialogueForMainEvent(scriptList, mainEventCode, eventItem.script);
 
 
                 playerData = playerSaveDataManager.LoadPlayerData();
@@ -745,7 +745,8 @@ public class FacilityManager : MonoBehaviour
         EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
-        chatManager.ShowDialogue(scriptList, eventCode);
+        // 2021.07.26 修正, キャライメージ追加されたrawScriptをparameterに渡す
+        chatManager.ShowDialogue(scriptList, eventCode, eventItem.script);
     }
 
     public void menuBtnAndNextBtnInteractable(bool sw)

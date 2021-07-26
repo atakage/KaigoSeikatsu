@@ -54,12 +54,16 @@ public class EventManager : MonoBehaviour
     {
         List<string[]> returnScriptArrList = new List<string[]>();
         string[] scriptArrayPara = eventItem.script.Split('/');
+        //string[] scriptSplitedBySlash = eventItem.script.Split('/');
+        //string[] scriptArrayPara = scriptSplitedBySlash[1].Split('●');
         string[] scriptArray = null;
         char[] chars = null;
         for (int i=0; i< scriptArrayPara.Length; i++)
         {
-            // '/'分かれた文章を文字ごとで入れる
-            chars = scriptArrayPara[i].ToCharArray();
+            string[] scriptSplitedBySC = scriptArrayPara[i].Split('●');
+
+            // '/'と'●'で分かれた文章を文字ごとで入れる
+            chars = scriptSplitedBySC[1].ToCharArray();
             Array.Resize(ref scriptArray, chars.Length);
             for(int j=0; j < chars.Length; j++)
             {

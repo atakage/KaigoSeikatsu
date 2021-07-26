@@ -9,6 +9,14 @@ public class StatusInitVar : MonoBehaviour
         public GameObject playInfoBoxGameObj;
             public GameObject playTimeBox;
                 public GameObject playTimeValue;
+            public GameObject progressBoxGameObj;
+                public GameObject progressValueGameObj;
+            public GameObject statusBoxGameObj;
+                public GameObject fatigueValueGameObj;
+                public GameObject satisfactionValueGameObj;
+                public GameObject feelingValueGameObj;
+            public GameObject moneyBoxGameObj;
+                public GameObject moneyValueGameObj;
     void Awake()
     {
         this.canvasGameObj = GameObject.Find("StatusMainCanvas");
@@ -16,5 +24,13 @@ public class StatusInitVar : MonoBehaviour
         this.playInfoBoxGameObj = this.canvasGameObj.transform.Find("playInfoBox").gameObject;
         this.playTimeBox = this.playInfoBoxGameObj.transform.Find("playTimeBox").gameObject;
         this.playTimeValue = this.playTimeBox.transform.Find("playTimeValue").gameObject;
+        this.progressBoxGameObj = this.playInfoBoxGameObj.transform.Find("progressBox").gameObject;
+        this.progressValueGameObj = this.progressBoxGameObj.transform.Find("progressValue").gameObject;
+        this.statusBoxGameObj = this.playInfoBoxGameObj.transform.Find("statusBox").gameObject;
+        this.fatigueValueGameObj = this.statusBoxGameObj.transform.Find("fatigueValue").gameObject;
+        this.satisfactionValueGameObj = this.statusBoxGameObj.transform.Find("satisfactionValue").gameObject;
+        this.feelingValueGameObj = this.statusBoxGameObj.transform.Find("feelingValue").gameObject;
+        this.moneyBoxGameObj = this.playInfoBoxGameObj.transform.Find("moneyBox").gameObject;
+        this.moneyValueGameObj = this.moneyBoxGameObj.transform.Find("moneyValue").gameObject;
     }
 }

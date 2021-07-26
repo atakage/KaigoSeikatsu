@@ -29,7 +29,7 @@ public class IntroManager1 : MonoBehaviour
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, "EV000");
         // イベントスクリプトを配列に入れる
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
-        chatManager.ShowDialogue(scriptList, "EV000");
+        chatManager.ShowDialogue(scriptList, "EV000", eventItem.script);
     }
 
 
