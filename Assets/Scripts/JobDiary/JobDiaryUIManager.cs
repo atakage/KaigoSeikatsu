@@ -32,7 +32,13 @@ public class JobDiaryUIManager : MonoBehaviour
                 // 最初はdefaultObjectにセッティング
                 if (i == 0)
                 {
-                    jobDiarySharingVarManager.containerGameObj.transform.GetChild(0).Find("jobEventScript").GetComponent<Text>().text = jobDiaryModelArray[i].eventScript.Replace("/","");
+                    string[] scriptSplitedSlashArray = jobDiaryModelArray[i].eventScript.Split('/');
+                    string script = null;
+                    foreach(string scriptSplitedSlash in scriptSplitedSlashArray)
+                    {
+                        script += scriptSplitedSlash.Split('●')[1];
+                    }
+                    jobDiarySharingVarManager.containerGameObj.transform.GetChild(0).Find("jobEventScript").GetComponent<Text>().text = script;
                     jobDiarySharingVarManager.containerGameObj.transform.GetChild(0).Find("jobEventChoice").GetComponent<Text>().text = jobDiaryModelArray[i].choosingString.Replace("/", "");
                 }
                 // 二番目からはobjectを作る
@@ -43,8 +49,15 @@ public class JobDiaryUIManager : MonoBehaviour
                     itemGameObj.name = "item" + i;
                     itemGameObj.transform.SetParent(jobDiarySharingVarManager.containerGameObj.transform);
 
+                    string[] scriptSplitedSlashArray = jobDiaryModelArray[i].eventScript.Split('/');
+                    string script = null;
+                    foreach (string scriptSplitedSlash in scriptSplitedSlashArray)
+                    {
+                        script += scriptSplitedSlash.Split('●')[1];
+                    }
+
                     // objectに情報を格納
-                    itemGameObj.transform.Find("jobEventScript").GetComponent<Text>().text = jobDiaryModelArray[i].eventScript.Replace("/", "");
+                    itemGameObj.transform.Find("jobEventScript").GetComponent<Text>().text = script;
                     itemGameObj.transform.Find("jobEventChoice").GetComponent<Text>().text = jobDiaryModelArray[i].choosingString.Replace("/", "");
 
                 }

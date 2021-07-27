@@ -306,7 +306,7 @@ public class ChatManager : MonoBehaviour
         // panelに選択肢のテキストを表示する
         // スクリプトをディスプレイする
         List<string[]> scriptArrList = eventManager.SingleScriptSaveToList(choosingTextAndNumberArray[0]);
-        ShowDialogue(scriptArrList, "", choosingTextAndNumberArray[0]);
+        ShowDialogue(scriptArrList, "", null);
 
 
         playerSaveDataManager.SavePlayerData(playerData);
@@ -473,6 +473,31 @@ public class ChatManager : MonoBehaviour
     {
         Debug.Log("call ShowDialogueForJobEvent: " + jobEvent.eventCode);
 
+        // eventScriptがある場合
+        if (jobEvent.eventScript != null)
+        {
+            charImgFileNameList = new List<string>();
+
+            // キャライメージファイル名をリストに追加
+            string[] scriptArrayPara = jobEvent.eventScript.Split('/');
+            for (int i = 0; i < scriptArrayPara.Length; i++)
+            {
+                // characterImageファイル名がemptyならリストにnull追加
+                if (string.IsNullOrEmpty(scriptArrayPara[i].Split('●')[0]))
+                {
+                    charImgFileNameList.Add(null);
+                }
+                // ファイル名があるならリストに追加する
+                else
+                {
+                    charImgFileNameList.Add(scriptArrayPara[i].Split('●')[0]);
+                    callCharImgFuncBool = true;
+                }
+            }
+            // characterImageを変える
+            if (callCharImgFuncBool) CallCharacterImage();
+        }
+
         // イベントコードがあるなら(選択肢活用)
         this.completeEventSW = new Dictionary<string, bool>();
         this.eventCode = jobEvent.eventCode;
@@ -494,7 +519,31 @@ public class ChatManager : MonoBehaviour
         // 画面にメインイベントeffect
         CreateMainEventBlackBox();
 
-        
+        // eventScriptがある場合
+        if (rawScript != null)
+        {
+            charImgFileNameList = new List<string>();
+
+            // キャライメージファイル名をリストに追加
+            string[] scriptArrayPara = rawScript.Split('/');
+            for (int i = 0; i < scriptArrayPara.Length; i++)
+            {
+                // characterImageファイル名がemptyならリストにnull追加
+                if (string.IsNullOrEmpty(scriptArrayPara[i].Split('●')[0]))
+                {
+                    charImgFileNameList.Add(null);
+                }
+                // ファイル名があるならリストに追加する
+                else
+                {
+                    charImgFileNameList.Add(scriptArrayPara[i].Split('●')[0]);
+                    callCharImgFuncBool = true;
+                }
+            }
+            // characterImageを変える
+            if (callCharImgFuncBool) CallCharacterImage();
+        }
+
         // イベントコードがあるなら(選択肢活用)
         if (!eventCode.Equals(""))
         {
@@ -594,6 +643,7 @@ public class ChatManager : MonoBehaviour
 
     public void CallCharacterImage()
     {
+        Debug.Log("call CallCharacterImage");
         // defaultとsubCharacterImage on-off
         ActiveDefaultCharacterImage(false);
         ActiveSubCharacterImage(true);

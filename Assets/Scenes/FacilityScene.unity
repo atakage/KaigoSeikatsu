@@ -936,7 +936,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &426261281
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1522,6 +1522,7 @@ MonoBehaviour:
   scriptNextIconGameObj: {fileID: 0}
   mainEventScriptNextIcon: {fileID: 0}
   charImgFileNameList: []
+  callCharImgFuncBool: 0
 --- !u!4 &752549968
 Transform:
   m_ObjectHideFlags: 0
@@ -1824,7 +1825,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1108107350
 RectTransform:
   m_ObjectHideFlags: 0

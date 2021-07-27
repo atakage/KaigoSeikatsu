@@ -31,6 +31,8 @@ public class FacilityManager : MonoBehaviour
     public bool jobEventSearchSkip;
     public bool jobEventDayCompletedBool;
     public string loadValueSW;
+
+    private string defaultCharFileName = "toyota";
     // Start is called before the first frame update
     void Start()
     {
@@ -98,7 +100,9 @@ public class FacilityManager : MonoBehaviour
         canvasObj.transform.Find("time").GetComponent<Text>().text = playerData.time;
         canvasObj.transform.Find("fatigueBar").GetComponent<Slider>().value = playerData.fatigue;
 
-
+        // defaultCharacterImageSetting
+        SetDefaultCharacterImage();
+       
     }
 
     private void Update()
@@ -143,6 +147,7 @@ public class FacilityManager : MonoBehaviour
                 || (timeStr.Equals("09:00") && loadValueSW.Equals("Y")))
             {
                 SetPanelText("今日も頑張ろう");
+                ActiveDefaultCharacterImage(true);
             }
             else if ((timeStr.Equals("11:50")
                 && canvasObj.transform.Find("fadeOutEndMomentSW") != null
@@ -150,6 +155,7 @@ public class FacilityManager : MonoBehaviour
                 || (timeStr.Equals("11:50") && loadValueSW.Equals("Y")))
             {
                 SetPanelText("もうすぐお昼の時間だ");
+                ActiveDefaultCharacterImage(true);
             }
             else if ((timeStr.Equals("12:50")
                 && canvasObj.transform.Find("fadeOutEndMomentSW") != null
@@ -157,6 +163,7 @@ public class FacilityManager : MonoBehaviour
                 || (timeStr.Equals("12:50") && loadValueSW.Equals("Y")))
             {
                 SetPanelText("休憩時間だ\n何をしようかな?");
+                ActiveDefaultCharacterImage(true);
             }
             else if ((timeStr.Equals("14:00")
                 && canvasObj.transform.Find("fadeOutEndMomentSW") != null
@@ -164,6 +171,7 @@ public class FacilityManager : MonoBehaviour
                 || (timeStr.Equals("14:00") && loadValueSW.Equals("Y")))
             {
                 SetPanelText("まもなく午後のスケジュールが始まる");
+                ActiveDefaultCharacterImage(true);
             }
             else if ((timeStr.Equals("17:00")
                 && canvasObj.transform.Find("fadeOutEndMomentSW") != null
@@ -171,6 +179,7 @@ public class FacilityManager : MonoBehaviour
                 || (timeStr.Equals("17:00") && loadValueSW.Equals("Y")))
             {
                 SetPanelText("午後のスケジュールが終わった");
+                ActiveDefaultCharacterImage(true);
             }
             else if ((timeStr.Equals("17:20")
                 && canvasObj.transform.Find("fadeOutEndMomentSW") != null
@@ -237,6 +246,17 @@ public class FacilityManager : MonoBehaviour
         }
         
         
+    }
+
+    public void SetDefaultCharacterImage()
+    {
+        canvasObj.transform.Find("charaterImageBox").transform.Find("defaultCharacterImage").GetComponent<Image>().sprite = Resources.Load<Sprite>("img/character/" + defaultCharFileName);
+        canvasObj.transform.Find("charaterImageBox").transform.Find("defaultCharacterImage").GetComponent<Image>().color = new Color(255, 255, 255, 255);
+    }
+
+    public void ActiveDefaultCharacterImage(bool sw)
+    {
+        canvasObj.transform.Find("charaterImageBox").transform.Find("defaultCharacterImage").gameObject.SetActive(sw);
     }
 
     public void ClickUseItemButton()
