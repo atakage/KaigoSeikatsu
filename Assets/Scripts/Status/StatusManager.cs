@@ -26,11 +26,12 @@ public class StatusManager : MonoBehaviour
     private void Update()
     {
         statusInitVar.playTimeValue.GetComponent<Text>().text = TimeSpan.FromSeconds(playTimeManager.playTime).ToString("hh':'mm':'ss");
-        statusInitVar.progressValueGameObj.GetComponent<Text>().text = playerData.progress.ToString();
+        statusInitVar.progressValueGameObj.GetComponent<Text>().text = playerData.progress.ToString() + "%";
+        statusInitVar.progressBarGameObj.GetComponent<Slider>().value = playerData.progress;
         statusInitVar.fatigueValueGameObj.GetComponent<Text>().text =  Math.Truncate(playerData.fatigue).ToString();
         statusInitVar.satisfactionValueGameObj.GetComponent<Text>().text = playerData.satisfaction.ToString();
         statusInitVar.feelingValueGameObj.GetComponent<Text>().text = playerData.feeling.ToString();
-        statusInitVar.moneyValueGameObj.GetComponent<Text>().text = playerData.money;
+        statusInitVar.moneyValueGameObj.GetComponent<Text>().text = playerData.money+"円";
     }
 
 

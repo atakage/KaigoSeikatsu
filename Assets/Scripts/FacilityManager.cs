@@ -188,6 +188,7 @@ public class FacilityManager : MonoBehaviour
             {
                 SetPanelText("これからどうする?");
                 SetGoToButton(true);
+                ActiveDefaultCharacterImage(false);
                 canvasObj.transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "帰宅";
                 //timeCheckSW = false;
             }

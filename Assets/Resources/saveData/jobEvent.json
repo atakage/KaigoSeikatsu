@@ -21,6 +21,17 @@
             "choiceBEffect": "FL+2",
             "choiceCEffect": "FA+3",
             "eventActive": false
+        },
+        {
+            "eventCode": "EC002",
+            "eventScript": "●これ食べるかい?/●食べ物を持ち込んだ利用者",
+            "choiceA": "施設内への食べ物の持ち込みは禁止です!:0",
+            "choiceB": "わあ~ いただきます!:-1",
+            "choiceC": "申し訳ありません、それ苦手なんですよね:1",
+            "choiceAEffect": "SA+1",
+            "choiceBEffect": "FA+3",
+            "choiceCEffect": "SA+1:FL+1",
+            "eventActive": false
         }
     ]
 }

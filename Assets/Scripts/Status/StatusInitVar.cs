@@ -11,6 +11,7 @@ public class StatusInitVar : MonoBehaviour
                 public GameObject playTimeValue;
             public GameObject progressBoxGameObj;
                 public GameObject progressValueGameObj;
+                public GameObject progressBarGameObj;
             public GameObject statusBoxGameObj;
                 public GameObject fatigueValueGameObj;
                 public GameObject satisfactionValueGameObj;
@@ -26,6 +27,7 @@ public class StatusInitVar : MonoBehaviour
         this.playTimeValue = this.playTimeBox.transform.Find("playTimeValue").gameObject;
         this.progressBoxGameObj = this.playInfoBoxGameObj.transform.Find("progressBox").gameObject;
         this.progressValueGameObj = this.progressBoxGameObj.transform.Find("progressValue").gameObject;
+        this.progressBarGameObj = this.progressBoxGameObj.transform.Find("progressBar").gameObject;
         this.statusBoxGameObj = this.playInfoBoxGameObj.transform.Find("statusBox").gameObject;
         this.fatigueValueGameObj = this.statusBoxGameObj.transform.Find("fatigueValue").gameObject;
         this.satisfactionValueGameObj = this.statusBoxGameObj.transform.Find("satisfactionValue").gameObject;

@@ -5,6 +5,12 @@
             "itemDescription": "介護福祉士の名刺だ",
             "quantity": 1,
             "keyItem": "Y"
+        },
+        {
+            "itemName": "android",
+            "itemDescription": "test item",
+            "quantity": 4,
+            "keyItem": "N"
         }
     ]
 }
