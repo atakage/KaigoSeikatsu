@@ -5,8 +5,18 @@
             "requiredProgress": 0,
             "requiredSatisfaction": 0,
             "requiredScene": "FacilityScene",
-            "requiredCompletedEvent": "",
+            "requiredCompletedMainEvent": "",
+            "requiredCompletedJobEvent": "",
             "addingProgress": 1
+        },
+        {
+            "eventCode": "EV021",
+            "requiredProgress": 0,
+            "requiredSatisfaction": 0,
+            "requiredScene": "FacilityScene",
+            "requiredCompletedMainEvent": "EV020",
+            "requiredCompletedJobEvent": "EC000:EC001:EC002:EC003:EC004:",
+            "addingProgress": 19
         }
     ]
 }

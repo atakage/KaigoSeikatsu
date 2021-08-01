@@ -23,7 +23,8 @@ public class MainEventSetManager : MonoBehaviour
                 mainEventModel.requiredProgress = (int)mainEventItemDic["requiredProgress"];
                 mainEventModel.requiredSatisfaction = (int)mainEventItemDic["requiredSatisfaction"];
                 mainEventModel.requiredScene = (string)mainEventItemDic["requiredScene"];
-                mainEventModel.requiredCompletedEvent = (string)mainEventItemDic["requiredCompletedEvent"];
+                mainEventModel.requiredCompletedMainEvent = (string)mainEventItemDic["requiredCompletedMainEvent"];
+                mainEventModel.requiredCompletedJobEvent = (string)mainEventItemDic["requiredCompletedJobEvent"];
                 mainEventModel.addingProgress = (int)mainEventItemDic["addingProgress"];
 
                 mainEventModelList.Add(mainEventModel);

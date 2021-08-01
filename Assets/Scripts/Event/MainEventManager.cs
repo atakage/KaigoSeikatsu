@@ -53,7 +53,7 @@ public class MainEventManager : MonoBehaviour
 
     public string findMainEvent(PlayerData playerdata)
     {
-        List<MainEventModel> mainEventModelList = new List<MainEventModel>();
+        string returnEventCode = null;
 
         // mainEvent.jsonからリストを読み込む
         mainEventSetManager = new MainEventSetManager();
@@ -62,51 +62,24 @@ public class MainEventManager : MonoBehaviour
         foreach (MainEventModel mainEventModel in mainEventModelArray)
         {
             Debug.Log("mainEventModel.eventCode: " + mainEventModel.eventCode);
-            // 完了したイベントコードチェックフラグ
-            bool checkCompletedEventBool = false;
 
+            // すでにクリアしたイベントならcontinue
+            if (playerdata.eventCodeObject.completedMainEventArray != null && Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, mainEventModel.eventCode) >= 0) continue;
+            // メインイベントを発動させるために必要なcompletedMainEventを確認
+            if (playerdata.eventCodeObject.completedMainEventArray != null && Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, mainEventModel.requiredCompletedMainEvent) < 0) continue;
+            // メインイベントを発動させるために必要なcompletedJobEventの数を確認
+            if (playerdata.eventCodeObject.completedMainEventArray != null && playerdata.eventCodeObject.completedJobEventArray.Length > mainEventModel.requiredCompletedJobEvent.Split(':').Length) continue;
             // プレイヤーデータと条件を比べる
             if (playerdata.progress < mainEventModel.requiredProgress) continue;
             if (playerdata.satisfaction < mainEventModel.requiredSatisfaction) continue;
             if (!playerdata.currentScene.Equals(mainEventModel.requiredScene)) continue;
 
-            string[] requiredCompletedEventArray = mainEventModel.requiredCompletedEvent.Split(':');
-            if (!requiredCompletedEventArray[0].Equals(""))
-            {
-                foreach (string requiredCompletedEvent in requiredCompletedEventArray)
-                {
-                    if(playerdata.eventCodeObject.completedMainEventArray != null)
-                    {
-                        int resultInt = Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, requiredCompletedEvent);
-                        if (resultInt < 0)
-                        {
-                            checkCompletedEventBool = false;
-                            break;
-                        }
-                        else
-                        {
-                            checkCompletedEventBool = true;
-                        }
-                    }
-                    else
-                    {
-                        checkCompletedEventBool = false;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                Debug.Log("No requiredEventCode");
-                checkCompletedEventBool = true;
-            }
-            // 最後の条件まで合うならメインイベントをリストに追加する
-            if (checkCompletedEventBool) mainEventModelList.Add(mainEventModel);
+            // メインイベント発動させるためのすべての条件を確認完了
+            returnEventCode = mainEventModel.eventCode;
+            break;
         }
-        // 条件に合うメインイベントが2つ以上なら一つのメインイベントだけreturnする
-        if (mainEventModelList.Count > 1) return PickUpOneMainEvent(mainEventModelList);
-        else if (mainEventModelList.Count == 1) return mainEventModelList[0].eventCode;
-        else return null;
+        Debug.Log("returnEventCode: " + returnEventCode);
+        return returnEventCode;
     }
 
     public string PickUpOneMainEvent(List<MainEventModel> mainEventModelList)

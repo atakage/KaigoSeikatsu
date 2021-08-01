@@ -3,12 +3,27 @@
         {
             "eventCode": "EC001",
             "eventScript": "unreal●え？またその話?/c#●同じ言葉を繰り返す利用者、どうする?",
-            "choosingString": "「はい」や「いいえ」だけで答える"
+            "choosingString": "話に耳を傾ける"
+        },
+        {
+            "eventCode": "EC003",
+            "eventScript": "●入浴前に介助対象者の体調をチェックしよう",
+            "choosingString": "呼吸や表情を確認する"
+        },
+        {
+            "eventCode": "EC004",
+            "eventScript": "●歩行介助の方法について考えてみよう",
+            "choosingString": "見守り"
         },
         {
             "eventCode": "EC002",
             "eventScript": "●これ食べるかい?/●食べ物を持ち込んだ利用者",
             "choosingString": "わあ~ いただきます!"
+        },
+        {
+            "eventCode": "EC001",
+            "eventScript": "unreal●え？またその話?/c#●同じ言葉を繰り返す利用者、どうする?",
+            "choosingString": "話に耳を傾ける"
         }
     ]
 }

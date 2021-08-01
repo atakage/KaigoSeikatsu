@@ -9,7 +9,7 @@
             "choiceAEffect": "SA-1:FA+1",
             "choiceBEffect": "FA+1",
             "choiceCEffect": "FA+1:FL+1",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC001",
@@ -31,6 +31,28 @@
             "choiceAEffect": "SA+1",
             "choiceBEffect": "FA+3",
             "choiceCEffect": "SA+1:FL+1",
+            "eventActive": false
+        },
+        {
+            "eventCode": "EC003",
+            "eventScript": "●入浴前に介助対象者の体調をチェックしよう",
+            "choiceA": "皮膚が乾燥していないか確認する:1",
+            "choiceB": "食欲はあるのか確認する:-1",
+            "choiceC": "呼吸や表情を確認する:0",
+            "choiceAEffect": "SA+2",
+            "choiceBEffect": "FL+1",
+            "choiceCEffect": "SA+1:FL+1",
+            "eventActive": false
+        },
+        {
+            "eventCode": "EC004",
+            "eventScript": "●歩行介助の方法について考えてみよう",
+            "choiceA": "見守り:1",
+            "choiceB": "後方押し:-1",
+            "choiceC": "応援歩行:-1",
+            "choiceAEffect": "SA+3:FA-1",
+            "choiceBEffect": "FA+3",
+            "choiceCEffect": "SA-1:FA+1",
             "eventActive": false
         }
     ]

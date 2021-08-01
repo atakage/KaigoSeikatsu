@@ -723,7 +723,6 @@ public class FacilityManager : MonoBehaviour
 
                 chatManager.ShowDialogueForMainEvent(scriptList, mainEventCode, eventItem.script);
 
-
                 playerData = playerSaveDataManager.LoadPlayerData();
                 // addingprogress
                 int addingProgress = mainEventManager.getAddingProgressFromMainEventJsonFile(mainEventCode);

@@ -1,2 +1,3 @@
-eventCode,requiredProgress,requiredSatisfaction,requiredScene,requiredCompletedEvent,addingProgress
-EV020,0,0,FacilityScene,,1
+eventCode,requiredProgress,requiredSatisfaction,requiredScene,requiredCompletedMainEvent,requiredCompletedJobEvent,addingProgress
+EV020,0,0,FacilityScene,,,1
+EV021,0,0,FacilityScene,EV020,EC000:EC001:EC002:EC003:EC004:,19
