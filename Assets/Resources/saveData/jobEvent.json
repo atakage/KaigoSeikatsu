@@ -54,6 +54,17 @@
             "choiceBEffect": "FA+3",
             "choiceCEffect": "SA-1:FA+1",
             "eventActive": false
+        },
+        {
+            "eventCode": "EC005",
+            "eventScript": "●食事介助の時気をつけることについて考えてみよう",
+            "choiceA": "高齢者は固い食べ物を好む:-1",
+            "choiceB": "食事環境を整える:0",
+            "choiceC": "排泄を済ませる:1",
+            "choiceAEffect": "SA-1:FL-2",
+            "choiceBEffect": "SA+1",
+            "choiceCEffect": "SA+3",
+            "eventActive": false
         }
     ]
 }

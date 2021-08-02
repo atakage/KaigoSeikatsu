@@ -15,7 +15,7 @@
             "requiredSatisfaction": 0,
             "requiredScene": "FacilityScene",
             "requiredCompletedMainEvent": "EV020",
-            "requiredCompletedJobEvent": "EC000:EC001:EC002:EC003:EC004:",
+            "requiredCompletedJobEvent": "EC000:EC001:EC002:EC003:EC004",
             "addingProgress": 19
         }
     ]

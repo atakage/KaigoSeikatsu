@@ -277,6 +277,9 @@ public class PlayerSaveDataManager : MonoBehaviour
 
     public void SavePlayerData(PlayerData playerData)
     {
+        // 2021.08.02 修正
+        // statusが0未満なら0でセーブする
+        playerData = CheckStatusValueZero(playerData);
        
         string strPlayerData = JsonConvert.SerializeObject(playerData);
         Debug.Log("SAVEDATA: " + strPlayerData.ToString());
@@ -315,6 +318,15 @@ public class PlayerSaveDataManager : MonoBehaviour
         {
 
         }
+        return playerData;
+    }
+
+    public PlayerData CheckStatusValueZero(PlayerData playerData)
+    {
+        if (playerData.fatigue < 0) playerData.fatigue = 0;
+        if (playerData.feeling < 0) playerData.feeling = 0;
+        if (playerData.satisfaction < 0) playerData.satisfaction = 0;
+
         return playerData;
     }
 }

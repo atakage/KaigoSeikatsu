@@ -68,7 +68,7 @@ public class MainEventManager : MonoBehaviour
             // メインイベントを発動させるために必要なcompletedMainEventを確認
             if (playerdata.eventCodeObject.completedMainEventArray != null && Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, mainEventModel.requiredCompletedMainEvent) < 0) continue;
             // メインイベントを発動させるために必要なcompletedJobEventの数を確認
-            if (playerdata.eventCodeObject.completedMainEventArray != null && playerdata.eventCodeObject.completedJobEventArray.Length > mainEventModel.requiredCompletedJobEvent.Split(':').Length) continue;
+            if (playerdata.eventCodeObject.completedJobEventArray != null && playerdata.eventCodeObject.completedJobEventArray.Length < mainEventModel.requiredCompletedJobEvent.Split(':').Length) continue;
             // プレイヤーデータと条件を比べる
             if (playerdata.progress < mainEventModel.requiredProgress) continue;
             if (playerdata.satisfaction < mainEventModel.requiredSatisfaction) continue;

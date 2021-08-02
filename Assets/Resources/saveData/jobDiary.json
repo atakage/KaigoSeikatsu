@@ -3,12 +3,17 @@
         {
             "eventCode": "EC001",
             "eventScript": "unreal●え？またその話?/c#●同じ言葉を繰り返す利用者、どうする?",
-            "choosingString": "話に耳を傾ける"
+            "choosingString": "うなずくばかり"
         },
         {
             "eventCode": "EC003",
             "eventScript": "●入浴前に介助対象者の体調をチェックしよう",
-            "choosingString": "呼吸や表情を確認する"
+            "choosingString": "皮膚が乾燥していないか確認する"
+        },
+        {
+            "eventCode": "EC002",
+            "eventScript": "●これ食べるかい?/●食べ物を持ち込んだ利用者",
+            "choosingString": "施設内への食べ物の持ち込みは禁止です!"
         },
         {
             "eventCode": "EC004",
@@ -16,14 +21,9 @@
             "choosingString": "見守り"
         },
         {
-            "eventCode": "EC002",
-            "eventScript": "●これ食べるかい?/●食べ物を持ち込んだ利用者",
-            "choosingString": "わあ~ いただきます!"
-        },
-        {
-            "eventCode": "EC001",
-            "eventScript": "unreal●え？またその話?/c#●同じ言葉を繰り返す利用者、どうする?",
-            "choosingString": "話に耳を傾ける"
+            "eventCode": "EC000",
+            "eventScript": "c#●ある一人の利用者から暴言が続けている。/unreal●どうしよう…",
+            "choosingString": "明日から録音しておこう"
         }
     ]
 }
