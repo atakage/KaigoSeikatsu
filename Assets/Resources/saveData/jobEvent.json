@@ -9,7 +9,7 @@
             "choiceAEffect": "SA-1:FA+1",
             "choiceBEffect": "FA+1",
             "choiceCEffect": "FA+1:FL+1",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC001",
@@ -20,7 +20,7 @@
             "choiceAEffect": "SA-1:FL+1",
             "choiceBEffect": "FL+2",
             "choiceCEffect": "FA+3",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC002",
@@ -53,7 +53,7 @@
             "choiceAEffect": "SA+3:FA-1",
             "choiceBEffect": "FA+3",
             "choiceCEffect": "SA-1:FA+1",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC005",
@@ -64,6 +64,39 @@
             "choiceAEffect": "SA-1:FL-2",
             "choiceBEffect": "SA+1",
             "choiceCEffect": "SA+3",
+            "eventActive": false
+        },
+        {
+            "eventCode": "EC006",
+            "eventScript": "●ある利用者が失禁して恥ずかしがっている/●声をかけてみよう",
+            "choiceA": "大丈夫ですか?:-1",
+            "choiceB": "気がつかなくてごめんなさい:1",
+            "choiceC": "あら、トイレに行きましょう:0",
+            "choiceAEffect": "SA-1:FL-1:FA-1",
+            "choiceBEffect": "SA+3",
+            "choiceCEffect": "SA+1",
+            "eventActive": false
+        },
+        {
+            "eventCode": "EC007",
+            "eventScript": "●~しちゃだめですよね!/●何回言ったらわかるんですか!!/●スタッフが大声で利用者を責めている/●どういうことだろう?",
+            "choiceA": "『どういうことですか?』声をかけてみる:0",
+            "choiceB": "言い方に気をつけてください:-1",
+            "choiceC": "通り過ぎる:1",
+            "choiceAEffect": "SA+1:FA+1",
+            "choiceBEffect": "FA+3",
+            "choiceCEffect": "FA-1:FL+2",
+            "eventActive": false
+        },
+        {
+            "eventCode": "EC008",
+            "eventScript": "●居室を掃除する前にチェックすべき点は?",
+            "choiceA": "利用者のベッドは触らないように注意する:-1",
+            "choiceB": "用品の位置を覚えておく:1",
+            "choiceC": "掃除後利用者に確認する:-1",
+            "choiceAEffect": "SA-2",
+            "choiceBEffect": "SA+1:FL+1",
+            "choiceCEffect": "FA+3:FL-2",
             "eventActive": false
         }
     ]

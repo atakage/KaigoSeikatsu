@@ -42,6 +42,9 @@ public class EventCodeManager : MonoBehaviour
         EventCodeDic.Add("EC003", "Job Event");
         EventCodeDic.Add("EC004", "Job Event");
         EventCodeDic.Add("EC005", "Job Event");
+        EventCodeDic.Add("EC006", "Job Event");
+        EventCodeDic.Add("EC007", "Job Event");
+        EventCodeDic.Add("EC008", "Job Event");
         EventCodeDic.Add("EV999", "None");
 
         return EventCodeDic[eventCode];

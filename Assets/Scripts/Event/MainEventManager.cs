@@ -63,12 +63,34 @@ public class MainEventManager : MonoBehaviour
         {
             Debug.Log("mainEventModel.eventCode: " + mainEventModel.eventCode);
 
+
+            if(playerdata.eventCodeObject.completedMainEventArray != null) Debug.Log("Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, mainEventModel.eventCode): " + Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, mainEventModel.eventCode));
+            if(playerdata.eventCodeObject.completedMainEventArray != null) Debug.Log("Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, mainEventModel.requiredCompletedMainEvent): " + Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, mainEventModel.requiredCompletedMainEvent));
+            if (playerdata.eventCodeObject.completedJobEventArray != null) Debug.Log("playerdata.eventCodeObject.completedJobEventArray.Length: " + playerdata.eventCodeObject.completedJobEventArray.Length);
+            if (playerdata.eventCodeObject.completedJobEventArray != null) Debug.Log("mainEventModel.requiredCompletedJobEvent.Split(':').Length: " + mainEventModel.requiredCompletedJobEvent.Split(':').Length);
             // すでにクリアしたイベントならcontinue
-            if (playerdata.eventCodeObject.completedMainEventArray != null && Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, mainEventModel.eventCode) >= 0) continue;
+            if (playerdata.eventCodeObject.completedMainEventArray != null && Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, mainEventModel.eventCode) >= 0)
+            {
+                Debug.Log("すでにクリアしたメインイベント");
+                continue;
+            }   
             // メインイベントを発動させるために必要なcompletedMainEventを確認
-            if (playerdata.eventCodeObject.completedMainEventArray != null && Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, mainEventModel.requiredCompletedMainEvent) < 0) continue;
+            if ((playerdata.eventCodeObject.completedMainEventArray == null && !string.IsNullOrEmpty(mainEventModel.requiredCompletedMainEvent))
+                ||
+                playerdata.eventCodeObject.completedMainEventArray != null && Array.IndexOf(playerdata.eventCodeObject.completedMainEventArray, mainEventModel.requiredCompletedMainEvent) < 0)
+            {
+                Debug.Log("メインイベントを発動させるために必要なcompletedMainEventが不足");
+                continue;
+            }
             // メインイベントを発動させるために必要なcompletedJobEventの数を確認
-            if (playerdata.eventCodeObject.completedJobEventArray != null && playerdata.eventCodeObject.completedJobEventArray.Length < mainEventModel.requiredCompletedJobEvent.Split(':').Length) continue;
+            if ((playerdata.eventCodeObject.completedJobEventArray == null && !string.IsNullOrEmpty(mainEventModel.requiredCompletedJobEvent))
+                ||
+                (playerdata.eventCodeObject.completedJobEventArray != null && playerdata.eventCodeObject.completedJobEventArray.Length < mainEventModel.requiredCompletedJobEvent.Split(':').Length))
+            {
+                Debug.Log("メインイベントを発動させるために必要なcompletedJobEventの数が不足");
+                continue;
+            }
+
             // プレイヤーデータと条件を比べる
             if (playerdata.progress < mainEventModel.requiredProgress) continue;
             if (playerdata.satisfaction < mainEventModel.requiredSatisfaction) continue;
@@ -76,6 +98,7 @@ public class MainEventManager : MonoBehaviour
 
             // メインイベント発動させるためのすべての条件を確認完了
             returnEventCode = mainEventModel.eventCode;
+            Debug.Log("発動するメインイベントコードに追加: " + returnEventCode);
             break;
         }
         Debug.Log("returnEventCode: " + returnEventCode);
