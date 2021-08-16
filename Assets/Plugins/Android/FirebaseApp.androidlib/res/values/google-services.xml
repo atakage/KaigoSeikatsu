@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id">
+  <string name="firebase_database_url" translatable="false">https://yaminokaigosi-default-rtdb.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">569210243242</string>
+  <string name="google_storage_bucket" translatable="false">yaminokaigosi.appspot.com</string>
+  <string name="project_id" translatable="false">yaminokaigosi</string>
+  <string name="google_api_key" translatable="false">AIzaSyA-i5SOYTCItBlzi0N1kyDumpgT6ClSyD4</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyA-i5SOYTCItBlzi0N1kyDumpgT6ClSyD4</string>
+  <string name="google_app_id" translatable="false">1:569210243242:android:10b40dab95458a356428d3</string>
+  <string name="default_web_client_id" translatable="false">569210243242-kq0f6dmu49pnd5a0f3rrmgbr471n5d0i.apps.googleusercontent.com</string>
+</resources>

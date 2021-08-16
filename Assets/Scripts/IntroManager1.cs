@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Firebase;
+using Firebase.Database;
 
 
 public class IntroManager1 : MonoBehaviour
@@ -14,6 +16,7 @@ public class IntroManager1 : MonoBehaviour
     public PlayerData playerData;
     public GameObject canvasObj;
     public IntroSharingObjectManager IntroSharingObjectManager;
+    public DatabaseReference databaseReference;
     private void Start()
     {
         playerSaveDataManager = new PlayerSaveDataManager();
@@ -21,44 +24,83 @@ public class IntroManager1 : MonoBehaviour
         sceneTransitionManager = new SceneTransitionManager();
 
         IntroSharingObjectManager = GameObject.Find("IntroSharingObjectManager").GetComponent("IntroSharingObjectManager") as IntroSharingObjectManager;
+        IntroSharingObjectManager.checkNameButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameButton);
 
 
-        /*
-        // 外部componentからスクリプトを読み込む
-        chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
-        canvasObj = GameObject.Find("Canvas");
-
-        // イベントリストファイルを読み込む(.json)
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
-        // イベントを探す
-        EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, "EV000");
-        // イベントスクリプトを配列に入れる
-        List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
-        chatManager.ShowDialogue(scriptList, "EV000", eventItem.script);
-        */
     }
 
-
-    private void Update()
+    public void InsertUpdateToDB()
     {
-        /*
-        if (canvasObj.transform.Find("fadeOutPersistEventCheck") != null
-            && canvasObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y"))
+        try
         {
-            
-            if (canvasObj.transform.Find("endedEventCode") != null
-                && canvasObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV000"))
-            {
-                Debug.Log("goToAtHome");
-                canvasObj.transform.Find("fadeOutEventCheck").GetComponent<Text>().text = "";
-                canvasObj.transform.Find("endedEventCode").GetComponent<Text>().text = "";
-                playerData = playerSaveDataManager.LoadPlayerData();
-                playerData.currentScene = "AtHomeScene";
-                playerSaveDataManager.SavePlayerData(playerData);
-                sceneTransitionManager.LoadTo("AtHomeScene");
-            }
-            
+            PlayerDataDBModel playerDataDBModel = new PlayerDataDBModel();
+            playerDataDBModel.name = "FFF";
+            playerDataDBModel.ending = "endingB";
+
+            databaseReference.Child(playerDataDBModel.name).SetRawJsonValueAsync(JsonUtility.ToJson(playerDataDBModel))
+                .ContinueWith(task => {
+                    if (task.IsFaulted)
+                    {
+                        Debug.Log("insert update fail: " + task.Exception);
+                    }
+                    else
+                    {
+                        Debug.Log("insert update success");
+                    }
+                });
         }
-        */
+        catch
+        {
+
+        }
+    }
+
+    public void FireBaseConnection()
+    {
+        try
+        {
+            // FirebaseDatabase.DefaultInstance.GetReference("player_data"): DB名にaccess
+            databaseReference = FirebaseDatabase.DefaultInstance.GetReference("player_data");
+        }
+        catch
+        {
+
+        }
+    }
+
+    public void FindDataToDB()
+    {
+        try
+        {
+            PlayerDataDBModel playerDataDBModel = new PlayerDataDBModel();
+            playerDataDBModel.name = "FFF";
+            playerDataDBModel.ending = "endingB";
+
+            databaseReference.Child(playerDataDBModel.name).ValueChanged += HandleValueChanged;
+        }
+        catch
+        {
+
+        }
+    }
+
+    public void HandleValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        if (args.DatabaseError != null)
+        {
+            Debug.LogError(args.DatabaseError.Message);
+            return;
+        }
+        Debug.Log("args.Snapshot.Key: " + args.Snapshot.Key);
+        // DBにデータががないならempty
+        Debug.Log("args.Snapshot.GetRawJsonValue(): " + args.Snapshot.GetRawJsonValue());
+    }
+
+    public void ClickCheckNameButton()
+    {
+        FireBaseConnection();
+        FindDataToDB();
+        //InsertUpdateToDB();
+        
     }
 }
