@@ -23,6 +23,7 @@ public class PlayerData
     public Flag flag = new Flag();
     public float playTime;
     public string ending;
+    public bool localMode;
 }
 
 [System.Serializable]

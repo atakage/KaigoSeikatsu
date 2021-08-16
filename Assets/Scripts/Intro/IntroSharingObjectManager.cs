@@ -8,6 +8,8 @@ public class IntroSharingObjectManager : MonoBehaviour
     public GameObject testPaperBoxGameObj;
     public GameObject playerInfoBoxGameObj;
     public GameObject nameGameObj;
+    public GameObject nameTextGameObj;
+    public GameObject checkNameButtonGameObj;
 
     // Start is called before the first frame update
     // Awake() -> Start()
@@ -32,5 +34,7 @@ public class IntroSharingObjectManager : MonoBehaviour
         this.testPaperBoxGameObj = this.canvasGameObj.transform.Find("TestPaperBox").gameObject;
         this.playerInfoBoxGameObj = this.testPaperBoxGameObj.transform.Find("playerInfoBox").gameObject;
         this.nameGameObj = this.playerInfoBoxGameObj.transform.Find("name").gameObject;
+        this.nameTextGameObj = this.nameGameObj.transform.Find("text").gameObject;
+        this.checkNameButtonGameObj = this.testPaperBoxGameObj.transform.Find("checkNameButton").gameObject;
     }
 }
