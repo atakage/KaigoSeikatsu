@@ -45,6 +45,22 @@ public class EventCodeManager : MonoBehaviour
         EventCodeDic.Add("EC006", "Job Event");
         EventCodeDic.Add("EC007", "Job Event");
         EventCodeDic.Add("EC008", "Job Event");
+        EventCodeDic.Add("EC009", "Job Event");
+        EventCodeDic.Add("EC010", "Job Event");
+        EventCodeDic.Add("EC011", "Job Event");
+        EventCodeDic.Add("EC012", "Job Event");
+        EventCodeDic.Add("EC013", "Job Event");
+        EventCodeDic.Add("EC014", "Job Event");
+        EventCodeDic.Add("EC015", "Job Event");
+        EventCodeDic.Add("EC016", "Job Event");
+        EventCodeDic.Add("EC017", "Job Event");
+        EventCodeDic.Add("EC018", "Job Event");
+        EventCodeDic.Add("EC019", "Job Event");
+        EventCodeDic.Add("EV022", "Main Fade Out");
+        EventCodeDic.Add("EV023", "Main Fade Out");
+        EventCodeDic.Add("EV024", "Main Fade Out");
+        EventCodeDic.Add("EV025", "Change Scene Fade Out"); // Change Scene Fade Out: fade outあとシーンを変える
+        EventCodeDic.Add("EV026", "Change Scene Fade Out");
         EventCodeDic.Add("EV999", "None");
 
         return EventCodeDic[eventCode];

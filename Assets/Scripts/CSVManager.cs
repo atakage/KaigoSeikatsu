@@ -68,6 +68,7 @@ public class CSVManager : MonoBehaviour
 
     public void ReadJobEventInitFileAndCreateJson()
     {
+        Debug.Log("call ReadJobEventInitFileAndCreateJson()");
         bool checkJsonSW;
         try
         {
@@ -84,6 +85,7 @@ public class CSVManager : MonoBehaviour
         // jsonファイルがないと
         if (!checkJsonSW)
         {
+            Debug.Log("craete jobEvent.json");
             // JobEventInit.txtからデータを読み込む
             Dictionary<string, Dictionary<string, object>> jobEventListDic = GetTxtItemList("JobEvent");
             // JobEvent.jsonを作る

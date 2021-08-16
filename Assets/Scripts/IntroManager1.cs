@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class IntroManager1 : MonoBehaviour
 {
     public ChatManager chatManager;
@@ -12,13 +13,17 @@ public class IntroManager1 : MonoBehaviour
     public PlayerSaveDataManager playerSaveDataManager;
     public PlayerData playerData;
     public GameObject canvasObj;
+    public IntroSharingObjectManager IntroSharingObjectManager;
     private void Start()
     {
         playerSaveDataManager = new PlayerSaveDataManager();
         eventManager = new EventManager();
         sceneTransitionManager = new SceneTransitionManager();
-        
 
+        IntroSharingObjectManager = GameObject.Find("IntroSharingObjectManager").GetComponent("IntroSharingObjectManager") as IntroSharingObjectManager;
+
+
+        /*
         // 外部componentからスクリプトを読み込む
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
         canvasObj = GameObject.Find("Canvas");
@@ -30,12 +35,13 @@ public class IntroManager1 : MonoBehaviour
         // イベントスクリプトを配列に入れる
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         chatManager.ShowDialogue(scriptList, "EV000", eventItem.script);
+        */
     }
 
 
     private void Update()
     {
-        
+        /*
         if (canvasObj.transform.Find("fadeOutPersistEventCheck") != null
             && canvasObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y"))
         {
@@ -53,6 +59,6 @@ public class IntroManager1 : MonoBehaviour
             }
             
         }
-        
+        */
     }
 }

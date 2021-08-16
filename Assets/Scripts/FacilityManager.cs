@@ -20,6 +20,7 @@ public class FacilityManager : MonoBehaviour
     public Button nextButton;
     public PlayerData playerData = null;
     public GameObject canvasObj;
+    public GameObject FadeRefObj;
     public string[] morningrequiredEvent = null;
     //public string[] careQuizEvent = null;
     public string[] lunchEvent = null;
@@ -31,6 +32,7 @@ public class FacilityManager : MonoBehaviour
     public bool jobEventSearchSkip;
     public bool jobEventDayCompletedBool;
     public string loadValueSW;
+    
 
     private string defaultCharFileName = "toyota";
     // Start is called before the first frame update
@@ -52,6 +54,7 @@ public class FacilityManager : MonoBehaviour
         if (GameObject.Find("SceneChangeManager") != null) GameObject.Find("SceneChangeManager").transform.Find("SceneChangeCanvas").transform.Find("destinationFrom-toItemCheckScene").GetComponent<Text>().text = SceneManager.GetActiveScene().name;
 
         canvasObj = GameObject.Find("Canvas");
+        FadeRefObj = GameObject.Find("FadeInOutRefObject");
         nextButton = canvasObj.transform.Find("nextButton").GetComponent<Button>();
         nextButton.onClick.AddListener(ClickNextButton);
         menuButton = canvasObj.transform.Find("menuButton").GetComponent<Button>();
@@ -221,6 +224,15 @@ public class FacilityManager : MonoBehaviour
                 playerData.currentScene = "ParkScene";
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("ParkScene");
+            }
+            // game end
+            else if (FadeRefObj.transform.Find("ChangeSceneName") != null
+                  && FadeRefObj.transform.Find("ChangeSceneFadeInOutManagerSW") != null
+                  && FadeRefObj.transform.Find("ChangeSceneFadeInOutManagerSW").GetComponent<Text>().text.Equals("Y"))
+            {
+                // ReadyForEndingScene移動
+                string changeSceneName = FadeRefObj.transform.Find("ChangeSceneName").GetComponent<Text>().text;
+                sceneTransitionManager.LoadTo(changeSceneName);
             }
 
             // UI初期化---------------------------------------------------------------------------------------------------------------

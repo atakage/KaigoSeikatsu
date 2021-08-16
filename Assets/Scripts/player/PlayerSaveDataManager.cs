@@ -10,6 +10,7 @@ using System;
 [System.Serializable]
 public class PlayerData
 {
+    public string name;
     public string currentScene;
     public string money;
     public string time;
@@ -21,6 +22,7 @@ public class PlayerData
     public Tip tip = new Tip();
     public Flag flag = new Flag();
     public float playTime;
+    public string ending;
 }
 
 [System.Serializable]

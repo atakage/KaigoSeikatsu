@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/ParkScene.unity
     guid: 91a6edb2204c6fd4c98de73ab7fc7acb
   - enabled: 1
+    path: Assets/Scenes/ReadyForEndingScene.unity
+    guid: 8b2c65d3124ece04a84061bed3dc0f9f
+  - enabled: 1
     path: Assets/Scenes/ConvenienceScene.unity
     guid: 6a31436316fd26d4d8989592f4fc5c41
   - enabled: 1

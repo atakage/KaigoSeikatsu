@@ -1,34 +1,14 @@
 {
     "Items": [
         {
-            "eventCode": "EC007",
-            "eventScript": "●~しちゃだめですよね!/●何回言ったらわかるんですか!!/●スタッフが大声で利用者を責めている/●どういうことだろう?",
-            "choosingString": "言い方に気をつけてください"
+            "eventCode": "EC019",
+            "eventScript": "●更衣介助の際に気をつけることについて考えてみよう",
+            "choosingString": "皮膚常態を観察する"
         },
         {
-            "eventCode": "EC005",
-            "eventScript": "●食事介助の時気をつけることについて考えてみよう",
-            "choosingString": "高齢者は固い食べ物を好む"
-        },
-        {
-            "eventCode": "EC006",
-            "eventScript": "●ある利用者が失禁して恥ずかしがっている/●声をかけてみよう",
-            "choosingString": "大丈夫ですか?"
-        },
-        {
-            "eventCode": "EC003",
-            "eventScript": "●入浴前に介助対象者の体調をチェックしよう",
-            "choosingString": "皮膚が乾燥していないか確認する"
-        },
-        {
-            "eventCode": "EC008",
-            "eventScript": "●居室を掃除する前にチェックすべき点は?",
-            "choosingString": "利用者のベッドは触らないように注意する"
-        },
-        {
-            "eventCode": "EC002",
-            "eventScript": "●これ食べるかい?/●食べ物を持ち込んだ利用者",
-            "choosingString": "申し訳ありません、それ苦手なんですよね"
+            "eventCode": "EC014",
+            "eventScript": "●介護職員ができる医療行為について考えてみよう",
+            "choosingString": "やけどの応急処置"
         }
     ]
 }

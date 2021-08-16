@@ -17,6 +17,51 @@
             "requiredCompletedMainEvent": "EV020",
             "requiredCompletedJobEvent": "EC000:EC001:EC002:EC003:EC004",
             "addingProgress": 19
+        },
+        {
+            "eventCode": "EV022",
+            "requiredProgress": 0,
+            "requiredSatisfaction": 0,
+            "requiredScene": "FacilityScene",
+            "requiredCompletedMainEvent": "EV021",
+            "requiredCompletedJobEvent": "EC000:EC001:EC002:EC003:EC004:EC005:EC006:EC007:EC008:EC009",
+            "addingProgress": 19
+        },
+        {
+            "eventCode": "EV023",
+            "requiredProgress": 0,
+            "requiredSatisfaction": 0,
+            "requiredScene": "FacilityScene",
+            "requiredCompletedMainEvent": "EV022",
+            "requiredCompletedJobEvent": "EC000:EC001:EC002:EC003:EC004:EC005:EC006:EC007:EC008:EC009:EC010:EC011:EC012:EC013:EC014",
+            "addingProgress": 19
+        },
+        {
+            "eventCode": "EV024",
+            "requiredProgress": 0,
+            "requiredSatisfaction": 0,
+            "requiredScene": "FacilityScene",
+            "requiredCompletedMainEvent": "EV023",
+            "requiredCompletedJobEvent": "EC000:EC001:EC002:EC003:EC004:EC005:EC006:EC007:EC008:EC009:EC010:EC011:EC012:EC013:EC014:EC015:EC016:EC017:EC018:EC019",
+            "addingProgress": 10
+        },
+        {
+            "eventCode": "EV025",
+            "requiredProgress": 0,
+            "requiredSatisfaction": 40,
+            "requiredScene": "FacilityScene",
+            "requiredCompletedMainEvent": "EV024",
+            "requiredCompletedJobEvent": "",
+            "addingProgress": 1
+        },
+        {
+            "eventCode": "EV026",
+            "requiredProgress": 0,
+            "requiredSatisfaction": 0,
+            "requiredScene": "FacilityScene",
+            "requiredCompletedMainEvent": "EV024",
+            "requiredCompletedJobEvent": "",
+            "addingProgress": 1
         }
     ]
 }

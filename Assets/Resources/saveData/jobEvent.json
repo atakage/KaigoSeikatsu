@@ -31,7 +31,7 @@
             "choiceAEffect": "SA+1",
             "choiceBEffect": "FA+3",
             "choiceCEffect": "SA+1:FL+1",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC003",
@@ -42,7 +42,7 @@
             "choiceAEffect": "SA+2",
             "choiceBEffect": "FL+1",
             "choiceCEffect": "SA+1:FL+1",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC004",
@@ -64,7 +64,7 @@
             "choiceAEffect": "SA-1:FL-2",
             "choiceBEffect": "SA+1",
             "choiceCEffect": "SA+3",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC006",
@@ -75,7 +75,7 @@
             "choiceAEffect": "SA-1:FL-1:FA-1",
             "choiceBEffect": "SA+3",
             "choiceCEffect": "SA+1",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC007",
@@ -86,17 +86,138 @@
             "choiceAEffect": "SA+1:FA+1",
             "choiceBEffect": "FA+3",
             "choiceCEffect": "FA-1:FL+2",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC008",
-            "eventScript": "●居室を掃除する前にチェックすべき点は?",
+            "eventScript": "●居室を掃除時にチェックすべき点は?",
             "choiceA": "利用者のベッドは触らないように注意する:-1",
             "choiceB": "用品の位置を覚えておく:1",
             "choiceC": "掃除後利用者に確認する:-1",
             "choiceAEffect": "SA-2",
             "choiceBEffect": "SA+1:FL+1",
             "choiceCEffect": "FA+3:FL-2",
+            "eventActive": true
+        },
+        {
+            "eventCode": "EC009",
+            "eventScript": "●介護記録を作成しよう",
+            "choiceA": "○○さんが不満そうな顔をした:-1",
+            "choiceB": "○○さんはよく笑うのが特徴だ:-1",
+            "choiceC": "○○さんがスタッフに向かって『お前は、バカか?』と言った:1",
+            "choiceAEffect": "SA-1:FL-1",
+            "choiceBEffect": "SA-1",
+            "choiceCEffect": "SA+3:FL+1:FA-3",
+            "eventActive": true
+        },
+        {
+            "eventCode": "EC010",
+            "eventScript": "●口腔ケアの注意点は?",
+            "choiceA": "歯ブラシでケアできない場合はスポンジブラシを使用する:1",
+            "choiceB": "歯の数を数える:0",
+            "choiceC": "利用者の後ろに立って介助する:-1",
+            "choiceAEffect": "SA+2",
+            "choiceBEffect": "SA+1",
+            "choiceCEffect": "FA-3",
+            "eventActive": true
+        },
+        {
+            "eventCode": "EC011",
+            "eventScript": "●利用者との会話の話題について考えてみよう",
+            "choiceA": "家族関係:0",
+            "choiceB": "政治:-1",
+            "choiceC": "出身地:1",
+            "choiceAEffect": "SA+1:FL+1",
+            "choiceBEffect": "FA+3:FL-3",
+            "choiceCEffect": "SA+1:FL+3",
+            "eventActive": true
+        },
+        {
+            "eventCode": "EC012",
+            "eventScript": "●介護職員の必需品について考えてみよう",
+            "choiceA": "ビニール袋:1",
+            "choiceB": "おむつ:0",
+            "choiceC": "おやつ:-1",
+            "choiceAEffect": "SA+3:FA-1",
+            "choiceBEffect": "SA+1",
+            "choiceCEffect": "SA-1",
+            "eventActive": true
+        },
+        {
+            "eventCode": "EC013",
+            "eventScript": "●おやつの提供方法について考えてみよう",
+            "choiceA": "市販品ではなく手作りで提供する:0",
+            "choiceB": " 食欲をそそるために食事前提供する:-1",
+            "choiceC": "口へ運びやすく盛り付ける:1",
+            "choiceAEffect": "SA+1:FL+2",
+            "choiceBEffect": "SA-3:FA+2",
+            "choiceCEffect": "SA+2:FL+2",
+            "eventActive": true
+        },
+        {
+            "eventCode": "EC014",
+            "eventScript": "●介護職員ができる医療行為について考えてみよう",
+            "choiceA": "やけどの応急処置:1",
+            "choiceB": "爪切り:0",
+            "choiceC": "耳垢取り:0",
+            "choiceAEffect": "SA+2",
+            "choiceBEffect": "FA-1",
+            "choiceCEffect": "FA-1",
+            "eventActive": false
+        },
+        {
+            "eventCode": "EC015",
+            "eventScript": "●掃除の途中利用者の貴重品をなくしてしまった/●クレームを言う利用者.../●どう対応するか?",
+            "choiceA": "適度にうなずきを入れる:1",
+            "choiceB": "申し訳ございませんでした:0",
+            "choiceC": "何も言わず話を最後まで聞く:0",
+            "choiceAEffect": "SA+1:FA+1:FL+3",
+            "choiceBEffect": "SA+1",
+            "choiceCEffect": "FL+1",
+            "eventActive": true
+        },
+        {
+            "eventCode": "EC016",
+            "eventScript": "●高齢者に運動を指導する時に注意する点を考えてみよう",
+            "choiceA": "高齢者のやる気を引き出す:-1",
+            "choiceB": "水分不足に注意する:0",
+            "choiceC": "休憩を取りながら行う:1",
+            "choiceAEffect": "FA+3:FL-3",
+            "choiceBEffect": "SA+1:FA-1",
+            "choiceCEffect": "SA+3:FA-2",
+            "eventActive": true
+        },
+        {
+            "eventCode": "EC017",
+            "eventScript": "●利用者同士のトラブルが起こった/●どうしよう...",
+            "choiceA": "巻き込まれないようにその場を立ち去る:-1",
+            "choiceB": "他のスタッフを呼ぶ:1",
+            "choiceC": "トラブルの原因なった利用者を一旦退去させる:0",
+            "choiceAEffect": "SA-3:FL-3",
+            "choiceBEffect": "SA+2:FA-1",
+            "choiceCEffect": "FL+1",
+            "eventActive": true
+        },
+        {
+            "eventCode": "EC018",
+            "eventScript": "●移乗介助で気をつけるべきことについて考えてみよう",
+            "choiceA": "声をかけながら意思確認する:1",
+            "choiceB": "車椅子のシートはベッドより高くなるように調節する:-1",
+            "choiceC": "腕力で持ち上げる:-1",
+            "choiceAEffect": "SA+3:FL+1",
+            "choiceBEffect": "SA-2",
+            "choiceCEffect": "SA-1:FA+3",
+            "eventActive": true
+        },
+        {
+            "eventCode": "EC019",
+            "eventScript": "●更衣介助の際に気をつけることについて考えてみよう",
+            "choiceA": "指先に力を入れて介助する:-1",
+            "choiceB": "患うところから脱ぎ、健康な部分から着る:-1",
+            "choiceC": "皮膚常態を観察する:1",
+            "choiceAEffect": "FA+3",
+            "choiceBEffect": "SA-3",
+            "choiceCEffect": "SA+1:FL+1",
             "eventActive": false
         }
     ]

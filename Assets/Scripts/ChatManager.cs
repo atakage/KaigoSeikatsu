@@ -160,6 +160,15 @@ public class ChatManager : MonoBehaviour
                             jobEventCompleteSW.AddComponent<Text>().text = "Y";
                             jobEventCompleteSW.transform.SetParent(canvasGameObj.transform);
                         }
+                                    // Change Scene Fade Out: fade outあとシーンを変える
+                        else if (afterEvent.Equals("Change Scene Fade Out"))
+                        {
+                                          //  プレイヤーデータを更新
+                            playerSaveDataManager.SavePlayerData(SetPlayerDataForEnding());
+                                          // ゲームオブジェクトに変えるシーン名を格納
+                            SetChangeSceneNameToGameObject("ReadyForEndingScene");
+                            executeChangeSceneFadeOut();
+                        }
                         // イベントコードがなきスクリプトだけを読み込んだとき
                     }
                     else if (eventCode == null)
@@ -179,7 +188,7 @@ public class ChatManager : MonoBehaviour
                 {
                     string afterEvent = eventCodeManager.FindAfterEventByEventCode(this.eventCode);
                     // メインイベントなら専用Coroutineを続ける
-                    if (afterEvent.Equals("Main Fade Out"))
+                    if (afterEvent.Equals("Main Fade Out") || afterEvent.Equals("Change Scene Fade Out"))
                     {
                         ++clickCount;
                         StartCoroutine(StartMainEventDialogueCoroutine());
@@ -196,6 +205,37 @@ public class ChatManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public PlayerData SetPlayerDataForEnding()
+    {
+        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+            // プレイヤーのsatisfactionが40未満なら
+        if(playerData.satisfaction < 40)
+        {
+            // 介護職員を○める
+            playerData.ending = "endingA";
+        }
+            // プレイヤーのsatisfactionが40以上なら
+        else
+        {
+            // 更新提案を受ける
+            playerData.ending = "endingB";
+        }
+        playerData.currentScene = "ReadyForEndingScene";
+        return playerData;
+    }
+
+    public void SetChangeSceneNameToGameObject(string sceneName)
+    {
+            //　既存オブジェクトを削除
+        if (GameObject.Find("FadeInOutRefObject").transform.Find("ChangeSceneName") != null) Destroy(GameObject.Find("FadeInOutRefObject").transform.Find("ChangeSceneName").gameObject);
+            // 変えるシーン名を格納させるオブジェクトを作る
+        GameObject ChangeSceneName = new GameObject("ChangeSceneName");
+        ChangeSceneName.SetActive(false);
+        ChangeSceneName.AddComponent<Text>().text = sceneName;
+        ChangeSceneName.transform.SetParent(GameObject.Find("FadeInOutRefObject").transform);
+
     }
 
     public void CreateEndEventCodeGameObj()
@@ -391,6 +431,13 @@ public class ChatManager : MonoBehaviour
         GameObject FadeInOutManager = new GameObject("FadeInOutManager");
         GameObject fadeObj = GameObject.Find("FadeInOutManager");
         fadeObj.AddComponent<SimpleFadeInOutManager>();
+    }
+
+    public void executeChangeSceneFadeOut()
+    {
+        GameObject ChangeSceneFadeInOutManager = new GameObject("ChangeSceneFadeInOutManager");
+        GameObject fadeObj = GameObject.Find("FadeInOutRefObject").transform.Find("ChangeSceneFadeInOutManager").gameObject;
+        fadeObj.AddComponent<ChangeSceneFadeInOutManager>();
     }
 
     public void executeFadeOut()
