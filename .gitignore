@@ -73,5 +73,7 @@ InitTestScene*.unity
 
 # End of https://www.toptal.com/developers/gitignore/api/unity
 
-# Firebase 120MB
-/[Aa]ssets/[Ff]irebase
+# Firebase
+/[Aa]ssets/[Ff]irebase/
+/[Aa]ssets/google-services.json
+/[Aa]ssets/google-services.meta

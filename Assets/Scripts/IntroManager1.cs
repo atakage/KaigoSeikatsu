@@ -16,7 +16,8 @@ public class IntroManager1 : MonoBehaviour
     public PlayerData playerData;
     public GameObject canvasObj;
     public IntroSharingObjectManager IntroSharingObjectManager;
-    public DatabaseReference databaseReference;
+    public FirebaseManager FirebaseManager;
+    //public DatabaseReference databaseReference;
     private void Start()
     {
         playerSaveDataManager = new PlayerSaveDataManager();
@@ -26,9 +27,10 @@ public class IntroManager1 : MonoBehaviour
         IntroSharingObjectManager = GameObject.Find("IntroSharingObjectManager").GetComponent("IntroSharingObjectManager") as IntroSharingObjectManager;
         IntroSharingObjectManager.checkNameButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameButton);
 
+        FirebaseManager = GameObject.Find("FirebaseManager").GetComponent("FirebaseManager") as FirebaseManager;
 
     }
-
+    /*
     public void InsertUpdateToDB()
     {
         try
@@ -95,12 +97,18 @@ public class IntroManager1 : MonoBehaviour
         // DBにデータががないならempty
         Debug.Log("args.Snapshot.GetRawJsonValue(): " + args.Snapshot.GetRawJsonValue());
     }
-
+    */
     public void ClickCheckNameButton()
     {
+        /*
         FireBaseConnection();
         FindDataToDB();
         //InsertUpdateToDB();
-        
+        */
+        FirebaseManager.FireBaseConnection();
+        PlayerDataDBModel playerDataDBModel = new PlayerDataDBModel();
+        playerDataDBModel.name = "BBB";
+        playerDataDBModel.ending = "endingB";
+        FirebaseManager.FindDataToDB(playerDataDBModel);
     }
 }
