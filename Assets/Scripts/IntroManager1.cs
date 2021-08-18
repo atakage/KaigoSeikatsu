@@ -14,9 +14,11 @@ public class IntroManager1 : MonoBehaviour
     public EventManager eventManager;
     public PlayerSaveDataManager playerSaveDataManager;
     public PlayerData playerData;
-    public GameObject canvasObj;
     public IntroSharingObjectManager IntroSharingObjectManager;
     public FirebaseManager FirebaseManager;
+    public bool inputFieldFocusBool;
+    private TouchScreenKeyboard touchScreenKeyboard;
+
     //public DatabaseReference databaseReference;
     private void Start()
     {
@@ -29,86 +31,46 @@ public class IntroManager1 : MonoBehaviour
 
         FirebaseManager = GameObject.Find("FirebaseManager").GetComponent("FirebaseManager") as FirebaseManager;
 
+
     }
-    /*
-    public void InsertUpdateToDB()
+
+    private void Update()
     {
-        try
-        {
-            PlayerDataDBModel playerDataDBModel = new PlayerDataDBModel();
-            playerDataDBModel.name = "FFF";
-            playerDataDBModel.ending = "endingB";
-
-            databaseReference.Child(playerDataDBModel.name).SetRawJsonValueAsync(JsonUtility.ToJson(playerDataDBModel))
-                .ContinueWith(task => {
-                    if (task.IsFaulted)
-                    {
-                        Debug.Log("insert update fail: " + task.Exception);
-                    }
-                    else
-                    {
-                        Debug.Log("insert update success");
-                    }
-                });
-        }
-        catch
-        {
-
-        }
+        // TouchScreenkeyBoard
     }
 
-    public void FireBaseConnection()
+    public void ActivingTestPaperBox(bool sw)
     {
-        try
-        {
-            // FirebaseDatabase.DefaultInstance.GetReference("player_data"): DB名にaccess
-            databaseReference = FirebaseDatabase.DefaultInstance.GetReference("player_data");
-        }
-        catch
-        {
-
-        }
+        IntroSharingObjectManager.testPaperBoxGameObj.gameObject.SetActive(sw);
     }
 
-    public void FindDataToDB()
+    public void ActivingCheckNameAlertBox(bool sw)
     {
-        try
-        {
-            PlayerDataDBModel playerDataDBModel = new PlayerDataDBModel();
-            playerDataDBModel.name = "FFF";
-            playerDataDBModel.ending = "endingB";
-
-            databaseReference.Child(playerDataDBModel.name).ValueChanged += HandleValueChanged;
-        }
-        catch
-        {
-
-        }
+        IntroSharingObjectManager.checkNameAlertBoxGameObj.gameObject.SetActive(sw);
     }
 
-    public void HandleValueChanged(object sender, ValueChangedEventArgs args)
-    {
-        if (args.DatabaseError != null)
-        {
-            Debug.LogError(args.DatabaseError.Message);
-            return;
-        }
-        Debug.Log("args.Snapshot.Key: " + args.Snapshot.Key);
-        // DBにデータががないならempty
-        Debug.Log("args.Snapshot.GetRawJsonValue(): " + args.Snapshot.GetRawJsonValue());
-    }
-    */
     public void ClickCheckNameButton()
     {
+
+        // input fieldにネームが入力されなかったら
+        if (string.IsNullOrEmpty(IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text))
+        {
+            Debug.Log("null");
+            // default name 'ゆかり'
+            IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text = "ゆかり";
+        }
+
+        IntroSharingObjectManager.checkNameAlertBoxTextGameObj.GetComponent<Text>().text =
+          "名前は" + "<b>" + IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text + "</b>" + "ですか?";
+        ActivingTestPaperBox(false);
+        ActivingCheckNameAlertBox(true);
+
         /*
-        FireBaseConnection();
-        FindDataToDB();
-        //InsertUpdateToDB();
-        */
         FirebaseManager.FireBaseConnection();
         PlayerDataDBModel playerDataDBModel = new PlayerDataDBModel();
         playerDataDBModel.name = "BBB";
         playerDataDBModel.ending = "endingB";
         FirebaseManager.FindDataToDB(playerDataDBModel);
+        */
     }
 }

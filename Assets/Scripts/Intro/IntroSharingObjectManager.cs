@@ -6,8 +6,11 @@ public class IntroSharingObjectManager : MonoBehaviour
 {
     public GameObject canvasGameObj;
     public GameObject testPaperBoxGameObj;
+    public GameObject checkNameAlertBoxGameObj;
+    public GameObject checkNameAlertBoxTextGameObj;
     public GameObject playerInfoBoxGameObj;
     public GameObject nameGameObj;
+    public GameObject nameValueGameObj;
     public GameObject nameTextGameObj;
     public GameObject checkNameButtonGameObj;
 
@@ -32,8 +35,11 @@ public class IntroSharingObjectManager : MonoBehaviour
     {
         this.canvasGameObj = GameObject.Find("Canvas");
         this.testPaperBoxGameObj = this.canvasGameObj.transform.Find("TestPaperBox").gameObject;
+        this.checkNameAlertBoxGameObj = this.canvasGameObj.transform.Find("checkNameAlertBox").gameObject;
+        this.checkNameAlertBoxTextGameObj = this.checkNameAlertBoxGameObj.transform.Find("Text").gameObject;
         this.playerInfoBoxGameObj = this.testPaperBoxGameObj.transform.Find("playerInfoBox").gameObject;
         this.nameGameObj = this.playerInfoBoxGameObj.transform.Find("name").gameObject;
+        this.nameValueGameObj = this.nameGameObj.transform.Find("value").gameObject;
         this.nameTextGameObj = this.nameGameObj.transform.Find("text").gameObject;
         this.checkNameButtonGameObj = this.testPaperBoxGameObj.transform.Find("checkNameButton").gameObject;
     }
