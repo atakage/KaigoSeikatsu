@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Firebase;
 using Firebase.Database;
@@ -7,6 +9,8 @@ using Firebase.Database;
 public class FirebaseManager : MonoBehaviour
 {
     public DatabaseReference databaseReference;
+    public Dictionary<bool, string> findDataDBResultDic; // key: DB通信結果
+
     public void FireBaseConnection()
     {
         try
@@ -20,28 +24,41 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    public void FindDataToDB(PlayerDataDBModel playerDataDBModel)
+    // awaitが使われているならmethodにasyncをかけてreturnTypeをTaskに
+    public async Task<string> FindDataToDB(PlayerDataDBModel playerDataDBModel)
     {
-        try
-        {
-            databaseReference.Child(playerDataDBModel.name).ValueChanged += HandleValueChanged;
-        }
-        catch
-        {
+        string returnValue = "サーバーとの通信に失敗しました";
+        //databaseReference.Child(playerDataDBModel.name).ValueChanged += HandleValueChanged;
 
-        }
-    }
+        
+         await databaseReference.Child(playerDataDBModel.name).GetValueAsync()
+            .ContinueWith( task =>
+            {
+                if (task.IsFaulted)
+                {
+                    //findDataDBResultDic.Add(false, "サーバーとの通信に失敗しました");
+                    Debug.Log("task.Exception.Message" + task.Exception.Message);
+                    returnValue = "サーバーとの通信に失敗しました";
+                }
+                else
+                {
+                    DataSnapshot dataSnapshot = task.Result;
+                    // DBにない名前データなら
+                    if (string.IsNullOrEmpty(dataSnapshot.GetRawJsonValue()))
+                    {
+                        Debug.Log("non data");
+                        returnValue = null;
+                    }
+                    // すでにDBにある名前データなら
+                    else
+                    {
+                        Debug.Log("data find");
+                        returnValue = "すでに使用されている名前です";
+                    }
+                }
+            });
 
-    public void HandleValueChanged(object sender, ValueChangedEventArgs args)
-    {
-        if (args.DatabaseError != null)
-        {
-            Debug.LogError(args.DatabaseError.Message);
-            return;
-        }
-        Debug.Log("args.Snapshot.Key: " + args.Snapshot.Key);
-        // DBにデータががないならempty
-        Debug.Log("args.Snapshot.GetRawJsonValue(): " + args.Snapshot.GetRawJsonValue());
+        return returnValue;
     }
 
     public void InsertUpdateToDB(PlayerDataDBModel playerDataDBModel)

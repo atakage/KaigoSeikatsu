@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +20,7 @@ public class IntroManager1 : MonoBehaviour
     public FirebaseManager FirebaseManager;
     public bool inputFieldFocusBool;
     private TouchScreenKeyboard touchScreenKeyboard;
+    private PlayerDataDBModel playerDataDBModel;
 
     //public DatabaseReference databaseReference;
     private void Start()
@@ -28,6 +31,10 @@ public class IntroManager1 : MonoBehaviour
 
         IntroSharingObjectManager = GameObject.Find("IntroSharingObjectManager").GetComponent("IntroSharingObjectManager") as IntroSharingObjectManager;
         IntroSharingObjectManager.checkNameButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameButton);
+        IntroSharingObjectManager.checkNameConfirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameConfirmButton);
+        IntroSharingObjectManager.checkNameCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameCancelButton);
+        IntroSharingObjectManager.offLinePlayAlertBoxOffLineButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickOffLinePlayButton);
+        IntroSharingObjectManager.offLinePlayAlertBoxOnLineButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickOnLinePlayButton);
 
         FirebaseManager = GameObject.Find("FirebaseManager").GetComponent("FirebaseManager") as FirebaseManager;
 
@@ -39,9 +46,54 @@ public class IntroManager1 : MonoBehaviour
         // TouchScreenkeyBoard
     }
 
+    public void ClickOffLinePlayButton()
+    {
+        ActivingTestPaperBox(true);
+        ActivingOffLinePlayAlertBox(false);
+    }
+
+    public async void ClickOnLinePlayButton()
+    {
+        ActivingOffLinePlayAlertBox(false);
+        ActivingAlertBox(true);
+
+        // DB用プレイヤーデータを作る
+        playerDataDBModel = new PlayerDataDBModel();
+        playerDataDBModel.name = IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text;
+
+        FirebaseManager.FireBaseConnection();
+        // ★変換methodにawaitをつけないとFindDataToDBの中でreturnValueがすぐにreturnされてしまう
+        string findDataDBResult = await FirebaseManager.FindDataToDB(playerDataDBModel);
+        Debug.Log("findDataDBResult: " + findDataDBResult);
+
+        // FindDataToDBの結果がnullならサーバーにプレイヤーデータ作成
+    }
+
+    public void ClickCheckNameConfirmButton()
+    {
+        ActivingCheckNameAlertBox(false);
+        ActivingOffLinePlayAlertBox(true);
+    }
+
+    public void ClickCheckNameCancelButton()
+    {
+        ActivingTestPaperBox(true);
+        ActivingCheckNameAlertBox(false);
+    }
+
+    public void ActivingAlertBox(bool sw)
+    {
+        IntroSharingObjectManager.alertBoxGameObj.SetActive(sw);
+    }
+
+    public void ActivingOffLinePlayAlertBox(bool sw)
+    {
+        IntroSharingObjectManager.offLinePlayAlertBoxGameObj.SetActive(sw);
+    }
+
     public void ActivingTestPaperBox(bool sw)
     {
-        IntroSharingObjectManager.testPaperBoxGameObj.gameObject.SetActive(sw);
+        IntroSharingObjectManager.testPaperBoxGameObj.SetActive(sw);
     }
 
     public void ActivingCheckNameAlertBox(bool sw)
