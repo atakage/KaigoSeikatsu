@@ -14,6 +14,8 @@ public class IntroSharingObjectManager : MonoBehaviour
     public GameObject offLinePlayAlertBoxOffLineButtonGameObj;
     public GameObject offLinePlayAlertBoxOnLineButtonGameObj;
     public GameObject alertBoxGameObj;
+    public GameObject alertBoxTextGameObj;
+    public GameObject alertBoxCancelButtonGameObj;
     public GameObject playerInfoBoxGameObj;
     public GameObject nameGameObj;
     public GameObject nameValueGameObj;
@@ -50,6 +52,8 @@ public class IntroSharingObjectManager : MonoBehaviour
         this.offLinePlayAlertBoxOffLineButtonGameObj = this.offLinePlayAlertBoxGameObj.transform.Find("offLineButton").gameObject;
         this.offLinePlayAlertBoxOnLineButtonGameObj = this.offLinePlayAlertBoxGameObj.transform.Find("onLineButton").gameObject;
         this.alertBoxGameObj = this.canvasGameObj.transform.Find("alertBox").gameObject;
+        this.alertBoxTextGameObj = this.alertBoxGameObj.transform.Find("Text").gameObject;
+        this.alertBoxCancelButtonGameObj = this.alertBoxGameObj.transform.Find("cancelButton").gameObject;
         this.playerInfoBoxGameObj = this.testPaperBoxGameObj.transform.Find("playerInfoBox").gameObject;
         this.nameGameObj = this.playerInfoBoxGameObj.transform.Find("name").gameObject;
         this.nameValueGameObj = this.nameGameObj.transform.Find("value").gameObject;

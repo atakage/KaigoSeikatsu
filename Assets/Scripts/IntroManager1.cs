@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Firebase;
@@ -35,6 +37,7 @@ public class IntroManager1 : MonoBehaviour
         IntroSharingObjectManager.checkNameCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameCancelButton);
         IntroSharingObjectManager.offLinePlayAlertBoxOffLineButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickOffLinePlayButton);
         IntroSharingObjectManager.offLinePlayAlertBoxOnLineButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickOnLinePlayButton);
+        IntroSharingObjectManager.alertBoxCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickAlertBoxCancelButton);
 
         FirebaseManager = GameObject.Find("FirebaseManager").GetComponent("FirebaseManager") as FirebaseManager;
 
@@ -54,6 +57,9 @@ public class IntroManager1 : MonoBehaviour
 
     public async void ClickOnLinePlayButton()
     {
+
+        IntroSharingObjectManager.alertBoxTextGameObj.GetComponent<Text>().text = "名前を確認しています...";
+
         ActivingOffLinePlayAlertBox(false);
         ActivingAlertBox(true);
 
@@ -61,12 +67,49 @@ public class IntroManager1 : MonoBehaviour
         playerDataDBModel = new PlayerDataDBModel();
         playerDataDBModel.name = IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text;
 
-        FirebaseManager.FireBaseConnection();
-        // ★変換methodにawaitをつけないとFindDataToDBの中でreturnValueがすぐにreturnされてしまう
-        string findDataDBResult = await FirebaseManager.FindDataToDB(playerDataDBModel);
-        Debug.Log("findDataDBResult: " + findDataDBResult);
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        bool connectionResult = false;
+        // 最大3秒Firebaseに接続を試みる
+        while (stopwatch.Elapsed < TimeSpan.FromMilliseconds(3000))
+        {
+            connectionResult = await FirebaseManager.FireBaseConnection(playerDataDBModel);
+            if (connectionResult) break;
+        }
+        
+        UnityEngine.Debug.Log("connectionResult: " + connectionResult);
+        // DB接続に成功する
+        if (connectionResult)
+        {
+            //★変換methodにawaitをつけないとFindDataToDBの中でreturnValueがすぐにreturnされてしまう
+            string findDataDBResult = await FirebaseManager.FindDataToDB(playerDataDBModel);
+            UnityEngine.Debug.Log("findDataDBResult: " + findDataDBResult);
 
-        // FindDataToDBの結果がnullならサーバーにプレイヤーデータ作成
+            // FindDataToDBの結果がnullならサーバーにプレイヤーデータ作成
+            if (string.IsNullOrEmpty(findDataDBResult))
+            {
+
+            }
+            // FindDataToDBの結果がnullじゃないならすでに使用されている名前
+            else
+            {
+                IntroSharingObjectManager.alertBoxTextGameObj.GetComponent<Text>().text = findDataDBResult;
+                ActivingAlertCancelButton(true);
+            }
+        }
+        // DB接続に失敗すると
+        else
+        {
+            IntroSharingObjectManager.alertBoxTextGameObj.GetComponent<Text>().text = "サーバーとの通信に失敗しました";
+            ActivingAlertCancelButton(true);
+        }
+
+    }
+
+    public void ClickAlertBoxCancelButton()
+    {
+        ActivingAlertBox(false);
+        ActivingTestPaperBox(true);
     }
 
     public void ClickCheckNameConfirmButton()
@@ -84,6 +127,12 @@ public class IntroManager1 : MonoBehaviour
     public void ActivingAlertBox(bool sw)
     {
         IntroSharingObjectManager.alertBoxGameObj.SetActive(sw);
+        IntroSharingObjectManager.alertBoxCancelButtonGameObj.SetActive(false);
+    }
+
+    public void ActivingAlertCancelButton(bool sw)
+    {
+        IntroSharingObjectManager.alertBoxCancelButtonGameObj.SetActive(sw);
     }
 
     public void ActivingOffLinePlayAlertBox(bool sw)
@@ -107,7 +156,7 @@ public class IntroManager1 : MonoBehaviour
         // input fieldにネームが入力されなかったら
         if (string.IsNullOrEmpty(IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text))
         {
-            Debug.Log("null");
+            UnityEngine.Debug.Log("null");
             // default name 'ゆかり'
             IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text = "ゆかり";
         }

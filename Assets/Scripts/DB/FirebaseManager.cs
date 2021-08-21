@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
@@ -9,19 +10,53 @@ using Firebase.Database;
 public class FirebaseManager : MonoBehaviour
 {
     public DatabaseReference databaseReference;
-    public Dictionary<bool, string> findDataDBResultDic; // key: DB通信結果
 
-    public void FireBaseConnection()
+    public async Task<bool>  FireBaseConnection(PlayerDataDBModel playerDataDBModel)
     {
-        try
+        bool returnValue = false;
+        DatabaseReference connectedRef = FirebaseDatabase.DefaultInstance.GetReference(".info/connected");
+
+        await Task.Run(() =>
+        {
+            connectedRef.ValueChanged += (object sender, ValueChangedEventArgs a) => {
+
+                bool isConnected = (bool)a.Snapshot.Value;
+                if (isConnected)
+                {
+                    Debug.Log("isConnected: " + isConnected);
+                    // 接続に成功するとDB情報を格納
+                    // FirebaseDatabase.DefaultInstance.GetReference("player_data"): DB名にaccess
+                    this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference("player_data");
+                    returnValue = true;
+                }
+                else
+                {
+                    Debug.Log("isConnected: " + isConnected);
+                    returnValue = false;
+                }
+            };
+        });
+
+        return returnValue;
+    }
+
+    public bool HandleValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        bool returnValue = false;
+
+        bool isConnected =  (bool)args.Snapshot.Value;
+        if (isConnected)
         {
             // FirebaseDatabase.DefaultInstance.GetReference("player_data"): DB名にaccess
             this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference("player_data");
+            returnValue = true;
         }
-        catch
+        else
         {
-
+            returnValue = false;
         }
+        print("isConnected" + isConnected);
+        return returnValue;
     }
 
     // awaitが使われているならmethodにasyncをかけてreturnTypeをTaskに
