@@ -43,8 +43,7 @@ public class InitSettingManager : MonoBehaviour
         // JobEvent.jsonを作る
         csvManager.ReadJobEventInitFileAndCreateJson();
 
-        
-
+       
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
 
         canvasObj.transform.Find("PlayButton").GetComponent<Button>().onClick.AddListener(() => ClickPlayButton(playerData));
@@ -76,31 +75,11 @@ public class InitSettingManager : MonoBehaviour
         // ゲームが始まるnew game
         else if (msgCheckIntVal == 1)
         {
-            // プレイ時間記録を始める
-            playTimeManager.countPlayTime = true;
-
             // JobDiary.jsonを作る
             jobDiarySetManager.CreateJobDiaryJsonFile(new List<JobDiaryModel>());
-
-                  // プレイヤーアイテムデータ初期化
+            
+            // プレイヤーアイテムデータ初期化
             playerSaveDataManager.RemoveItemListDataJsonFile();
-            ItemListData[] itemListData = new ItemListData[1];
-            itemListData[0] = new ItemListData();
-            itemListData[0].itemName = "名刺";
-            itemListData[0].itemDescription = "介護福祉士の名刺だ";
-            itemListData[0].quantity = 1;
-            itemListData[0].keyItem = "Y";
-            playerSaveDataManager.SaveItemListData(itemListData);
-
-
-                  // 新しいプレイヤーデータを作成
-            playerData = new PlayerData();
-            playerData.money = "15000"; // 円
-            playerData.time = "08:00";
-            playerData.progress = 0;
-            playerData.fatigue = 0;
-            playerData.currentScene = "IntroScene";
-            playerSaveDataManager.SavePlayerData(playerData);
 
             sceneTransitionManager.LoadTo("IntroScene");
         }
@@ -123,25 +102,9 @@ public class InitSettingManager : MonoBehaviour
         }
         // プレイヤーデータがないとnew game
         else
-        {
+        {            
             // プレイヤーアイテムデータ初期化
             playerSaveDataManager.RemoveItemListDataJsonFile();
-            ItemListData[] itemListData = new ItemListData[1];
-            itemListData[0] = new ItemListData();
-            itemListData[0].itemName = "名刺";
-            itemListData[0].itemDescription = "介護福祉士の名刺だ";
-            itemListData[0].quantity = 1;
-            itemListData[0].keyItem = "Y";
-            playerSaveDataManager.SaveItemListData(itemListData);
-
-            // 新しいプレイヤーデータを作成
-            playerData = new PlayerData();
-            playerData.money = "15000"; // 円
-            playerData.time = "08:00";
-            playerData.progress = 0;
-            playerData.fatigue = 0;
-            playerData.currentScene = "IntroScene";
-            playerSaveDataManager.SavePlayerData(playerData);
 
             sceneTransitionManager.LoadTo("IntroScene");
         }

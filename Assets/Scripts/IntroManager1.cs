@@ -20,6 +20,7 @@ public class IntroManager1 : MonoBehaviour
     public PlayerData playerData;
     public IntroSharingObjectManager IntroSharingObjectManager;
     public FirebaseManager FirebaseManager;
+    public PlayTimeManager playTimeManager;
     public bool inputFieldFocusBool;
     private TouchScreenKeyboard touchScreenKeyboard;
     private PlayerDataDBModel playerDataDBModel;
@@ -41,7 +42,7 @@ public class IntroManager1 : MonoBehaviour
 
         FirebaseManager = GameObject.Find("FirebaseManager").GetComponent("FirebaseManager") as FirebaseManager;
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
-
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
     }
 
     private void Update()
@@ -67,8 +68,36 @@ public class IntroManager1 : MonoBehaviour
 
     public void ClickOffLinePlayButton()
     {
-        ActivingTestPaperBox(true);
+        ActivingAlertBox(false);
+        ActivingTestPaperBox(false);
         ActivingOffLinePlayAlertBox(false);
+
+        // プレイヤーデータセーブ
+        // プレイヤーアイテムデータ初期化
+        playerSaveDataManager.RemoveItemListDataJsonFile();
+        ItemListData[] itemListData = new ItemListData[1];
+        itemListData[0] = new ItemListData();
+        itemListData[0].itemName = "名刺";
+        itemListData[0].itemDescription = "介護福祉士の名刺だ";
+        itemListData[0].quantity = 1;
+        itemListData[0].keyItem = "Y";
+        playerSaveDataManager.SaveItemListData(itemListData);
+
+        // 新しいプレイヤーデータを作成
+        playerData = new PlayerData();
+        playerData.name = IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text;
+        playerData.money = "15000"; // 円
+        playerData.time = "08:00";
+        playerData.progress = 0;
+        playerData.fatigue = 0;
+        playerData.currentScene = "AtHomeScene";
+        playerData.localMode = true;
+        playerSaveDataManager.SavePlayerData(playerData);
+
+        // プレイ時間カウント
+        playTimeManager.countPlayTime = true;
+
+        LoadEventAndShow("EV027");
     }
 
     public async void ClickOnLinePlayButton()
@@ -109,10 +138,34 @@ public class IntroManager1 : MonoBehaviour
                 // insertUpdateResultが'success'なら
                 if ("success".Equals(insertUpdateResult))
                 {
-                    IntroSharingObjectManager.checkNameButtonGameObj.GetComponent<Button>().interactable = false;
                     ActivingAlertBox(false);
-                    LoadEventAndShow("EV027");
+                    
                     // プレイヤーデータセーブ
+                    // プレイヤーアイテムデータ初期化
+                    playerSaveDataManager.RemoveItemListDataJsonFile();
+                    ItemListData[] itemListData = new ItemListData[1];
+                    itemListData[0] = new ItemListData();
+                    itemListData[0].itemName = "名刺";
+                    itemListData[0].itemDescription = "介護福祉士の名刺だ";
+                    itemListData[0].quantity = 1;
+                    itemListData[0].keyItem = "Y";
+                    playerSaveDataManager.SaveItemListData(itemListData);
+
+                    // 新しいプレイヤーデータを作成
+                    playerData = new PlayerData();
+                    playerData.name = playerDataDBModel.name;
+                    playerData.money = "15000"; // 円
+                    playerData.time = "08:00";
+                    playerData.progress = 0;
+                    playerData.fatigue = 0;
+                    playerData.currentScene = "AtHomeScene";
+                    playerData.localMode = false;
+                    playerSaveDataManager.SavePlayerData(playerData);
+
+                    // プレイ時間カウント
+                    playTimeManager.countPlayTime = true;
+
+                    LoadEventAndShow("EV027");
                 }
                 // insertUpdateResultが'success'じゃないなら
                 else
