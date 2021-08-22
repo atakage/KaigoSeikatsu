@@ -242,7 +242,6 @@ public class FacilityManager : MonoBehaviour
             {
                 FacilityUISetActive(true);
                 menuBtnAndNextBtnInteractable(true);
-
             }
 
             // 初期化------------------------------------------------------------------------------------------------------------------

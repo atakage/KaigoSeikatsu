@@ -40,13 +40,29 @@ public class IntroManager1 : MonoBehaviour
         IntroSharingObjectManager.alertBoxCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickAlertBoxCancelButton);
 
         FirebaseManager = GameObject.Find("FirebaseManager").GetComponent("FirebaseManager") as FirebaseManager;
-
+        chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
 
     }
 
     private void Update()
     {
         // TouchScreenkeyBoard
+
+
+        // ユーザーデータを作ったあとScene転換
+        if (IntroSharingObjectManager.canvasGameObj.transform.Find("fadeOutPersistEventCheck") != null
+           && IntroSharingObjectManager.canvasGameObj.transform.Find("fadeOutPersistEventCheck") != null
+           && IntroSharingObjectManager.canvasGameObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y"))
+        {
+            sceneTransitionManager.LoadTo("AtHomeScene");
+        }
+
+        // 初期化------------------------------------------------------------------------------------------------------------------
+        if (IntroSharingObjectManager.canvasGameObj.transform.Find("fadeOutPersistEventCheck") != null)
+        {
+            IntroSharingObjectManager.canvasGameObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text = "N";
+            //Destroy(canvasObj.transform.Find("fadeOutEndMomentSW").gameObject);
+        }
     }
 
     public void ClickOffLinePlayButton()
@@ -70,8 +86,8 @@ public class IntroManager1 : MonoBehaviour
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
         bool connectionResult = false;
-        // 最大3秒Firebaseに接続を試みる
-        while (stopwatch.Elapsed < TimeSpan.FromMilliseconds(3000))
+        // 最大5秒Firebaseに接続を試みる
+        while (stopwatch.Elapsed < TimeSpan.FromMilliseconds(5000))
         {
             connectionResult = await FirebaseManager.FireBaseConnection(playerDataDBModel);
             if (connectionResult) break;
@@ -85,9 +101,25 @@ public class IntroManager1 : MonoBehaviour
             string findDataDBResult = await FirebaseManager.FindDataToDB(playerDataDBModel);
             UnityEngine.Debug.Log("findDataDBResult: " + findDataDBResult);
 
-            // FindDataToDBの結果がnullならサーバーにプレイヤーデータ作成
+            // FindDataToDBの結果がnullなら
             if (string.IsNullOrEmpty(findDataDBResult))
             {
+                // サーバーにプレイヤーデータ作成
+                string insertUpdateResult = await FirebaseManager.InsertUpdateToDB(playerDataDBModel);
+                // insertUpdateResultが'success'なら
+                if ("success".Equals(insertUpdateResult))
+                {
+                    IntroSharingObjectManager.checkNameButtonGameObj.GetComponent<Button>().interactable = false;
+                    ActivingAlertBox(false);
+                    LoadEventAndShow("EV027");
+                    // プレイヤーデータセーブ
+                }
+                // insertUpdateResultが'success'じゃないなら
+                else
+                {
+                    IntroSharingObjectManager.alertBoxTextGameObj.GetComponent<Text>().text = insertUpdateResult;
+                    ActivingAlertCancelButton(true);
+                }
 
             }
             // FindDataToDBの結果がnullじゃないならすでに使用されている名前
@@ -173,5 +205,14 @@ public class IntroManager1 : MonoBehaviour
         playerDataDBModel.ending = "endingB";
         FirebaseManager.FindDataToDB(playerDataDBModel);
         */
+    }
+
+    public void LoadEventAndShow(string eventCode)
+    {
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
+        List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
+        // 2021.07.26 修正, キャライメージ追加されたrawScriptをparameterに渡す
+        chatManager.ShowDialogue(scriptList, eventCode, eventItem.script);
     }
 }

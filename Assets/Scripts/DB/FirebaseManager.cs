@@ -96,25 +96,23 @@ public class FirebaseManager : MonoBehaviour
         return returnValue;
     }
 
-    public void InsertUpdateToDB(PlayerDataDBModel playerDataDBModel)
+    public async Task<string> InsertUpdateToDB(PlayerDataDBModel playerDataDBModel)
     {
-        try
-        {
-            databaseReference.Child(playerDataDBModel.name).SetRawJsonValueAsync(JsonUtility.ToJson(playerDataDBModel))
-                .ContinueWith(task => {
-                    if (task.IsFaulted)
-                    {
-                        Debug.Log("insert update fail: " + task.Exception);
-                    }
-                    else
-                    {
-                        Debug.Log("insert update success");
-                    }
-                });
-        }
-        catch
-        {
+        string returnValue = "データ作成に失敗しました";
 
-        }
+        await databaseReference.Child(playerDataDBModel.name).SetRawJsonValueAsync(JsonUtility.ToJson(playerDataDBModel))
+            .ContinueWith(task => {
+                if (task.IsFaulted)
+                {
+                    Debug.Log("insert update fail: " + task.Exception);
+                    returnValue = task.Exception.Message;
+                }
+                else
+                {
+                    Debug.Log("insert update success");
+                    returnValue = "success";
+                }
+            });
+        return returnValue;
     }
 }

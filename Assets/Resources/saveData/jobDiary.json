@@ -1,14 +1,3 @@
 {
-    "Items": [
-        {
-            "eventCode": "EC019",
-            "eventScript": "●更衣介助の際に気をつけることについて考えてみよう",
-            "choosingString": "皮膚常態を観察する"
-        },
-        {
-            "eventCode": "EC014",
-            "eventScript": "●介護職員ができる医療行為について考えてみよう",
-            "choosingString": "やけどの応急処置"
-        }
-    ]
+    "Items": []
 }

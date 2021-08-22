@@ -136,6 +136,11 @@
             "optionSW": "ON"
         },
         {
+            "eventCode": "EV027",
+            "script": "●介護福祉士試験に私は/●あるデイサービスセンターで働くことになった",
+            "optionSW": "ON"
+        },
+        {
             "eventCode": "ET000",
             "script": "\"あんたは誰?\"",
             "optionSW": "ON"
