@@ -7,6 +7,7 @@ public class ReadyForEndingSharingObjectManager : MonoBehaviour
     public GameObject canvasGameObj;
     public GameObject panelGameObj;
     public GameObject panelTextGameObj;
+    public GameObject confirmButtonGameObj;
     public GameObject surveyBoxGameObj;
     public GameObject plusButtonGameObj;
     public GameObject dropDownBoxGameObj;
@@ -35,6 +36,7 @@ public class ReadyForEndingSharingObjectManager : MonoBehaviour
         this.panelGameObj = this.canvasGameObj.transform.Find("Panel").gameObject;
         this.panelTextGameObj = this.panelGameObj.transform.Find("Text").gameObject;
         this.surveyBoxGameObj = this.canvasGameObj.transform.Find("surveyBox").gameObject;
+        this.confirmButtonGameObj = this.surveyBoxGameObj.transform.Find("confirmButton").gameObject;
         this.plusButtonGameObj = this.surveyBoxGameObj.transform.Find("plusButton").gameObject;
         this.dropDownBoxGameObj = this.surveyBoxGameObj.transform.Find("DropdownBox").gameObject;
         this.causeDropDownBox0GameObj = this.dropDownBoxGameObj.transform.Find("causeDropDownBox0").gameObject;

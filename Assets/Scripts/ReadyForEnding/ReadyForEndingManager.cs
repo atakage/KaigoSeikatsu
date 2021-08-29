@@ -16,6 +16,7 @@ public class ReadyForEndingManager : MonoBehaviour
         readyForEndingSharingObjectManager = GameObject.Find("ReadyForEndingSharingObjectManager").GetComponent("ReadyForEndingSharingObjectManager") as ReadyForEndingSharingObjectManager;
 
         readyForEndingSharingObjectManager.plusButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickPlusButton);
+        readyForEndingSharingObjectManager.confirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmButton);
 
         playerData = playerSaveDataManager.LoadPlayerData();
 
@@ -59,6 +60,37 @@ public class ReadyForEndingManager : MonoBehaviour
         copiedCauseDropDownBoxGameObj.transform.Find("causeMinusButton").GetComponent<Button>().onClick.AddListener(() => ClickCauseMinusButton(copiedCauseDropDownBoxGameObj));
         copiedCauseDropDownBoxGameObj.transform.SetParent(readyForEndingSharingObjectManager.dropDownBoxGameObj.transform);
 
+    }
+
+    public bool CheckDropdown()
+    {
+        bool optionDataCheckResult = true;
+
+        List<string> optionList = new List<string>();
+        for (int i=0; i< readyForEndingSharingObjectManager.dropDownBoxGameObj.transform.childCount; i++)
+        {
+            string optionData = readyForEndingSharingObjectManager.dropDownBoxGameObj.transform.GetChild(i).transform.Find("Dropdown").transform.Find("Label").GetComponent<Text>().text;
+
+            // リストにoptionDataがあると重複
+            if (optionList.Contains(optionData))
+            {
+                optionDataCheckResult = false;
+                break;
+            }
+            else
+            {
+                optionList.Add(optionData);
+            }
+            optionData = null;
+        }
+        return optionDataCheckResult;
+    }
+
+    public void ClickConfirmButton()
+    {
+        // dropdownのoptionDataをチェックする(重複禁止)
+        bool optionDataCheckResult = CheckDropdown();
+        Debug.Log("optionDataCheckResult:" +optionDataCheckResult);
     }
 
     public void ClickCauseMinusButton(GameObject copiedCauseDropDownBoxGameObj)
