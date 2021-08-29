@@ -232,6 +232,12 @@ public class FacilityManager : MonoBehaviour
             {
                 // ReadyForEndingScene移動
                 string changeSceneName = FadeRefObj.transform.Find("ChangeSceneName").GetComponent<Text>().text;
+                // ReadyForEndingScene移動なら
+                if ("ReadyForEndingScene".Equals(changeSceneName))
+                {
+                    playerData = playerSaveDataManager.LoadPlayerData();
+                    playerData.currentScene = "ReadyForEndingScene";
+                }
                 sceneTransitionManager.LoadTo(changeSceneName);
             }
 
