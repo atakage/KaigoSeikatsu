@@ -9,6 +9,11 @@ public class ReadyForEndingSharingObjectManager : MonoBehaviour
     public GameObject panelTextGameObj;
     public GameObject confirmButtonGameObj;
     public GameObject surveyBoxGameObj;
+    public GameObject alertBoxGameObj;
+    public GameObject alertBoxCancelButtonGameObj;
+    public GameObject confirmAlertBoxGameObj;
+    public GameObject confirmAlertBoxConfirmButtonGameObj;
+    public GameObject confirmAlertBoxCancelButtonGameObj;
     public GameObject plusButtonGameObj;
     public GameObject dropDownBoxGameObj;
     public GameObject causeDropDownBox0GameObj;
@@ -36,6 +41,11 @@ public class ReadyForEndingSharingObjectManager : MonoBehaviour
         this.panelGameObj = this.canvasGameObj.transform.Find("Panel").gameObject;
         this.panelTextGameObj = this.panelGameObj.transform.Find("Text").gameObject;
         this.surveyBoxGameObj = this.canvasGameObj.transform.Find("surveyBox").gameObject;
+        this.alertBoxGameObj = this.canvasGameObj.transform.Find("alertBox").gameObject;
+        this.alertBoxCancelButtonGameObj = this.alertBoxGameObj.transform.Find("cancelButton").gameObject;
+        this.confirmAlertBoxGameObj = this.canvasGameObj.transform.Find("confirmAlertBox").gameObject;
+        this.confirmAlertBoxConfirmButtonGameObj = this.confirmAlertBoxGameObj.transform.Find("confirmButton").gameObject;
+        this.confirmAlertBoxCancelButtonGameObj = this.confirmAlertBoxGameObj.transform.Find("cancelButton").gameObject;
         this.confirmButtonGameObj = this.surveyBoxGameObj.transform.Find("confirmButton").gameObject;
         this.plusButtonGameObj = this.surveyBoxGameObj.transform.Find("plusButton").gameObject;
         this.dropDownBoxGameObj = this.surveyBoxGameObj.transform.Find("DropdownBox").gameObject;

@@ -17,18 +17,44 @@ public class ReadyForEndingManager : MonoBehaviour
 
         readyForEndingSharingObjectManager.plusButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickPlusButton);
         readyForEndingSharingObjectManager.confirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmButton);
+        readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickAlertBoxCancelBtn);
+        readyForEndingSharingObjectManager.confirmAlertBoxCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmAlertBoxCancelBtn);
+        readyForEndingSharingObjectManager.confirmAlertBoxConfirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmAlertBoxConfirmBtn);
 
         playerData = playerSaveDataManager.LoadPlayerData();
 
-        // endingによる進行
-        if ("endingA".Equals(playerData.ending))
+        // localModeだったら
+        if (playerData.localMode)
         {
-            CallEndingAProcess();
-        }
-        else if ("endingB".Equals(playerData.ending))
-        {
+            // DB作業しなくて進行
+            if ("endingA".Equals(playerData.ending))
+            {
 
+            }
+            // DB作業しなくて進行
+            else if ("endingB".Equals(playerData.ending))
+            {
+
+            }
         }
+        // localModeじゃなかったら(online)
+        else
+        {
+            // endingによる進行(DB作業)
+            if ("endingA".Equals(playerData.ending))
+            {
+                CallEndingAProcess();
+                // surveyBox表示
+                readyForEndingSharingObjectManager.surveyBoxGameObj.SetActive(true);
+            }
+            // DB作業しなくて進行
+            else if ("endingB".Equals(playerData.ending))
+            {
+
+            }
+        }
+
+
     }
 
     private void Update()
@@ -86,11 +112,54 @@ public class ReadyForEndingManager : MonoBehaviour
         return optionDataCheckResult;
     }
 
+    public void SetActiveSurveyBox(bool sw)
+    {
+        readyForEndingSharingObjectManager.surveyBoxGameObj.SetActive(sw);
+    }
+
+    public void SetActiveAlertBox(bool sw)
+    {
+        readyForEndingSharingObjectManager.alertBoxGameObj.SetActive(sw);
+    }
+
+    public void SetActiveConfirmAlertBox(bool sw)
+    {
+        readyForEndingSharingObjectManager.confirmAlertBoxGameObj.SetActive(sw);
+    }
+
+    public void ClickConfirmAlertBoxConfirmBtn()
+    {
+        // DB作業
+    }
+
+    public void ClickConfirmAlertBoxCancelBtn()
+    {
+        SetActiveSurveyBox(true);
+        SetActiveConfirmAlertBox(false);
+    }
+
+    public void ClickAlertBoxCancelBtn()
+    {
+        SetActiveSurveyBox(true);
+        SetActiveAlertBox(false);
+    }
+
     public void ClickConfirmButton()
     {
         // dropdownのoptionDataをチェックする(重複禁止)
         bool optionDataCheckResult = CheckDropdown();
-        Debug.Log("optionDataCheckResult:" +optionDataCheckResult);
+        // optionDataが重複なら
+        if (!optionDataCheckResult)
+        {
+            SetActiveSurveyBox(false);
+            SetActiveAlertBox(true);
+        }
+        // optionDataが重複じゃないなら
+        else
+        {
+            SetActiveSurveyBox(false);
+            SetActiveConfirmAlertBox(true);
+        }
     }
 
     public void ClickCauseMinusButton(GameObject copiedCauseDropDownBoxGameObj)
