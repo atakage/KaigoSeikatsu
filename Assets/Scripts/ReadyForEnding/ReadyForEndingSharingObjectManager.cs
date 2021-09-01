@@ -14,6 +14,9 @@ public class ReadyForEndingSharingObjectManager : MonoBehaviour
     public GameObject confirmAlertBoxGameObj;
     public GameObject confirmAlertBoxConfirmButtonGameObj;
     public GameObject confirmAlertBoxCancelButtonGameObj;
+    public GameObject continueAlertBoxGameObj;
+    public GameObject continueAlertConfirmButtonBoxGameObj;
+    public GameObject continueAlertCancelButtonBoxGameObj;
     public GameObject plusButtonGameObj;
     public GameObject dropDownBoxGameObj;
     public GameObject causeDropDownBox0GameObj;
@@ -46,6 +49,9 @@ public class ReadyForEndingSharingObjectManager : MonoBehaviour
         this.confirmAlertBoxGameObj = this.canvasGameObj.transform.Find("confirmAlertBox").gameObject;
         this.confirmAlertBoxConfirmButtonGameObj = this.confirmAlertBoxGameObj.transform.Find("confirmButton").gameObject;
         this.confirmAlertBoxCancelButtonGameObj = this.confirmAlertBoxGameObj.transform.Find("cancelButton").gameObject;
+        this.continueAlertBoxGameObj = this.canvasGameObj.transform.Find("continueAlertBox").gameObject;
+        this.continueAlertConfirmButtonBoxGameObj = this.continueAlertBoxGameObj.transform.Find("confirmButton").gameObject;
+        this.continueAlertCancelButtonBoxGameObj = this.continueAlertBoxGameObj.transform.Find("cancelButton").gameObject;
         this.confirmButtonGameObj = this.surveyBoxGameObj.transform.Find("confirmButton").gameObject;
         this.plusButtonGameObj = this.surveyBoxGameObj.transform.Find("plusButton").gameObject;
         this.dropDownBoxGameObj = this.surveyBoxGameObj.transform.Find("DropdownBox").gameObject;

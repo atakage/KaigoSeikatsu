@@ -9,17 +9,23 @@ public class ReadyForEndingManager : MonoBehaviour
     public PlayerSaveDataManager playerSaveDataManager;
     public PlayerData playerData;
     public ReadyForEndingSharingObjectManager readyForEndingSharingObjectManager;
+    public EventManager eventManager;
+    public ChatManager chatManager;
     //public int dropdownCount = 0;
     private void Start()
     {
         playerSaveDataManager = new PlayerSaveDataManager();
+        eventManager = new EventManager();
         readyForEndingSharingObjectManager = GameObject.Find("ReadyForEndingSharingObjectManager").GetComponent("ReadyForEndingSharingObjectManager") as ReadyForEndingSharingObjectManager;
+        chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
 
         readyForEndingSharingObjectManager.plusButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickPlusButton);
         readyForEndingSharingObjectManager.confirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmButton);
         readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickAlertBoxCancelBtn);
         readyForEndingSharingObjectManager.confirmAlertBoxCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmAlertBoxCancelBtn);
         readyForEndingSharingObjectManager.confirmAlertBoxConfirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmAlertBoxConfirmBtn);
+        readyForEndingSharingObjectManager.continueAlertCancelButtonBoxGameObj.GetComponent<Button>().onClick.AddListener(ClickContinueAlertBoxCancelBtn);
+        readyForEndingSharingObjectManager.continueAlertConfirmButtonBoxGameObj.GetComponent<Button>().onClick.AddListener(ClickContinueAlertBoxConfirmBtn);
 
         playerData = playerSaveDataManager.LoadPlayerData();
 
@@ -34,7 +40,7 @@ public class ReadyForEndingManager : MonoBehaviour
             // DB作業しなくて進行
             else if ("endingB".Equals(playerData.ending))
             {
-
+                // continueAlertBoxを表示
             }
         }
         // localModeじゃなかったら(online)
@@ -47,10 +53,11 @@ public class ReadyForEndingManager : MonoBehaviour
                 // surveyBox表示
                 readyForEndingSharingObjectManager.surveyBoxGameObj.SetActive(true);
             }
-            // DB作業しなくて進行
+            
             else if ("endingB".Equals(playerData.ending))
             {
-
+                // continueAlertBoxを表示
+                SetActiveContinueAlertBox(true);
             }
         }
 
@@ -112,6 +119,11 @@ public class ReadyForEndingManager : MonoBehaviour
         return optionDataCheckResult;
     }
 
+    public void SetActiveContinueAlertBox(bool sw)
+    {
+        readyForEndingSharingObjectManager.continueAlertBoxGameObj.SetActive(sw);
+    }
+
     public void SetActiveSurveyBox(bool sw)
     {
         readyForEndingSharingObjectManager.surveyBoxGameObj.SetActive(sw);
@@ -127,9 +139,23 @@ public class ReadyForEndingManager : MonoBehaviour
         readyForEndingSharingObjectManager.confirmAlertBoxGameObj.SetActive(sw);
     }
 
+    public void ClickContinueAlertBoxConfirmBtn()
+    {
+        SetActiveContinueAlertBox(false);
+        LoadEventAndShow("EV028");
+    }
+
+    public void ClickContinueAlertBoxCancelBtn()
+    {
+        SetActiveContinueAlertBox(false);
+        CallEndingAProcess();
+        SetActiveSurveyBox(true);
+    }
+
     public void ClickConfirmAlertBoxConfirmBtn()
     {
         // DB作業
+
     }
 
     public void ClickConfirmAlertBoxCancelBtn()
@@ -174,6 +200,15 @@ public class ReadyForEndingManager : MonoBehaviour
 
     public void CallEndingAProcess()
     {
-        readyForEndingSharingObjectManager.panelTextGameObj.GetComponent<Text>().text = "今回の仕事に向いていないと感じた原因は?";
+        readyForEndingSharingObjectManager.panelTextGameObj.GetComponent<Text>().text = "今回の仕事に向いていないと感じた理由は?";
+    }
+
+    public void LoadEventAndShow(string eventCode)
+    {
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
+        List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
+        // 2021.07.26 修正, キャライメージ追加されたrawScriptをparameterに渡す
+        chatManager.ShowDialogue(scriptList, eventCode, eventItem.script);
     }
 }

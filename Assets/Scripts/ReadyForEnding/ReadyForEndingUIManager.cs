@@ -43,7 +43,7 @@ public class ReadyForEndingUIManager : MonoBehaviour
         List<string> optionList = new List<string>();
         optionList.Add("繰り返す毎日がつまらなかった");
         optionList.Add("やることがなかった");
-        optionList.Add("人間関係が欲しかった");
+        optionList.Add("職場での人間関係が全くなかった");
         optionList.Add("介護の仕事に興味がなかった");
         optionList.Add("特に不満はないが契約終了になってしまった");
 
