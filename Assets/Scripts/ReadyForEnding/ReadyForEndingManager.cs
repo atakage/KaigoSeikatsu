@@ -11,6 +11,7 @@ public class ReadyForEndingManager : MonoBehaviour
     public ReadyForEndingSharingObjectManager readyForEndingSharingObjectManager;
     public EventManager eventManager;
     public ChatManager chatManager;
+    public SceneTransitionManager sceneTransitionManager;
     //public int dropdownCount = 0;
     private void Start()
     {
@@ -18,6 +19,7 @@ public class ReadyForEndingManager : MonoBehaviour
         eventManager = new EventManager();
         readyForEndingSharingObjectManager = GameObject.Find("ReadyForEndingSharingObjectManager").GetComponent("ReadyForEndingSharingObjectManager") as ReadyForEndingSharingObjectManager;
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
+        sceneTransitionManager = new SceneTransitionManager();
 
         readyForEndingSharingObjectManager.plusButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickPlusButton);
         readyForEndingSharingObjectManager.confirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmButton);
@@ -74,6 +76,15 @@ public class ReadyForEndingManager : MonoBehaviour
         else
         {
             readyForEndingSharingObjectManager.plusButtonGameObj.GetComponent<Button>().interactable = true;
+        }
+
+        // for ending
+        if(readyForEndingSharingObjectManager.canvasGameObj.transform.Find("fadeOutPersistEventCheck") != null
+        && readyForEndingSharingObjectManager.canvasGameObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y")
+        && readyForEndingSharingObjectManager.canvasGameObj.transform.Find("endedEventCode") != null
+        && readyForEndingSharingObjectManager.canvasGameObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV028"))
+        {
+            sceneTransitionManager.LoadTo("EndingScene");
         }
     }
 

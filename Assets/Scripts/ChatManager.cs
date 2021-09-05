@@ -42,12 +42,13 @@ public class ChatManager : MonoBehaviour
         jobDiaryManager = new JobDiaryManager();
 
         canvasGameObj = GameObject.Find("Canvas");
-        panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
+        if(GameObject.Find("Panel") != null) panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
 
         clickCount = 0;
 
         if (GameObject.Find("FlashEffectManager") != null) flashEffectManager = GameObject.Find("FlashEffectManager").GetComponent("FlashEffectManager") as FlashEffectManager;
-        if (canvasGameObj.transform.Find("Panel").transform.Find("scriptNextIcon") != null) scriptNextIconGameObj = canvasGameObj.transform.Find("Panel").transform.Find("scriptNextIcon").gameObject;
+        if (canvasGameObj.transform.Find("Panel") != null &&
+            canvasGameObj.transform.Find("Panel").transform.Find("scriptNextIcon") != null) scriptNextIconGameObj = canvasGameObj.transform.Find("Panel").transform.Find("scriptNextIcon").gameObject;
 
         Debug.Log("Start ChatManager");
         
