@@ -10,6 +10,7 @@ public class InitSettingManager : MonoBehaviour
     public SceneTransitionManager sceneTransitionManager;
     public JobDiarySetManager jobDiarySetManager;
     public PlayTimeManager playTimeManager;
+    public GameClearFileManager gameClearFileManager;
     public GameObject canvasObj;
     public GameObject loadButtonObj;
     public GameObject newGameAlertBoxObj;
@@ -21,6 +22,7 @@ public class InitSettingManager : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         sceneTransitionManager = new SceneTransitionManager();
         jobDiarySetManager = new JobDiarySetManager();
+        gameClearFileManager = new GameClearFileManager();
 
         playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
@@ -43,7 +45,19 @@ public class InitSettingManager : MonoBehaviour
         // JobEvent.jsonを作る
         csvManager.ReadJobEventInitFileAndCreateJson();
 
-       
+        // clearFileが存在すると
+        if (gameClearFileManager.CheckExistClearFile())
+        {
+            // clearFileをロード
+            ClearData clearData = gameClearFileManager.LoadClearData();
+            // clear後なら
+            if (clearData.clear == true)
+            {
+                canvasObj.transform.Find("rankButton").gameObject.SetActive(true);
+            }
+        }
+        
+
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
 
         canvasObj.transform.Find("PlayButton").GetComponent<Button>().onClick.AddListener(() => ClickPlayButton(playerData));

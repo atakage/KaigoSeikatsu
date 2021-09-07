@@ -12,6 +12,7 @@ public class ReadyForEndingManager : MonoBehaviour
     public EventManager eventManager;
     public ChatManager chatManager;
     public SceneTransitionManager sceneTransitionManager;
+    public GameClearFileManager gameClearFileManager;
     //public int dropdownCount = 0;
     private void Start()
     {
@@ -20,6 +21,7 @@ public class ReadyForEndingManager : MonoBehaviour
         readyForEndingSharingObjectManager = GameObject.Find("ReadyForEndingSharingObjectManager").GetComponent("ReadyForEndingSharingObjectManager") as ReadyForEndingSharingObjectManager;
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
         sceneTransitionManager = new SceneTransitionManager();
+        gameClearFileManager = new GameClearFileManager();
 
         readyForEndingSharingObjectManager.plusButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickPlusButton);
         readyForEndingSharingObjectManager.confirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmButton);
@@ -152,6 +154,8 @@ public class ReadyForEndingManager : MonoBehaviour
 
     public void ClickContinueAlertBoxConfirmBtn()
     {
+        // ゲームエンディングを記録するファイルを作る
+        gameClearFileManager.SaveGameClearFile();
         SetActiveContinueAlertBox(false);
         LoadEventAndShow("EV028");
     }

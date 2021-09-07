@@ -27,7 +27,7 @@ public class EndingManager : MonoBehaviour
     private void Update()
     {
         // 4秒後にfade out
-        if (stopwatch.Elapsed > TimeSpan.FromMilliseconds(4000) && timeCheck == false)
+        if (stopwatch.Elapsed > TimeSpan.FromMilliseconds(3000) && timeCheck == false)
         {
             timeCheck = true;
             chatManager.executeFadeOutPersist();
