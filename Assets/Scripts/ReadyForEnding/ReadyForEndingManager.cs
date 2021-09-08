@@ -108,6 +108,23 @@ public class ReadyForEndingManager : MonoBehaviour
 
     }
 
+    public PlayerDataDBModel ConvertPlayerDataDBModel(PlayerData playerData, List<string> reasonList)
+    {
+        PlayerDataDBModel playerDataDBModel = new PlayerDataDBModel();
+
+        playerDataDBModel.name = playerData.name;
+        playerDataDBModel.money = playerData.money;
+        playerDataDBModel.fatigue = playerData.fatigue;
+        playerDataDBModel.satisfaction = playerData.satisfaction;
+        playerDataDBModel.feeling = playerData.feeling;
+        playerDataDBModel.playTime = playerData.playTime;
+        playerDataDBModel.ending = playerData.ending;
+        playerDataDBModel.localMode = playerData.localMode;
+        playerDataDBModel.reasonList = reasonList;
+
+        return playerDataDBModel;
+    }
+
     public bool CheckDropdown()
     {
         bool optionDataCheckResult = true;
@@ -155,7 +172,7 @@ public class ReadyForEndingManager : MonoBehaviour
     public void ClickContinueAlertBoxConfirmBtn()
     {
         // ゲームエンディングを記録するファイルを作る
-        gameClearFileManager.SaveGameClearFile();
+        gameClearFileManager.SaveGameClearFile(playerData);
         SetActiveContinueAlertBox(false);
         LoadEventAndShow("EV028");
     }
@@ -169,6 +186,22 @@ public class ReadyForEndingManager : MonoBehaviour
 
     public void ClickConfirmAlertBoxConfirmBtn()
     {
+        // 理由を取得
+        int reasonCount = readyForEndingSharingObjectManager.dropDownBoxGameObj.transform.childCount;
+        List<string> reasonList = new List<string>();
+
+        if(reasonCount > 0)
+        {
+            for (int i = 0; i < reasonCount; i++)
+            {
+                reasonList.Add(readyForEndingSharingObjectManager.dropDownBoxGameObj.transform.GetChild(i).Find("Dropdown").Find("Label").GetComponent<Text>().text);
+            }
+        }
+
+        // PlayerDataをDBセーブ用モデルに変換(PlayerDataDBModel)
+        PlayerDataDBModel playerDataDBModel = ConvertPlayerDataDBModel(playerData, reasonList);
+
+
         // DB作業
 
     }

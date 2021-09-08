@@ -13,4 +13,6 @@ public class PlayerDataDBModel
     public float playTime;
     public string ending;
     public bool localMode;
+
+    public List<string> reasonList;
 }

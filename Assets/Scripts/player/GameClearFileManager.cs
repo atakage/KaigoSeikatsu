@@ -8,15 +8,31 @@ using Newtonsoft.Json;
 public class ClearData
 {
     public bool clear;
-    public List<PlayerData> cllearPlayerDataList;
+    public List<PlayerData> clearPlayerDataList;
 }
 
 public class GameClearFileManager : MonoBehaviour
 {
-    public void SaveGameClearFile()
+    public void SaveGameClearFile(PlayerData playerData)
     {
         ClearData clearData = new ClearData();
         clearData.clear = true;
+
+        // クリアファイルが存在すると
+        if (CheckExistClearFile())
+        {
+            // プレイヤーデータを追加
+            clearData = LoadClearData();
+            clearData.clearPlayerDataList.Add(playerData);
+        }
+        // クリアファイルが存在しないと
+        else
+        {
+            // 新しいクリアリストを作る
+            List<PlayerData> clearPlayerDataList = new List<PlayerData>();
+            clearPlayerDataList.Add(playerData);
+            clearData.clearPlayerDataList = clearPlayerDataList;
+        }
 
         string jsonStr = JsonConvert.SerializeObject(clearData);
         File.WriteAllText(Application.dataPath + "/Resources/saveData/clearFile.json", jsonStr);
