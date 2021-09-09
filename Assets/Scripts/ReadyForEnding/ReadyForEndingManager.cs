@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +15,7 @@ public class ReadyForEndingManager : MonoBehaviour
     public ChatManager chatManager;
     public SceneTransitionManager sceneTransitionManager;
     public GameClearFileManager gameClearFileManager;
+    public FirebaseManager firebaseManager;
     //public int dropdownCount = 0;
     private void Start()
     {
@@ -22,6 +25,7 @@ public class ReadyForEndingManager : MonoBehaviour
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
         sceneTransitionManager = new SceneTransitionManager();
         gameClearFileManager = new GameClearFileManager();
+        firebaseManager = new FirebaseManager();
 
         readyForEndingSharingObjectManager.plusButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickPlusButton);
         readyForEndingSharingObjectManager.confirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmButton);
@@ -97,9 +101,6 @@ public class ReadyForEndingManager : MonoBehaviour
 
 
         copiedCauseDropDownBoxGameObj.name = "causeDropDownBox";
-
-        Debug.Log("final: " + readyForEndingSharingObjectManager.dropDownBoxGameObj.transform.GetChild(readyForEndingSharingObjectManager.dropDownBoxGameObj.transform.childCount-1).name);
-        Debug.Log("final: " + readyForEndingSharingObjectManager.dropDownBoxGameObj.transform.GetChild(readyForEndingSharingObjectManager.dropDownBoxGameObj.transform.childCount - 1).name.Substring(16));
 
         copiedCauseDropDownBoxGameObj.transform.Find("causeMinusButton").GetComponent<Button>().interactable = true;
         // dropdown削除イベント追加
@@ -184,8 +185,13 @@ public class ReadyForEndingManager : MonoBehaviour
         SetActiveSurveyBox(true);
     }
 
-    public void ClickConfirmAlertBoxConfirmBtn()
+    public async void ClickConfirmAlertBoxConfirmBtn()
     {
+        readyForEndingSharingObjectManager.confirmAlertBoxGameObj.SetActive(false);
+        readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = "サーバーと通信中...";
+        readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.SetActive(false);
+        SetActiveAlertBox(true);
+
         // 理由を取得
         int reasonCount = readyForEndingSharingObjectManager.dropDownBoxGameObj.transform.childCount;
         List<string> reasonList = new List<string>();
@@ -203,7 +209,50 @@ public class ReadyForEndingManager : MonoBehaviour
 
 
         // DB作業
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        bool connectionResult = false;
+        // 最大5秒Firebaseに接続を試みる
+        while (stopwatch.Elapsed < TimeSpan.FromMilliseconds(5000))
+        {
+            connectionResult = await firebaseManager.FireBaseConnection();
+            if (connectionResult) break;
+        }
+        stopwatch.Stop();
 
+        // DB接続に成功すると
+        if (connectionResult)
+        {
+            // サーバーにプレイヤーデータをアプデ
+            string insertUpdateResult = await firebaseManager.InsertUpdateToDB(playerDataDBModel);
+            // insertUpdateResultが'success'なら
+            if ("success".Equals(insertUpdateResult))
+            {
+                readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = "サーバーにデータを送信しました!";
+
+                await Task.Delay(3000).ContinueWith(t => {
+                    UnityMainThread.wkr.AddJob(() =>
+                    {
+                        // ContinueWith(MainThreadじゃないなら)ではSetActive不可能
+                        readyForEndingSharingObjectManager.alertBoxGameObj.SetActive(false);
+                    });
+                    });
+
+                // scene transition -> ending
+            }
+            // insertUpdateResultが'success'じゃないなら
+            else
+            {
+                readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = insertUpdateResult;
+                readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.SetActive(true);
+            }
+        }
+        // DB接続に失敗すると
+        else
+        {
+            readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = "サーバーとの通信に失敗しました";
+            readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.SetActive(true);
+        }
     }
 
     public void ClickConfirmAlertBoxCancelBtn()
@@ -216,6 +265,7 @@ public class ReadyForEndingManager : MonoBehaviour
     {
         SetActiveSurveyBox(true);
         SetActiveAlertBox(false);
+        readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = "理由は重複禁止です!";
     }
 
     public void ClickConfirmButton()

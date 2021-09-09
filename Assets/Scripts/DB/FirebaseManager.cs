@@ -11,7 +11,7 @@ public class FirebaseManager : MonoBehaviour
 {
     public DatabaseReference databaseReference;
 
-    public async Task<bool>  FireBaseConnection(PlayerDataDBModel playerDataDBModel)
+    public async Task<bool>  FireBaseConnection()
     {
         bool returnValue = false;
         DatabaseReference connectedRef = FirebaseDatabase.DefaultInstance.GetReference(".info/connected");

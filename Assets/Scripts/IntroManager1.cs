@@ -118,7 +118,7 @@ public class IntroManager1 : MonoBehaviour
         // 最大5秒Firebaseに接続を試みる
         while (stopwatch.Elapsed < TimeSpan.FromMilliseconds(5000))
         {
-            connectionResult = await FirebaseManager.FireBaseConnection(playerDataDBModel);
+            connectionResult = await FirebaseManager.FireBaseConnection();
             if (connectionResult) break;
         }
         
