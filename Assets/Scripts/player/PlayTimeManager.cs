@@ -46,7 +46,11 @@ public class PlayTimeManager : MonoBehaviour
     {
         playerSaveDataManager = new PlayerSaveDataManager();
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
-        playerData.playTime = playTime;
-        playerSaveDataManager.SavePlayerData(playerData);
+        if(playerData != null)
+        {
+            playerData.playTime = playTime;
+            playerSaveDataManager.SavePlayerData(playerData);
+        }
+        
     }
 }

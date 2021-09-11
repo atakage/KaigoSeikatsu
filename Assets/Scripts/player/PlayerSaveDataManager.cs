@@ -324,6 +324,11 @@ public class PlayerSaveDataManager : MonoBehaviour
         return playerData;
     }
 
+    public void DeletePlayerDataJsonFile()
+    {
+        File.Delete(Application.dataPath + "/Resources/saveData/testPlayerData.json");
+    }
+
     public PlayerData CheckStatusValueZero(PlayerData playerData)
     {
         if (playerData.fatigue < 0) playerData.fatigue = 0;

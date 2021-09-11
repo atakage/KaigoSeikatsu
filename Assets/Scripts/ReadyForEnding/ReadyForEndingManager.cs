@@ -27,15 +27,19 @@ public class ReadyForEndingManager : MonoBehaviour
         gameClearFileManager = new GameClearFileManager();
         firebaseManager = new FirebaseManager();
 
+        playerData = playerSaveDataManager.LoadPlayerData();
+        UnityEngine.Debug.Log("localMode: " + playerData.localMode);
+
         readyForEndingSharingObjectManager.plusButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickPlusButton);
         readyForEndingSharingObjectManager.confirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmButton);
         readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickAlertBoxCancelBtn);
         readyForEndingSharingObjectManager.confirmAlertBoxCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmAlertBoxCancelBtn);
         readyForEndingSharingObjectManager.confirmAlertBoxConfirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickConfirmAlertBoxConfirmBtn);
-        readyForEndingSharingObjectManager.continueAlertCancelButtonBoxGameObj.GetComponent<Button>().onClick.AddListener(ClickContinueAlertBoxCancelBtn);
-        readyForEndingSharingObjectManager.continueAlertConfirmButtonBoxGameObj.GetComponent<Button>().onClick.AddListener(ClickContinueAlertBoxConfirmBtn);
+        readyForEndingSharingObjectManager.continueAlertCancelButtonBoxGameObj.GetComponent<Button>().onClick.AddListener(() => ClickContinueAlertBoxCancelBtn(playerData.localMode));
+        readyForEndingSharingObjectManager.continueAlertConfirmButtonBoxGameObj.GetComponent<Button>().onClick.AddListener(() => ClickContinueAlertBoxConfirmBtn(playerData.localMode));
 
-        playerData = playerSaveDataManager.LoadPlayerData();
+        // EV026 -> endingA
+        // EV025 -> endingB
 
         // localModeだったら
         if (playerData.localMode)
@@ -43,12 +47,20 @@ public class ReadyForEndingManager : MonoBehaviour
             // DB作業しなくて進行
             if ("endingA".Equals(playerData.ending))
             {
+                // ゲームエンディングを記録するファイルを作る
+                gameClearFileManager.SaveGameClearFile(playerData);
+                // プレイヤーデータを削除する
+                playerSaveDataManager.DeletePlayerDataJsonFile();
 
+                // すぐにscene転換
+                sceneTransitionManager.LoadTo("EndingScene");
             }
             // DB作業しなくて進行
             else if ("endingB".Equals(playerData.ending))
             {
+                readyForEndingSharingObjectManager.fadeGameObj.SetActive(false);
                 // continueAlertBoxを表示
+                SetActiveContinueAlertBox(true);
             }
         }
         // localModeじゃなかったら(online)
@@ -57,6 +69,7 @@ public class ReadyForEndingManager : MonoBehaviour
             // endingによる進行(DB作業)
             if ("endingA".Equals(playerData.ending))
             {
+                readyForEndingSharingObjectManager.fadeGameObj.SetActive(false);
                 CallEndingAProcess();
                 // surveyBox表示
                 readyForEndingSharingObjectManager.surveyBoxGameObj.SetActive(true);
@@ -64,6 +77,7 @@ public class ReadyForEndingManager : MonoBehaviour
             
             else if ("endingB".Equals(playerData.ending))
             {
+                readyForEndingSharingObjectManager.fadeGameObj.SetActive(false);
                 // continueAlertBoxを表示
                 SetActiveContinueAlertBox(true);
             }
@@ -88,7 +102,12 @@ public class ReadyForEndingManager : MonoBehaviour
         if(readyForEndingSharingObjectManager.canvasGameObj.transform.Find("fadeOutPersistEventCheck") != null
         && readyForEndingSharingObjectManager.canvasGameObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text.Equals("Y")
         && readyForEndingSharingObjectManager.canvasGameObj.transform.Find("endedEventCode") != null
-        && readyForEndingSharingObjectManager.canvasGameObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV028"))
+        && (
+            readyForEndingSharingObjectManager.canvasGameObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV028")
+        ||  readyForEndingSharingObjectManager.canvasGameObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV029")
+        ||  readyForEndingSharingObjectManager.canvasGameObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV030")
+           )
+        )
         {
             sceneTransitionManager.LoadTo("EndingScene");
         }
@@ -170,19 +189,37 @@ public class ReadyForEndingManager : MonoBehaviour
         readyForEndingSharingObjectManager.confirmAlertBoxGameObj.SetActive(sw);
     }
 
-    public void ClickContinueAlertBoxConfirmBtn()
+    public void ClickContinueAlertBoxConfirmBtn(bool localMode)
     {
         // ゲームエンディングを記録するファイルを作る
         gameClearFileManager.SaveGameClearFile(playerData);
+        // プレイヤーデータを削除する
+        playerSaveDataManager.DeletePlayerDataJsonFile();
+
         SetActiveContinueAlertBox(false);
-        LoadEventAndShow("EV028");
+        LoadEventAndShow("EV028");        
     }
 
-    public void ClickContinueAlertBoxCancelBtn()
+    public void ClickContinueAlertBoxCancelBtn(bool localMode)
     {
-        SetActiveContinueAlertBox(false);
-        CallEndingAProcess();
-        SetActiveSurveyBox(true);
+        // localModeならイベント後シーン転換
+        if (localMode)
+        {
+            // ゲームエンディングを記録するファイルを作る
+            gameClearFileManager.SaveGameClearFile(playerData);
+            // プレイヤーデータを削除する
+            playerSaveDataManager.DeletePlayerDataJsonFile();
+
+            SetActiveContinueAlertBox(false);
+            LoadEventAndShow("EV030");
+        }
+        else
+        {
+            SetActiveContinueAlertBox(false);
+            CallEndingAProcess();
+            SetActiveSurveyBox(true);
+        }
+        
     }
 
     public async void ClickConfirmAlertBoxConfirmBtn()
@@ -196,7 +233,7 @@ public class ReadyForEndingManager : MonoBehaviour
         int reasonCount = readyForEndingSharingObjectManager.dropDownBoxGameObj.transform.childCount;
         List<string> reasonList = new List<string>();
 
-        if(reasonCount > 0)
+        if (reasonCount > 0)
         {
             for (int i = 0; i < reasonCount; i++)
             {
@@ -233,12 +270,16 @@ public class ReadyForEndingManager : MonoBehaviour
                 await Task.Delay(3000).ContinueWith(t => {
                     UnityMainThread.wkr.AddJob(() =>
                     {
+                        // ゲームエンディングを記録するファイルを作る
+                        gameClearFileManager.SaveGameClearFile(playerData);
+                        // プレイヤーデータを削除する
+                        playerSaveDataManager.DeletePlayerDataJsonFile();
+
                         // ContinueWith(MainThreadじゃないなら)ではSetActive不可能
                         readyForEndingSharingObjectManager.alertBoxGameObj.SetActive(false);
+                        LoadEventAndShow("EV029");
                     });
-                    });
-
-                // scene transition -> ending
+                });
             }
             // insertUpdateResultが'success'じゃないなら
             else
@@ -252,7 +293,7 @@ public class ReadyForEndingManager : MonoBehaviour
         {
             readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = "サーバーとの通信に失敗しました";
             readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.SetActive(true);
-        }
+        }        
     }
 
     public void ClickConfirmAlertBoxCancelBtn()

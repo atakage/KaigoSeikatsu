@@ -54,8 +54,6 @@ public class EventManager : MonoBehaviour
     {
         List<string[]> returnScriptArrList = new List<string[]>();
         string[] scriptArrayPara = eventItem.script.Split('/');
-        //string[] scriptSplitedBySlash = eventItem.script.Split('/');
-        //string[] scriptArrayPara = scriptSplitedBySlash[1].Split('●');
         string[] scriptArray = null;
         char[] chars = null;
         for (int i=0; i< scriptArrayPara.Length; i++)

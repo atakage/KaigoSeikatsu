@@ -63,6 +63,8 @@ public class EventCodeManager : MonoBehaviour
         EventCodeDic.Add("EV026", "Change Scene Fade Out");
         EventCodeDic.Add("EV027", "Fade Out Persist");
         EventCodeDic.Add("EV028", "Fade Out Persist");
+        EventCodeDic.Add("EV029", "Fade Out Persist");
+        EventCodeDic.Add("EV030", "Fade Out Persist");
         EventCodeDic.Add("EV999", "None");
 
         return EventCodeDic[eventCode];
