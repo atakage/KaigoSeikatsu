@@ -53,7 +53,7 @@ public class InitSettingManager : MonoBehaviour
             // clear後なら
             if (clearData.clear == true)
             {
-                canvasObj.transform.Find("rankButton").gameObject.SetActive(true);
+                canvasObj.transform.Find("careGiverListButton").gameObject.SetActive(true);
             }
         }
         
@@ -63,6 +63,7 @@ public class InitSettingManager : MonoBehaviour
         canvasObj.transform.Find("PlayButton").GetComponent<Button>().onClick.AddListener(() => ClickPlayButton(playerData));
         newGameAlertBoxObj.transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(() => ClickNewGameAlertBoxConfirmBtn(this.msgCheckIntVal));
         newGameAlertBoxObj.transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(() => ClickNewGameAlertBoxCancelBtn());
+        canvasObj.transform.Find("careGiverListButton").GetComponent<Button>().onClick.AddListener(ClickCareGiverListButton);
 
         // プレイヤーデータがある場合ロードボタンを表示する
         if (playerData != null)
@@ -73,6 +74,11 @@ public class InitSettingManager : MonoBehaviour
         }
 
         
+    }
+
+    public void ClickCareGiverListButton()
+    {
+        sceneTransitionManager.LoadTo("CareGiverListScene");
     }
 
     public void ClickNewGameAlertBoxConfirmBtn(int msgCheckIntVal)

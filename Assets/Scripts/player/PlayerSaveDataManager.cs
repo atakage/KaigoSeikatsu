@@ -24,6 +24,8 @@ public class PlayerData
     public float playTime;
     public string ending;
     public bool localMode;
+    public string startDate;
+    public string endDate;
 }
 
 [System.Serializable]

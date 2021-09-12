@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/StreetScene.unity
     guid: 9cb0130bd59469a4a9cf9af6ac90bc4b
   - enabled: 1
+    path: Assets/Scenes/CaregiverListScene.unity
+    guid: 98e01dd8aaa15f04d8b7d96463fa96fa
+  - enabled: 1
     path: Assets/Scenes/EndingScene.unity
     guid: 360583c5d8b5adb4c8eada15319c3eb2
   - enabled: 1

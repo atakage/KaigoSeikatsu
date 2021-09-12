@@ -141,6 +141,8 @@ public class ReadyForEndingManager : MonoBehaviour
         playerDataDBModel.ending = playerData.ending;
         playerDataDBModel.localMode = playerData.localMode;
         playerDataDBModel.reasonList = reasonList;
+        playerDataDBModel.startDate = playerData.startDate;
+        playerDataDBModel.endDate = DateTime.Now.ToString("yyyyMMddHHmmss");
 
         return playerDataDBModel;
     }

@@ -1322,7 +1322,7 @@ GameObject:
   - component: {fileID: 1339801095}
   - component: {fileID: 1339801094}
   m_Layer: 5
-  m_Name: rankButton
+  m_Name: careGiverListButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1501,6 +1501,8 @@ MonoBehaviour:
     playTime: 0
     ending: 
     localMode: 0
+    startDate: 
+    endDate: 
   msgCheckIntVal: 0
 --- !u!1 &1451500284
 GameObject:

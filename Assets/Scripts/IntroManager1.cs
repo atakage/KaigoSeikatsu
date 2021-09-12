@@ -92,6 +92,7 @@ public class IntroManager1 : MonoBehaviour
         playerData.fatigue = 0;
         playerData.currentScene = "AtHomeScene";
         playerData.localMode = true;
+        playerData.startDate = DateTime.Now.ToString("yyyyMMddHHmmss");
         playerSaveDataManager.SavePlayerData(playerData);
 
         // プレイ時間カウント
@@ -111,6 +112,7 @@ public class IntroManager1 : MonoBehaviour
         // DB用プレイヤーデータを作る
         playerDataDBModel = new PlayerDataDBModel();
         playerDataDBModel.name = IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text;
+        playerDataDBModel.startDate = DateTime.Now.ToString("yyyyMMddHHmmss");
 
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -160,6 +162,7 @@ public class IntroManager1 : MonoBehaviour
                     playerData.fatigue = 0;
                     playerData.currentScene = "AtHomeScene";
                     playerData.localMode = false;
+                    playerData.startDate = playerDataDBModel.startDate;
                     playerSaveDataManager.SavePlayerData(playerData);
 
                     // プレイ時間カウント
@@ -250,14 +253,6 @@ public class IntroManager1 : MonoBehaviour
           "名前は" + "<b>" + IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text + "</b>" + "ですか?";
         ActivingTestPaperBox(false);
         ActivingCheckNameAlertBox(true);
-
-        /*
-        FirebaseManager.FireBaseConnection();
-        PlayerDataDBModel playerDataDBModel = new PlayerDataDBModel();
-        playerDataDBModel.name = "BBB";
-        playerDataDBModel.ending = "endingB";
-        FirebaseManager.FindDataToDB(playerDataDBModel);
-        */
     }
 
     public void LoadEventAndShow(string eventCode)
