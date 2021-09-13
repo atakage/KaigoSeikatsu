@@ -207,6 +207,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
     //------------------------------------------------------------------------
     private void LerpToPage(int aPageIndex) {
+        // Clamp(float value, float min, float max): valueをminとmaxの間にセットさせる、valueがminより小さくなるとminを返還、maxより大きくなるとmaxを返還
         aPageIndex = Mathf.Clamp(aPageIndex, 0, _pageCount - 1);
         _lerpTo = _pagePositions[aPageIndex];
         _lerp = true;
