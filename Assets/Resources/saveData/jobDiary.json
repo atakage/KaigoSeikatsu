@@ -1,3 +1,9 @@
 {
-    "Items": []
+    "Items": [
+        {
+            "eventCode": "EC017",
+            "eventScript": "●利用者同士のトラブルが起こった/●どうしよう...",
+            "choosingString": "巻き込まれないようにその場を立ち去る"
+        }
+    ]
 }

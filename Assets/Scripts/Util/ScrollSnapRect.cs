@@ -314,6 +314,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
         // test for fast swipe - swipe that moves only +/-1 item
         if (Time.unscaledTime - _timeStamp < fastSwipeThresholdTime &&
+            // Mathf.Abs: 3 => return 3, -3 => return 3
             Mathf.Abs(difference) > fastSwipeThresholdDistance &&
             Mathf.Abs(difference) < _fastSwipeThresholdMaxLimit) {
             if (difference > 0) {

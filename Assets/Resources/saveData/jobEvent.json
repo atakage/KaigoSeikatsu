@@ -196,7 +196,7 @@
             "choiceAEffect": "SA-3:FL-3",
             "choiceBEffect": "SA+2:FA-1",
             "choiceCEffect": "FL+1",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC018",
