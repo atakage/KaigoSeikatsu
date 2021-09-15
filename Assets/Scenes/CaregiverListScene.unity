@@ -265,7 +265,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u3086\u304B\u308A"
+  m_Text: "\u540D\u524D"
 --- !u!222 &65244025
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1411,7 +1411,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "2000000\u5186"
+  m_Text: "\u304A\u91D1"
 --- !u!222 &731120581
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1420,6 +1420,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 731120578}
   m_CullTransparentMesh: 0
+--- !u!1 &755713953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 755713954}
+  - component: {fileID: 755713955}
+  m_Layer: 0
+  m_Name: CareGiverListUIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &755713954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755713953}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 520.07245, y: 1001.91644, z: -232.76126}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &755713955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755713953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e31dd50ba08403243b2b70ce7fba942f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearData:
+    clear: 0
+    clearPlayerDataList: []
+  gameClearFileManager: {fileID: 0}
+  careGiverListSharingObject: {fileID: 0}
 --- !u!1 &767789893
 GameObject:
   m_ObjectHideFlags: 0
@@ -2492,7 +2540,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 00:00:00
+  m_Text: "\u30D7\u30EC\u30A4\u6642\u9593"
 --- !u!222 &1704955067
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2577,6 +2625,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1840072332}
   m_CullTransparentMesh: 0
+--- !u!1 &1887961855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1887961856}
+  - component: {fileID: 1887961857}
+  m_Layer: 0
+  m_Name: CareGiverListSharingObjectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1887961856
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887961855}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 520.07245, y: 1001.91644, z: -232.76126}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1887961857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887961855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c58898f067f2ac4683b8ae31f0d4993, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGameObj: {fileID: 0}
+  playerClearListBoxGameObj: {fileID: 0}
+  playerClearScrollGameObj: {fileID: 0}
+  playerClearScrollContainerGameObj: {fileID: 0}
+  containerItem0GameObj: {fileID: 0}
 --- !u!1 &1911129637
 GameObject:
   m_ObjectHideFlags: 0
@@ -2724,7 +2820,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 88
+  m_Text: "\u6E80\u8DB3"
 --- !u!222 &1932353577
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2940,7 +3036,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2021.09.14 23:15:00
+  m_Text: "\u7D42\u4E86\u65E5"
 --- !u!222 &2141284427
 CanvasRenderer:
   m_ObjectHideFlags: 0
