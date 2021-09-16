@@ -68,16 +68,23 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     public GameObject allPageGameObj;
 
     private JobDiaryUIManager jobDiaryUIManager;
+    private CareGiverListUIManager careGiverListUIManager;
     //------------------------------------------------------------------------
     void Start() {
         Debug.Log("call ScrollSnapRect");
 
-        // JobDiarySceneのUIセッティング必要な情報を格納
+        // シーンのUIセッティングに必要な情報を格納
         if (GameObject.Find("JobDiaryUIManager") != null)
         {
             jobDiaryUIManager = GameObject.Find("JobDiaryUIManager").GetComponent("JobDiaryUIManager") as JobDiaryUIManager;
             jobDiaryUIManager.CreateJobDiaryContent();
         }
+        else if (GameObject.Find("CareGiverListUIManager") != null)
+        {
+            careGiverListUIManager = GameObject.Find("CareGiverListUIManager").GetComponent("CareGiverListUIManager") as CareGiverListUIManager;
+            careGiverListUIManager.AddPlayerDataItems();
+        }
+        
 
         _scrollRectComponent = GetComponent<ScrollRect>();
         _scrollRectRect = GetComponent<RectTransform>();

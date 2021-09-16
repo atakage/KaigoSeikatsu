@@ -10,7 +10,7 @@ public class CareGiverListUIManager : MonoBehaviour
     public GameClearFileManager gameClearFileManager;
     public CareGiverListSharingObjectManager careGiverListSharingObject;
 
-    private void Start()
+    public void AddPlayerDataItems()
     {
         gameClearFileManager = new GameClearFileManager();
         careGiverListSharingObject = GameObject.Find("CareGiverListSharingObjectManager").GetComponent<CareGiverListSharingObjectManager>();
@@ -20,7 +20,32 @@ public class CareGiverListUIManager : MonoBehaviour
         // 最初プレイヤーデータをdefaultobjectにセット
         InitPlayerClearData(clearData);
 
+        Debug.Log("call AddPlayerDataItems()");
+        Debug.Log("playerDataList.Count: " + clearData.clearPlayerDataList.Count);
+
         // プレイヤーデータが2つ以上ならオブジェクトを追加する
+        if (clearData.clearPlayerDataList.Count > 1)
+        {
+            // プレイヤーデータindex1から繰り返す
+            for (int i = 1; i < clearData.clearPlayerDataList.Count; i++)
+            {
+                // プレイヤーデータをセット
+                GameObject copiedPlayerDataItem = Instantiate(careGiverListSharingObject.containerItem0GameObj);
+                copiedPlayerDataItem.name = "item" + i;
+                copiedPlayerDataItem.transform.SetParent(careGiverListSharingObject.playerClearScrollContainerGameObj.transform);
+                copiedPlayerDataItem.transform.parent = careGiverListSharingObject.playerClearScrollContainerGameObj.transform;
+
+                copiedPlayerDataItem.transform.Find("upperBox").transform.Find("nameBox").transform.Find("value").GetComponent<Text>().text = clearData.clearPlayerDataList[i].name;
+                copiedPlayerDataItem.transform.Find("upperBox").transform.Find("moneyBox").transform.Find("value").GetComponent<Text>().text = clearData.clearPlayerDataList[i].money;
+                copiedPlayerDataItem.transform.Find("upperBox").transform.Find("satisfactionBox").transform.Find("value").GetComponent<Text>().text = clearData.clearPlayerDataList[i].satisfaction.ToString();
+                copiedPlayerDataItem.transform.Find("lowerBox").transform.Find("playTimeBox").transform.Find("value").GetComponent<Text>().text = TimeSpan.FromSeconds(clearData.clearPlayerDataList[i].playTime).ToString("hh':'mm':'ss");
+                copiedPlayerDataItem.transform.Find("lowerBox").transform.Find("endDateBox").transform.Find("value").GetComponent<Text>().text = clearData.clearPlayerDataList[i].endDate;
+
+                RectTransform rectCopiedPlayerDataItem = (RectTransform)copiedPlayerDataItem.transform;
+                rectCopiedPlayerDataItem.anchoredPosition = new Vector2(0, 0);
+            }
+        }
+        
     }
 
     public void InitPlayerClearData(ClearData clearData)
