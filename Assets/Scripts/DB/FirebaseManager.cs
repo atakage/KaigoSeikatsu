@@ -11,6 +11,29 @@ public class FirebaseManager : MonoBehaviour
 {
     public DatabaseReference databaseReference;
 
+    public async Task<string> SelectPlayerDataListByName(int selectCount)
+    {
+        string returnValue = null;
+
+        await databaseReference.OrderByKey().LimitToFirst(selectCount).GetValueAsync()
+       .ContinueWith(task =>
+       {
+           if (task.IsFaulted)
+           {
+               //findDataDBResultDic.Add(false, "サーバーとの通信に失敗しました");
+               Debug.Log("task.Exception.Message" + task.Exception.Message);
+           }
+           else
+           {
+               DataSnapshot dataSnapshot = task.Result;
+               Debug.Log("dataSnapshot.GetRawJsonValue(): " + dataSnapshot.GetRawJsonValue());
+               returnValue = dataSnapshot.GetRawJsonValue();
+           }
+       });
+
+        return returnValue;
+    }
+
     public async Task<bool>  FireBaseConnection()
     {
         bool returnValue = false;
@@ -63,8 +86,6 @@ public class FirebaseManager : MonoBehaviour
     public async Task<string> FindDataToDB(PlayerDataDBModel playerDataDBModel)
     {
         string returnValue = "サーバーとの通信に失敗しました";
-        //databaseReference.Child(playerDataDBModel.name).ValueChanged += HandleValueChanged;
-
         
          await databaseReference.Child(playerDataDBModel.name).GetValueAsync()
             .ContinueWith( task =>

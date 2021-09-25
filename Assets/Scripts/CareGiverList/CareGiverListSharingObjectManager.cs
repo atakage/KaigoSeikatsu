@@ -9,6 +9,11 @@ public class CareGiverListSharingObjectManager : MonoBehaviour
     public GameObject playerClearScrollGameObj;
     public GameObject playerClearScrollContainerGameObj;
     public GameObject containerItem0GameObj;
+    public GameObject transparentScreenGameObj;
+    public GameObject careGiverListBoxGameObj;
+    public GameObject careGiverListContentBoxGameObj;
+    public GameObject connectionFailDefaultGameObj;
+    public GameObject defaultFieldsGameObj;
     // Start is called before the first frame update
     // Awake() -> Start()
     /*
@@ -33,6 +38,12 @@ public class CareGiverListSharingObjectManager : MonoBehaviour
         this.playerClearScrollGameObj = this.playerClearListBoxGameObj.transform.Find("playerClearScroll").gameObject;
         this.playerClearScrollContainerGameObj = this.playerClearScrollGameObj.transform.Find("container").gameObject;
         this.containerItem0GameObj = this.playerClearScrollContainerGameObj.transform.Find("item0").gameObject;
+        this.transparentScreenGameObj = this.canvasGameObj.transform.Find("transparentScreen").gameObject;
+        this.careGiverListBoxGameObj = this.canvasGameObj.transform.Find("careGiverListBox").gameObject;
+        this.careGiverListContentBoxGameObj = this.careGiverListBoxGameObj.transform.Find("Scroll View").transform.Find("Viewport").transform.Find("contentBox").gameObject;
+        this.connectionFailDefaultGameObj = this.careGiverListContentBoxGameObj.transform.Find("connectionFailDefault").gameObject;
+        this.defaultFieldsGameObj = this.careGiverListContentBoxGameObj.transform.Find("defaultFields").gameObject;
+
 
     }
 }
