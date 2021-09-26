@@ -11,8 +11,12 @@ public class CareGiverListSharingObjectManager : MonoBehaviour
     public GameObject containerItem0GameObj;
     public GameObject transparentScreenGameObj;
     public GameObject careGiverListBoxGameObj;
+    public GameObject careGiverListScrollViewGameObj;
+    public GameObject scrollHandleGameObj;
+    public GameObject careGiverListViewportGameObj;
     public GameObject careGiverListContentBoxGameObj;
     public GameObject connectionFailDefaultGameObj;
+    public GameObject dataReadingMsgGameObj;
     public GameObject defaultFieldsGameObj;
     // Start is called before the first frame update
     // Awake() -> Start()
@@ -40,9 +44,13 @@ public class CareGiverListSharingObjectManager : MonoBehaviour
         this.containerItem0GameObj = this.playerClearScrollContainerGameObj.transform.Find("item0").gameObject;
         this.transparentScreenGameObj = this.canvasGameObj.transform.Find("transparentScreen").gameObject;
         this.careGiverListBoxGameObj = this.canvasGameObj.transform.Find("careGiverListBox").gameObject;
-        this.careGiverListContentBoxGameObj = this.careGiverListBoxGameObj.transform.Find("Scroll View").transform.Find("Viewport").transform.Find("contentBox").gameObject;
+        this.careGiverListScrollViewGameObj = this.careGiverListBoxGameObj.transform.Find("Scroll View").gameObject;
+        this.scrollHandleGameObj = this.careGiverListScrollViewGameObj.transform.Find("Scrollbar Vertical").transform.Find("Sliding Area").transform.Find("Handle").gameObject;
+        this.careGiverListViewportGameObj = this.careGiverListScrollViewGameObj.transform.Find("Viewport").gameObject;
+        this.careGiverListContentBoxGameObj = this.careGiverListViewportGameObj.transform.Find("contentBox").gameObject;
         this.connectionFailDefaultGameObj = this.careGiverListContentBoxGameObj.transform.Find("connectionFailDefault").gameObject;
         this.defaultFieldsGameObj = this.careGiverListContentBoxGameObj.transform.Find("defaultFields").gameObject;
+        this.dataReadingMsgGameObj = this.careGiverListContentBoxGameObj.transform.Find("dataReadingMessage").gameObject;
 
 
     }

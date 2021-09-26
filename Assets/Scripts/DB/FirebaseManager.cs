@@ -11,10 +11,16 @@ public class FirebaseManager : MonoBehaviour
 {
     public DatabaseReference databaseReference;
 
+    public void DisConnectFireBase()
+    {
+        databaseReference.OnDisconnect();
+    }
+
     public async Task<string> SelectPlayerDataListByName(int selectCount)
     {
         string returnValue = null;
 
+        // 日本語の場合データを読み込んだ時にunicodeに変換される問題(たまにある)
         await databaseReference.OrderByKey().LimitToFirst(selectCount).GetValueAsync()
        .ContinueWith(task =>
        {
@@ -38,6 +44,7 @@ public class FirebaseManager : MonoBehaviour
     {
         bool returnValue = false;
         DatabaseReference connectedRef = FirebaseDatabase.DefaultInstance.GetReference(".info/connected");
+        connectedRef.KeepSynced(true);
 
         await Task.Run(() =>
         {
@@ -86,8 +93,8 @@ public class FirebaseManager : MonoBehaviour
     public async Task<string> FindDataToDB(PlayerDataDBModel playerDataDBModel)
     {
         string returnValue = "サーバーとの通信に失敗しました";
-        
-         await databaseReference.Child(playerDataDBModel.name).GetValueAsync()
+
+        await databaseReference.Child(playerDataDBModel.name).GetValueAsync()
             .ContinueWith( task =>
             {
                 if (task.IsFaulted)
