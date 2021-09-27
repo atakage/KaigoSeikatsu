@@ -14,33 +14,38 @@ public class CareGiverListManager : MonoBehaviour
     public CareGiverListSharingObjectManager careGiverListSharingObjectManager;
     public Dictionary<string, PlayerDataDBModel> allPlayerDataDBModelDic;
     public bool startingCheckScrollPos;
+    public int reqPlayerDataCount;
+    public string connectionFailDefault = "connectionFailDefault"; // objectName
+    public string dataReadingMessage = "dataReadingMessage"; // objectName
+    public string defaultFields = "defaultFields"; // objectName
 
     private void Start()
     {
         careGiverListSharingObjectManager = GameObject.Find("CareGiverListSharingObjectManager").GetComponent<CareGiverListSharingObjectManager>();
         careGiverListSharingObjectManager.connectionFailDefaultGameObj.transform.Find("Button").GetComponent<Button>().onClick.AddListener(ClickConnectionRetryButton);
 
+        reqPlayerDataCount = 3;
+
         actionFlagInUpdate = false;
         firebaseManager = new FirebaseManager();
-        FireBaseConnection();
+        FireBaseConnectionAndSelectPlayerDataList();
     }
 
     private void Update()
     {
 
         UnityEngine.Debug.Log("position scroll"+careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition);
-        // プレイヤーデータリストのスクロールが一番下についたら
-        //if (careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition == 0)
+
         if (startingCheckScrollPos && 
             careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition <= 0.05f)
         {
             careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(true);
             // DBからリストを取り出す(現在childCount+7個)
+            AdditionalPlayerDataList();
 
-
-            // スクロールの位置調整
+            
             UnityEngine.Debug.Log("ENDED SCROLL");
-            careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.35f;
+
         }
             
 
@@ -57,12 +62,7 @@ public class CareGiverListManager : MonoBehaviour
 
     }
 
-    public void ClickConnectionRetryButton()
-    {
-        // 現在プレイヤーデータリストから
-    }
-
-    public async void FireBaseConnection()
+    public async void AdditionalPlayerDataList()
     {
         // DB作業
         Stopwatch stopwatch = new Stopwatch();
@@ -81,8 +81,194 @@ public class CareGiverListManager : MonoBehaviour
         // DB接続チェックを成功すると
         if (connectionResult)
         {
-            // DBからプレイヤーデータリストを取り出す(最初は10個取得、あと10個ずつ追加)
-            string playerDataListJsonStr = await firebaseManager.SelectPlayerDataListByName(7);
+            // リストを追加で読み込むときlimitCountを増加させてくれる(3ずつ)
+            string playerDataListJsonStr = await firebaseManager.SelectPlayerDataListByName(reqPlayerDataCount+=3);
+
+            // プレイヤーデータリストの取り出しに失敗したら
+            if (playerDataListJsonStr == null)
+            {
+                // reset count
+                reqPlayerDataCount -= 3;
+
+                // UI設定
+                careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
+                // スクロールの位置調整
+                //careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.35f;
+            }
+            // プレイヤーデータリストの取り出しに成功すると
+            else
+            {
+                // UI設定
+                careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
+                allPlayerDataDBModelDic = JsonConvert.DeserializeObject<Dictionary<string, PlayerDataDBModel>>(playerDataListJsonStr);
+
+                // Dictionaryにデータがあると
+                if (allPlayerDataDBModelDic.Count > 0)
+                {
+                   
+                    List<GameObject> beingDestroyedObjectList = new List<GameObject>();
+
+                    // contentBox内のdefaultObject(connectionFailDefault, dataReadingMessage, defaultFields)を除いた既存プレイヤーデータを削除
+                    foreach (Transform contentBoxChildTransform in careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform)
+                    {
+                        UnityEngine.Debug.Log("name DestroyImmediate: " + contentBoxChildTransform.name);
+                        if (contentBoxChildTransform.transform.Find("nameValue") != null)UnityEngine.Debug.Log("mae DestroyImmediate: " + contentBoxChildTransform.transform.Find("nameValue").GetComponent<Text>().text);
+
+                        if (!connectionFailDefault.Equals(contentBoxChildTransform.gameObject.name)
+                        && !dataReadingMessage.Equals(contentBoxChildTransform.gameObject.name)
+                        && !defaultFields.Equals(contentBoxChildTransform.gameObject.name))
+                        {
+                            UnityEngine.Debug.Log("DestroyImmediate: " + contentBoxChildTransform.transform.Find("nameValue").GetComponent<Text>().text);
+                            //DestroyImmediate(contentBoxChildTransform.gameObject);
+                            // ★loop中childObjectを削除するとindex接近に問題が発生するためリストに貯めておいてあとから削除する
+                            beingDestroyedObjectList.Add(contentBoxChildTransform.gameObject);
+                        }
+                    }
+
+                    // 削除するオブジェクトがあると
+                    foreach (GameObject beingDestroyedObject in beingDestroyedObjectList)
+                    {
+                        DestroyImmediate(beingDestroyedObject);
+                    }
+
+                    // sizeだけ繰り返す
+                    foreach (KeyValuePair<string, PlayerDataDBModel> playerDataKey in allPlayerDataDBModelDic)
+                    {
+                        GameObject copiedDefaultField = Instantiate(careGiverListSharingObjectManager.defaultFieldsGameObj);
+                        copiedDefaultField.AddComponent<Outline>();
+
+                        Destroy(copiedDefaultField.transform.Find("nameButton").gameObject);
+                        Destroy(copiedDefaultField.transform.Find("moneyButton").gameObject);
+                        Destroy(copiedDefaultField.transform.Find("satisfactionButton").gameObject);
+                        Destroy(copiedDefaultField.transform.Find("playTimeButton").gameObject);
+                        Destroy(copiedDefaultField.transform.Find("endDateButton").gameObject);
+
+                        GameObject nameValue = new GameObject();
+                        nameValue.name = "nameValue";
+                        nameValue.AddComponent<Text>();
+                        nameValue.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                        nameValue.GetComponent<Text>().text = playerDataKey.Value.name;
+                        nameValue.GetComponent<Text>().fontSize = 20;
+                        nameValue.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
+                        nameValue.GetComponent<Text>().color = new Color(0, 0, 0, 255);
+                        nameValue.transform.SetParent(copiedDefaultField.transform);
+
+                        GameObject moneyValue = new GameObject();
+                        moneyValue.name = "moneyValue";
+                        moneyValue.AddComponent<Text>();
+                        moneyValue.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                        moneyValue.GetComponent<Text>().text = playerDataKey.Value.money;
+                        moneyValue.GetComponent<Text>().fontSize = 20;
+                        moneyValue.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
+                        moneyValue.GetComponent<Text>().color = new Color(0, 0, 0, 255);
+                        moneyValue.transform.SetParent(copiedDefaultField.transform);
+
+                        GameObject satisfactionValue = new GameObject();
+                        satisfactionValue.name = "satisfactionValue";
+                        satisfactionValue.AddComponent<Text>();
+                        satisfactionValue.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                        satisfactionValue.GetComponent<Text>().text = playerDataKey.Value.satisfaction.ToString();
+                        satisfactionValue.GetComponent<Text>().fontSize = 20;
+                        satisfactionValue.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
+                        satisfactionValue.GetComponent<Text>().color = new Color(0, 0, 0, 255);
+                        satisfactionValue.transform.SetParent(copiedDefaultField.transform);
+
+                        GameObject playTimeValue = new GameObject();
+                        playTimeValue.name = "playTimeValue";
+                        playTimeValue.AddComponent<Text>();
+                        playTimeValue.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                        playTimeValue.GetComponent<Text>().text = TimeSpan.FromSeconds(playerDataKey.Value.playTime).ToString("hh':'mm':'ss");
+                        playTimeValue.GetComponent<Text>().fontSize = 20;
+                        playTimeValue.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
+                        playTimeValue.GetComponent<Text>().color = new Color(0, 0, 0, 255);
+                        playTimeValue.transform.SetParent(copiedDefaultField.transform);
+
+                        GameObject endDateValue = new GameObject();
+                        endDateValue.name = "endDateValue";
+                        endDateValue.AddComponent<Text>();
+                        endDateValue.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                        endDateValue.GetComponent<Text>().text = playerDataKey.Value.endDate;
+                        endDateValue.GetComponent<Text>().fontSize = 20;
+                        endDateValue.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
+                        endDateValue.GetComponent<Text>().color = new Color(0, 0, 0, 255);
+                        endDateValue.transform.SetParent(copiedDefaultField.transform);
+
+                        copiedDefaultField.transform.SetParent(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform);
+                    }
+
+                    // scroll update用
+                    Vector2 viewportCellSize = careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize;
+                    careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize = new Vector2(viewportCellSize.x, viewportCellSize.y + 100);
+
+                    careGiverListSharingObjectManager.dataReadingMsgGameObj.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1);
+
+                    // スクロールの位置調整
+                    //careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.35f;
+                }
+
+            }
+        }
+        // DB接続チェックができなかったら
+        else
+        {
+            // UI設定
+            careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
+            // スクロールの位置調整
+            //careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.35f;
+        }
+
+        UnityEngine.Debug.Log("reqPlayerDataCount: " + reqPlayerDataCount);
+        UnityEngine.Debug.Log("careGiverListContentBoxGameObj.transform.childCount: " + careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount);
+        UnityEngine.Debug.Log("careGiverListContentBoxGameObj.transform.childCount-3: " + (careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount-3));
+        UnityEngine.Debug.Log("startingCheckScrollPos: " + startingCheckScrollPos);
+
+        // サーバーからすべてのデータを読み込んだとき
+        // 要請したプレイヤーデータカウントより読み込んだリストのカウント(contentBox内のdefaultObject(connectionFailDefault, dataReadingMessage, defaultFields)を除いた)が小さくと
+        if (reqPlayerDataCount > (careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount-3))
+        {
+            // UI設定
+            careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
+
+            // viewPortの余る空間を除く
+            //Vector2 viewportCellSize = careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize;
+            // viewportのcellSize.yが800.0052(最低限)を超えると
+            //if (viewportCellSize.y > 800.0052) careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize = new Vector2(viewportCellSize.x, viewportCellSize.y - 100);
+
+            // リスト更新機能を防ぐ
+            startingCheckScrollPos = false;
+        }
+
+        // スクロールの位置調整
+        //if (startingCheckScrollPos) careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.4f;
+
+    }
+
+    public void ClickConnectionRetryButton()
+    {
+        // 現在プレイヤーデータリストから
+    }
+
+    public async void FireBaseConnectionAndSelectPlayerDataList()
+    {
+        // DB作業
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        bool connectionResult = false;
+        // 最大5秒Firebaseに接続を試みる
+        while (stopwatch.Elapsed < TimeSpan.FromMilliseconds(5000))
+        {
+            connectionResult = await firebaseManager.FireBaseConnection();
+            if (connectionResult) break;
+        }
+
+        UnityEngine.Debug.Log("completed connectionResult: " + connectionResult);
+        stopwatch = null;
+
+        // DB接続チェックを成功すると
+        if (connectionResult)
+        {
+            // DBからプレイヤーデータリストを取り出す(最初は10個取得、あと7個ずつ追加)
+            string playerDataListJsonStr = await firebaseManager.SelectPlayerDataListByName(reqPlayerDataCount);
             // プレイヤーデータリストの取り出しに失敗したら
             if (playerDataListJsonStr == null)
             {
@@ -115,6 +301,7 @@ public class CareGiverListManager : MonoBehaviour
                        
                         GameObject copiedDefaultField = Instantiate(careGiverListSharingObjectManager.defaultFieldsGameObj);
                         copiedDefaultField.AddComponent<Outline>();
+                        copiedDefaultField.name = playerDataKey.Value.name;
 
                         Destroy(copiedDefaultField.transform.Find("nameButton").gameObject);
                         Destroy(copiedDefaultField.transform.Find("moneyButton").gameObject);
@@ -183,33 +370,8 @@ public class CareGiverListManager : MonoBehaviour
 
                     careGiverListSharingObjectManager.dataReadingMsgGameObj.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount-1);
 
-                    /*
-                    GameObject scrollUpdateAlert = Instantiate(careGiverListSharingObjectManager.defaultFieldsGameObj);
-                    scrollUpdateAlert.GetComponent<GridLayoutGroup>().cellSize = new Vector2(645, 100);
-                    scrollUpdateAlert.AddComponent<Outline>();
-                    scrollUpdateAlert.name = "scrollUpdateAlert";
-
-                    Destroy(scrollUpdateAlert.transform.Find("nameButton").gameObject);
-                    Destroy(scrollUpdateAlert.transform.Find("moneyButton").gameObject);
-                    Destroy(scrollUpdateAlert.transform.Find("satisfactionButton").gameObject);
-                    Destroy(scrollUpdateAlert.transform.Find("playTimeButton").gameObject);
-                    Destroy(scrollUpdateAlert.transform.Find("endDateButton").gameObject);
-
-                    GameObject serverConnectionMsgValue = new GameObject();
-                    serverConnectionMsgValue.name = "serverConnectionMsgValue";
-                    serverConnectionMsgValue.AddComponent<Text>();
-                    serverConnectionMsgValue.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-                    serverConnectionMsgValue.GetComponent<Text>().text = "データの読み込み中...";
-                    serverConnectionMsgValue.GetComponent<Text>().fontSize = 20;
-                    serverConnectionMsgValue.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
-                    serverConnectionMsgValue.GetComponent<Text>().color = new Color(0, 0, 0, 255);
-                    serverConnectionMsgValue.transform.SetParent(scrollUpdateAlert.transform);
-                    
-                    scrollUpdateAlert.transform.SetParent(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform);
-                    */
                 }
 
-                
             }
 
         }
