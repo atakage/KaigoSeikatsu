@@ -18,6 +18,7 @@ public class CareGiverListManager : MonoBehaviour
     public string connectionFailDefault = "connectionFailDefault"; // objectName
     public string dataReadingMessage = "dataReadingMessage"; // objectName
     public string defaultFields = "defaultFields"; // objectName
+    public bool completedReadingData; // 追加リストを読み込んだあとスクロール位置を調整するため
 
     private void Start()
     {
@@ -36,9 +37,20 @@ public class CareGiverListManager : MonoBehaviour
 
         UnityEngine.Debug.Log("position scroll"+careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition);
 
+        // 追加リストを読み込むと
+        if (completedReadingData)
+        {
+            completedReadingData = false;
+            // スクロール位置を調整
+            careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.25f;
+        }
+
         if (startingCheckScrollPos && 
             careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition <= 0.05f)
         {
+            // drag機能を防ぐ(バグ防止)
+            careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().vertical = false;
+
             careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(true);
             // DBからリストを取り出す(現在childCount+7個)
             AdditionalPlayerDataList();
@@ -47,8 +59,7 @@ public class CareGiverListManager : MonoBehaviour
             UnityEngine.Debug.Log("ENDED SCROLL");
 
         }
-            
-
+        
         // DBからプレイヤーデータリストを取り出すとactionFlagInUpdate変更
         if (successSelectingPlayerDataList) actionFlagInUpdate = true;
 
@@ -64,6 +75,8 @@ public class CareGiverListManager : MonoBehaviour
 
     public async void AdditionalPlayerDataList()
     {
+        
+
         // DB作業
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -89,11 +102,11 @@ public class CareGiverListManager : MonoBehaviour
             {
                 // reset count
                 reqPlayerDataCount -= 3;
-
                 // UI設定
                 careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
-                // スクロールの位置調整
-                //careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.35f;
+                // drag機能をいかす
+                careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().vertical = true;
+
             }
             // プレイヤーデータリストの取り出しに成功すると
             else
@@ -202,10 +215,11 @@ public class CareGiverListManager : MonoBehaviour
 
                     careGiverListSharingObjectManager.dataReadingMsgGameObj.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1);
 
-                    // スクロールの位置調整
-                    //careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.35f;
                 }
-
+                // 追加リスト作業が終わったことを示す
+                completedReadingData = true;
+                // drag機能をいかす
+                careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().vertical = true;
             }
         }
         // DB接続チェックができなかったら
@@ -213,8 +227,8 @@ public class CareGiverListManager : MonoBehaviour
         {
             // UI設定
             careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
-            // スクロールの位置調整
-            //careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.35f;
+            // drag機能をいかす
+            careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().vertical = true;
         }
 
         UnityEngine.Debug.Log("reqPlayerDataCount: " + reqPlayerDataCount);
@@ -240,7 +254,6 @@ public class CareGiverListManager : MonoBehaviour
 
         // スクロールの位置調整
         //if (startingCheckScrollPos) careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.4f;
-
     }
 
     public void ClickConnectionRetryButton()
@@ -280,6 +293,8 @@ public class CareGiverListManager : MonoBehaviour
             // プレイヤーデータリストの取り出しに成功すると
             else
             {
+                
+
                 careGiverListSharingObjectManager.transparentScreenGameObj.SetActive(false);
 
                 allPlayerDataDBModelDic = JsonConvert.DeserializeObject<Dictionary<string, PlayerDataDBModel>>(playerDataListJsonStr);
@@ -371,7 +386,8 @@ public class CareGiverListManager : MonoBehaviour
                     careGiverListSharingObjectManager.dataReadingMsgGameObj.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount-1);
 
                 }
-
+                // リスト更新機能ON
+                startingCheckScrollPos = true;
             }
 
         }
@@ -385,6 +401,6 @@ public class CareGiverListManager : MonoBehaviour
         }
 
         // リスト更新がすべて終わったあとからスクロールの位置をチェック
-        startingCheckScrollPos = true;
+        // startingCheckScrollPos = true;
     }
 }
