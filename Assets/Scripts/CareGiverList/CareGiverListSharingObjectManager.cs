@@ -9,6 +9,7 @@ public class CareGiverListSharingObjectManager : MonoBehaviour
     public GameObject playerClearScrollGameObj;
     public GameObject playerClearScrollContainerGameObj;
     public GameObject containerItem0GameObj;
+    public GameObject scrollHelpMessageBoxGameObj;
     public GameObject transparentScreenGameObj;
     public GameObject careGiverListBoxGameObj;
     public GameObject careGiverListScrollViewGameObj;
@@ -42,6 +43,7 @@ public class CareGiverListSharingObjectManager : MonoBehaviour
         this.playerClearScrollGameObj = this.playerClearListBoxGameObj.transform.Find("playerClearScroll").gameObject;
         this.playerClearScrollContainerGameObj = this.playerClearScrollGameObj.transform.Find("container").gameObject;
         this.containerItem0GameObj = this.playerClearScrollContainerGameObj.transform.Find("item0").gameObject;
+        this.scrollHelpMessageBoxGameObj = this.canvasGameObj.transform.Find("scrollHelpMessageBox").gameObject;
         this.transparentScreenGameObj = this.canvasGameObj.transform.Find("transparentScreen").gameObject;
         this.careGiverListBoxGameObj = this.canvasGameObj.transform.Find("careGiverListBox").gameObject;
         this.careGiverListScrollViewGameObj = this.careGiverListBoxGameObj.transform.Find("Scroll View").gameObject;

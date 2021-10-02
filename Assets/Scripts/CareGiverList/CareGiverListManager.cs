@@ -19,13 +19,14 @@ public class CareGiverListManager : MonoBehaviour
     public string dataReadingMessage = "dataReadingMessage"; // objectName
     public string defaultFields = "defaultFields"; // objectName
     public bool completedReadingData; // 追加リストを読み込んだあとスクロール位置を調整するため
+    public bool readingDataBool;
 
     private void Start()
     {
         careGiverListSharingObjectManager = GameObject.Find("CareGiverListSharingObjectManager").GetComponent<CareGiverListSharingObjectManager>();
         careGiverListSharingObjectManager.connectionFailDefaultGameObj.transform.Find("Button").GetComponent<Button>().onClick.AddListener(ClickConnectionRetryButton);
 
-        reqPlayerDataCount = 3;
+        reqPlayerDataCount = 7;
 
         actionFlagInUpdate = false;
         firebaseManager = new FirebaseManager();
@@ -34,8 +35,11 @@ public class CareGiverListManager : MonoBehaviour
 
     private void Update()
     {
+        // リスト読み込みが完了されてないなら
+        if (!startingCheckScrollPos)
+        {
 
-        UnityEngine.Debug.Log("position scroll"+careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition);
+        }
 
         // 追加リストを読み込むと
         if (completedReadingData)
@@ -45,13 +49,16 @@ public class CareGiverListManager : MonoBehaviour
             careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.25f;
         }
 
-        if (startingCheckScrollPos && 
+        if (startingCheckScrollPos &&
+            !readingDataBool &&
             careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition <= 0.05f)
         {
+            readingDataBool = true;
+
             // drag機能を防ぐ(バグ防止)
             careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().vertical = false;
 
-            careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(true);
+            //careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(true);
             // DBからリストを取り出す(現在childCount+7個)
             AdditionalPlayerDataList();
 
@@ -75,7 +82,7 @@ public class CareGiverListManager : MonoBehaviour
 
     public async void AdditionalPlayerDataList()
     {
-        
+        careGiverListSharingObjectManager.transparentScreenGameObj.SetActive(true);
 
         // DB作業
         Stopwatch stopwatch = new Stopwatch();
@@ -95,7 +102,7 @@ public class CareGiverListManager : MonoBehaviour
         if (connectionResult)
         {
             // リストを追加で読み込むときlimitCountを増加させてくれる(3ずつ)
-            string playerDataListJsonStr = await firebaseManager.SelectPlayerDataListByName(reqPlayerDataCount+=3);
+            string playerDataListJsonStr = await firebaseManager.SelectPlayerDataListByName(reqPlayerDataCount+=7);
 
             // プレイヤーデータリストの取り出しに失敗したら
             if (playerDataListJsonStr == null)
@@ -103,7 +110,7 @@ public class CareGiverListManager : MonoBehaviour
                 // reset count
                 reqPlayerDataCount -= 3;
                 // UI設定
-                careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
+                //careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
                 // drag機能をいかす
                 careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().vertical = true;
 
@@ -112,7 +119,7 @@ public class CareGiverListManager : MonoBehaviour
             else
             {
                 // UI設定
-                careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
+                //careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
                 allPlayerDataDBModelDic = JsonConvert.DeserializeObject<Dictionary<string, PlayerDataDBModel>>(playerDataListJsonStr);
 
                 // Dictionaryにデータがあると
@@ -210,25 +217,48 @@ public class CareGiverListManager : MonoBehaviour
                     }
 
                     // scroll update用
-                    Vector2 viewportCellSize = careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize;
-                    careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize = new Vector2(viewportCellSize.x, viewportCellSize.y + 100);
+                    //Vector2 viewportCellSize = careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize;
+                    //careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize = new Vector2(viewportCellSize.x, viewportCellSize.y + 100);
 
-                    careGiverListSharingObjectManager.dataReadingMsgGameObj.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1);
+                    // scroll update用
+                    Vector2 viewportCellSize = careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize;
+                    viewportCellSize = new Vector2(viewportCellSize.x, 0);
+                    careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize = new Vector2(viewportCellSize.x, viewportCellSize.y + (100 * (careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1)));
+
+                    //careGiverListSharingObjectManager.dataReadingMsgGameObj.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1);
 
                 }
-                // 追加リスト作業が終わったことを示す
-                completedReadingData = true;
+                // Dictionaryにデータがないと
+                else
+                {
+                    UnityEngine.Debug.Log("Dictionary Data Count 0!");
+                    // UI設定
+                    //careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
+                    // drag機能をいかす
+                    //careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().vertical = true;
+                }
                 // drag機能をいかす
                 careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().vertical = true;
+                // 追加リスト作業が終わったことを示す
+                completedReadingData = true;
             }
+            // サーバー通信画面false
+            careGiverListSharingObjectManager.transparentScreenGameObj.SetActive(false);
+            readingDataBool = false;
         }
         // DB接続チェックができなかったら
         else
         {
+            UnityEngine.Debug.Log("DB Connection Fail");
             // UI設定
-            careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
+            //careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
             // drag機能をいかす
             careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().vertical = true;
+            // サーバー通信画面false
+            careGiverListSharingObjectManager.transparentScreenGameObj.SetActive(false);
+            readingDataBool = false;
+            // 追加リスト作業が終わったことを示す
+            completedReadingData = true;
         }
 
         UnityEngine.Debug.Log("reqPlayerDataCount: " + reqPlayerDataCount);
@@ -238,10 +268,11 @@ public class CareGiverListManager : MonoBehaviour
 
         // サーバーからすべてのデータを読み込んだとき
         // 要請したプレイヤーデータカウントより読み込んだリストのカウント(contentBox内のdefaultObject(connectionFailDefault, dataReadingMessage, defaultFields)を除いた)が小さくと
-        if (reqPlayerDataCount > (careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount-3))
+        if (connectionResult && reqPlayerDataCount > (careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount-3))
         {
+            UnityEngine.Debug.Log("Reading Complete!");
             // UI設定
-            careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
+            //careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(false);
 
             // viewPortの余る空間を除く
             //Vector2 viewportCellSize = careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize;
@@ -250,15 +281,23 @@ public class CareGiverListManager : MonoBehaviour
 
             // リスト更新機能を防ぐ
             startingCheckScrollPos = false;
+            // リスト読み込み完了表示
+            careGiverListSharingObjectManager.dataReadingMsgGameObj.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1);
+            careGiverListSharingObjectManager.dataReadingMsgGameObj.SetActive(true);
         }
-
         // スクロールの位置調整
         //if (startingCheckScrollPos) careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.4f;
+
+        // drag機能をいかす
+        careGiverListSharingObjectManager.careGiverListScrollViewGameObj.GetComponent<ScrollRect>().vertical = true;
     }
 
     public void ClickConnectionRetryButton()
     {
-        // 現在プレイヤーデータリストから
+        careGiverListSharingObjectManager.connectionFailDefaultGameObj.SetActive(false);
+        careGiverListSharingObjectManager.transparentScreenGameObj.SetActive(true);
+
+        FireBaseConnectionAndSelectPlayerDataList();
     }
 
     public async void FireBaseConnectionAndSelectPlayerDataList()
