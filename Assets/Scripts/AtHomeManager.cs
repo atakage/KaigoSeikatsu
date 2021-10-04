@@ -11,6 +11,8 @@ public class AtHomeManager : MonoBehaviour
     public PlayerSaveDataManager playerSaveDataManager;
     public ConvenienceItemSetManager convenienceItemSetManager;
     public UtilManager utilManager;
+    public FirebaseManager firebaseManager;
+    public PlayerDataToPlayerDataDBModelManager playerDataToPlayerDataDBModelManager;
     public PlayerData playerData = null;
     public GameObject canvasGameObj;
     public Boolean timeCheckResult;
@@ -20,8 +22,11 @@ public class AtHomeManager : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         sceneTransitionManager = new SceneTransitionManager();
         convenienceItemSetManager = new ConvenienceItemSetManager();
+        firebaseManager = GameObject.Find("FirebaseManager").GetComponent<FirebaseManager>();
+        playerDataToPlayerDataDBModelManager = new PlayerDataToPlayerDataDBModelManager();
         utilManager = new UtilManager();
 
+        
         if (GameObject.Find("SceneChangeManager") != null) GameObject.Find("SceneChangeManager").transform.Find("SceneChangeCanvas").transform.Find("destinationFrom-toItemCheckScene").GetComponent<Text>().text = SceneManager.GetActiveScene().name;
 
         // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
@@ -191,8 +196,6 @@ public class AtHomeManager : MonoBehaviour
 
     public void ClickNextButton()
     {
-        
-
         // nextButton名によるシーン変更
         if (GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("出勤する"))
         {
@@ -252,8 +255,16 @@ public class AtHomeManager : MonoBehaviour
         fadeObj.AddComponent<SimpleFadeInOutManager>();
     }
 
-    public void ClickGoToAlertYesButton()
+    public async void ClickGoToAlertYesButton()
     {
+        if (GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("寝る"))
+        {
+            // 2021.10.14追加
+                  // 次の日になる時データ収集ためDBにデータセーブ
+            bool connectionResult = await firebaseManager.FireBaseConnection();
+            if (connectionResult) await firebaseManager.InsertUpdateToDB(playerDataToPlayerDataDBModelManager.PlayerDataToDBModel(playerData));
+        }
+
         canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(false);
         canvasGameObj.transform.Find("nextButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("goOutButton").gameObject.SetActive(false);

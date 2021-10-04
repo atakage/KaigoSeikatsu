@@ -1716,6 +1716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   completedFadeOut: 0
+  beingDrag: 0
   careGiverListSharingObjectManager: {fileID: 0}
 --- !u!1 &605877549
 GameObject:
