@@ -64,7 +64,7 @@
             "choiceAEffect": "SA-1:FL-2",
             "choiceBEffect": "SA+1",
             "choiceCEffect": "SA+3",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC006",
@@ -75,7 +75,7 @@
             "choiceAEffect": "SA-1:FL-1:FA-1",
             "choiceBEffect": "SA+3",
             "choiceCEffect": "SA+1",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC007",
@@ -119,7 +119,7 @@
             "choiceAEffect": "SA+2",
             "choiceBEffect": "SA+1",
             "choiceCEffect": "FA-3",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC011",

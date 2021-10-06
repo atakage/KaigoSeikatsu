@@ -7,7 +7,7 @@
             "requiredScene": "FacilityScene",
             "requiredCompletedMainEvent": "",
             "requiredCompletedJobEvent": "",
-            "addingProgress": 1
+            "addingProgress": 4
         },
         {
             "eventCode": "EV021",
@@ -16,7 +16,7 @@
             "requiredScene": "FacilityScene",
             "requiredCompletedMainEvent": "EV020",
             "requiredCompletedJobEvent": "EC000:EC001:EC002:EC003:EC004",
-            "addingProgress": 19
+            "addingProgress": 4
         },
         {
             "eventCode": "EV022",
@@ -25,7 +25,7 @@
             "requiredScene": "FacilityScene",
             "requiredCompletedMainEvent": "EV021",
             "requiredCompletedJobEvent": "EC000:EC001:EC002:EC003:EC004:EC005:EC006:EC007:EC008:EC009",
-            "addingProgress": 19
+            "addingProgress": 4
         },
         {
             "eventCode": "EV023",
@@ -34,7 +34,7 @@
             "requiredScene": "FacilityScene",
             "requiredCompletedMainEvent": "EV022",
             "requiredCompletedJobEvent": "EC000:EC001:EC002:EC003:EC004:EC005:EC006:EC007:EC008:EC009:EC010:EC011:EC012:EC013:EC014",
-            "addingProgress": 19
+            "addingProgress": 4
         },
         {
             "eventCode": "EV024",
@@ -43,7 +43,7 @@
             "requiredScene": "FacilityScene",
             "requiredCompletedMainEvent": "EV023",
             "requiredCompletedJobEvent": "EC000:EC001:EC002:EC003:EC004:EC005:EC006:EC007:EC008:EC009:EC010:EC011:EC012:EC013:EC014:EC015:EC016:EC017:EC018:EC019",
-            "addingProgress": 10
+            "addingProgress": 4
         },
         {
             "eventCode": "EV025",
@@ -52,7 +52,7 @@
             "requiredScene": "FacilityScene",
             "requiredCompletedMainEvent": "EV024",
             "requiredCompletedJobEvent": "",
-            "addingProgress": 1
+            "addingProgress": 4
         },
         {
             "eventCode": "EV026",
@@ -61,7 +61,7 @@
             "requiredScene": "FacilityScene",
             "requiredCompletedMainEvent": "EV024",
             "requiredCompletedJobEvent": "",
-            "addingProgress": 1
+            "addingProgress": 4
         }
     ]
 }

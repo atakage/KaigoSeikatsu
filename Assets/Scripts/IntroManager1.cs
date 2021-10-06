@@ -36,8 +36,8 @@ public class IntroManager1 : MonoBehaviour
         IntroSharingObjectManager.checkNameButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameButton);
         IntroSharingObjectManager.checkNameConfirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameConfirmButton);
         IntroSharingObjectManager.checkNameCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameCancelButton);
-        IntroSharingObjectManager.offLinePlayAlertBoxOffLineButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickOffLinePlayButton);
-        IntroSharingObjectManager.offLinePlayAlertBoxOnLineButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickOnLinePlayButton);
+        //IntroSharingObjectManager.offLinePlayAlertBoxOffLineButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickOffLinePlayButton);
+        //IntroSharingObjectManager.offLinePlayAlertBoxOnLineButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickOnLinePlayButton);
         IntroSharingObjectManager.alertBoxCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickAlertBoxCancelButton);
 
         FirebaseManager = GameObject.Find("FirebaseManager").GetComponent("FirebaseManager") as FirebaseManager;
@@ -203,7 +203,9 @@ public class IntroManager1 : MonoBehaviour
     public void ClickCheckNameConfirmButton()
     {
         ActivingCheckNameAlertBox(false);
-        ActivingOffLinePlayAlertBox(true);
+        //ActivingOffLinePlayAlertBox(true);
+        ClickOnLinePlayButton();
+
     }
 
     public void ClickCheckNameCancelButton()

@@ -273,7 +273,6 @@ public class ChatManager : MonoBehaviour
 
         // プレイヤーデータ更新(progress, fatigue, satisfaction, feeling...)
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
-        playerData.progress += 1;
 
         // SA-1
         string[] effectValueArray = choosingAfterEffect.Split(':');
@@ -336,6 +335,9 @@ public class ChatManager : MonoBehaviour
         // プレイヤーデータにクリアーイベントで追加する
         string[] jobEventCodeArray = playerSaveDataManager.SaveCompletedEvent(playerData.eventCodeObject.completedJobEventArray, eventCode);
         playerData.eventCodeObject.completedJobEventArray = jobEventCodeArray;
+        // 2021.10.06 追加
+        // jobEventクリア後progress増加
+        playerData.progress += 4;
 
         // JobDiary.jsonファイルに記録
         // jobDiary.jsonを読み込む
