@@ -64,11 +64,23 @@ public class AtHomeManager : MonoBehaviour
         if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
             GameObject.Find("Canvas").transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("出勤する"))
         {
-            // 次のシーンをプレイヤーデータにセーブ
-            playerData.currentScene = "FacilityScene";
-            playerData.time = "08:50";
-            playerSaveDataManager.SavePlayerData(playerData);
-            sceneTransitionManager.LoadTo("FacilityScene");
+            // 2021.10.09 追加
+            // fatigue(つかれ)が20以上ならEnding'3'(goToReadyForEndingScene)
+            playerData =  playerSaveDataManager.LoadPlayerData();
+            // つかれが20未満なら
+            if (playerData.fatigue < 20)
+            {
+                // 次のシーンをプレイヤーデータにセーブ
+                playerData.currentScene = "FacilityScene";
+                playerData.time = "08:50";
+                playerSaveDataManager.SavePlayerData(playerData);
+                sceneTransitionManager.LoadTo("FacilityScene");
+            }
+            // つかれが20以上なら
+            else
+            {
+
+            }
         // 寝て朝になる
         }else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
                   GameObject.Find("Canvas").transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("寝る"))
@@ -259,11 +271,16 @@ public class AtHomeManager : MonoBehaviour
     {
         if (GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("寝る"))
         {
+            // 2021.10.09追加
+            // 次の日になるたびお金+100円
+            playerData.money = (Int32.Parse(playerData.money)+100).ToString();
+
             // 2021.10.14追加
-                  // 次の日になる時データ収集ためDBにデータセーブ
+            // 次の日になる時データ収集ためDBにデータセーブ
             bool connectionResult = await firebaseManager.FireBaseConnection();
             if (connectionResult) await firebaseManager.InsertUpdateToDB(playerDataToPlayerDataDBModelManager.PlayerDataToDBModel(playerData));
         }
+        playerSaveDataManager.SavePlayerData(playerData);
 
         canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(false);
         canvasGameObj.transform.Find("nextButton").gameObject.SetActive(false);

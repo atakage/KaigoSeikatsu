@@ -30,13 +30,26 @@ public class MenuManager : MonoBehaviour
         menuInitVar.menuGridGameObj.transform.Find("statusButton").GetComponent<Button>().onClick.AddListener(() => ClickStatusButton());
         menuInitVar.menuGridGameObj.transform.Find("titleButton").GetComponent<Button>().onClick.AddListener(() => ClickTitleButton());
         menuInitVar.menuGridGameObj.transform.Find("CloseButton").GetComponent<Button>().onClick.AddListener(() => ClickCloseButton(playerData.currentScene));
+        menuInitVar.titleReturnAlertBoxGameObj.transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(ClickTitleReturnConfirmBtn);
+        menuInitVar.titleReturnAlertBoxGameObj.transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(ClickTitleReturnCancelBtn);
+    }
 
+    public void ClickTitleReturnCancelBtn()
+    {
+        menuInitVar.menuGridGameObj.SetActive(true);
+        menuInitVar.titleReturnAlertBoxGameObj.SetActive(false);
+    }
+
+    public void ClickTitleReturnConfirmBtn()
+    {
+        playTimeManager.SavePlayTimeToPlayerDataJsonFile();
+        sceneTransitionManager.LoadTo("TitleScene");
     }
 
     public void ClickTitleButton()
     {
-        playTimeManager.SavePlayTimeToPlayerDataJsonFile();
-        sceneTransitionManager.LoadTo("TitleScene");
+        menuInitVar.menuGridGameObj.SetActive(false);
+        menuInitVar.titleReturnAlertBoxGameObj.SetActive(true);
     }
 
     public void ClickStatusButton()

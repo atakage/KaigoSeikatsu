@@ -156,7 +156,7 @@ public class IntroManager1 : MonoBehaviour
                     // 新しいプレイヤーデータを作成
                     playerData = new PlayerData();
                     playerData.name = playerDataDBModel.name;
-                    playerData.money = "15000"; // 円
+                    playerData.money = "1000"; // 円
                     playerData.time = "08:00";
                     playerData.progress = 0;
                     playerData.fatigue = 0;

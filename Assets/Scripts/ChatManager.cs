@@ -339,6 +339,10 @@ public class ChatManager : MonoBehaviour
         // jobEventクリア後progress増加
         playerData.progress += 4;
 
+        //2021.10.09 追加
+        // jobEventクリア後、お金+100円
+        playerData.money = (Int32.Parse(playerData.money) + 100).ToString();
+
         // JobDiary.jsonファイルに記録
         // jobDiary.jsonを読み込む
         JobDiaryModel[] jobDiaryModelArray = jobDiarySetManager.GetJobDiaryJsonFile();

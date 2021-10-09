@@ -3485,8 +3485,11 @@ MonoBehaviour:
     playTime: 0
     ending: 
     localMode: 0
+    startDate: 
+    endDate: 
   IntroSharingObjectManager: {fileID: 0}
   FirebaseManager: {fileID: 0}
+  playTimeManager: {fileID: 0}
   inputFieldFocusBool: 0
 --- !u!4 &1961760617
 Transform:

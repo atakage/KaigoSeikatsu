@@ -1,3 +1,14 @@
 {
-    "Items": []
+    "Items": [
+        {
+            "eventCode": "EC018",
+            "eventScript": "●移乗介助で気をつけるべきことについて考えてみよう",
+            "choosingString": "車椅子のシートはベッドより高くなるように調節する"
+        },
+        {
+            "eventCode": "EC004",
+            "eventScript": "●歩行介助の方法について考えてみよう",
+            "choosingString": "応援歩行"
+        }
+    ]
 }

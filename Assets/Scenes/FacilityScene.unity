@@ -1377,7 +1377,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u75B2\u52B4\u5EA6"
+  m_Text: "\u75B2\u308C"
 --- !u!222 &492537202
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1964,7 +1964,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 20
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -3850,6 +3850,7 @@ MonoBehaviour:
   useItemButton: {fileID: 0}
   nextButton: {fileID: 0}
   playerData:
+    name: 
     currentScene: 
     money: 
     time: 
@@ -3867,6 +3868,10 @@ MonoBehaviour:
       jobEventSearchSkip: 0
       jobEventDayCompletedBool: 0
     playTime: 0
+    ending: 
+    localMode: 0
+    startDate: 
+    endDate: 
   canvasObj: {fileID: 0}
   FadeRefObj: {fileID: 0}
   morningrequiredEvent:
