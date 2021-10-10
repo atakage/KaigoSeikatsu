@@ -231,8 +231,8 @@ public class ParkManager : MonoBehaviour
         // 0ならお金獲得
         if (0 == eventInt)
         {
-            // 100円 ~ 500円
-            int money = random.Next(1, 6) * 100;
+            // 100円 ~ 200円
+            int money = random.Next(1, 3) * 100;
             PlayerData playerData = playerSaveDataManager.LoadPlayerData();
             playerData.money = (Int32.Parse(playerData.money) + money).ToString();
             playerSaveDataManager.SavePlayerData(playerData);

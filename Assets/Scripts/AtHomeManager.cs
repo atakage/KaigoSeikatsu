@@ -64,34 +64,38 @@ public class AtHomeManager : MonoBehaviour
         if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
             GameObject.Find("Canvas").transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("出勤する"))
         {
-            // 2021.10.09 追加
-            // fatigue(つかれ)が20以上ならEnding'3'(goToReadyForEndingScene)
-            playerData =  playerSaveDataManager.LoadPlayerData();
-            // つかれが20未満なら
-            if (playerData.fatigue < 20)
-            {
-                // 次のシーンをプレイヤーデータにセーブ
-                playerData.currentScene = "FacilityScene";
-                playerData.time = "08:50";
-                playerSaveDataManager.SavePlayerData(playerData);
-                sceneTransitionManager.LoadTo("FacilityScene");
-            }
-            // つかれが20以上なら
-            else
-            {
+            // 次のシーンをプレイヤーデータにセーブ
+            playerData.currentScene = "FacilityScene";
+            playerData.time = "08:50";
+            playerSaveDataManager.SavePlayerData(playerData);
+            sceneTransitionManager.LoadTo("FacilityScene");
 
-            }
         // 寝て朝になる
         }else if (GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text.Equals("call") &&
                   GameObject.Find("Canvas").transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("寝る"))
         {
-            GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text = "";
-            GameObject.Find("Canvas").transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "出勤する";
-            playerData.time = "08:00";
-            playerSaveDataManager.SavePlayerData(playerData);
-            GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = playerData.time;
-            MenuButtonActive(true);
-            UIDisplay(true);
+            // 2021.10.09 追加
+            // fatigue(つかれ)が20以上ならEnding'3'(goToReadyForEndingScene)
+            playerData = playerSaveDataManager.LoadPlayerData();
+            // つかれが20未満なら
+            if (playerData.fatigue < 20)
+            {
+                GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text = "";
+                GameObject.Find("Canvas").transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "出勤する";
+                playerData.time = "08:00";
+                playerSaveDataManager.SavePlayerData(playerData);
+                GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = playerData.time;
+                MenuButtonActive(true);
+                UIDisplay(true);
+            }
+            // つかれが20以上なら
+            else
+            {
+                playerData.ending = "endingC";
+                playerData.currentScene = "ReadyForEndingScene";
+                playerSaveDataManager.SavePlayerData(playerData);
+                sceneTransitionManager.LoadTo("ReadyForEndingScene");
+            }
         // コンビニへ行く
         }else if (GameObject.Find("Canvas").transform.Find("FadeCompleteValue").GetComponent<Text>().text.Equals("convenience"))
         {
@@ -235,10 +239,25 @@ public class AtHomeManager : MonoBehaviour
 
     public void SetAlertForSleep()
     {
-        GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("alertMessage").GetComponent<Text>().text =
+        playerData = playerSaveDataManager.LoadPlayerData();
+        // 2021.10.10 追加
+        // プレイヤーが疲れ果ての状態(fatigue20以上)なら
+        if (playerData.fatigue > 19)
+        {
+            canvasGameObj.transform.Find("AlertGoing").transform.Find("alertMessage").GetComponent<Text>().text =
+            "体の具合が悪い、\n疲れが取れない状態寝ますか?";
+            canvasGameObj.transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text =
+            "ending";
+        }
+        // プレイヤーが疲れ果ての状態(fatigue20未満なら)なら
+        else
+        {
+            canvasGameObj.transform.Find("AlertGoing").transform.Find("alertMessage").GetComponent<Text>().text =
             "今日はもう寝ますか?";
-        GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text =
+            canvasGameObj.transform.Find("AlertGoing").transform.Find("DestinationValue").GetComponent<Text>().text =
             "夢";
+        }
+       
     }
 
     public void UIDisplay(bool sw)

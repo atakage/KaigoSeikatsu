@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 public class CareGiverListManager : MonoBehaviour
 {
     public FirebaseManager firebaseManager;
+    public SceneTransitionManager sceneTransitionManager;
     public bool successSelectingPlayerDataList; // DBからプレイヤーデータリスト取り出しに成功
     public bool actionFlagInUpdate; // Update()中である動作を指示するflag
     public CareGiverListSharingObjectManager careGiverListSharingObjectManager;
@@ -23,8 +24,11 @@ public class CareGiverListManager : MonoBehaviour
 
     private void Start()
     {
+        sceneTransitionManager = new SceneTransitionManager();
+
         careGiverListSharingObjectManager = GameObject.Find("CareGiverListSharingObjectManager").GetComponent<CareGiverListSharingObjectManager>();
         careGiverListSharingObjectManager.connectionFailDefaultGameObj.transform.Find("Button").GetComponent<Button>().onClick.AddListener(ClickConnectionRetryButton);
+        careGiverListSharingObjectManager.returnButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickReturnButton);
 
         reqPlayerDataCount = 7;
 
@@ -80,6 +84,11 @@ public class CareGiverListManager : MonoBehaviour
 
     }
 
+    public void ClickReturnButton()
+    {
+        sceneTransitionManager.LoadTo("TitleScene");
+    }
+
     public async void AdditionalPlayerDataList()
     {
         careGiverListSharingObjectManager.transparentScreenGameObj.SetActive(true);
@@ -132,7 +141,6 @@ public class CareGiverListManager : MonoBehaviour
                     foreach (Transform contentBoxChildTransform in careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform)
                     {
                         UnityEngine.Debug.Log("name DestroyImmediate: " + contentBoxChildTransform.name);
-                        if (contentBoxChildTransform.transform.Find("nameValue") != null)UnityEngine.Debug.Log("mae DestroyImmediate: " + contentBoxChildTransform.transform.Find("nameValue").GetComponent<Text>().text);
 
                         if (!connectionFailDefault.Equals(contentBoxChildTransform.gameObject.name)
                         && !dataReadingMessage.Equals(contentBoxChildTransform.gameObject.name)
@@ -156,6 +164,7 @@ public class CareGiverListManager : MonoBehaviour
                     {
                         GameObject copiedDefaultField = Instantiate(careGiverListSharingObjectManager.defaultFieldsGameObj);
                         copiedDefaultField.AddComponent<Outline>();
+                        copiedDefaultField.name = playerDataKey.Value.name;
 
                         Destroy(copiedDefaultField.transform.Find("nameButton").gameObject);
                         Destroy(copiedDefaultField.transform.Find("moneyButton").gameObject);

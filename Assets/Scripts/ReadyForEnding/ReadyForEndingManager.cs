@@ -81,6 +81,13 @@ public class ReadyForEndingManager : MonoBehaviour
                 // continueAlertBoxを表示
                 SetActiveContinueAlertBox(true);
             }
+            // 2021.10.10 追加
+            else if ("endingC".Equals(playerData.ending))
+            {
+                readyForEndingSharingObjectManager.fadeGameObj.SetActive(false);
+                // DBセーブ
+                DBSaveForEndingC();
+            }
         }
 
 
@@ -106,10 +113,87 @@ public class ReadyForEndingManager : MonoBehaviour
             readyForEndingSharingObjectManager.canvasGameObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV028")
         ||  readyForEndingSharingObjectManager.canvasGameObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV029")
         ||  readyForEndingSharingObjectManager.canvasGameObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV030")
+        ||  readyForEndingSharingObjectManager.canvasGameObj.transform.Find("endedEventCode").GetComponent<Text>().text.Equals("EV031")
            )
         )
         {
             sceneTransitionManager.LoadTo("EndingScene");
+        }
+    }
+
+    public async void DBSaveForEndingC()
+    {
+        // PlayerDataをDBセーブ用モデルに変換(PlayerDataDBModel)
+        playerData.endDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+        playerSaveDataManager.SavePlayerData(playerData);
+        PlayerDataDBModel playerDataDBModel = ConvertPlayerDataDBModel(playerData, null);
+
+        // DB作業
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        bool connectionResult = false;
+
+        // 最大5秒Firebaseに接続を試みる
+        while (stopwatch.Elapsed < TimeSpan.FromMilliseconds(5000))
+        {
+            connectionResult = await firebaseManager.FireBaseConnection();
+            if (connectionResult) break;
+        }
+        stopwatch.Stop();
+
+        // DB接続に成功すると
+        if (connectionResult)
+        {
+            // サーバーにプレイヤーデータをアプデ
+            string insertUpdateResult = await firebaseManager.InsertUpdateToDB(playerDataDBModel);
+            // insertUpdateResultが'success'なら
+            if ("success".Equals(insertUpdateResult))
+            {
+                //readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = "サーバーにデータを送信しました!";
+
+                await Task.Delay(3000).ContinueWith(t => {
+                    UnityMainThread.wkr.AddJob(() =>
+                    {
+                        // ゲームエンディングを記録するファイルを作る
+                        gameClearFileManager.SaveGameClearFile(playerData);
+                        // プレイヤーデータを削除する
+                        playerSaveDataManager.DeletePlayerDataJsonFile();
+
+                        // ContinueWith(MainThreadじゃないなら)ではSetActive不可能
+                        //readyForEndingSharingObjectManager.alertBoxGameObj.SetActive(false);
+                        //LoadEventAndShow("EV029");
+
+                        //readyForEndingSharingObjectManager.fadeGameObj.SetActive(false);
+                        LoadEventAndShow("EV031");
+                    });
+                });
+            }
+            // insertUpdateResultが'success'じゃないなら
+            else
+            {
+                // ゲームエンディングを記録するファイルを作る
+                gameClearFileManager.SaveGameClearFile(playerData);
+                // プレイヤーデータを削除する
+                playerSaveDataManager.DeletePlayerDataJsonFile();
+
+                //readyForEndingSharingObjectManager.fadeGameObj.SetActive(false);
+                LoadEventAndShow("EV031");
+                //readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = insertUpdateResult;
+                //readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.SetActive(true);
+            }
+        }
+        // DB接続に失敗すると
+        else
+        {
+            // ゲームエンディングを記録するファイルを作る
+            gameClearFileManager.SaveGameClearFile(playerData);
+            // プレイヤーデータを削除する
+            playerSaveDataManager.DeletePlayerDataJsonFile();
+
+            //readyForEndingSharingObjectManager.fadeGameObj.SetActive(false);
+            LoadEventAndShow("EV031");
+            //readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = "サーバーとの通信に失敗しました";
+            //readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.SetActive(true);
         }
     }
 
@@ -142,7 +226,7 @@ public class ReadyForEndingManager : MonoBehaviour
         playerDataDBModel.localMode = playerData.localMode;
         playerDataDBModel.reasonList = reasonList;
         playerDataDBModel.startDate = playerData.startDate;
-        playerDataDBModel.endDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+        playerDataDBModel.endDate = playerData.endDate;
 
         return playerDataDBModel;
     }
@@ -244,6 +328,8 @@ public class ReadyForEndingManager : MonoBehaviour
         }
 
         // PlayerDataをDBセーブ用モデルに変換(PlayerDataDBModel)
+        playerData.endDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+        playerSaveDataManager.SavePlayerData(playerData);
         PlayerDataDBModel playerDataDBModel = ConvertPlayerDataDBModel(playerData, reasonList);
 
 

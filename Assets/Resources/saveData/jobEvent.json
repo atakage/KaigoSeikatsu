@@ -9,7 +9,7 @@
             "choiceAEffect": "SA-1:FA+1",
             "choiceBEffect": "FA+1",
             "choiceCEffect": "FA+1:FL+1",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC001",
@@ -20,7 +20,7 @@
             "choiceAEffect": "SA-1:FL+1",
             "choiceBEffect": "FL+2",
             "choiceCEffect": "FA+3",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC002",
@@ -31,7 +31,7 @@
             "choiceAEffect": "SA+1",
             "choiceBEffect": "FA+3",
             "choiceCEffect": "SA+1:FL+1",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC003",
@@ -42,7 +42,7 @@
             "choiceAEffect": "SA+2",
             "choiceBEffect": "FL+1",
             "choiceCEffect": "SA+1:FL+1",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC004",
@@ -86,7 +86,7 @@
             "choiceAEffect": "SA+1:FA+1",
             "choiceBEffect": "FA+3",
             "choiceCEffect": "FA-1:FL+2",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC008",
@@ -130,7 +130,7 @@
             "choiceAEffect": "SA+1:FL+1",
             "choiceBEffect": "FA+3:FL-3",
             "choiceCEffect": "SA+1:FL+3",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC012",

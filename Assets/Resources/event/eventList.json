@@ -156,6 +156,11 @@
             "optionSW": "ON"
         },
         {
+            "eventCode": "EV031",
+            "script": "●蓄積したストレスと疲れで私は結局/●仕事中そのまま倒れてしまった",
+            "optionSW": "ON"
+        },
+        {
             "eventCode": "ET000",
             "script": "\"あんたは誰?\"",
             "optionSW": "ON"
