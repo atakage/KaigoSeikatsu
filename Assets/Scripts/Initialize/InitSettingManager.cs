@@ -11,6 +11,7 @@ public class InitSettingManager : MonoBehaviour
     public JobDiarySetManager jobDiarySetManager;
     public PlayTimeManager playTimeManager;
     public GameClearFileManager gameClearFileManager;
+    public JobEventSetManager jobEventSetManager;
     public GameObject canvasObj;
     public GameObject loadButtonObj;
     public GameObject newGameAlertBoxObj;
@@ -23,6 +24,7 @@ public class InitSettingManager : MonoBehaviour
         sceneTransitionManager = new SceneTransitionManager();
         jobDiarySetManager = new JobDiarySetManager();
         gameClearFileManager = new GameClearFileManager();
+        jobEventSetManager = new JobEventSetManager();
 
         playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
@@ -72,8 +74,6 @@ public class InitSettingManager : MonoBehaviour
             loadButtonObj.GetComponent<Button>().interactable = true;
             loadButtonObj.GetComponent<Button>().onClick.AddListener(() => ClickLoadButton(playerData));
         }
-
-        
     }
 
     public void ClickCareGiverListButton()
@@ -84,6 +84,12 @@ public class InitSettingManager : MonoBehaviour
     public void ClickNewGameAlertBoxConfirmBtn(int msgCheckIntVal)
     {
         Debug.Log("msgCheckIntVal: " + msgCheckIntVal);
+
+        // JobEvent.json初期化
+        Dictionary<string, Dictionary<string, object>> jobEventListDic = csvManager.GetTxtItemList("JobEvent");
+        // JobEvent.jsonを作る
+        jobEventSetManager = new JobEventSetManager();
+        jobEventSetManager.CreateJobEventJson(jobEventListDic);
 
         // 追加メッセージ
         if (msgCheckIntVal == 0)
@@ -111,6 +117,7 @@ public class InitSettingManager : MonoBehaviour
         string msg = "新しいデータが作成されると\n現在セーブデータは削除されます";
         newGameAlertBoxObj.transform.Find("message").GetComponent<Text>().text = msg;
         this.msgCheckIntVal = 0;
+        canvasObj.transform.Find("careGiverListButton").GetComponent<Button>().interactable = true;
     }
 
     public void ClickPlayButton(PlayerData playerData)
@@ -119,10 +126,17 @@ public class InitSettingManager : MonoBehaviour
         if (playerData != null)
         {
             newGameAlertBoxObj.SetActive(true);
+            canvasObj.transform.Find("careGiverListButton").GetComponent<Button>().interactable = false;
         }
         // プレイヤーデータがないとnew game
         else
-        {            
+        {
+            // JobEvent.json初期化
+            Dictionary<string, Dictionary<string, object>> jobEventListDic = csvManager.GetTxtItemList("JobEvent");
+            // JobEvent.jsonを作る
+            jobEventSetManager = new JobEventSetManager();
+            jobEventSetManager.CreateJobEventJson(jobEventListDic);
+
             // プレイヤーアイテムデータ初期化
             playerSaveDataManager.RemoveItemListDataJsonFile();
 

@@ -5,14 +5,31 @@ using UnityEngine;
 
 public class PlayerDataToPlayerDataDBModelManager : MonoBehaviour
 {
+    
+
+    private void Start()
+    {
+        
+    }
     public PlayerDataDBModel PlayerDataToDBModel(PlayerData playerData)
     {
         PlayerDataDBModel playerDataDBModel = new PlayerDataDBModel();
+        JobDiarySetManager jobDiarySetManager = new JobDiarySetManager();
+        PlayerSaveDataManager playerSaveDataManager = new PlayerSaveDataManager();
 
         playerDataDBModel.name = playerData.name;
         playerDataDBModel.currentScene = playerData.currentScene;
         playerDataDBModel.money = playerData.money;
         playerDataDBModel.eventCodeObject = playerData.eventCodeObject;
+
+        JobDiaryModel[] jobDiaryModelArray = jobDiarySetManager.GetJobDiaryJsonFile();
+        playerDataDBModel.jobDiaryModelArray = new JobDiaryModel[jobDiaryModelArray.Length];
+        playerDataDBModel.jobDiaryModelArray = jobDiaryModelArray;
+
+        ItemListData[] itemListDataArray = playerSaveDataManager.LoadItemListData();
+        playerDataDBModel.itemListDataArray = new ItemListData[itemListDataArray.Length];
+        playerDataDBModel.itemListDataArray = itemListDataArray;
+
         playerDataDBModel.progress = playerData.progress;
         playerDataDBModel.fatigue = playerData.fatigue;
         playerDataDBModel.satisfaction = playerData.satisfaction;

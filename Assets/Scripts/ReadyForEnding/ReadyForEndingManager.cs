@@ -159,11 +159,6 @@ public class ReadyForEndingManager : MonoBehaviour
                         // プレイヤーデータを削除する
                         playerSaveDataManager.DeletePlayerDataJsonFile();
 
-                        // ContinueWith(MainThreadじゃないなら)ではSetActive不可能
-                        //readyForEndingSharingObjectManager.alertBoxGameObj.SetActive(false);
-                        //LoadEventAndShow("EV029");
-
-                        //readyForEndingSharingObjectManager.fadeGameObj.SetActive(false);
                         LoadEventAndShow("EV031");
                     });
                 });
@@ -176,10 +171,7 @@ public class ReadyForEndingManager : MonoBehaviour
                 // プレイヤーデータを削除する
                 playerSaveDataManager.DeletePlayerDataJsonFile();
 
-                //readyForEndingSharingObjectManager.fadeGameObj.SetActive(false);
                 LoadEventAndShow("EV031");
-                //readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = insertUpdateResult;
-                //readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.SetActive(true);
             }
         }
         // DB接続に失敗すると
@@ -190,10 +182,7 @@ public class ReadyForEndingManager : MonoBehaviour
             // プレイヤーデータを削除する
             playerSaveDataManager.DeletePlayerDataJsonFile();
 
-            //readyForEndingSharingObjectManager.fadeGameObj.SetActive(false);
             LoadEventAndShow("EV031");
-            //readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = "サーバーとの通信に失敗しました";
-            //readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.SetActive(true);
         }
     }
 
@@ -215,9 +204,22 @@ public class ReadyForEndingManager : MonoBehaviour
     public PlayerDataDBModel ConvertPlayerDataDBModel(PlayerData playerData, List<string> reasonList)
     {
         PlayerDataDBModel playerDataDBModel = new PlayerDataDBModel();
+        JobDiarySetManager jobDiarySetManager = new JobDiarySetManager();
 
         playerDataDBModel.name = playerData.name;
+        playerDataDBModel.currentScene = playerData.currentScene;
         playerDataDBModel.money = playerData.money;
+        playerDataDBModel.eventCodeObject = playerData.eventCodeObject;
+
+        JobDiaryModel[] jobDiaryModelArray = jobDiarySetManager.GetJobDiaryJsonFile();
+        playerDataDBModel.jobDiaryModelArray = new JobDiaryModel[jobDiaryModelArray.Length];
+        playerDataDBModel.jobDiaryModelArray = jobDiaryModelArray;
+
+        ItemListData[] itemListDataArray = playerSaveDataManager.LoadItemListData();
+        playerDataDBModel.itemListDataArray = new ItemListData[itemListDataArray.Length];
+        playerDataDBModel.itemListDataArray = itemListDataArray;
+
+        playerDataDBModel.progress = playerData.progress;
         playerDataDBModel.fatigue = playerData.fatigue;
         playerDataDBModel.satisfaction = playerData.satisfaction;
         playerDataDBModel.feeling = playerData.feeling;
@@ -227,6 +229,7 @@ public class ReadyForEndingManager : MonoBehaviour
         playerDataDBModel.reasonList = reasonList;
         playerDataDBModel.startDate = playerData.startDate;
         playerDataDBModel.endDate = playerData.endDate;
+        playerDataDBModel.modifiedDate = DateTime.Now.ToString("yyyyMMddHHmmss");
 
         return playerDataDBModel;
     }

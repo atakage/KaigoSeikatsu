@@ -9,6 +9,8 @@ public class PlayerDataDBModel
     public string currentScene;
     public string money;
     public EventCodeObject eventCodeObject = new EventCodeObject();
+    public JobDiaryModel[] jobDiaryModelArray;
+    public ItemListData[] itemListDataArray;
     public int progress;
     public float fatigue; // 疲労、100になったらゲームオーバー
     public int satisfaction; // 仕事の満足度, endingに影響
