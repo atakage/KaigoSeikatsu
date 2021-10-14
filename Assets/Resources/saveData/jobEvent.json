@@ -108,7 +108,7 @@
             "choiceAEffect": "SA-1:FL-1",
             "choiceBEffect": "SA-1",
             "choiceCEffect": "SA+3:FL+1:FA-3",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC010",
@@ -119,7 +119,7 @@
             "choiceAEffect": "SA+2",
             "choiceBEffect": "SA+1",
             "choiceCEffect": "FA-3",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC011",
@@ -163,7 +163,7 @@
             "choiceAEffect": "SA+2",
             "choiceBEffect": "FA-1",
             "choiceCEffect": "FA-1",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC015",
@@ -196,7 +196,7 @@
             "choiceAEffect": "SA-3:FL-3",
             "choiceBEffect": "SA+2:FA-1",
             "choiceCEffect": "FL+1",
-            "eventActive": true
+            "eventActive": false
         },
         {
             "eventCode": "EC018",

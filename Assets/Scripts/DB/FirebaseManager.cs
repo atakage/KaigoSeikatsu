@@ -21,7 +21,8 @@ public class FirebaseManager : MonoBehaviour
         string returnValue = null;
 
         // 日本語の場合データを読み込んだ時にunicodeに変換される問題(たまにある)
-        await databaseReference.OrderByKey().LimitToFirst(selectCount).GetValueAsync()
+        await databaseReference.OrderByKey().LimitToLast(selectCount).GetValueAsync()
+        //await databaseReference.OrderByKey().StartAt(selectCount).EndAt(5).GetValueAsync()
        .ContinueWith(task =>
        {
            if (task.IsFaulted)
@@ -56,7 +57,7 @@ public class FirebaseManager : MonoBehaviour
                     Debug.Log("isConnected: " + isConnected);
                     // 接続に成功するとDB情報を格納
                     // FirebaseDatabase.DefaultInstance.GetReference("player_data"): DB名にaccess
-                    this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference("player_data");
+                     this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference("player_data");
                     returnValue = true;
                 }
                 else
@@ -66,7 +67,7 @@ public class FirebaseManager : MonoBehaviour
                 }
             };
         });
-
+        
         return returnValue;
     }
 

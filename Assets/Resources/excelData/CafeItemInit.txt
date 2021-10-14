@@ -3,3 +3,4 @@ itemName,itemPrice,itemDescription,itemQty,itemSale
 カフェ・ラッテ,550,ミルクたっぷりのカフェ・ラッテ,0,Y
 アイスティー,350,冷たくて甘い,0,Y
 ハムサンド,500,定番のハムサンド,0,Y
+あかね牧場牛乳,1000,あかね牧場で搾った牛乳,0,Y

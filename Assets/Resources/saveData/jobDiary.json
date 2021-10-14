@@ -1,14 +1,14 @@
 {
     "Items": [
         {
-            "eventCode": "EC014",
-            "eventScript": "●介護職員ができる医療行為について考えてみよう",
-            "choosingString": "爪切り"
+            "eventCode": "EC017",
+            "eventScript": "●利用者同士のトラブルが起こった/●どうしよう...",
+            "choosingString": "他のスタッフを呼ぶ"
         },
         {
-            "eventCode": "EC010",
-            "eventScript": "●口腔ケアの注意点は?",
-            "choosingString": "歯の数を数える"
+            "eventCode": "EC009",
+            "eventScript": "●介護記録を作成しよう",
+            "choosingString": "○○さんがスタッフに向かって『お前は、バカか?』と言った"
         }
     ]
 }

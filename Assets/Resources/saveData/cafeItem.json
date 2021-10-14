@@ -31,6 +31,14 @@
             "itemPrice": 500,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
+        },
+        {
+            "itemName": "あかね牧場牛乳",
+            "itemDescription": "あかね牧場で搾った牛乳",
+            "itemQuantity": 0,
+            "itemPrice": 1000,
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
         }
     ]
 }
