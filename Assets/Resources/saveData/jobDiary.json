@@ -1,14 +1,24 @@
 {
     "Items": [
         {
-            "eventCode": "EC017",
-            "eventScript": "●利用者同士のトラブルが起こった/●どうしよう...",
-            "choosingString": "他のスタッフを呼ぶ"
+            "eventCode": "EC008",
+            "eventScript": "●居室を掃除時にチェックすべき点は?",
+            "choosingString": "掃除後利用者に確認する"
         },
         {
-            "eventCode": "EC009",
-            "eventScript": "●介護記録を作成しよう",
-            "choosingString": "○○さんがスタッフに向かって『お前は、バカか?』と言った"
+            "eventCode": "EC006",
+            "eventScript": "●ある利用者が失禁して恥ずかしがっている/●声をかけてみよう",
+            "choosingString": "大丈夫ですか?"
+        },
+        {
+            "eventCode": "EC010",
+            "eventScript": "●口腔ケアの注意点は?",
+            "choosingString": "利用者の後ろに立って介助する"
+        },
+        {
+            "eventCode": "EC005",
+            "eventScript": "●食事介助の時気をつけることについて考えてみよう",
+            "choosingString": "高齢者は固い食べ物を好む"
         }
     ]
 }

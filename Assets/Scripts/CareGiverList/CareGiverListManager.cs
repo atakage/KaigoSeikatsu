@@ -165,6 +165,7 @@ public class CareGiverListManager : MonoBehaviour
                         GameObject copiedDefaultField = Instantiate(careGiverListSharingObjectManager.defaultFieldsGameObj);
                         copiedDefaultField.AddComponent<Outline>();
                         copiedDefaultField.name = playerDataKey.Value.name;
+                        copiedDefaultField.GetComponent<Image>().color = new Color32(255, 191, 193, 255);
 
                         Destroy(copiedDefaultField.transform.Find("nameButton").gameObject);
                         Destroy(copiedDefaultField.transform.Find("moneyButton").gameObject);
@@ -365,6 +366,7 @@ public class CareGiverListManager : MonoBehaviour
                         GameObject copiedDefaultField = Instantiate(careGiverListSharingObjectManager.defaultFieldsGameObj);
                         copiedDefaultField.AddComponent<Outline>();
                         copiedDefaultField.name = playerDataKey.Value.name;
+                        copiedDefaultField.GetComponent<Image>().color = new Color32(255, 191, 193, 255);
 
                         Destroy(copiedDefaultField.transform.Find("nameButton").gameObject);
                         Destroy(copiedDefaultField.transform.Find("moneyButton").gameObject);
