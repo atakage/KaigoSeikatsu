@@ -115,7 +115,7 @@ public class ConvenienceUIManager : MonoBehaviour
                     GameObject.Find("Canvas").transform.Find("Panel").transform.Find("Text").GetComponent<Text>().text =
                         "[" + "<color=#93DAFF>" + hit.transform.Find("itemName").GetComponent<Text>().text + "</color>" + "]" + "\n" +
                         "販売価格:" + "<color=#93DAFF>" + hit.transform.Find("itemPrice").GetComponent<Text>().text + "</color>" + "    " + "残り:" + "<color=#93DAFF>" + hit.transform.Find("itemQuantity").GetComponent<Text>().text + "</color>" + "\n" +
-                        "-" + hit.transform.Find("itemDescription").GetComponent<Text>().text;
+                        "-" + hit.transform.Find("itemDescription").GetComponent<Text>().text.Replace("<br>","\n");
 
 
                 }

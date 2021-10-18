@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Linq;
 
 public class ParkManager : MonoBehaviour
 {
@@ -257,6 +258,14 @@ public class ParkManager : MonoBehaviour
     {
         System.Random random = new System.Random();
         Debug.Log("convenienceItemDataArray.length: " + convenienceItemDataArray.Length);
+        
+        // 2021.10.18 追加
+        // コンビニアイテムの中特定商品を除く
+        List<ConvenienceItemData> convenienceItemDataList = new List<ConvenienceItemData>(convenienceItemDataArray);
+        // SingleOrDefault: リストから特定データを取り出す
+        convenienceItemDataList.Remove(convenienceItemDataList.SingleOrDefault(r => r.itemName.Equals("栄養ドリンク")));
+        convenienceItemDataArray = convenienceItemDataList.ToArray();
+
         // ランダムアイテム１つを取り出す
         ConvenienceItemData convenienceItemData = convenienceItemDataArray[random.Next(0, convenienceItemDataArray.Length)];
         Debug.Log(convenienceItemData.itemName + "を獲得");

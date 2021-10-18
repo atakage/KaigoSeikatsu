@@ -1,60 +1,36 @@
 {
     "Items": [
         {
-            "itemName": "テストアイテムA",
-            "itemDescription": "test item",
+            "itemName": "おにぎり",
+            "itemDescription": "お米を味わう!<br>シンプルなおにぎり",
+            "itemQuantity": 4,
+            "itemPrice": 100,
+            "itemSale": "Y",
+            "itemImagePath": "img/item/unity"
+        },
+        {
+            "itemName": "焼肉弁当",
+            "itemDescription": "豚肉たっぶり、お弁当",
             "itemQuantity": 3,
-            "itemPrice": 12345,
+            "itemPrice": 300,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
         },
         {
-            "itemName": "テストアイテムB",
-            "itemDescription": "test item",
-            "itemQuantity": 2,
-            "itemPrice": 5000,
+            "itemName": "ビール",
+            "itemDescription": "ビールでも飲んで忘れろ!<br>のどごしがすごいビール",
+            "itemQuantity": 1,
+            "itemPrice": 200,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
         },
         {
-            "itemName": "テストアイテムC",
-            "itemDescription": "test item",
-            "itemQuantity": 2,
-            "itemPrice": 3000,
-            "itemSale": "Y",
-            "itemImagePath": "img/item/unity"
-        },
-        {
-            "itemName": "テストアイテムD",
-            "itemDescription": "test item",
-            "itemQuantity": 5,
-            "itemPrice": 2000,
-            "itemSale": "Y",
-            "itemImagePath": "img/item/unity"
-        },
-        {
-            "itemName": "テストアイテムE",
-            "itemDescription": "test item",
+            "itemName": "栄養ドリンク",
+            "itemDescription": "疲労回復の効果がある",
             "itemQuantity": 3,
-            "itemPrice": 1000,
+            "itemPrice": 500,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
-        },
-        {
-            "itemName": "テストアイテムF",
-            "itemDescription": "test item",
-            "itemQuantity": 5,
-            "itemPrice": 5000,
-            "itemSale": "Y",
-            "itemImagePath": "img/item/unity"
-        },
-        {
-            "itemName": "android",
-            "itemDescription": "test item",
-            "itemQuantity": 5,
-            "itemPrice": 700,
-            "itemSale": "Y",
-            "itemImagePath": "img/item/android"
         }
     ]
 }

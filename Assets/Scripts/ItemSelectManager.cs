@@ -50,7 +50,7 @@ public class ItemSelectManager : MonoBehaviour
                     GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>().text =
                     "[ " + "<color=#93DAFF>" + findedItem.transform.Find("itemName").GetComponent<Text>().text + "</color>" + "(" + "x" + findedItem.transform.Find("itemQty").GetComponent<Text>().text + ")" + " ]" +
                     "\n" +
-                    findedItem.transform.Find("itemDesc").GetComponent<Text>().text;
+                    findedItem.transform.Find("itemDesc").GetComponent<Text>().text.Replace("<br>","\n");
 
                     // set item outline
                     GameObject.Find("itemSlotCanvas").transform.Find(hit.transform.gameObject.name).GetComponent<Outline>().effectDistance = new Vector2(10, 10);

@@ -19,6 +19,16 @@
             "eventCode": "EC005",
             "eventScript": "●食事介助の時気をつけることについて考えてみよう",
             "choosingString": "高齢者は固い食べ物を好む"
+        },
+        {
+            "eventCode": "EC014",
+            "eventScript": "●介護職員ができる医療行為について考えてみよう",
+            "choosingString": "やけどの応急処置"
+        },
+        {
+            "eventCode": "EC012",
+            "eventScript": "●介護職員の必需品について考えてみよう",
+            "choosingString": "ビニール袋"
         }
     ]
 }
