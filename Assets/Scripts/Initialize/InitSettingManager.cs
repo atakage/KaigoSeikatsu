@@ -78,11 +78,17 @@ public class InitSettingManager : MonoBehaviour
 
     public void ClickCareGiverListButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         sceneTransitionManager.LoadTo("CareGiverListScene");
     }
 
     public void ClickNewGameAlertBoxConfirmBtn(int msgCheckIntVal)
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         Debug.Log("msgCheckIntVal: " + msgCheckIntVal);
 
         // JobEvent.json初期化
@@ -122,6 +128,9 @@ public class InitSettingManager : MonoBehaviour
 
     public void ClickPlayButton(PlayerData playerData)
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         // プレイヤーデータがあるとメッセージを表示する
         if (playerData != null)
         {
@@ -147,6 +156,9 @@ public class InitSettingManager : MonoBehaviour
 
     public void ClickLoadButton(PlayerData playerData)
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         // プレイ時間記録を始める
         playTimeManager.playTime = playerData.playTime;
         playTimeManager.countPlayTime = true;

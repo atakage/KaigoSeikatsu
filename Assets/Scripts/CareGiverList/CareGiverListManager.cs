@@ -342,8 +342,6 @@ public class CareGiverListManager : MonoBehaviour
             // プレイヤーデータリストの取り出しに成功すると
             else
             {
-                
-
                 careGiverListSharingObjectManager.transparentScreenGameObj.SetActive(false);
 
                 allPlayerDataDBModelDic = JsonConvert.DeserializeObject<Dictionary<string, PlayerDataDBModel>>(playerDataListJsonStr);
