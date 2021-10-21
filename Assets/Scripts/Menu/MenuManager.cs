@@ -42,23 +42,35 @@ public class MenuManager : MonoBehaviour
 
     public void ClickTitleReturnConfirmBtn()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         playTimeManager.SavePlayTimeToPlayerDataJsonFile();
         sceneTransitionManager.LoadTo("TitleScene");
     }
 
     public void ClickTitleButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         menuInitVar.menuGridGameObj.SetActive(false);
         menuInitVar.titleReturnAlertBoxGameObj.SetActive(true);
     }
 
     public void ClickStatusButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         SceneManager.LoadScene("StatusScene", LoadSceneMode.Additive);
     }
 
     public void ClickCloseButton(string goBackScene)
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         GameObject loadValueSW = new GameObject("loadValueSW");
         loadValueSW.AddComponent<Text>();
         loadValueSW.transform.GetComponent<Text>().text = "Y";

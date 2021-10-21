@@ -15,13 +15,13 @@
         {
             "itemName": "ビール",
             "itemDescription": "ビールでも飲んで忘れろ!<br>のどごしがすごいビール",
-            "quantity": 6,
+            "quantity": 7,
             "keyItem": "N"
         },
         {
             "itemName": "焼肉弁当",
             "itemDescription": "豚肉たっぶり、お弁当",
-            "quantity": 3,
+            "quantity": 2,
             "keyItem": "N"
         },
         {

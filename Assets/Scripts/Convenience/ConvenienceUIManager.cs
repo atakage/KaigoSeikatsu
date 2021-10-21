@@ -85,6 +85,9 @@ public class ConvenienceUIManager : MonoBehaviour
 
     public void ClickMenuButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         sceneTransitionManager.LoadTo("MenuScene");
     }
 
@@ -321,6 +324,9 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
 
     public void ClickgoToHomeConfirmButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         canvasGameObj.transform.Find("goToHomeAlertBox").gameObject.SetActive(false);
         SetActiveUI(false);
 
@@ -338,6 +344,9 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
 
     public void ClickNextButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         canvasGameObj.transform.Find("goToHomeAlertBox").gameObject.SetActive(true);
         SetActiveUI(false);
     }
@@ -350,11 +359,17 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
 
     public void ClickOrderConfirmBtn()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         ClickBlockAndAlertBoxSetActive(true);
     }
 
     public void ClickOrderConfirmAlertBoxConfirmBtn()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         ClickBlockAndAlertBoxSetActive(false);
         // ★itemListDataを共有することでitemListData(オブジェクト)が変更されたりしたらあとの作業で影響があるので
         // ★別のオブジェクトとリストに分けて詰める

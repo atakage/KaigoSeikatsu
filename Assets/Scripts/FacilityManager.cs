@@ -279,11 +279,17 @@ public class FacilityManager : MonoBehaviour
 
     public void ClickUseItemButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         sceneTransitionManager.LoadTo("ItemCheckScene");
     }
 
     public void ClickMenuButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         // Scene転換後戻るためのsceneNameを指定
         SetSceneDestinationValue();
 
@@ -301,6 +307,9 @@ public class FacilityManager : MonoBehaviour
 
     public void ClickNextButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         string timeStr = canvasObj.transform.Find("time").GetComponent<Text>().text;
         string nextBtnText = GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text;
 
@@ -654,6 +663,9 @@ public class FacilityManager : MonoBehaviour
     // 17:20 -> 18:00
     public void ClickGoToAlertYesButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         // プレイヤーデータに時間をセーブ
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
         playerData.time = "18:00";
@@ -691,6 +703,9 @@ public class FacilityManager : MonoBehaviour
 
     public void ClickGoToButton(string destination)
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         SetGoToButton(false);
         canvasObj.transform.Find("AlertGoing").gameObject.SetActive(true);
         GameObject.Find("AlertGoing").transform.Find("DestinationValue").gameObject.SetActive(false);

@@ -202,6 +202,9 @@ public class IntroManager1 : MonoBehaviour
 
     public void ClickCheckNameConfirmButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         ActivingCheckNameAlertBox(false);
         //ActivingOffLinePlayAlertBox(true);
         ClickOnLinePlayButton();

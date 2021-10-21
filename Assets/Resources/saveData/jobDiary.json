@@ -29,6 +29,11 @@
             "eventCode": "EC012",
             "eventScript": "●介護職員の必需品について考えてみよう",
             "choosingString": "ビニール袋"
+        },
+        {
+            "eventCode": "EC015",
+            "eventScript": "●掃除の途中利用者の貴重品をなくしてしまった/●クレームを言う利用者.../●どう対応するか?",
+            "choosingString": "何も言わず話を最後まで聞く"
         }
     ]
 }

@@ -123,6 +123,9 @@ public class AtHomeManager : MonoBehaviour
 
     public void ClickStatusButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         SceneManager.LoadScene("StatusScene", LoadSceneMode.Additive);
     }
 
@@ -155,11 +158,17 @@ public class AtHomeManager : MonoBehaviour
 
     public void ClickJobDiaryButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         sceneTransitionManager.LoadTo("JobDiaryScene");
     }
 
     public void ClickGoToConvenienceBtn()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         playerData = playerSaveDataManager.LoadPlayerData();
         playerData.currentScene = "ConvenienceScene";
         playerSaveDataManager.SavePlayerData(playerData);
@@ -185,6 +194,9 @@ public class AtHomeManager : MonoBehaviour
 
     public void ClickGoOutButton(string time)
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         // 朝(08:00)なら外出ボタンを防ぐ
         if (time.Equals("08:00"))
         {
@@ -212,6 +224,9 @@ public class AtHomeManager : MonoBehaviour
 
     public void ClickNextButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         // nextButton名によるシーン変更
         if (GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("出勤する"))
         {
@@ -288,6 +303,9 @@ public class AtHomeManager : MonoBehaviour
 
     public async void ClickGoToAlertYesButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         if (GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("寝る"))
         {
             // 2021.10.09追加
@@ -319,6 +337,9 @@ public class AtHomeManager : MonoBehaviour
 
     public void ClickItemCheckButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         sceneTransitionManager = new SceneTransitionManager();
         sceneTransitionManager.LoadTo("ItemCheckScene");
     }

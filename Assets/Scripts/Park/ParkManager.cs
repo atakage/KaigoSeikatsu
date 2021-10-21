@@ -116,11 +116,17 @@ public class ParkManager : MonoBehaviour
     }
     public void ClickMenuButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         sceneTransitionManager.LoadTo("MenuScene");
     }
 
     public void ClickNextButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         canvasGameObj.transform.Find("nextButtonClickAlertBox").gameObject.SetActive(true);
         SetActiveWalkAndExerciseBtn(false);
         InteractableMenuAndNextButton(false);
@@ -128,6 +134,9 @@ public class ParkManager : MonoBehaviour
 
     public void ClickConfirmButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         canvasGameObj.transform.Find("time").gameObject.SetActive(false);
         canvasGameObj.transform.Find("Image").gameObject.SetActive(false);
         canvasGameObj.transform.Find("fatigueBar").gameObject.SetActive(false);
@@ -162,6 +171,9 @@ public class ParkManager : MonoBehaviour
 
     public void ClickWalkAndExerciseButton(string action)
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         SetMenuBtnAndNextBtnUI(false);
         SetActiveWalkAndExerciseBtn(false);
         canvasGameObj.transform.Find("actionReadyAlertBox").transform.Find("Text").GetComponent<Text>().text = action + "をしながら時間を過ごしますか?";

@@ -280,6 +280,9 @@ public class ReadyForEndingManager : MonoBehaviour
 
     public void ClickContinueAlertBoxConfirmBtn(bool localMode)
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         // ゲームエンディングを記録するファイルを作る
         gameClearFileManager.SaveGameClearFile(playerData);
         // プレイヤーデータを削除する
@@ -313,6 +316,9 @@ public class ReadyForEndingManager : MonoBehaviour
 
     public async void ClickConfirmAlertBoxConfirmBtn()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         readyForEndingSharingObjectManager.confirmAlertBoxGameObj.SetActive(false);
         readyForEndingSharingObjectManager.alertBoxGameObj.transform.Find("Text").GetComponent<Text>().text = "サーバーと通信中...";
         readyForEndingSharingObjectManager.alertBoxCancelButtonGameObj.SetActive(false);
@@ -402,6 +408,9 @@ public class ReadyForEndingManager : MonoBehaviour
 
     public void ClickConfirmButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         // dropdownのoptionDataをチェックする(重複禁止)
         bool optionDataCheckResult = CheckDropdown();
         // optionDataが重複なら

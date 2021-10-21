@@ -80,6 +80,9 @@ public class ItemCheckManager : MonoBehaviour
 
     public void ClickItemDropUseButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         // 全体アイテムリスト
         allItemListData = playerSaveDataManager.LoadItemListData();
 
@@ -100,7 +103,8 @@ public class ItemCheckManager : MonoBehaviour
 
     public void ClickItemDropButton()
     {
-        
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
 
         // 選択されたアイテムがkeyじゃないなら
         if (GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("keyItem").GetComponent<Text>().text.Equals("N"))
@@ -163,6 +167,9 @@ public class ItemCheckManager : MonoBehaviour
 
     public void ClickAlertUseButton()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         // 使うアイテムの名前をとる
         string useItemName = GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("itemName").GetComponent<Text>().text;
         if(useItemName != null && !useItemName.Equals(""))
@@ -230,6 +237,9 @@ public class ItemCheckManager : MonoBehaviour
 
     public void ItemUseButtonClick()
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         Debug.Log("CLICK ItemUseButtonClick");
         // 選択されたアイテムがキーアイテムじゃないなら
         if (GameObject.Find("Canvas").transform.Find("selectedItem").transform.Find("keyItem").GetComponent<Text>().text.Equals("N"))

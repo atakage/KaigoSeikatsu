@@ -269,6 +269,9 @@ public class ChatManager : MonoBehaviour
 
     public void ClickChoiceButtonAfterForJobEvent(string choosingTextAndNumberValue, string choosingAfterEffect, string eventCode)
     {
+        // 2021.10.20 追加 ボタン音
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         Debug.Log("Call ClickChoiceButtonAfterForJobEvent()");
 
         // プレイヤーデータ更新(progress, fatigue, satisfaction, feeling...)
