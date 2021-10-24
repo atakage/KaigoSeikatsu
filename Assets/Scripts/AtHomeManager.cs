@@ -52,6 +52,9 @@ public class AtHomeManager : MonoBehaviour
         canvasGameObj.transform.Find("itemCheckButton").GetComponent<Button>().onClick.AddListener(ClickItemCheckButton);
         canvasGameObj.transform.Find("statusButton").GetComponent<Button>().onClick.AddListener(ClickStatusButton);
         canvasGameObj.transform.Find("jobDiaryButton").GetComponent<Button>().onClick.AddListener(ClickJobDiaryButton);
+        canvasGameObj.transform.Find("titleButton").GetComponent<Button>().onClick.AddListener(ClickTitleButton);
+        canvasGameObj.transform.Find("AlertTitle").transform.Find("No").GetComponent<Button>().onClick.AddListener(delegate { ActiveAlert(false); });
+        canvasGameObj.transform.Find("AlertTitle").transform.Find("Yes").GetComponent<Button>().onClick.AddListener(ClickAlertTitleYesButton);
         canvasGameObj.transform.Find("goOutButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoOutButton(time); });
         canvasGameObj.transform.Find("GoOutBox").transform.Find("goToConvenienceButton").GetComponent<Button>().onClick.AddListener(ClickGoToConvenienceBtn);
         canvasGameObj.transform.Find("GoOutBox").transform.Find("closeButton").GetComponent<Button>().onClick.AddListener(ClickGoOutCloseBtn);
@@ -121,6 +124,11 @@ public class AtHomeManager : MonoBehaviour
         }
     }
 
+    public void ClickAlertTitleYesButton()
+    {
+        sceneTransitionManager.LoadTo("TitleScene");
+    }
+
     public void ClickStatusButton()
     {
         // 2021.10.20 追加 ボタン音
@@ -154,6 +162,12 @@ public class AtHomeManager : MonoBehaviour
             return false;
         }
         
+    }
+
+    public void ClickTitleButton()
+    {
+        MenuButtonActive(false);
+        canvasGameObj.transform.Find("AlertTitle").gameObject.SetActive(true);
     }
 
     public void ClickJobDiaryButton()
@@ -283,6 +297,7 @@ public class AtHomeManager : MonoBehaviour
         canvasGameObj.transform.Find("time").gameObject.SetActive(sw);
         canvasGameObj.transform.Find("statusButton").gameObject.SetActive(sw);
         canvasGameObj.transform.Find("jobDiaryButton").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("titleButton").gameObject.SetActive(sw);
     }
 
     public void MenuButtonActive(bool sw)
@@ -292,6 +307,7 @@ public class AtHomeManager : MonoBehaviour
         canvasGameObj.transform.Find("itemCheckButton").GetComponent<Button>().interactable = sw;
         canvasGameObj.transform.Find("statusButton").GetComponent<Button>().interactable = sw;
         canvasGameObj.transform.Find("jobDiaryButton").GetComponent<Button>().interactable = sw;
+        canvasGameObj.transform.Find("titleButton").GetComponent<Button>().interactable = sw;
     }
 
     public void ExecuteFadeInOut()
@@ -332,6 +348,7 @@ public class AtHomeManager : MonoBehaviour
     public void ActiveAlert(bool sw)
     {
         GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(sw);
+        GameObject.Find("Canvas").transform.Find("AlertTitle").gameObject.SetActive(sw);
         MenuButtonActive(true);
     }
 

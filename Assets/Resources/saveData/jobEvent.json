@@ -174,7 +174,7 @@
             "choiceAEffect": "SA+1:FA+1:FL+3",
             "choiceBEffect": "SA+1",
             "choiceCEffect": "FL+1",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC016",

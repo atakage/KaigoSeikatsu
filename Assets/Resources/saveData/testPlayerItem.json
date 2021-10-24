@@ -5,30 +5,6 @@
             "itemDescription": "介護福祉士の名刺だ",
             "quantity": 1,
             "keyItem": "Y"
-        },
-        {
-            "itemName": "おにぎり",
-            "itemDescription": "お米を味わう!<br>シンプルなおにぎり",
-            "quantity": 1,
-            "keyItem": "N"
-        },
-        {
-            "itemName": "ビール",
-            "itemDescription": "ビールでも飲んで忘れろ!<br>のどごしがすごいビール",
-            "quantity": 7,
-            "keyItem": "N"
-        },
-        {
-            "itemName": "焼肉弁当",
-            "itemDescription": "豚肉たっぶり、お弁当",
-            "quantity": 2,
-            "keyItem": "N"
-        },
-        {
-            "itemName": "栄養ドリンク",
-            "itemDescription": "疲労回復の効果がある",
-            "quantity": 3,
-            "keyItem": "N"
         }
     ]
 }
