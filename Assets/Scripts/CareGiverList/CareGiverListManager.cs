@@ -227,15 +227,15 @@ public class CareGiverListManager : MonoBehaviour
                     }
 
                     // scroll update用
-                    //Vector2 viewportCellSize = careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize;
-                    //careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize = new Vector2(viewportCellSize.x, viewportCellSize.y + 100);
-
-                    // scroll update用
                     Vector2 viewportCellSize = careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize;
                     viewportCellSize = new Vector2(viewportCellSize.x, 0);
-                    careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize = new Vector2(viewportCellSize.x, viewportCellSize.y + (100 * (careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1)));
-
-                    //careGiverListSharingObjectManager.dataReadingMsgGameObj.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1);
+                    // 2021.10.25 追加
+                    // cellSizeが最小限の高さを維持できるようにする
+                    if (1300.005 < viewportCellSize.y + (100 * (careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1)))
+                    {
+                        careGiverListSharingObjectManager.careGiverListViewportGameObj.GetComponent<GridLayoutGroup>().cellSize = new Vector2(viewportCellSize.x, viewportCellSize.y + (100 * (careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1)));
+                    }
+                    
 
                 }
                 // Dictionaryにデータがないと

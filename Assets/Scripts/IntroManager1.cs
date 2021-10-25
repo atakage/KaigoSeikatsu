@@ -137,6 +137,7 @@ public class IntroManager1 : MonoBehaviour
             {
                 // サーバーにプレイヤーデータ作成
                 string insertUpdateResult = await FirebaseManager.InsertUpdateToDB(playerDataDBModel);
+
                 // insertUpdateResultが'success'なら
                 if ("success".Equals(insertUpdateResult))
                 {
@@ -250,8 +251,8 @@ public class IntroManager1 : MonoBehaviour
         if (string.IsNullOrEmpty(IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text))
         {
             UnityEngine.Debug.Log("null");
-            // default name 'ゆかり'
-            IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text = "ゆかり";
+            // default name 'ゆあ'
+            IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text = "ゆあ";
         }
 
         IntroSharingObjectManager.checkNameAlertBoxTextGameObj.GetComponent<Text>().text =

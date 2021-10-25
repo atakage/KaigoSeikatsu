@@ -10,6 +10,8 @@ using Firebase.Database;
 public class FirebaseManager : MonoBehaviour
 {
     public DatabaseReference databaseReference;
+    public string realDbName = "player_data";
+    public string testDbName = "test_player_data";
 
     public void DisConnectFireBase()
     {
@@ -18,11 +20,15 @@ public class FirebaseManager : MonoBehaviour
 
     public async Task<string> SelectPlayerDataListByName(int selectCount)
     {
+        Debug.Log("SelectPlayerDataListByName selectCount: " + selectCount);
+
         string returnValue = null;
 
         // 日本語の場合データを読み込んだ時にunicodeに変換される問題(たまにある)
-        await databaseReference.OrderByKey().LimitToLast(selectCount).GetValueAsync()
-        //await databaseReference.OrderByKey().StartAt(selectCount).EndAt(5).GetValueAsync()
+
+        await databaseReference.OrderByKey().LimitToFirst(selectCount).GetValueAsync()        
+        //await databaseReference.LimitToFirst(selectCount).GetValueAsync()
+        //await databaseReference.OrderByKey().GetValueAsync()
        .ContinueWith(task =>
        {
            if (task.IsFaulted)
@@ -57,7 +63,7 @@ public class FirebaseManager : MonoBehaviour
                     Debug.Log("isConnected: " + isConnected);
                     // 接続に成功するとDB情報を格納
                     // FirebaseDatabase.DefaultInstance.GetReference("player_data"): DB名にaccess
-                     this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference("player_data");
+                     this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference(testDbName);
                     returnValue = true;
                 }
                 else
@@ -79,7 +85,7 @@ public class FirebaseManager : MonoBehaviour
         if (isConnected)
         {
             // FirebaseDatabase.DefaultInstance.GetReference("player_data"): DB名にaccess
-            this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference("player_data");
+            this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference(testDbName);
             returnValue = true;
         }
         else
@@ -144,4 +150,66 @@ public class FirebaseManager : MonoBehaviour
             });
         return returnValue;
     }
+
+
+    // 既存データをアプデするにはいいだが新しいデータをこのようにtransactionで入れようとすれば問題がある
+    // 1. firebaseデータのchild名を変更不可能(child名が0から自動で指定される)
+    /*
+    public async Task<string> InsertUpdateTransaction(PlayerDataDBModel playerDataDBModel)
+    {
+        string returnValue = "データ作成に失敗しました";
+
+        await databaseReference.RunTransaction(mutableData => {
+            List<object> playerDataListFromDB = mutableData.Value as List<object>;
+
+            bool alreadyName = false;
+
+            if (playerDataListFromDB == null)
+            {
+                playerDataListFromDB = new List<object>();
+            }
+            else
+            {
+                foreach (var playerDataDBModelFromDB in playerDataListFromDB)
+                {
+                    if (((Dictionary<string, object>)playerDataDBModelFromDB)["name"].Equals(playerDataDBModel.name))
+                    {
+                        alreadyName = true;
+                        break;
+                    }
+                }
+            }
+
+            if (alreadyName) return TransactionResult.Abort();
+            else
+            {
+                //Dictionary<string, Dictionary<string, object>> castedNewPlayerData = new Dictionary<string, Dictionary<string, object>>();
+                Dictionary<string, object> newPlayerData = new Dictionary<string, object>();
+
+                newPlayerData["name"] = playerDataDBModel.name;
+                newPlayerData["localMode"] = playerDataDBModel.localMode;
+                newPlayerData["startDate"] = playerDataDBModel.startDate;
+
+                //castedNewPlayerData[playerDataDBModel.name] = newPlayerData;
+
+                playerDataListFromDB.Add(newPlayerData);
+                mutableData.Value = playerDataListFromDB;
+
+                return TransactionResult.Success(mutableData);
+            }
+        }).ContinueWith(task => {
+            if (task.IsFaulted)
+            {
+                Debug.Log("insert update fail: " + task.Exception);
+                returnValue = task.Exception.Message;
+            }
+            else
+            {
+                Debug.Log("insert update success");
+                returnValue = "success";
+            }
+        });
+        return returnValue;
+    }
+    */
 }
