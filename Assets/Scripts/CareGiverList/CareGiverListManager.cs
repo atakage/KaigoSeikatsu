@@ -146,7 +146,7 @@ public class CareGiverListManager : MonoBehaviour
                         && !dataReadingMessage.Equals(contentBoxChildTransform.gameObject.name)
                         && !defaultFields.Equals(contentBoxChildTransform.gameObject.name))
                         {
-                            UnityEngine.Debug.Log("DestroyImmediate: " + contentBoxChildTransform.transform.Find("nameValue").GetComponent<Text>().text);
+                            //UnityEngine.Debug.Log("DestroyImmediate: " + contentBoxChildTransform.transform.Find("nameValue").GetComponent<Text>().text);
                             //DestroyImmediate(contentBoxChildTransform.gameObject);
                             // ★loop中childObjectを削除するとindex接近に問題が発生するためリストに貯めておいてあとから削除する
                             beingDestroyedObjectList.Add(contentBoxChildTransform.gameObject);
@@ -336,8 +336,8 @@ public class CareGiverListManager : MonoBehaviour
             {
                 // UI設定
                 careGiverListSharingObjectManager.transparentScreenGameObj.SetActive(false);
-                careGiverListSharingObjectManager.connectionFailDefaultGameObj.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1);
-                careGiverListSharingObjectManager.connectionFailDefaultGameObj.SetActive(true);
+                careGiverListSharingObjectManager.dataNoneMessage.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1);
+                careGiverListSharingObjectManager.dataNoneMessage.SetActive(true);
             }
             // プレイヤーデータリストの取り出しに成功すると
             else

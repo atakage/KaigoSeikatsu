@@ -19,6 +19,7 @@ public class CareGiverListSharingObjectManager : MonoBehaviour
     public GameObject careGiverListContentBoxGameObj;
     public GameObject connectionFailDefaultGameObj;
     public GameObject dataReadingMsgGameObj;
+    public GameObject dataNoneMessage;
     public GameObject defaultFieldsGameObj;
     // Start is called before the first frame update
     // Awake() -> Start()
@@ -55,6 +56,7 @@ public class CareGiverListSharingObjectManager : MonoBehaviour
         this.connectionFailDefaultGameObj = this.careGiverListContentBoxGameObj.transform.Find("connectionFailDefault").gameObject;
         this.defaultFieldsGameObj = this.careGiverListContentBoxGameObj.transform.Find("defaultFields").gameObject;
         this.dataReadingMsgGameObj = this.careGiverListContentBoxGameObj.transform.Find("dataReadingMessage").gameObject;
+        this.dataNoneMessage = this.careGiverListContentBoxGameObj.transform.Find("dataNoneMessage").gameObject;
 
 
     }

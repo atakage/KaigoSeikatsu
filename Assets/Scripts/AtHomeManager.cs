@@ -336,6 +336,7 @@ public class AtHomeManager : MonoBehaviour
         playerSaveDataManager.SavePlayerData(playerData);
 
         canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("AlertTitle").gameObject.SetActive(false);
         canvasGameObj.transform.Find("nextButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("goOutButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("itemCheckButton").gameObject.SetActive(false);
@@ -348,7 +349,7 @@ public class AtHomeManager : MonoBehaviour
     public void ActiveAlert(bool sw)
     {
         GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(sw);
-        GameObject.Find("Canvas").transform.Find("AlertTitle").gameObject.SetActive(sw);
+        //GameObject.Find("Canvas").transform.Find("AlertTitle").gameObject.SetActive(sw);
         MenuButtonActive(true);
     }
 

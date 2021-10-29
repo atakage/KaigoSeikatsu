@@ -36,7 +36,7 @@ public class FirebaseManager : MonoBehaviour
                //findDataDBResultDic.Add(false, "サーバーとの通信に失敗しました");
                Debug.Log("task.Exception.Message" + task.Exception.Message);
            }
-           else
+           else if(task.IsCompleted)
            {
                DataSnapshot dataSnapshot = task.Result;
                Debug.Log("dataSnapshot.GetRawJsonValue(): " + dataSnapshot.GetRawJsonValue());
