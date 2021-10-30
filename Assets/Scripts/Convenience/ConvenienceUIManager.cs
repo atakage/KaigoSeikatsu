@@ -13,6 +13,7 @@ public class ConvenienceUIManager : MonoBehaviour
     public EventManager eventManager;
     public ChatManager chatManager;
     public SceneTransitionManager sceneTransitionManager;
+    public BuildManager buildManager;
     public PlayerData playerData;
     public GameObject canvasGameObj;
     public GameObject contentGameObj;
@@ -35,6 +36,7 @@ public class ConvenienceUIManager : MonoBehaviour
         eventManager = new EventManager();
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
         sceneTransitionManager = new SceneTransitionManager();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
         // コンビニで販売するアイテムリストを読み込む(json)
         ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
@@ -411,7 +413,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
             playerSaveDataManager.SavePlayerData(playerData);
 
             // 購買したアイテムの数反映(convenienceItem.json)
-            convenienceItemSetManager.SetConvenienceJsonFile(itemListDataListForConvenience.ToArray());
+            convenienceItemSetManager.SetConvenienceJsonFile(itemListDataListForConvenience.ToArray(), buildManager.buildMode);
 
             // UIをリセットする
             ResetUI();

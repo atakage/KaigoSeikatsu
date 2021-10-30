@@ -66,15 +66,27 @@ public class CSVManager : MonoBehaviour
         return allItemDic;
     }
 
-    public void ReadJobEventInitFileAndCreateJson()
+    public void ReadJobEventInitFileAndCreateJson(string buildMode)
     {
         Debug.Log("call ReadJobEventInitFileAndCreateJson()");
-        bool checkJsonSW;
+        bool checkJsonSW = false;
         try
         {
             // jsonファイルを読み込む
-            File.ReadAllText(Application.dataPath + "/Resources/saveData/jobEvent.json");
-            checkJsonSW = true;
+
+            if ("window".Equals(buildMode))
+            {
+                File.ReadAllText(Application.dataPath + "/Resources/saveData/jobEvent.json");
+                checkJsonSW = true;
+            }
+            else if ("android".Equals(buildMode))
+            {
+                // Application.dataPathはandroidで読み書きが不可能
+                // Application.persistentDataPathを使う
+                File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "jobEvent.json");
+                checkJsonSW = true;
+            }
+
         }
         // jsonファイルがないと
         catch (Exception e)
@@ -90,18 +102,33 @@ public class CSVManager : MonoBehaviour
             Dictionary<string, Dictionary<string, object>> jobEventListDic = GetTxtItemList("JobEvent");
             // JobEvent.jsonを作る
             jobEventSetManager = new JobEventSetManager();
-            jobEventSetManager.CreateJobEventJson(jobEventListDic);
+            jobEventSetManager.CreateJobEventJson(jobEventListDic, buildMode);
         }
     }
 
-    public void ReadMainEventInitFileAndCreateJson()
+    public void ReadMainEventInitFileAndCreateJson(string buildMode)
     {
-        bool checkJsonSW;
+        bool checkJsonSW = false;
         try
         {
             // jsonファイルを読み込む
-            File.ReadAllText(Application.dataPath + "/Resources/saveData/mainEvent.json");
-            checkJsonSW = true;
+
+            // 2021.10.30 修正
+            // window
+            if ("window".Equals(buildMode))
+            {
+                File.ReadAllText(Application.dataPath + "/Resources/saveData/mainEvent.json");
+                checkJsonSW = true;
+
+            // android
+            }else if ("android".Equals(buildMode))
+            {
+                // Application.dataPathはandroidで読み書きが不可能
+                // Application.persistentDataPathを使う
+                File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "mainEvent.json");
+                checkJsonSW = true;
+            }
+            
         }
         // jsonファイルがないと
         catch (Exception e)
@@ -116,18 +143,34 @@ public class CSVManager : MonoBehaviour
             Dictionary<string, Dictionary<string, object>> mainEventListDic = GetTxtItemList("MainEvent");
             // convenienceItem.jsonを作る
             mainEventSetManager = new MainEventSetManager();
-            mainEventSetManager.CreateMainEventJson(mainEventListDic);
+            mainEventSetManager.CreateMainEventJson(mainEventListDic, buildMode);
         }
     }
 
-    public void ReadConvenienceInitFileAndCreateJson()
+    public void ReadConvenienceInitFileAndCreateJson(string buildMode)
     {
-        bool checkJsonSW;  
+        bool checkJsonSW = false;  
         try
         {
-                // jsonファイルを読み込む
-            File.ReadAllText(Application.dataPath + "/Resources/saveData/convenienceItem.json");
-            checkJsonSW = true;
+            // jsonファイルを読み込む
+            // 2021.10.30 修正
+            // buildModeによる異なるdataPath処理
+
+            // windowなら
+            if ("window".Equals(buildMode))
+            {
+                File.ReadAllText(Application.dataPath + "/Resources/saveData/convenienceItem.json");
+                checkJsonSW = true;
+            }
+            // androidなら
+            else if ("android".Equals(buildMode))
+            {
+                // Application.dataPathはandroidで読み書きが不可能
+                // Application.persistentDataPathを使う
+                File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "convenienceItem.json");
+                checkJsonSW = true;
+            }
+            
         }
         // jsonファイルがないと
         catch (Exception e)
@@ -138,22 +181,38 @@ public class CSVManager : MonoBehaviour
         // jsonファイルがないと
         if (!checkJsonSW)
         {
-                  // ConvenienceItemInit.txtからデータを読み込む
+            // ConvenienceItemInit.txtからデータを読み込む
             Dictionary<string, Dictionary<string, object>> ConItemListDic = GetTxtItemList("ConvenienceItemInit");
             // convenienceItem.jsonを作る
             convenienceItemSetManager = new ConvenienceItemSetManager();
-            convenienceItemSetManager.CreateConvenienceItem(ConItemListDic);
+            convenienceItemSetManager.CreateConvenienceItem(ConItemListDic, buildMode);
         }
     }
     
-    public void ReadCafeItemInitFileAndCreateJson()
+    public void ReadCafeItemInitFileAndCreateJson(string buildMode)
     {
-        bool checkJsonSW;
+        bool checkJsonSW = false;
         try
         {
             // jsonファイルを読み込む
-            File.ReadAllText(Application.dataPath + "/Resources/saveData/cafeItem.json");
-            checkJsonSW = true;
+            // 2021.10.30 修正
+            // buildModeによる異なるdataPath処理
+
+            // window
+            if ("window".Equals(buildMode))
+            {
+                File.ReadAllText(Application.dataPath + "/Resources/saveData/cafeItem.json");
+                checkJsonSW = true;
+            // android
+            }else if ("android".Equals(buildMode))
+            {
+                // Application.dataPathはandroidで読み書きが不可能
+                // Application.persistentDataPathを使う
+                File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "cafeItem.json");
+                checkJsonSW = true;
+            }
+
+            
         }
         // jsonファイルがないと
         catch (Exception e)
@@ -168,7 +227,7 @@ public class CSVManager : MonoBehaviour
             Dictionary<string, Dictionary<string, object>> CafeItemListDic = GetTxtItemList("CafeItemInit");
             // cafeItem.jsonを作る
             cafeItemSetManager = new CafeItemSetManager();
-            cafeItemSetManager.CreateCafeItem(CafeItemListDic);
+            cafeItemSetManager.CreateCafeItem(CafeItemListDic, buildMode);
         }
     }
     

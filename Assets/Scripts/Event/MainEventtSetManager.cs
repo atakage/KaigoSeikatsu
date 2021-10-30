@@ -6,7 +6,7 @@ using System.IO;
 
 public class MainEventSetManager : MonoBehaviour
 {
-    public void CreateMainEventJson(Dictionary<string, Dictionary<string, object>> mainEventListDic)
+    public void CreateMainEventJson(Dictionary<string, Dictionary<string, object>> mainEventListDic, string buildMode)
     {
         MainEventModel mainEventModel;
         List<MainEventModel> mainEventModelList = new List<MainEventModel>();
@@ -32,7 +32,7 @@ public class MainEventSetManager : MonoBehaviour
 
             // jsonファイルを作る
             Debug.Log("mainEventModelList.Count: " + mainEventModelList.Count);
-            CreateMainEventJsonFile(mainEventModelList);
+            CreateMainEventJsonFile(mainEventModelList, buildMode);
         }
         catch (Exception e)
         {
@@ -49,10 +49,19 @@ public class MainEventSetManager : MonoBehaviour
         return mainEventModelArray;
     }
 
-    public void CreateMainEventJsonFile(List<MainEventModel> mainEventModelList)
+    public void CreateMainEventJsonFile(List<MainEventModel> mainEventModelList, string buildMode)
     {
         string jsonStr = JsonHelper.ToJson(mainEventModelList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);
-        File.WriteAllText(Application.dataPath + "/Resources/saveData/mainEvent.json", jsonStr);
+
+        if ("window".Equals(buildMode))
+        {
+            File.WriteAllText(Application.dataPath + "/Resources/saveData/mainEvent.json", jsonStr);
+        }
+        else if ("android".Equals(buildMode))
+        {
+            File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "mainEvent.json", jsonStr);
+        }
+        
     }
 }

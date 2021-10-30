@@ -8,14 +8,16 @@ public class CareGiverListUIManager : MonoBehaviour
 {
     public ClearData clearData;
     public GameClearFileManager gameClearFileManager;
+    public BuildManager buildManager;
     public CareGiverListSharingObjectManager careGiverListSharingObject;
 
     public void AddPlayerDataItems()
     {
         gameClearFileManager = new GameClearFileManager();
         careGiverListSharingObject = GameObject.Find("CareGiverListSharingObjectManager").GetComponent<CareGiverListSharingObjectManager>();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
-        clearData = gameClearFileManager.LoadClearData();
+        clearData = gameClearFileManager.LoadClearData(buildManager.buildMode);
 
         // 最初プレイヤーデータをdefaultobjectにセット
         InitPlayerClearData(clearData);

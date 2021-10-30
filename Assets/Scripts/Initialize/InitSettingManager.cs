@@ -10,6 +10,7 @@ public class InitSettingManager : MonoBehaviour
     public SceneTransitionManager sceneTransitionManager;
     public JobDiarySetManager jobDiarySetManager;
     public PlayTimeManager playTimeManager;
+    public BuildManager buildManager;
     public GameClearFileManager gameClearFileManager;
     public JobEventSetManager jobEventSetManager;
     public GameObject canvasObj;
@@ -27,6 +28,7 @@ public class InitSettingManager : MonoBehaviour
         jobEventSetManager = new JobEventSetManager();
 
         playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
         canvasObj = GameObject.Find("Canvas");
         newGameAlertBoxObj = canvasObj.transform.Find("newGameAlertBox").gameObject;
@@ -36,22 +38,22 @@ public class InitSettingManager : MonoBehaviour
         // ConvenienceItemInit.txtにある情報をResource/saveData/ConvenienceItem.jsonに移す
         // itemSaleを変更したいときはそのSceneでConvenienceItem.jsonを読み込んで変更したあとセーブすればいい
         // ConvenienceItem.jsonがあると作らない(最初だけ作る)
-        csvManager.ReadConvenienceInitFileAndCreateJson();
+        csvManager.ReadConvenienceInitFileAndCreateJson(buildManager.buildMode);
 
         // カフェで販売するアイテムをセットする
-        csvManager.ReadCafeItemInitFileAndCreateJson();
+        csvManager.ReadCafeItemInitFileAndCreateJson(buildManager.buildMode);
 
         // MainEvent.jsonを作る
-        csvManager.ReadMainEventInitFileAndCreateJson();
+        csvManager.ReadMainEventInitFileAndCreateJson(buildManager.buildMode);
 
         // JobEvent.jsonを作る
-        csvManager.ReadJobEventInitFileAndCreateJson();
+        csvManager.ReadJobEventInitFileAndCreateJson(buildManager.buildMode);
 
         // clearFileが存在すると
-        if (gameClearFileManager.CheckExistClearFile())
+        if (gameClearFileManager.CheckExistClearFile(buildManager.buildMode))
         {
             // clearFileをロード
-            ClearData clearData = gameClearFileManager.LoadClearData();
+            ClearData clearData = gameClearFileManager.LoadClearData(buildManager.buildMode);
             // clear後なら
             if (clearData.clear == true)
             {
@@ -95,7 +97,7 @@ public class InitSettingManager : MonoBehaviour
         Dictionary<string, Dictionary<string, object>> jobEventListDic = csvManager.GetTxtItemList("JobEvent");
         // JobEvent.jsonを作る
         jobEventSetManager = new JobEventSetManager();
-        jobEventSetManager.CreateJobEventJson(jobEventListDic);
+        jobEventSetManager.CreateJobEventJson(jobEventListDic, buildManager.buildMode);
 
         // 追加メッセージ
         if (msgCheckIntVal == 0)
@@ -144,14 +146,13 @@ public class InitSettingManager : MonoBehaviour
             Dictionary<string, Dictionary<string, object>> jobEventListDic = csvManager.GetTxtItemList("JobEvent");
             // JobEvent.jsonを作る
             jobEventSetManager = new JobEventSetManager();
-            jobEventSetManager.CreateJobEventJson(jobEventListDic);
+            jobEventSetManager.CreateJobEventJson(jobEventListDic, buildManager.buildMode);
 
             // プレイヤーアイテムデータ初期化
             playerSaveDataManager.RemoveItemListDataJsonFile();
 
             sceneTransitionManager.LoadTo("IntroScene");
         }
-
     }
 
     public void ClickLoadButton(PlayerData playerData)

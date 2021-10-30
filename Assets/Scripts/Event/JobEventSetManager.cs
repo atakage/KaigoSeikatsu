@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class JobEventSetManager : MonoBehaviour
 {
-    public void CreateJobEventJson(Dictionary<string, Dictionary<string, object>> jobEventListDic)
+    public void CreateJobEventJson(Dictionary<string, Dictionary<string, object>> jobEventListDic, string buildMode)
     {
         JobEventModel jobEventModel;
         List<JobEventModel> jobEventModelList = new List<JobEventModel>();
@@ -34,7 +34,7 @@ public class JobEventSetManager : MonoBehaviour
 
             // jsonファイルを作る
             Debug.Log("jobEventModelList.Count: " + jobEventModelList.Count);
-            CreateJobEventJsonFile(jobEventModelList);
+            CreateJobEventJsonFile(jobEventModelList, buildMode);
         }
         catch (Exception e)
         {
@@ -51,10 +51,18 @@ public class JobEventSetManager : MonoBehaviour
         return jobEventModelArray;
     }
 
-    public void CreateJobEventJsonFile(List<JobEventModel> jobEventModelList)
+    public void CreateJobEventJsonFile(List<JobEventModel> jobEventModelList, string buildMode)
     {
         string jsonStr = JsonHelper.ToJson(jobEventModelList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);
-        File.WriteAllText(Application.dataPath + "/Resources/saveData/jobEvent.json", jsonStr);
+
+        if ("window".Equals(buildMode))
+        {
+            File.WriteAllText(Application.dataPath + "/Resources/saveData/jobEvent.json", jsonStr);
+        }
+        else if ("android".Equals(buildMode))
+        {
+            File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "jobEvent.json", jsonStr);
+        }
     }
 }

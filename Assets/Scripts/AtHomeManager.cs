@@ -13,6 +13,7 @@ public class AtHomeManager : MonoBehaviour
     public UtilManager utilManager;
     public FirebaseManager firebaseManager;
     public PlayerDataToPlayerDataDBModelManager playerDataToPlayerDataDBModelManager;
+    public BuildManager buildManager;
     public PlayerData playerData = null;
     public GameObject canvasGameObj;
     public Boolean timeCheckResult;
@@ -25,8 +26,10 @@ public class AtHomeManager : MonoBehaviour
         firebaseManager = GameObject.Find("FirebaseManager").GetComponent<FirebaseManager>();
         playerDataToPlayerDataDBModelManager = new PlayerDataToPlayerDataDBModelManager();
         utilManager = new UtilManager();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
-        
+
+
         if (GameObject.Find("SceneChangeManager") != null) GameObject.Find("SceneChangeManager").transform.Find("SceneChangeCanvas").transform.Find("destinationFrom-toItemCheckScene").GetComponent<Text>().text = SceneManager.GetActiveScene().name;
 
         // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
@@ -252,7 +255,7 @@ public class AtHomeManager : MonoBehaviour
         else
         {
             // コンビニにのアイテム補充
-            convenienceItemSetManager.ResetConvenienceQuantity();
+            convenienceItemSetManager.ResetConvenienceQuantity(buildManager.buildMode);
 
             SetAlertForSleep();
             ActiveAlert(true);

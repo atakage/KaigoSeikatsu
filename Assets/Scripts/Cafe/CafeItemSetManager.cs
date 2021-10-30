@@ -6,7 +6,7 @@ using System.IO;
 
 public class CafeItemSetManager : MonoBehaviour
 {
-    public void CreateCafeItem(Dictionary<string, Dictionary<string, object>> cafeItemListDic)
+    public void CreateCafeItem(Dictionary<string, Dictionary<string, object>> cafeItemListDic, string buildMode)
     {
         ConvenienceItemData cafeItemData;
         List<ConvenienceItemData> cafeList = new List<ConvenienceItemData>();
@@ -33,7 +33,7 @@ public class CafeItemSetManager : MonoBehaviour
 
             // jsonファイルを作る
             Debug.Log("cafeList.Count: " + cafeList.Count);
-            CreateCafeJsonFile(cafeList);
+            CreateCafeJsonFile(cafeList, buildMode);
         }
         catch (Exception e)
         {
@@ -41,11 +41,19 @@ public class CafeItemSetManager : MonoBehaviour
         }
     }
 
-    public void CreateCafeJsonFile(List<ConvenienceItemData> cafeList)
+    public void CreateCafeJsonFile(List<ConvenienceItemData> cafeList, string buildMode)
     {
         string jsonStr = JsonHelper.ToJson(cafeList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);
-        File.WriteAllText(Application.dataPath + "/Resources/saveData/cafeItem.json", jsonStr);
+
+        if ("window".Equals(buildMode))
+        {
+            File.WriteAllText(Application.dataPath + "/Resources/saveData/cafeItem.json", jsonStr);
+        }
+        else if ("android".Equals(buildMode))
+        {
+            File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "cafeItem.json", jsonStr);
+        }
     }
 
     public string GetItemImagePath(string itemName)

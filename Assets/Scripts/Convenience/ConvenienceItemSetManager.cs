@@ -8,7 +8,7 @@ using UnityEngine;
 public class ConvenienceItemSetManager : MonoBehaviour
 {
     // 毎晩コンビニにアイテムを補充
-    public void ResetConvenienceQuantity()
+    public void ResetConvenienceQuantity(string buildMode)
     {
         System.Random random = new System.Random();
         // アイテムリストロード
@@ -21,10 +21,10 @@ public class ConvenienceItemSetManager : MonoBehaviour
             getConvenienceItemDataArray[i].itemQuantity = random.Next(1, 6);
         }
 
-        CreateConvenienceJsonFile(getConvenienceItemDataArray.OfType<ConvenienceItemData>().ToList());
+        CreateConvenienceJsonFile(getConvenienceItemDataArray.OfType<ConvenienceItemData>().ToList(), buildMode);
     }
 
-    public void CreateConvenienceItem(Dictionary<string, Dictionary<string, object>> ConItemListDic)
+    public void CreateConvenienceItem(Dictionary<string, Dictionary<string, object>> ConItemListDic, string buildMode)
     {
         ConvenienceItemData convenienceItemData;
         List<ConvenienceItemData> convenienceList = new List<ConvenienceItemData>();
@@ -51,7 +51,7 @@ public class ConvenienceItemSetManager : MonoBehaviour
 
             // jsonファイルを作る
             Debug.Log("convenienceList.Count: " + convenienceList.Count);
-            CreateConvenienceJsonFile(convenienceList);
+            CreateConvenienceJsonFile(convenienceList, buildMode);
         }
         catch(Exception e)
         {
@@ -84,7 +84,7 @@ public class ConvenienceItemSetManager : MonoBehaviour
         return convenienceItemDataArray;
     }
 
-    public void SetConvenienceJsonFile(ItemListData[] buyingItemListDataArray)
+    public void SetConvenienceJsonFile(ItemListData[] buyingItemListDataArray, string buildMode)
     {
         Debug.Log("buying count" + buyingItemListDataArray.Length);
 
@@ -134,14 +134,27 @@ public class ConvenienceItemSetManager : MonoBehaviour
         }
 
         // 新しく数が反映された情報をファイルに作る
-        CreateConvenienceJsonFile(convenienceItemDataList);
+        CreateConvenienceJsonFile(convenienceItemDataList, buildMode);
 
     }
 
-    public void CreateConvenienceJsonFile(List<ConvenienceItemData> convenienceList)
+    public void CreateConvenienceJsonFile(List<ConvenienceItemData> convenienceList, string buildMode)
     {
         string jsonStr = JsonHelper.ToJson(convenienceList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);
-        File.WriteAllText(Application.dataPath + "/Resources/saveData/convenienceItem.json", jsonStr);
+
+        // 2021.10.30 修正
+        // buildModeによる異なるdataPath処理
+
+        // windowなら
+        if ("window".Equals(buildMode))
+        {
+            File.WriteAllText(Application.dataPath + "/Resources/saveData/convenienceItem.json", jsonStr);
+
+        // androidなら
+        }else if ("android".Equals(buildMode))
+        {
+            File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "convenienceItem.json", jsonStr);
+        }
     }
 }

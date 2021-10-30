@@ -277,7 +277,10 @@ public class PlayerSaveDataManager : MonoBehaviour
 
     public void RemoveItemListDataJsonFile()
     {
-        File.Delete(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
+        // window
+        //File.Delete(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
+        // android
+        File.Delete(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json");
     }
 
     public void SavePlayerData(PlayerData playerData)

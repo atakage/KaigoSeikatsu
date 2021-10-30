@@ -13,16 +13,16 @@ public class ClearData
 
 public class GameClearFileManager : MonoBehaviour
 {
-    public void SaveGameClearFile(PlayerData playerData)
+    public void SaveGameClearFile(PlayerData playerData, string buildMode)
     {
         ClearData clearData = new ClearData();
         clearData.clear = true;
 
         // クリアファイルが存在すると
-        if (CheckExistClearFile())
+        if (CheckExistClearFile(buildMode))
         {
             // プレイヤーデータを追加
-            clearData = LoadClearData();
+            clearData = LoadClearData(buildMode);
             clearData.clearPlayerDataList.Add(playerData);
         }
         // クリアファイルが存在しないと
@@ -38,15 +38,36 @@ public class GameClearFileManager : MonoBehaviour
         File.WriteAllText(Application.dataPath + "/Resources/saveData/clearFile.json", jsonStr);
     }
 
-    public ClearData LoadClearData()
+    public ClearData LoadClearData(string buildMode)
     {
-        string jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/clearFile.json");
+        string jsonStr = null;
+        if ("window".Equals(buildMode))
+        {
+            jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/clearFile.json");
+        }
+        else if ("android".Equals(buildMode))
+        {
+            jsonStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "clearFile.json");
+        }
+
         ClearData clearData = JsonConvert.DeserializeObject<ClearData>(jsonStr);
         return clearData;
     }
 
-    public bool CheckExistClearFile()
+    public bool CheckExistClearFile(string buildMode)
     {
-        return File.Exists(Application.dataPath + "/Resources/saveData/clearFile.json");
+        bool checkFile = false;
+
+        if ("window".Equals(buildMode))
+        {
+            checkFile = File.Exists(Application.dataPath + "/Resources/saveData/clearFile.json");
+        }else if ("android".Equals(buildMode))
+        {
+            checkFile = File.Exists(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "clearFile.json");
+        }
+
+        Debug.Log("checkFile: " + checkFile);
+
+        return checkFile;
     }
 }

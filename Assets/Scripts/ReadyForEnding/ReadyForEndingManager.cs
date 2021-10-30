@@ -16,6 +16,7 @@ public class ReadyForEndingManager : MonoBehaviour
     public SceneTransitionManager sceneTransitionManager;
     public GameClearFileManager gameClearFileManager;
     public FirebaseManager firebaseManager;
+    public BuildManager buildManager;
     //public int dropdownCount = 0;
     private void Start()
     {
@@ -26,6 +27,7 @@ public class ReadyForEndingManager : MonoBehaviour
         sceneTransitionManager = new SceneTransitionManager();
         gameClearFileManager = new GameClearFileManager();
         firebaseManager = new FirebaseManager();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
         playerData = playerSaveDataManager.LoadPlayerData();
         UnityEngine.Debug.Log("localMode: " + playerData.localMode);
@@ -48,7 +50,7 @@ public class ReadyForEndingManager : MonoBehaviour
             if ("endingA".Equals(playerData.ending))
             {
                 // ゲームエンディングを記録するファイルを作る
-                gameClearFileManager.SaveGameClearFile(playerData);
+                gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
                 // プレイヤーデータを削除する
                 playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -155,7 +157,7 @@ public class ReadyForEndingManager : MonoBehaviour
                     UnityMainThread.wkr.AddJob(() =>
                     {
                         // ゲームエンディングを記録するファイルを作る
-                        gameClearFileManager.SaveGameClearFile(playerData);
+                        gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
                         // プレイヤーデータを削除する
                         playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -167,7 +169,7 @@ public class ReadyForEndingManager : MonoBehaviour
             else
             {
                 // ゲームエンディングを記録するファイルを作る
-                gameClearFileManager.SaveGameClearFile(playerData);
+                gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
                 // プレイヤーデータを削除する
                 playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -178,7 +180,7 @@ public class ReadyForEndingManager : MonoBehaviour
         else
         {
             // ゲームエンディングを記録するファイルを作る
-            gameClearFileManager.SaveGameClearFile(playerData);
+            gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
             // プレイヤーデータを削除する
             playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -284,7 +286,7 @@ public class ReadyForEndingManager : MonoBehaviour
         GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
 
         // ゲームエンディングを記録するファイルを作る
-        gameClearFileManager.SaveGameClearFile(playerData);
+        gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
         // プレイヤーデータを削除する
         playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -298,7 +300,7 @@ public class ReadyForEndingManager : MonoBehaviour
         if (localMode)
         {
             // ゲームエンディングを記録するファイルを作る
-            gameClearFileManager.SaveGameClearFile(playerData);
+            gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
             // プレイヤーデータを削除する
             playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -368,7 +370,7 @@ public class ReadyForEndingManager : MonoBehaviour
                     UnityMainThread.wkr.AddJob(() =>
                     {
                         // ゲームエンディングを記録するファイルを作る
-                        gameClearFileManager.SaveGameClearFile(playerData);
+                        gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
                         // プレイヤーデータを削除する
                         playerSaveDataManager.DeletePlayerDataJsonFile();
 

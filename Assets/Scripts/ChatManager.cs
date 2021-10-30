@@ -15,6 +15,7 @@ public class ChatManager : MonoBehaviour
     public JobDiarySetManager jobDiarySetManager;
     public JobDiaryManager jobDiaryManager;
     public FlashEffectManager flashEffectManager;
+    public BuildManager buildManager;
     public List<string[]> textList;
     public string eventCode;
     public Dictionary<string, bool> completeEventSW; // イベントスクリプトの完了確認
@@ -40,6 +41,7 @@ public class ChatManager : MonoBehaviour
         jobEventManager = new JobEventManager();
         jobDiarySetManager = new JobDiarySetManager();
         jobDiaryManager = new JobDiaryManager();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
         canvasGameObj = GameObject.Find("Canvas");
         if(GameObject.Find("Panel") != null) panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
@@ -333,7 +335,7 @@ public class ChatManager : MonoBehaviour
         // JobEvent.jsonにイベントのactiveをfalse処理
         JobEventModel[] jobEventModelArray = jobEventSetManager.GetJobEventJsonFile();
         List<JobEventModel> newJobEventModelList = jobEventManager.SetEventActiveAndReturnAll(jobEventModelArray, eventCode, false);
-        jobEventSetManager.CreateJobEventJsonFile(newJobEventModelList);
+        jobEventSetManager.CreateJobEventJsonFile(newJobEventModelList, buildManager.buildMode);
 
         // プレイヤーデータにクリアーイベントで追加する
         string[] jobEventCodeArray = playerSaveDataManager.SaveCompletedEvent(playerData.eventCodeObject.completedJobEventArray, eventCode);
