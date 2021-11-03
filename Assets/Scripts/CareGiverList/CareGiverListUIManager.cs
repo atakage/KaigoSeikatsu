@@ -19,15 +19,19 @@ public class CareGiverListUIManager : MonoBehaviour
 
         clearData = gameClearFileManager.LoadClearData(buildManager.buildMode);
 
-        // 最初プレイヤーデータをdefaultobjectにセット
-        InitPlayerClearData(clearData);
-
         Debug.Log("call AddPlayerDataItems()");
-        Debug.Log("playerDataList.Count: " + clearData.clearPlayerDataList.Count);
+        
 
         // プレイヤーデータが2つ以上ならオブジェクトを追加する
-        if (clearData.clearPlayerDataList.Count > 1)
+        if (clearData != null && clearData.clearPlayerDataList.Count > 1)
         {
+            Debug.Log("playerDataList.Count: " + clearData.clearPlayerDataList.Count);
+
+            // 最初プレイヤーデータをdefaultobjectにセット
+            InitPlayerClearData(clearData);
+
+            careGiverListSharingObject.noneClearFileBoxGameObj.SetActive(false);
+
             // プレイヤーデータindex1から繰り返す
             for (int i = 1; i < clearData.clearPlayerDataList.Count; i++)
             {

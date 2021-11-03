@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System;
 using UnityEngine;
 using Newtonsoft.Json;
 
@@ -40,17 +41,33 @@ public class GameClearFileManager : MonoBehaviour
 
     public ClearData LoadClearData(string buildMode)
     {
+        ClearData clearData = null;
         string jsonStr = null;
         if ("window".Equals(buildMode))
         {
-            jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/clearFile.json");
+            try
+            {
+                jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/clearFile.json");
+            }
+            catch(FileNotFoundException e)
+            {
+                return clearData;
+            }
         }
         else if ("android".Equals(buildMode))
         {
-            jsonStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "clearFile.json");
+            try
+            {
+                jsonStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "clearFile.json");
+            }
+            catch (FileNotFoundException e)
+            {
+                return clearData;
+            }
         }
 
-        ClearData clearData = JsonConvert.DeserializeObject<ClearData>(jsonStr);
+        if(jsonStr != null) clearData = JsonConvert.DeserializeObject<ClearData>(jsonStr);
+
         return clearData;
     }
 

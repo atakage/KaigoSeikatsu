@@ -49,6 +49,9 @@ public class InitSettingManager : MonoBehaviour
         // JobEvent.jsonを作る
         csvManager.ReadJobEventInitFileAndCreateJson(buildManager.buildMode);
 
+        canvasObj.transform.Find("careGiverListButton").gameObject.SetActive(true);
+
+        /*
         // clearFileが存在すると
         if (gameClearFileManager.CheckExistClearFile(buildManager.buildMode))
         {
@@ -60,7 +63,7 @@ public class InitSettingManager : MonoBehaviour
                 canvasObj.transform.Find("careGiverListButton").gameObject.SetActive(true);
             }
         }
-        
+        */
 
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
 
