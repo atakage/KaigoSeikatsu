@@ -6,10 +6,12 @@ public class EventManager : MonoBehaviour
 {
     public PlayerSaveDataManager playerSaveDataManager;
     public EventScriptDicData eventScriptDicData;
+    public BuildManager buildManager;
     // Start is called before the first frame update
     void Start()
     {
         playerSaveDataManager = new PlayerSaveDataManager();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
         // イベントスクリプトを読む
         eventScriptDicData = playerSaveDataManager.GetEventScript();
@@ -17,7 +19,7 @@ public class EventManager : MonoBehaviour
         EventListData[] eventListData = CreateEventListForSave(eventScriptDicData);
         // 新しいイベントを登録する時や既存イベントを修正するときに使う
         Debug.Log("Event Save Start-----------------------------------------------------------");
-        playerSaveDataManager.SaveEventListData(eventListData);
+        playerSaveDataManager.SaveEventListData(eventListData, buildManager.buildMode);
     }
 
     // ChoiceEvent

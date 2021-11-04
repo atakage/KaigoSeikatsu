@@ -39,7 +39,7 @@ public class ConvenienceUIManager : MonoBehaviour
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
         // コンビニで販売するアイテムリストを読み込む(json)
-        ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
+        ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile(buildManager.buildMode);
         // 最初のUIセット
         FirstUISetting(convenienceItemDataArray);
 
@@ -79,7 +79,7 @@ public class ConvenienceUIManager : MonoBehaviour
         {
             playerData = playerSaveDataManager.LoadPlayerData();
             playerData.currentScene = "AtHomeScene";
-            playerSaveDataManager.SavePlayerData(playerData);
+            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
             sceneTransitionManager.LoadTo("AtHomeScene");
         }
@@ -264,7 +264,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text = playerData.money + "円";
 
         // コンビニで販売するアイテムリストを読み込む(json)
-        ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
+        ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile(buildManager.buildMode);
 
 
         for (int i = 0; i < convenienceItemDataArray.Length; i++)
@@ -318,7 +318,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
 
     public void LoadEventAndShow(string eventCode)
     {
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         chatManager.ShowDialogue(scriptList, eventCode, eventItem.script);
@@ -337,7 +337,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         // 現在プレイヤーデータの時間を変更する(add minute)
         DateTime addedDateTime = utilManager.TimeCal(playerData.time, 20);
         playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
         // イベントを呼び出す(店員さん挨拶イベント)
         canvasGameObj.transform.Find("eventCodeSW").GetComponent<Text>().text = "EV013";
@@ -405,14 +405,14 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
                 
                 
             }
-            playerSaveDataManager.SaveItemListData(itemListDataList.ToArray());
+            playerSaveDataManager.SaveItemListData(itemListDataList.ToArray(), buildManager.buildMode);
 
             // specificationBoxのresultMoneyValueStrをプレイヤー所持金に反映する
             string resultMoney = specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text.Replace("円", "");
             playerData.money = resultMoney;
-            playerSaveDataManager.SavePlayerData(playerData);
+            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
-            // 購買したアイテムの数反映(convenienceItem.json)
+            // 購買したアイテムの数反映()
             convenienceItemSetManager.SetConvenienceJsonFile(itemListDataListForConvenience.ToArray(), buildManager.buildMode);
 
             // UIをリセットする

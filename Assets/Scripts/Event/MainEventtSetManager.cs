@@ -40,9 +40,18 @@ public class MainEventSetManager : MonoBehaviour
         }
     }
 
-    public MainEventModel[] GetMainEventJsonFile()
+    public MainEventModel[] GetMainEventJsonFile(string buildMode)
     {
-        string jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/mainEvent.json");
+        string jsonStr = null;
+
+        if ("window".Equals(buildMode))
+        {
+            jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/mainEvent.json");
+        }
+        else if ("android".Equals(buildMode))
+        {
+            jsonStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "mainEvent.json");
+        }
         Debug.Log("jsonStr mainEvent: " + jsonStr);
         MainEventModel[] mainEventModelArray = JsonHelper.FromJson<MainEventModel>(jsonStr);
 

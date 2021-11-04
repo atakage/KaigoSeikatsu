@@ -15,6 +15,7 @@ public class FacilityManager : MonoBehaviour
     public UtilManager utilManager;
     public JobEventManager jobEventManager;
     public JobEventSetManager jobEventSetManager;
+    public BuildManager buildManager;
     public Button menuButton;
     public Button useItemButton;
     public Button nextButton;
@@ -46,6 +47,7 @@ public class FacilityManager : MonoBehaviour
         mainEventManager = new MainEventManager();
         jobEventManager = new JobEventManager();
         jobEventSetManager = new JobEventSetManager();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
         // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
         if (GameObject.Find("loadValueSW") != null) loadValueSW = GameObject.Find("loadValueSW").transform.GetComponent<Text>().text;
@@ -90,7 +92,7 @@ public class FacilityManager : MonoBehaviour
                   // 現在プレイヤーデータの時間を変更する(add minute)
             DateTime addedDateTime = utilManager.TimeCal(playerData.time, 10);
             playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
-            playerSaveDataManager.SavePlayerData(playerData);
+            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
             string morningEventCode = CallRandomEvent(morningrequiredEvent);
             LoadEventAndShow(morningEventCode);
         }
@@ -202,7 +204,7 @@ public class FacilityManager : MonoBehaviour
             {
                 playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "AtHomeScene";
-                playerSaveDataManager.SavePlayerData(playerData);
+                playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
                 sceneTransitionManager.LoadTo("AtHomeScene");
             }
             // fade out後 17:20 -> カフェへ
@@ -212,7 +214,7 @@ public class FacilityManager : MonoBehaviour
             {
                 playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "CafeScene";
-                playerSaveDataManager.SavePlayerData(playerData);
+                playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
                 sceneTransitionManager.LoadTo("CafeScene");
             }
             //  fade out後 17:20 -> 公園へ
@@ -222,7 +224,7 @@ public class FacilityManager : MonoBehaviour
             {
                 playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "ParkScene";
-                playerSaveDataManager.SavePlayerData(playerData);
+                playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
                 sceneTransitionManager.LoadTo("ParkScene");
             }
             // game end
@@ -355,7 +357,7 @@ public class FacilityManager : MonoBehaviour
                             {
                                 case "YES":
                                     // jobEventの中でactiveされているイベントをランダムで呼び出す
-                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile(buildManager.buildMode);
                                     JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
 
                                     if (jobEvent != null)
@@ -367,7 +369,7 @@ public class FacilityManager : MonoBehaviour
 
                                         playerData = playerSaveDataManager.LoadPlayerData();
                                         playerData.flag.jobEventDayCompletedBool = jobEventDayCompletedBool;
-                                        playerSaveDataManager.SavePlayerData(playerData);
+                                        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
                                     }
                                     else
                                     {
@@ -394,7 +396,7 @@ public class FacilityManager : MonoBehaviour
                               // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();;
                     playerData.time = "11:50";
-                    playerSaveDataManager.SavePlayerData(playerData);
+                    playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
                     break;
 
@@ -433,7 +435,7 @@ public class FacilityManager : MonoBehaviour
                             {
                                 case "YES":
                                     // jobEventの中でactiveされているイベントをランダムで呼び出す
-                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile(buildManager.buildMode);
                                     JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
 
                                     if (jobEvent != null)
@@ -445,7 +447,7 @@ public class FacilityManager : MonoBehaviour
 
                                         playerData = playerSaveDataManager.LoadPlayerData();
                                         playerData.flag.jobEventDayCompletedBool = jobEventDayCompletedBool;
-                                        playerSaveDataManager.SavePlayerData(playerData);
+                                        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
                                     }
                                     else
                                     {
@@ -472,7 +474,7 @@ public class FacilityManager : MonoBehaviour
                               // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "12:50";
-                    playerSaveDataManager.SavePlayerData(playerData);
+                    playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
                     break;
 
@@ -511,7 +513,7 @@ public class FacilityManager : MonoBehaviour
                             {
                                 case "YES":
                                     // jobEventの中でactiveされているイベントをランダムで呼び出す
-                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile(buildManager.buildMode);
                                     JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
 
                                     if (jobEvent != null)
@@ -523,7 +525,7 @@ public class FacilityManager : MonoBehaviour
 
                                         playerData = playerSaveDataManager.LoadPlayerData();
                                         playerData.flag.jobEventDayCompletedBool = jobEventDayCompletedBool;
-                                        playerSaveDataManager.SavePlayerData(playerData);
+                                        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
                                     }
                                     else
                                     {
@@ -550,7 +552,7 @@ public class FacilityManager : MonoBehaviour
                               // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "14:00";
-                    playerSaveDataManager.SavePlayerData(playerData);
+                    playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
                     break;
 
@@ -588,7 +590,7 @@ public class FacilityManager : MonoBehaviour
                             {
                                 case "YES":
                                     // jobEventの中でactiveされているイベントをランダムで呼び出す
-                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile(buildManager.buildMode);
                                     JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
 
                                     if (jobEvent != null)
@@ -600,7 +602,7 @@ public class FacilityManager : MonoBehaviour
 
                                         playerData = playerSaveDataManager.LoadPlayerData();
                                         playerData.flag.jobEventDayCompletedBool = jobEventDayCompletedBool;
-                                        playerSaveDataManager.SavePlayerData(playerData);
+                                        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
                                     }
                                     else
                                     {
@@ -627,7 +629,7 @@ public class FacilityManager : MonoBehaviour
                               // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "17:00";
-                    playerSaveDataManager.SavePlayerData(playerData);
+                    playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
                     break;
 
@@ -645,7 +647,7 @@ public class FacilityManager : MonoBehaviour
                     playerData.flag.jobEventDayCompletedBool = false;
 
                     playerData.time = "17:20";
-                    playerSaveDataManager.SavePlayerData(playerData);
+                    playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
                                // 時間が経つ
                     chatManager.SetTime();
@@ -749,7 +751,7 @@ public class FacilityManager : MonoBehaviour
             // 完了されたイベントがないならメインイベント発動
             if (!completedEventBool)
             {
-                EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+                EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
                 EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, mainEventCode);
                 List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
 
@@ -763,7 +765,7 @@ public class FacilityManager : MonoBehaviour
                 // 終わったMainEventはプレイヤーデータに記録する
                 string[] mainEventCodeArray = playerSaveDataManager.SaveCompletedEvent(playerData.eventCodeObject.completedMainEventArray, mainEventCode);
                 playerData.eventCodeObject.completedMainEventArray = mainEventCodeArray;
-                playerSaveDataManager.SavePlayerData(playerData);
+                playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
                 returnValue = true;
             }
@@ -779,7 +781,7 @@ public class FacilityManager : MonoBehaviour
 
         playerData = playerSaveDataManager.LoadPlayerData();
         playerData.flag.completeMainEvent = returnValue;
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
         return returnValue;
     }
@@ -794,7 +796,7 @@ public class FacilityManager : MonoBehaviour
 
     public void LoadEventAndShow(string eventCode)
     {
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         // 2021.07.26 修正, キャライメージ追加されたrawScriptをparameterに渡す

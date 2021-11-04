@@ -8,8 +8,8 @@ public class ConvenienManager : MonoBehaviour
     public PlayerSaveDataManager playerSaveDataManager;
     public EventManager eventManager;
     public ChatManager chatManager;
-    //public ConvenienceItemSetManager convenienceItemSetManager;
     public ConvenienceUIManager convenienceUIManager;
+    public BuildManager buildManager;
     public GameObject canvasGameObj;
     public PlayerData playerData;
     public ConvenienceItemData[] convenienceItemDataArray;
@@ -20,10 +20,10 @@ public class ConvenienManager : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         eventManager = new EventManager();
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
-        //convenienceItemSetManager = new ConvenienceItemSetManager();
         convenienceUIManager = new ConvenienceUIManager();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
-            // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
+        // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
         if (GameObject.Find("loadValueSW") != null) loadValueSW = GameObject.Find("loadValueSW").transform.GetComponent<Text>().text;
         else loadValueSW = "N";
 
@@ -62,7 +62,7 @@ public class ConvenienManager : MonoBehaviour
 
     public void LoadEventAndShow(string eventCode)
     {
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         chatManager.ShowDialogue(scriptList, eventCode, eventItem.script);

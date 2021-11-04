@@ -14,6 +14,7 @@ public class ParkManager : MonoBehaviour
     public UtilManager utilManager;
     public ConvenienceItemSetManager convenienceItemSetManager;
     public SceneTransitionManager sceneTransitionManager;
+    public BuildManager buildManager;
     public GameObject canvasGameObj;
     public string loadValueSW;
     void Start()
@@ -25,8 +26,9 @@ public class ParkManager : MonoBehaviour
         utilManager = new UtilManager();
         sceneTransitionManager = new SceneTransitionManager();
         convenienceItemSetManager = new ConvenienceItemSetManager();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
-             // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
+        // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
         if (GameObject.Find("loadValueSW") != null) loadValueSW = GameObject.Find("loadValueSW").transform.GetComponent<Text>().text;
         else loadValueSW = "N";
 
@@ -72,7 +74,7 @@ public class ParkManager : MonoBehaviour
             PlayerData playerData = playerSaveDataManager.LoadPlayerData();
             if (endedTextEventCode.Equals("EV018")) playerData.fatigue -= (float)3;
             else if (endedTextEventCode.Equals("EV019")) playerData.satisfaction += 3;
-            playerSaveDataManager.SavePlayerData(playerData);
+            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
             canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text = "";
             // 家に帰るイベント
@@ -191,7 +193,7 @@ public class ParkManager : MonoBehaviour
         DateTime addedDateTime = utilManager.TimeCal(playerData.time, 60);
         playerData.currentScene = "AtHomeScene";
         playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
         canvasGameObj.transform.Find("actionReadyAlertBox").gameObject.SetActive(false);
         SetActiveWalkAndExerciseBtn(false);
@@ -248,7 +250,7 @@ public class ParkManager : MonoBehaviour
             int money = random.Next(1, 3) * 100;
             PlayerData playerData = playerSaveDataManager.LoadPlayerData();
             playerData.money = (Int32.Parse(playerData.money) + money).ToString();
-            playerSaveDataManager.SavePlayerData(playerData);
+            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
             List<string[]> scriptList = eventManager.SingleScriptSaveToList(money + "円を拾った!");
             chatManager.ShowDialogue(scriptList, "", null);
@@ -257,7 +259,7 @@ public class ParkManager : MonoBehaviour
         else if (1 == eventInt)
         {
             // コンビニのアイテムリストを取り出す
-            ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
+            ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile(buildManager.buildMode);
             // アイテムリストから一つをランダムで取り出す
             string pickUpItemName = SearchluckyItemToConvenience(convenienceItemDataArray);
 
@@ -292,14 +294,14 @@ public class ParkManager : MonoBehaviour
         ItemListData[] itemListDataArray = new ItemListData[1];
         itemListDataArray[0] = itemListData;
 
-        playerSaveDataManager.SaveItemListData(itemListDataArray);
+        playerSaveDataManager.SaveItemListData(itemListDataArray, buildManager.buildMode);
 
         return convenienceItemData.itemName;
     }
     public void LoadEventAndShow(string eventCode)
     {
         Debug.Log("call LoadEventAndShow");
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         chatManager.ShowDialogue(scriptList, eventCode, eventItem.script);

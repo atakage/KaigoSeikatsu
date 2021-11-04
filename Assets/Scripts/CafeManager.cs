@@ -12,6 +12,7 @@ public class CafeManager : MonoBehaviour
     public SceneTransitionManager sceneTransitionManager;
     public CSVManager csvManager;
     public ItemUseManager itemUseManager;
+    public BuildManager buildManager;
     public Vector3 cafeMenuCanvasPos;
     public Vector3 detailOrderCanvasPos;
     public PlayerData playerData;
@@ -30,8 +31,9 @@ public class CafeManager : MonoBehaviour
         sceneTransitionManager = new SceneTransitionManager();
         csvManager = new CSVManager();
         itemUseManager = new ItemUseManager();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
-            // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
+        // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
         if (GameObject.Find("loadValueSW") != null) loadValueSW = GameObject.Find("loadValueSW").transform.GetComponent<Text>().text;
         else loadValueSW = "N";
 
@@ -133,7 +135,7 @@ public class CafeManager : MonoBehaviour
         {
             playerData = playerSaveDataManager.LoadPlayerData();
             playerData.currentScene = "AtHomeScene";
-            playerSaveDataManager.SavePlayerData(playerData);
+            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
             sceneTransitionManager.LoadTo("AtHomeScene");
         }
 
@@ -162,7 +164,7 @@ public class CafeManager : MonoBehaviour
         canvasGameObj.transform.Find("NextAlertBox").gameObject.SetActive(false);
 
         playerData.time = "19:00";
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
         canvasGameObj.transform.Find("greeting2Check").GetComponent<Text>().text = "Y";
     }
@@ -208,7 +210,7 @@ public class CafeManager : MonoBehaviour
         string resultMoney = GameObject.Find("Canvas").transform.Find("ConfirmAlertBox").transform.Find("resultMoney").GetComponent<Text>().text;
         playerData.money = resultMoney.Replace("円", "");
         playerData.time = "19:00";
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
         // 注文したアイテム効果適用
         // 注文したアイテムをリストに追加する
@@ -311,7 +313,7 @@ public class CafeManager : MonoBehaviour
 
     public void LoadEventAndShow(string eventCode)
     {
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         chatManager.ShowDialogue(scriptList, eventCode, eventItem.script);

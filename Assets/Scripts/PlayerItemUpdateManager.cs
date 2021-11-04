@@ -7,7 +7,12 @@ using UnityEngine;
 public class PlayerItemUpdateManager : MonoBehaviour
 {
     public PlayerSaveDataManager playerSaveDataManager;
-   public void UpdateItemQty(ItemListData[] allItemListData, string itemName)
+    public BuildManager buildManager;
+    private void Start()
+    {
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+    }
+    public void UpdateItemQty(ItemListData[] allItemListData, string itemName)
     {
         playerSaveDataManager = new PlayerSaveDataManager();
 
@@ -53,6 +58,6 @@ public class PlayerItemUpdateManager : MonoBehaviour
         }
 
         // 新しいアイテムリストファイルをセーブ
-        if (updatedItemList != null && updatedItemList.Count > 0) playerSaveDataManager.SavePlayerItemList(updatedItemList.ToArray());
+        if (updatedItemList != null && updatedItemList.Count > 0) playerSaveDataManager.SavePlayerItemList(updatedItemList.ToArray(), buildManager.buildMode);
     }
 }

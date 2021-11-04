@@ -7,6 +7,7 @@ public class TestA : MonoBehaviour
 {
     public SceneTransitionManager sceneTransitionManager;
     public PlayerSaveDataManager playerSaveDataManager;
+    public BuildManager buildManager;
 
     public Text panelText;
     public string[] taleArray;
@@ -36,7 +37,8 @@ public class TestA : MonoBehaviour
 
         // playerとのprogress(好感度)を読み出す
         playerSaveDataManager = new PlayerSaveDataManager();
-        //PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+
         PlayerData playerData = new PlayerData();
         ItemListData[] itemListData = new ItemListData[2];
 
@@ -46,7 +48,7 @@ public class TestA : MonoBehaviour
         if (playerData.progress == 0)
         {
             playerData.progress = 1;
-            playerSaveDataManager.SavePlayerData(playerData);
+            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
             Debug.Log("TestAとの関係:" + playerData.progress);
             Tale1();
         }
@@ -61,7 +63,7 @@ public class TestA : MonoBehaviour
             itemListData[1].itemName = "item5";
             itemListData[1].quantity = 666;
 
-            playerSaveDataManager.SaveItemListData(itemListData);
+            playerSaveDataManager.SaveItemListData(itemListData, buildManager.buildMode);
             //playerSaveDataManager.SavePlayerData(playerData);
             Tale2();
         }else if (playerData.progress == 20)

@@ -52,7 +52,15 @@ public class CafeItemSetManager : MonoBehaviour
         }
         else if ("android".Equals(buildMode))
         {
-            File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "cafeItem.json", jsonStr);
+            string androidFolderPath = Application.persistentDataPath + "/Resources/saveData/";
+            string androidFilePath = androidFolderPath + "cafeItem.json";
+            if (!Directory.Exists(androidFolderPath))
+            {
+                Directory.CreateDirectory(androidFolderPath);
+            }
+            
+            Debug.Log("androidFolderPath: " + androidFolderPath);
+            File.WriteAllText(androidFilePath, jsonStr);
         }
     }
 

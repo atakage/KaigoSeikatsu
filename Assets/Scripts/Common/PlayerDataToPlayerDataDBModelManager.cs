@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class PlayerDataToPlayerDataDBModelManager : MonoBehaviour
 {
-    
+    public BuildManager buildManager;
 
     private void Start()
     {
-        
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
     }
+
     public PlayerDataDBModel PlayerDataToDBModel(PlayerData playerData)
     {
         PlayerDataDBModel playerDataDBModel = new PlayerDataDBModel();
@@ -26,7 +27,7 @@ public class PlayerDataToPlayerDataDBModelManager : MonoBehaviour
         playerDataDBModel.jobDiaryModelArray = new JobDiaryModel[jobDiaryModelArray.Length];
         playerDataDBModel.jobDiaryModelArray = jobDiaryModelArray;
 
-        ItemListData[] itemListDataArray = playerSaveDataManager.LoadItemListData();
+        ItemListData[] itemListDataArray = playerSaveDataManager.LoadItemListData(buildManager.buildMode);
         playerDataDBModel.itemListDataArray = new ItemListData[itemListDataArray.Length];
         playerDataDBModel.itemListDataArray = itemListDataArray;
 

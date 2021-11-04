@@ -127,7 +127,7 @@ public class ReadyForEndingManager : MonoBehaviour
     {
         // PlayerDataをDBセーブ用モデルに変換(PlayerDataDBModel)
         playerData.endDate = DateTime.Now.ToString("yyyyMMddHHmmss");
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
         PlayerDataDBModel playerDataDBModel = ConvertPlayerDataDBModel(playerData, null);
 
         // DB作業
@@ -217,7 +217,7 @@ public class ReadyForEndingManager : MonoBehaviour
         playerDataDBModel.jobDiaryModelArray = new JobDiaryModel[jobDiaryModelArray.Length];
         playerDataDBModel.jobDiaryModelArray = jobDiaryModelArray;
 
-        ItemListData[] itemListDataArray = playerSaveDataManager.LoadItemListData();
+        ItemListData[] itemListDataArray = playerSaveDataManager.LoadItemListData(buildManager.buildMode);
         playerDataDBModel.itemListDataArray = new ItemListData[itemListDataArray.Length];
         playerDataDBModel.itemListDataArray = itemListDataArray;
 
@@ -340,7 +340,7 @@ public class ReadyForEndingManager : MonoBehaviour
 
         // PlayerDataをDBセーブ用モデルに変換(PlayerDataDBModel)
         playerData.endDate = DateTime.Now.ToString("yyyyMMddHHmmss");
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
         PlayerDataDBModel playerDataDBModel = ConvertPlayerDataDBModel(playerData, reasonList);
 
 
@@ -446,7 +446,7 @@ public class ReadyForEndingManager : MonoBehaviour
 
     public void LoadEventAndShow(string eventCode)
     {
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         // 2021.07.26 修正, キャライメージ追加されたrawScriptをparameterに渡す

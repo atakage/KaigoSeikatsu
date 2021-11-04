@@ -7,12 +7,19 @@ using UnityEngine;
 
 public class ConvenienceItemSetManager : MonoBehaviour
 {
+    public BuildManager buildManager;
+
+    private void Start()
+    {
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+    }
+
     // 毎晩コンビニにアイテムを補充
     public void ResetConvenienceQuantity(string buildMode)
     {
         System.Random random = new System.Random();
         // アイテムリストロード
-        ConvenienceItemData[] getConvenienceItemDataArray = GetConvenienceJsonFile();
+        ConvenienceItemData[] getConvenienceItemDataArray = GetConvenienceJsonFile(buildManager.buildMode);
 
         // アイテム数くらい繰り返す
         for (int i=0; i < getConvenienceItemDataArray.Length; i++)
@@ -75,9 +82,19 @@ public class ConvenienceItemSetManager : MonoBehaviour
         return imagePath;
     }
 
-    public ConvenienceItemData[] GetConvenienceJsonFile()
+    public ConvenienceItemData[] GetConvenienceJsonFile(string buildMode)
     {
-        string jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/convenienceItem.json");
+        string jsonStr = null;
+        if ("window".Equals(buildMode))
+        {
+            jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/convenienceItem.json");
+        }
+        else if ("android".Equals(buildMode))
+        {
+            jsonStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "convenienceItem.json");
+        }
+
+        
         Debug.Log("jsonStr Convenience: " + jsonStr);
         ConvenienceItemData[] convenienceItemDataArray = JsonHelper.FromJson<ConvenienceItemData>(jsonStr);
 
@@ -91,8 +108,8 @@ public class ConvenienceItemSetManager : MonoBehaviour
 
         List<ConvenienceItemData> convenienceItemDataList = new List<ConvenienceItemData>();
 
-        // convenienceItem.jsonファイルをロードする
-        ConvenienceItemData[] loadedConvenienceItemData = GetConvenienceJsonFile();
+        // ファイルをロードする
+        ConvenienceItemData[] loadedConvenienceItemData = GetConvenienceJsonFile(buildManager.buildMode);
 
 
         for(int i=0; i<buyingItemListDataArray.Length; i++)

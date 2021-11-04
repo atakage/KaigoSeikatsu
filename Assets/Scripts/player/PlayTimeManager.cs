@@ -9,6 +9,7 @@ public class PlayTimeManager : MonoBehaviour
     public float playTime;
     static PlayTimeManager instance;
     PlayerSaveDataManager playerSaveDataManager;
+    public BuildManager buildManager;
     private void Awake()
     {
         /*
@@ -24,6 +25,11 @@ public class PlayTimeManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    private void Start()
+    {
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
     }
 
     // Update is called once per frame
@@ -49,7 +55,7 @@ public class PlayTimeManager : MonoBehaviour
         if(playerData != null)
         {
             playerData.playTime = playTime;
-            playerSaveDataManager.SavePlayerData(playerData);
+            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
         }
         
     }

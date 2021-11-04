@@ -50,13 +50,13 @@ public class AtHomeManager : MonoBehaviour
                            = (time.Equals("08:00")) ? "出勤する" : "寝る";
 
         canvasGameObj.transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextButton);
-        canvasGameObj.transform.Find("AlertGoing").transform.Find("No").GetComponent<Button>().onClick.AddListener(delegate { ActiveAlert(false); });
+        canvasGameObj.transform.Find("AlertGoing").transform.Find("No").GetComponent<Button>().onClick.AddListener(delegate { ActiveAlertGoing(false); });
         canvasGameObj.transform.Find("AlertGoing").transform.Find("Yes").GetComponent<Button>().onClick.AddListener(ClickGoToAlertYesButton);
         canvasGameObj.transform.Find("itemCheckButton").GetComponent<Button>().onClick.AddListener(ClickItemCheckButton);
         canvasGameObj.transform.Find("statusButton").GetComponent<Button>().onClick.AddListener(ClickStatusButton);
         canvasGameObj.transform.Find("jobDiaryButton").GetComponent<Button>().onClick.AddListener(ClickJobDiaryButton);
         canvasGameObj.transform.Find("titleButton").GetComponent<Button>().onClick.AddListener(ClickTitleButton);
-        canvasGameObj.transform.Find("AlertTitle").transform.Find("No").GetComponent<Button>().onClick.AddListener(delegate { ActiveAlert(false); });
+        canvasGameObj.transform.Find("AlertTitle").transform.Find("No").GetComponent<Button>().onClick.AddListener(delegate { ActiveAlertTitle(false); });
         canvasGameObj.transform.Find("AlertTitle").transform.Find("Yes").GetComponent<Button>().onClick.AddListener(ClickAlertTitleYesButton);
         canvasGameObj.transform.Find("goOutButton").GetComponent<Button>().onClick.AddListener(delegate { ClickGoOutButton(time); });
         canvasGameObj.transform.Find("GoOutBox").transform.Find("goToConvenienceButton").GetComponent<Button>().onClick.AddListener(ClickGoToConvenienceBtn);
@@ -73,7 +73,7 @@ public class AtHomeManager : MonoBehaviour
             // 次のシーンをプレイヤーデータにセーブ
             playerData.currentScene = "FacilityScene";
             playerData.time = "08:50";
-            playerSaveDataManager.SavePlayerData(playerData);
+            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
             sceneTransitionManager.LoadTo("FacilityScene");
 
         // 寝て朝になる
@@ -89,7 +89,7 @@ public class AtHomeManager : MonoBehaviour
                 GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text = "";
                 GameObject.Find("Canvas").transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "出勤する";
                 playerData.time = "08:00";
-                playerSaveDataManager.SavePlayerData(playerData);
+                playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
                 GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = playerData.time;
                 MenuButtonActive(true);
                 UIDisplay(true);
@@ -99,7 +99,7 @@ public class AtHomeManager : MonoBehaviour
             {
                 playerData.ending = "endingC";
                 playerData.currentScene = "ReadyForEndingScene";
-                playerSaveDataManager.SavePlayerData(playerData);
+                playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
                 sceneTransitionManager.LoadTo("ReadyForEndingScene");
             }
         // コンビニへ行く
@@ -108,7 +108,7 @@ public class AtHomeManager : MonoBehaviour
             // 現在プレイヤーデータの時間を変更する(add minute)
             DateTime addedDateTime = utilManager.TimeCal(playerData.time, 20);
             playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
-            playerSaveDataManager.SavePlayerData(playerData);
+            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
             sceneTransitionManager.LoadTo("ConvenienceScene");
         }
@@ -188,7 +188,7 @@ public class AtHomeManager : MonoBehaviour
 
         playerData = playerSaveDataManager.LoadPlayerData();
         playerData.currentScene = "ConvenienceScene";
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
         canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(false);
         canvasGameObj.transform.Find("nextButton").gameObject.SetActive(false);
@@ -248,7 +248,7 @@ public class AtHomeManager : MonoBehaviour
         if (GameObject.Find("nextButton").transform.Find("Text").GetComponent<Text>().text.Equals("出勤する"))
         {
             SetAlertForGoWork();
-            ActiveAlert(true);
+            ActiveAlertGoing(true);
             MenuButtonActive(false);
         }
         // 寝る
@@ -258,7 +258,7 @@ public class AtHomeManager : MonoBehaviour
             convenienceItemSetManager.ResetConvenienceQuantity(buildManager.buildMode);
 
             SetAlertForSleep();
-            ActiveAlert(true);
+            ActiveAlertGoing(true);
             MenuButtonActive(false);
         }
     }
@@ -336,7 +336,7 @@ public class AtHomeManager : MonoBehaviour
             bool connectionResult = await firebaseManager.FireBaseConnection();
             if (connectionResult) await firebaseManager.InsertUpdateToDB(playerDataToPlayerDataDBModelManager.PlayerDataToDBModel(playerData));
         }
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
         canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(false);
         canvasGameObj.transform.Find("AlertTitle").gameObject.SetActive(false);
@@ -349,10 +349,15 @@ public class AtHomeManager : MonoBehaviour
         ExecuteFadeInOut();
     }
 
-    public void ActiveAlert(bool sw)
+    public void ActiveAlertTitle(bool sw)
     {
-        GameObject.Find("Canvas").transform.Find("AlertGoing").gameObject.SetActive(sw);
-        //GameObject.Find("Canvas").transform.Find("AlertTitle").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("AlertTitle").gameObject.SetActive(sw);
+        MenuButtonActive(true);
+    }
+
+    public void ActiveAlertGoing(bool sw)
+    {
+        canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(sw);
         MenuButtonActive(true);
     }
 

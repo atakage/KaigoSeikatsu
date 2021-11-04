@@ -6,6 +6,12 @@ using UnityEngine;
 public class ItemUseManager : MonoBehaviour
 {
     private PlayerSaveDataManager playerSaveDataManager;
+    public BuildManager buildManager;
+
+    private void Start()
+    {
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+    }
 
     public void DropItem(string dropItemName, string dropItemQty, ItemListData[] allItemListData)
     {
@@ -26,7 +32,7 @@ public class ItemUseManager : MonoBehaviour
         }
 
         playerSaveDataManager = new PlayerSaveDataManager();
-        playerSaveDataManager.SavePlayerItemList((ItemListData[])itemListDataList.ToArray(typeof(ItemListData)));
+        playerSaveDataManager.SavePlayerItemList((ItemListData[])itemListDataList.ToArray(typeof(ItemListData)), buildManager.buildMode);
     }
 
     public void UseItem(string useItemName, Dictionary<string, Dictionary<string, object>> allItemDic)
@@ -118,7 +124,7 @@ public class ItemUseManager : MonoBehaviour
             }
 
             // 変更されたプレイヤーの情報をセーブする
-            playerSaveDataManager.SavePlayerData(playerData);
+            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
         }
     }
 }

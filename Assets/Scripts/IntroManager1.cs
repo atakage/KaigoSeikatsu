@@ -21,6 +21,7 @@ public class IntroManager1 : MonoBehaviour
     public IntroSharingObjectManager IntroSharingObjectManager;
     public FirebaseManager FirebaseManager;
     public PlayTimeManager playTimeManager;
+    public BuildManager buildManager;
     public bool inputFieldFocusBool;
     private TouchScreenKeyboard touchScreenKeyboard;
     private PlayerDataDBModel playerDataDBModel;
@@ -31,6 +32,7 @@ public class IntroManager1 : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         eventManager = new EventManager();
         sceneTransitionManager = new SceneTransitionManager();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
         IntroSharingObjectManager = GameObject.Find("IntroSharingObjectManager").GetComponent("IntroSharingObjectManager") as IntroSharingObjectManager;
         IntroSharingObjectManager.checkNameButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameButton);
@@ -74,14 +76,14 @@ public class IntroManager1 : MonoBehaviour
 
         // プレイヤーデータセーブ
         // プレイヤーアイテムデータ初期化
-        playerSaveDataManager.RemoveItemListDataJsonFile();
+        playerSaveDataManager.RemoveItemListDataJsonFile(buildManager.buildMode);
         ItemListData[] itemListData = new ItemListData[1];
         itemListData[0] = new ItemListData();
         itemListData[0].itemName = "名刺";
         itemListData[0].itemDescription = "介護福祉士の名刺だ";
         itemListData[0].quantity = 1;
         itemListData[0].keyItem = "Y";
-        playerSaveDataManager.SaveItemListData(itemListData);
+        playerSaveDataManager.SaveItemListData(itemListData, buildManager.buildMode);
 
         // 新しいプレイヤーデータを作成
         playerData = new PlayerData();
@@ -93,7 +95,7 @@ public class IntroManager1 : MonoBehaviour
         playerData.currentScene = "AtHomeScene";
         playerData.localMode = true;
         playerData.startDate = DateTime.Now.ToString("yyyyMMddHHmmss");
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
         // プレイ時間カウント
         playTimeManager.countPlayTime = true;
@@ -145,14 +147,14 @@ public class IntroManager1 : MonoBehaviour
                     
                     // プレイヤーデータセーブ
                     // プレイヤーアイテムデータ初期化
-                    playerSaveDataManager.RemoveItemListDataJsonFile();
+                    playerSaveDataManager.RemoveItemListDataJsonFile(buildManager.buildMode);
                     ItemListData[] itemListData = new ItemListData[1];
                     itemListData[0] = new ItemListData();
                     itemListData[0].itemName = "名刺";
                     itemListData[0].itemDescription = "介護福祉士の名刺だ";
                     itemListData[0].quantity = 1;
                     itemListData[0].keyItem = "Y";
-                    playerSaveDataManager.SaveItemListData(itemListData);
+                    playerSaveDataManager.SaveItemListData(itemListData, buildManager.buildMode);
 
                     // 新しいプレイヤーデータを作成
                     playerData = new PlayerData();
@@ -164,7 +166,7 @@ public class IntroManager1 : MonoBehaviour
                     playerData.currentScene = "AtHomeScene";
                     playerData.localMode = false;
                     playerData.startDate = playerDataDBModel.startDate;
-                    playerSaveDataManager.SavePlayerData(playerData);
+                    playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
                     // プレイ時間カウント
                     playTimeManager.countPlayTime = true;
@@ -263,7 +265,7 @@ public class IntroManager1 : MonoBehaviour
 
     public void LoadEventAndShow(string eventCode)
     {
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         // 2021.07.26 修正, キャライメージ追加されたrawScriptをparameterに渡す

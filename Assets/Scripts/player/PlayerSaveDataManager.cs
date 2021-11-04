@@ -122,21 +122,41 @@ public class PlayerSaveDataManager : MonoBehaviour
         return loadedEventScriptDic;
     }
 
-    public void SaveEventListData(EventListData[] eventListData)
+    public void SaveEventListData(EventListData[] eventListData, string buildMode)
     {
         string eventAsStr = JsonHelper.ToJson(eventListData, true);
         Debug.Log("dictionary to string: " + eventAsStr);
-        File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
+
+        if ("window".Equals(buildMode))
+        {
+            File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
+        }
+        else if ("android".Equals(buildMode))
+        {
+            File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/event/").FullName + "eventList.json", eventAsStr);
+        }
     }
 
     
-    public EventListData[] LoadedEventListData()
+    public EventListData[] LoadedEventListData(string buildMode)
     {
         EventListData[] returnEventListData = null;
         try
         {
-            string eventAsStr = File.ReadAllText(Application.dataPath + "/Resources/event/eventList.json");
-            Debug.Log("eventAsStr: " + eventAsStr);
+            string eventAsStr = null;
+
+            // 2021.11.04 追加
+            if ("window".Equals(buildMode))
+            {
+                eventAsStr = File.ReadAllText(Application.dataPath + "/Resources/event/eventList.json");
+                Debug.Log("eventAsStr: " + eventAsStr);
+            }
+            else if ("android".Equals(buildMode))
+            {
+                eventAsStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/event/").FullName + "eventList.json");
+                Debug.Log("eventAsStr: " + eventAsStr);
+            }
+            
             returnEventListData = JsonHelper.FromJson<EventListData>(eventAsStr);
         }
         catch(Exception e)
@@ -147,19 +167,26 @@ public class PlayerSaveDataManager : MonoBehaviour
         return returnEventListData;
     }
 
-    public void SavePlayerItemList(ItemListData[] itemListDataArray)
+    public void SavePlayerItemList(ItemListData[] itemListDataArray, string buildMode)
     {
         string itemListDataJson = JsonHelper.ToJson(itemListDataArray, true);
         Debug.Log("SAVEDATA: " + itemListDataJson);
-        File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json", itemListDataJson);
+        if ("window".Equals(buildMode))
+        {
+            File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json", itemListDataJson);
+        }
+        else if ("android".Equals(buildMode))
+        {
+            File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json", itemListDataJson);
+        }
     }
 
 
     // 2021.05.06使用
-    public void SaveItemListData(ItemListData[] itemListData)
+    public void SaveItemListData(ItemListData[] itemListData, string buildMode)
     {
         // セーブ前にデータをロードする
-        ItemListData[] loadedItemListData = LoadItemListData();
+        ItemListData[] loadedItemListData = LoadItemListData(buildMode);
         
         // もしロードデータがなかったら新しいアイテムリストをセーブする
         if(loadedItemListData == null)
@@ -169,7 +196,16 @@ public class PlayerSaveDataManager : MonoBehaviour
 
             string itemAsStr = JsonHelper.ToJson(itemListData, true);
             Debug.Log("SAVEDATA: " + itemAsStr);
-            File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json", itemAsStr);
+            // 2021.11.04 追加
+            if ("window".Equals(buildMode))
+            {
+                File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json", itemAsStr);
+            }
+            else if ("android".Equals(buildMode))
+            {
+                File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json", itemAsStr);
+            }
+            
         }
         // ロードデータがあるなら既存アイテムリストに新しいアイテムリストを追加してセーブする
         else
@@ -211,13 +247,19 @@ public class PlayerSaveDataManager : MonoBehaviour
 
             string itemAsStr = JsonHelper.ToJson(mergedItemArr, true);
             Debug.Log("SAVEDATA: " + itemAsStr);
-            File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json", itemAsStr);
-
-
+            // 2021.11.04 追加
+            if ("window".Equals(buildMode))
+            {
+                File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json", itemAsStr);
+            }
+            else if ("android".Equals(buildMode))
+            {
+                File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json", itemAsStr);
+            }
         }
     }
 
-    public ItemListData[] LoadItemListData(int page)
+    public ItemListData[] LoadItemListData(int page, string buildMode)
     {
         ItemListData[] itemListData;
         ItemListData[] returnItemListData = null;
@@ -225,7 +267,16 @@ public class PlayerSaveDataManager : MonoBehaviour
 
         try
         {
-            string itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
+            string itemAsStr = null;
+            if ("window".Equals(buildMode))
+            {
+                itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
+            }
+            else if ("android".Equals(buildMode))
+            {
+                itemAsStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json");
+            }
+            
             itemListData = JsonHelper.FromJson<ItemListData>(itemAsStr);
 
             int pageItemStartIndex = (page-1) * 6;
@@ -256,12 +307,20 @@ public class PlayerSaveDataManager : MonoBehaviour
     }
 
     // 全体アイテムロード
-    public ItemListData[] LoadItemListData()
+    public ItemListData[] LoadItemListData(string buildMode)
     {
         ItemListData[] itemListData;
         try
         {
-            string itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
+            string itemAsStr = null;
+            // 2021.11.04 追加
+            if ("window".Equals(buildMode))
+            {
+                itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
+            }else if ("android".Equals(buildMode))
+            {
+                itemAsStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json");
+            }
             itemListData = JsonHelper.FromJson<ItemListData>(itemAsStr);
 
             Debug.Log("SUCCESS LOAD");
@@ -275,15 +334,35 @@ public class PlayerSaveDataManager : MonoBehaviour
         return itemListData;
     }
 
-    public void RemoveItemListDataJsonFile()
+    public void RemoveItemListDataJsonFile(string buildMode)
     {
+
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "testPlayerItem.json";
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        File.Delete(filePath);
+
+        /*
         // window
-        //File.Delete(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
+        if ("window".Equals(buildMode))
+        {
+            File.Delete(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
+        }
         // android
-        File.Delete(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json");
+        else if ("android".Equals(buildMode))
+        {
+            // android
+            File.Delete(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json");
+        }
+        */
     }
 
-    public void SavePlayerData(PlayerData playerData)
+    public void SavePlayerData(PlayerData playerData, string buildMode)
     {
         // 2021.08.02 修正
         // statusが0未満なら0でセーブする
@@ -291,7 +370,16 @@ public class PlayerSaveDataManager : MonoBehaviour
        
         string strPlayerData = JsonConvert.SerializeObject(playerData);
         Debug.Log("SAVEDATA: " + strPlayerData.ToString());
-        File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerData.json", strPlayerData);
+        // 2021.11.04 追加
+        if ("window".Equals(buildMode))
+        {
+            File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerData.json", strPlayerData);
+        }
+        else if ("android".Equals(buildMode))
+        {
+            File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerData.json", strPlayerData);
+        }
+        
     }
 
     public string[] SaveCompletedEvent(string[] eventCodeArray, string completedEventCode)

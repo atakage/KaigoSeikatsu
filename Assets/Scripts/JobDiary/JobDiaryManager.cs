@@ -8,6 +8,7 @@ public class JobDiaryManager : MonoBehaviour
 {
     public SceneTransitionManager sceneTransitionManager;
     public PlayerSaveDataManager playerSaveDataManager;
+    public BuildManager buildManager;
     public GameObject canvasGameObj;
     public GameObject jobDiaryAlphaScreenCanvas;
     public GameObject jobDiaryFlipIconCanvas;
@@ -20,6 +21,7 @@ public class JobDiaryManager : MonoBehaviour
     {
         sceneTransitionManager = new SceneTransitionManager();
         playerSaveDataManager = new PlayerSaveDataManager();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
         canvasGameObj = GameObject.Find("Canvas");
         jobDiaryAlphaScreenCanvas = GameObject.Find("jobDiaryAlphaScreenCanvas");
@@ -57,7 +59,7 @@ public class JobDiaryManager : MonoBehaviour
 
         playerData = playerSaveDataManager.LoadPlayerData();
         playerData.tip.checkedJobDiaryTip = true;
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
     }
 
     IEnumerator StartTipDisplay()

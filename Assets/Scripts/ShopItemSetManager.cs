@@ -19,16 +19,15 @@ public class ShopItem
 public class ShopItemSetManager : MonoBehaviour
 {
     public bool checkDestroyedChild;
+    public BuildManager buildManager;
 
     // Start is called before the first frame update
     void Start()
     {
-
-        // タイトルで
-        //SetShopItem();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
         // ショップアイテムファイルをclassに読み込む
-        ConvenienceItemData[] loadedCafeItemArray = LoadCafeItemJsonFile();
+        ConvenienceItemData[] loadedCafeItemArray = LoadCafeItemJsonFile(buildManager.buildMode);
 
         //読み込んだclassファイルをショップUIにセットする
         SetShopItemUI(loadedCafeItemArray);
@@ -335,12 +334,21 @@ public class ShopItemSetManager : MonoBehaviour
         File.WriteAllText(Application.dataPath + "/Resources/saveData/shopItem.json", itemAsStr);
     }
 
-    public ConvenienceItemData[] LoadCafeItemJsonFile()
+    public ConvenienceItemData[] LoadCafeItemJsonFile(string buildMode)
     {
         ConvenienceItemData[] loadedCafeItemArray = null;
         try
         {
-            string itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/cafeItem.json");
+            string itemAsStr = null;
+            if ("window".Equals(buildMode))
+            {
+                itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/cafeItem.json");
+            }else if ("android".Equals(buildMode))
+            {
+                itemAsStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "cafeItem.json");
+            }
+
+            
             Debug.Log("itemAsStr: " + itemAsStr);
             loadedCafeItemArray = JsonHelper.FromJson<ConvenienceItemData>(itemAsStr);
             Debug.Log("loadedCafeItemArray.Length: " + loadedCafeItemArray.Length);

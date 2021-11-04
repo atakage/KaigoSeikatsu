@@ -6,7 +6,7 @@ public class BuildManager : MonoBehaviour
 {
     static BuildManager buildManagerInstance;
     public bool realMode = false; // real, testにより異なるDBに接近
-    public string buildMode = "window"; // build対象(window, andorid)により異なるdataPath設定
+    public string buildMode = "window"; // build対象(window, android)により異なるdataPath設定
 
     private void Awake()
     {

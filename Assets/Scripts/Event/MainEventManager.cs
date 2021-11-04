@@ -7,11 +7,17 @@ public class MainEventManager : MonoBehaviour
 {
     public MainEventSetManager mainEventSetManager;
     public PlayerSaveDataManager playerSaveDataManager;
+    public BuildManager buildManager;
+
+    private void Start()
+    {
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+    }
 
     public int getAddingProgressFromMainEventJsonFile(string mainEventCode)
     {
         int addingProgress = 0;
-        MainEventModel[] mainEventModelArray = mainEventSetManager.GetMainEventJsonFile();
+        MainEventModel[] mainEventModelArray = mainEventSetManager.GetMainEventJsonFile(buildManager.buildMode);
 
         foreach(MainEventModel mainEventModel in mainEventModelArray)
         {
@@ -57,7 +63,7 @@ public class MainEventManager : MonoBehaviour
 
         // mainEvent.jsonからリストを読み込む
         mainEventSetManager = new MainEventSetManager();
-        MainEventModel[] mainEventModelArray = mainEventSetManager.GetMainEventJsonFile();
+        MainEventModel[] mainEventModelArray = mainEventSetManager.GetMainEventJsonFile(buildManager.buildMode);
         // 全体メインイベント数くらい繰り返す
         foreach (MainEventModel mainEventModel in mainEventModelArray)
         {

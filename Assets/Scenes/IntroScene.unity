@@ -1024,6 +1024,7 @@ MonoBehaviour:
   jobDiarySetManager: {fileID: 0}
   jobDiaryManager: {fileID: 0}
   flashEffectManager: {fileID: 0}
+  buildManager: {fileID: 0}
   eventCode: 
   panelText: {fileID: 0}
   dialogueSW: 0
@@ -2622,6 +2623,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ec319490c36d4469e09bf2dec5db79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  realDbName: player_data
+  testDbName: test_player_data
 --- !u!4 &1526168809
 Transform:
   m_ObjectHideFlags: 0

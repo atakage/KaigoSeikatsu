@@ -141,7 +141,7 @@ public class CSVManager : MonoBehaviour
         {
             // ConvenienceItemInit.txtからデータを読み込む
             Dictionary<string, Dictionary<string, object>> mainEventListDic = GetTxtItemList("MainEvent");
-            // convenienceItem.jsonを作る
+            // を作る
             mainEventSetManager = new MainEventSetManager();
             mainEventSetManager.CreateMainEventJson(mainEventListDic, buildMode);
         }
@@ -183,7 +183,7 @@ public class CSVManager : MonoBehaviour
         {
             // ConvenienceItemInit.txtからデータを読み込む
             Dictionary<string, Dictionary<string, object>> ConItemListDic = GetTxtItemList("ConvenienceItemInit");
-            // convenienceItem.jsonを作る
+            // を作る
             convenienceItemSetManager = new ConvenienceItemSetManager();
             convenienceItemSetManager.CreateConvenienceItem(ConItemListDic, buildMode);
         }

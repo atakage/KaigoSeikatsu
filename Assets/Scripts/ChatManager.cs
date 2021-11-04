@@ -167,7 +167,7 @@ public class ChatManager : MonoBehaviour
                         else if (afterEvent.Equals("Change Scene Fade Out"))
                         {
                                           //  プレイヤーデータを更新
-                            playerSaveDataManager.SavePlayerData(SetPlayerDataForEnding());
+                            playerSaveDataManager.SavePlayerData(SetPlayerDataForEnding(), buildManager.buildMode);
                                           // ゲームオブジェクトに変えるシーン名を格納
                             SetChangeSceneNameToGameObject("ReadyForEndingScene");
                             executeChangeSceneFadeOut();
@@ -333,7 +333,7 @@ public class ChatManager : MonoBehaviour
         }
 
         // JobEvent.jsonにイベントのactiveをfalse処理
-        JobEventModel[] jobEventModelArray = jobEventSetManager.GetJobEventJsonFile();
+        JobEventModel[] jobEventModelArray = jobEventSetManager.GetJobEventJsonFile(buildManager.buildMode);
         List<JobEventModel> newJobEventModelList = jobEventManager.SetEventActiveAndReturnAll(jobEventModelArray, eventCode, false);
         jobEventSetManager.CreateJobEventJsonFile(newJobEventModelList, buildManager.buildMode);
 
@@ -361,7 +361,7 @@ public class ChatManager : MonoBehaviour
         ShowDialogue(scriptArrList, "", null);
 
 
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
         SetActiveChoiceButton(false);
 
@@ -420,7 +420,7 @@ public class ChatManager : MonoBehaviour
         SetTime();
 
         //プレイヤーデータをセーブ
-        playerSaveDataManager.SavePlayerData(playerData);
+        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
 
         // スクリプトをディスプレイする
         List<string[]> scriptArrList = eventManager.SingleScriptSaveToList(panelText);
