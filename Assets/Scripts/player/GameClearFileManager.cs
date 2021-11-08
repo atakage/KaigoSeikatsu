@@ -43,6 +43,26 @@ public class GameClearFileManager : MonoBehaviour
     {
         ClearData clearData = null;
         string jsonStr = null;
+
+        try
+        {
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "clearFile.json";
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            jsonStr = File.ReadAllText(filePath);
+        }
+        catch(FileNotFoundException e)
+        {
+            return clearData;
+        }
+        
+
+        /*
         if ("window".Equals(buildMode))
         {
             try
@@ -65,8 +85,9 @@ public class GameClearFileManager : MonoBehaviour
                 return clearData;
             }
         }
+        */
 
-        if(jsonStr != null) clearData = JsonConvert.DeserializeObject<ClearData>(jsonStr);
+        if (jsonStr != null) clearData = JsonConvert.DeserializeObject<ClearData>(jsonStr);
 
         return clearData;
     }
@@ -75,6 +96,17 @@ public class GameClearFileManager : MonoBehaviour
     {
         bool checkFile = false;
 
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "clearFile.json";
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        checkFile = File.Exists(filePath);
+
+        /*
         if ("window".Equals(buildMode))
         {
             checkFile = File.Exists(Application.dataPath + "/Resources/saveData/clearFile.json");
@@ -82,7 +114,7 @@ public class GameClearFileManager : MonoBehaviour
         {
             checkFile = File.Exists(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "clearFile.json");
         }
-
+        */
         Debug.Log("checkFile: " + checkFile);
 
         return checkFile;

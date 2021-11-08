@@ -45,6 +45,18 @@ public class JobEventSetManager : MonoBehaviour
     public JobEventModel[] GetJobEventJsonFile(string buildMode)
     {
         string jsonStr = null;
+
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "jobEvent.json";
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        jsonStr = File.ReadAllText(filePath);
+
+        /*
         if ("window".Equals(buildMode))
         {
             jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/jobEvent.json");
@@ -55,7 +67,8 @@ public class JobEventSetManager : MonoBehaviour
             jsonStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "jobEvent.json");
             Debug.Log("jsonStr jobEvent: " + jsonStr);
         }
-        
+        */
+
         JobEventModel[] jobEventModelArray = JsonHelper.FromJson<JobEventModel>(jsonStr);
 
         return jobEventModelArray;

@@ -85,6 +85,18 @@ public class ConvenienceItemSetManager : MonoBehaviour
     public ConvenienceItemData[] GetConvenienceJsonFile(string buildMode)
     {
         string jsonStr = null;
+
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "convenienceItem.json";
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        jsonStr = File.ReadAllText(filePath);
+
+        /*
         if ("window".Equals(buildMode))
         {
             jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/convenienceItem.json");
@@ -93,8 +105,8 @@ public class ConvenienceItemSetManager : MonoBehaviour
         {
             jsonStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "convenienceItem.json");
         }
+        */
 
-        
         Debug.Log("jsonStr Convenience: " + jsonStr);
         ConvenienceItemData[] convenienceItemDataArray = JsonHelper.FromJson<ConvenienceItemData>(jsonStr);
 
@@ -160,9 +172,20 @@ public class ConvenienceItemSetManager : MonoBehaviour
         string jsonStr = JsonHelper.ToJson(convenienceList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);
 
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "convenienceItem.json";
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        File.Create(filePath).Close();
+        File.WriteAllText(filePath, jsonStr);
+
         // 2021.10.30 修正
         // buildModeによる異なるdataPath処理
-
+        /*
         // windowなら
         if ("window".Equals(buildMode))
         {
@@ -173,5 +196,6 @@ public class ConvenienceItemSetManager : MonoBehaviour
         {
             File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "convenienceItem.json", jsonStr);
         }
+        */
     }
 }

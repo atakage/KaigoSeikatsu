@@ -72,8 +72,19 @@ public class CSVManager : MonoBehaviour
         bool checkJsonSW = false;
         try
         {
-            // jsonファイルを読み込む
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "jobEvent.json";
 
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            File.ReadAllText(filePath);
+            checkJsonSW = true;
+
+            // jsonファイルを読み込む
+            /*
             if ("window".Equals(buildMode))
             {
                 File.ReadAllText(Application.dataPath + "/Resources/saveData/jobEvent.json");
@@ -86,7 +97,7 @@ public class CSVManager : MonoBehaviour
                 File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "jobEvent.json");
                 checkJsonSW = true;
             }
-
+            */
         }
         // jsonファイルがないと
         catch (Exception e)
@@ -111,8 +122,19 @@ public class CSVManager : MonoBehaviour
         bool checkJsonSW = false;
         try
         {
-            // jsonファイルを読み込む
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "mainEvent.json";
 
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            File.ReadAllText(filePath);
+            checkJsonSW = true;
+
+            // jsonファイルを読み込む
+            /*
             // 2021.10.30 修正
             // window
             if ("window".Equals(buildMode))
@@ -128,7 +150,7 @@ public class CSVManager : MonoBehaviour
                 File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "mainEvent.json");
                 checkJsonSW = true;
             }
-            
+            */
         }
         // jsonファイルがないと
         catch (Exception e)
@@ -152,10 +174,21 @@ public class CSVManager : MonoBehaviour
         bool checkJsonSW = false;  
         try
         {
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "convenienceItem.json";
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            File.ReadAllText(filePath);
+            checkJsonSW = true;
+
             // jsonファイルを読み込む
             // 2021.10.30 修正
             // buildModeによる異なるdataPath処理
-
+            /*
             // windowなら
             if ("window".Equals(buildMode))
             {
@@ -170,7 +203,7 @@ public class CSVManager : MonoBehaviour
                 File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "convenienceItem.json");
                 checkJsonSW = true;
             }
-            
+            */
         }
         // jsonファイルがないと
         catch (Exception e)
@@ -194,10 +227,21 @@ public class CSVManager : MonoBehaviour
         bool checkJsonSW = false;
         try
         {
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "cafeItem.json";
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            File.ReadAllText(filePath);
+            checkJsonSW = true;
+
             // jsonファイルを読み込む
             // 2021.10.30 修正
             // buildModeによる異なるdataPath処理
-
+            /*
             // window
             if ("window".Equals(buildMode))
             {
@@ -211,8 +255,8 @@ public class CSVManager : MonoBehaviour
                 File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "cafeItem.json");
                 checkJsonSW = true;
             }
+            */
 
-            
         }
         // jsonファイルがないと
         catch (Exception e)

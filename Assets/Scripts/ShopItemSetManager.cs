@@ -340,6 +340,18 @@ public class ShopItemSetManager : MonoBehaviour
         try
         {
             string itemAsStr = null;
+
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "cafeItem.json";
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            itemAsStr = File.ReadAllText(filePath);
+
+            /*
             if ("window".Equals(buildMode))
             {
                 itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/cafeItem.json");
@@ -347,8 +359,8 @@ public class ShopItemSetManager : MonoBehaviour
             {
                 itemAsStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "cafeItem.json");
             }
+            */
 
-            
             Debug.Log("itemAsStr: " + itemAsStr);
             loadedCafeItemArray = JsonHelper.FromJson<ConvenienceItemData>(itemAsStr);
             Debug.Log("loadedCafeItemArray.Length: " + loadedCafeItemArray.Length);

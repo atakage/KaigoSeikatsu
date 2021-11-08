@@ -44,6 +44,17 @@ public class MainEventSetManager : MonoBehaviour
     {
         string jsonStr = null;
 
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "mainEvent.json";
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        jsonStr = File.ReadAllText(filePath);
+
+        /*
         if ("window".Equals(buildMode))
         {
             jsonStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/mainEvent.json");
@@ -52,6 +63,7 @@ public class MainEventSetManager : MonoBehaviour
         {
             jsonStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "mainEvent.json");
         }
+        */
         Debug.Log("jsonStr mainEvent: " + jsonStr);
         MainEventModel[] mainEventModelArray = JsonHelper.FromJson<MainEventModel>(jsonStr);
 
@@ -63,6 +75,18 @@ public class MainEventSetManager : MonoBehaviour
         string jsonStr = JsonHelper.ToJson(mainEventModelList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);
 
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "mainEvent.json";
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        File.Create(filePath).Close();
+        File.WriteAllText(filePath, jsonStr);
+
+        /*
         if ("window".Equals(buildMode))
         {
             File.WriteAllText(Application.dataPath + "/Resources/saveData/mainEvent.json", jsonStr);
@@ -71,6 +95,6 @@ public class MainEventSetManager : MonoBehaviour
         {
             File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "mainEvent.json", jsonStr);
         }
-        
+        */
     }
 }

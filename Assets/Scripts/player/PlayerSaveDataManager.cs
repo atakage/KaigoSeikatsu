@@ -127,6 +127,18 @@ public class PlayerSaveDataManager : MonoBehaviour
         string eventAsStr = JsonHelper.ToJson(eventListData, true);
         Debug.Log("dictionary to string: " + eventAsStr);
 
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "eventList.json";
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        File.Create(filePath).Close();
+        File.WriteAllText(filePath, eventAsStr);
+
+        /*
         if ("window".Equals(buildMode))
         {
             File.WriteAllText(Application.dataPath + "/Resources/event/eventList.json", eventAsStr);
@@ -135,6 +147,7 @@ public class PlayerSaveDataManager : MonoBehaviour
         {
             File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/event/").FullName + "eventList.json", eventAsStr);
         }
+        */
     }
 
     
@@ -145,6 +158,17 @@ public class PlayerSaveDataManager : MonoBehaviour
         {
             string eventAsStr = null;
 
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "eventList.json";
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            eventAsStr = File.ReadAllText(filePath);
+
+            /*
             // 2021.11.04 追加
             if ("window".Equals(buildMode))
             {
@@ -156,7 +180,7 @@ public class PlayerSaveDataManager : MonoBehaviour
                 eventAsStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/event/").FullName + "eventList.json");
                 Debug.Log("eventAsStr: " + eventAsStr);
             }
-            
+            */
             returnEventListData = JsonHelper.FromJson<EventListData>(eventAsStr);
         }
         catch(Exception e)
@@ -171,6 +195,19 @@ public class PlayerSaveDataManager : MonoBehaviour
     {
         string itemListDataJson = JsonHelper.ToJson(itemListDataArray, true);
         Debug.Log("SAVEDATA: " + itemListDataJson);
+
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "testPlayerItem.json";
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        File.Create(filePath).Close();
+        File.WriteAllText(filePath, itemListDataJson);
+
+        /*
         if ("window".Equals(buildMode))
         {
             File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json", itemListDataJson);
@@ -179,6 +216,7 @@ public class PlayerSaveDataManager : MonoBehaviour
         {
             File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json", itemListDataJson);
         }
+        */
     }
 
 
@@ -196,6 +234,19 @@ public class PlayerSaveDataManager : MonoBehaviour
 
             string itemAsStr = JsonHelper.ToJson(itemListData, true);
             Debug.Log("SAVEDATA: " + itemAsStr);
+
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "testPlayerItem.json";
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            File.Create(filePath).Close();
+            File.WriteAllText(filePath, itemAsStr);
+
+            /*
             // 2021.11.04 追加
             if ("window".Equals(buildMode))
             {
@@ -205,7 +256,7 @@ public class PlayerSaveDataManager : MonoBehaviour
             {
                 File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json", itemAsStr);
             }
-            
+            */
         }
         // ロードデータがあるなら既存アイテムリストに新しいアイテムリストを追加してセーブする
         else
@@ -247,6 +298,19 @@ public class PlayerSaveDataManager : MonoBehaviour
 
             string itemAsStr = JsonHelper.ToJson(mergedItemArr, true);
             Debug.Log("SAVEDATA: " + itemAsStr);
+
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "testPlayerItem.json";
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            File.Create(filePath).Close();
+            File.WriteAllText(filePath, itemAsStr);
+
+            /*
             // 2021.11.04 追加
             if ("window".Equals(buildMode))
             {
@@ -256,6 +320,7 @@ public class PlayerSaveDataManager : MonoBehaviour
             {
                 File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json", itemAsStr);
             }
+            */
         }
     }
 
@@ -268,6 +333,18 @@ public class PlayerSaveDataManager : MonoBehaviour
         try
         {
             string itemAsStr = null;
+
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "testPlayerItem.json";
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            itemAsStr = File.ReadAllText(filePath);
+
+            /*
             if ("window".Equals(buildMode))
             {
                 itemAsStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json");
@@ -276,7 +353,7 @@ public class PlayerSaveDataManager : MonoBehaviour
             {
                 itemAsStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json");
             }
-            
+            */
             itemListData = JsonHelper.FromJson<ItemListData>(itemAsStr);
 
             int pageItemStartIndex = (page-1) * 6;
@@ -313,6 +390,18 @@ public class PlayerSaveDataManager : MonoBehaviour
         try
         {
             string itemAsStr = null;
+
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "testPlayerItem.json";
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            itemAsStr = File.ReadAllText(filePath);
+
+            /*
             // 2021.11.04 追加
             if ("window".Equals(buildMode))
             {
@@ -321,6 +410,8 @@ public class PlayerSaveDataManager : MonoBehaviour
             {
                 itemAsStr = File.ReadAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json");
             }
+            */
+
             itemListData = JsonHelper.FromJson<ItemListData>(itemAsStr);
 
             Debug.Log("SUCCESS LOAD");
@@ -370,6 +461,19 @@ public class PlayerSaveDataManager : MonoBehaviour
        
         string strPlayerData = JsonConvert.SerializeObject(playerData);
         Debug.Log("SAVEDATA: " + strPlayerData.ToString());
+
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "testPlayerData.json";
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        File.Create(filePath).Close();
+        File.WriteAllText(filePath, strPlayerData);
+
+        /*
         // 2021.11.04 追加
         if ("window".Equals(buildMode))
         {
@@ -379,7 +483,7 @@ public class PlayerSaveDataManager : MonoBehaviour
         {
             File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerData.json", strPlayerData);
         }
-        
+        */
     }
 
     public string[] SaveCompletedEvent(string[] eventCodeArray, string completedEventCode)

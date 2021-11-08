@@ -46,6 +46,18 @@ public class CafeItemSetManager : MonoBehaviour
         string jsonStr = JsonHelper.ToJson(cafeList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);
 
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "cafeItem.json";
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        File.Create(filePath).Close();
+        File.WriteAllText(filePath, jsonStr);
+
+        /*
         if ("window".Equals(buildMode))
         {
             File.WriteAllText(Application.dataPath + "/Resources/saveData/cafeItem.json", jsonStr);
@@ -62,6 +74,7 @@ public class CafeItemSetManager : MonoBehaviour
             Debug.Log("androidFolderPath: " + androidFolderPath);
             File.WriteAllText(androidFilePath, jsonStr);
         }
+        */
     }
 
     public string GetItemImagePath(string itemName)
