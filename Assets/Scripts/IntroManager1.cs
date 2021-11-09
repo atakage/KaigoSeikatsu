@@ -38,9 +38,8 @@ public class IntroManager1 : MonoBehaviour
         IntroSharingObjectManager.checkNameButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameButton);
         IntroSharingObjectManager.checkNameConfirmButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameConfirmButton);
         IntroSharingObjectManager.checkNameCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameCancelButton);
-        //IntroSharingObjectManager.offLinePlayAlertBoxOffLineButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickOffLinePlayButton);
-        //IntroSharingObjectManager.offLinePlayAlertBoxOnLineButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickOnLinePlayButton);
         IntroSharingObjectManager.alertBoxCancelButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickAlertBoxCancelButton);
+        IntroSharingObjectManager.titleButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickTitleButton);
 
         FirebaseManager = GameObject.Find("FirebaseManager").GetComponent("FirebaseManager") as FirebaseManager;
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
@@ -66,6 +65,11 @@ public class IntroManager1 : MonoBehaviour
             IntroSharingObjectManager.canvasGameObj.transform.Find("fadeOutPersistEventCheck").GetComponent<Text>().text = "N";
             //Destroy(canvasObj.transform.Find("fadeOutEndMomentSW").gameObject);
         }
+    }
+
+    public void ClickTitleButton()
+    {
+        sceneTransitionManager.LoadTo("TitleScene");
     }
 
     public void ClickOffLinePlayButton()

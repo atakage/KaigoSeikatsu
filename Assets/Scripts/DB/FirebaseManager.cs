@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using Firebase;
@@ -65,6 +66,7 @@ public class FirebaseManager : MonoBehaviour
                     // FirebaseDatabase.DefaultInstance.GetReference("player_data"): DB名にaccess
                      this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference(testDbName);
                     returnValue = true;
+                    
                 }
                 else
                 {
@@ -73,7 +75,9 @@ public class FirebaseManager : MonoBehaviour
                 }
             };
         });
-        
+
+        Debug.Log("return mae: " + returnValue);
+
         return returnValue;
     }
 

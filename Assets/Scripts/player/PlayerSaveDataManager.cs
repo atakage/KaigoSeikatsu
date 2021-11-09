@@ -510,9 +510,24 @@ public class PlayerSaveDataManager : MonoBehaviour
         PlayerData playerData = null;
         try
         {
+            string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+            string filePath = folderPath + "testPlayerData.json";
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            //File.Create(filePath).Close();
+
+            string dataStr = File.ReadAllText(filePath);
+            playerData = JsonConvert.DeserializeObject<PlayerData>(dataStr);
+
+            /*
             string dataStr = File.ReadAllText(Application.dataPath + "/Resources/saveData/testPlayerData.json");
             playerData = JsonConvert.DeserializeObject<PlayerData>(dataStr);
-            Debug.Log("LOADDATA: " + playerData.money + "," + playerData.progress);
+            */
+            Debug.Log("LOADDATA playerData.time: " + playerData.time);
         }
         catch(Exception e)
         {
