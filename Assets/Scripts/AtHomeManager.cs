@@ -14,6 +14,7 @@ public class AtHomeManager : MonoBehaviour
     public FirebaseManager firebaseManager;
     public PlayerDataToPlayerDataDBModelManager playerDataToPlayerDataDBModelManager;
     public BuildManager buildManager;
+    public PlayTimeManager playTimeManager;
     public PlayerData playerData = null;
     public GameObject canvasGameObj;
     public Boolean timeCheckResult;
@@ -27,7 +28,7 @@ public class AtHomeManager : MonoBehaviour
         playerDataToPlayerDataDBModelManager = new PlayerDataToPlayerDataDBModelManager();
         utilManager = new UtilManager();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
-
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
 
         if (GameObject.Find("SceneChangeManager") != null) GameObject.Find("SceneChangeManager").transform.Find("SceneChangeCanvas").transform.Find("destinationFrom-toItemCheckScene").GetComponent<Text>().text = SceneManager.GetActiveScene().name;
@@ -73,7 +74,7 @@ public class AtHomeManager : MonoBehaviour
             // 次のシーンをプレイヤーデータにセーブ
             playerData.currentScene = "FacilityScene";
             playerData.time = "08:50";
-            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+            playerSaveDataManager.SavePlayerData(playerData);
             sceneTransitionManager.LoadTo("FacilityScene");
 
         // 寝て朝になる
@@ -89,7 +90,7 @@ public class AtHomeManager : MonoBehaviour
                 GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text = "";
                 GameObject.Find("Canvas").transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "出勤する";
                 playerData.time = "08:00";
-                playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+                playerSaveDataManager.SavePlayerData(playerData);
                 GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = playerData.time;
                 MenuButtonActive(true);
                 UIDisplay(true);
@@ -99,7 +100,7 @@ public class AtHomeManager : MonoBehaviour
             {
                 playerData.ending = "endingC";
                 playerData.currentScene = "ReadyForEndingScene";
-                playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+                playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("ReadyForEndingScene");
             }
         // コンビニへ行く
@@ -108,7 +109,7 @@ public class AtHomeManager : MonoBehaviour
             // 現在プレイヤーデータの時間を変更する(add minute)
             DateTime addedDateTime = utilManager.TimeCal(playerData.time, 20);
             playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
-            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+            playerSaveDataManager.SavePlayerData(playerData);
 
             sceneTransitionManager.LoadTo("ConvenienceScene");
         }
@@ -129,6 +130,11 @@ public class AtHomeManager : MonoBehaviour
 
     public void ClickAlertTitleYesButton()
     {
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData = playerSaveDataManager.LoadPlayerData();
+        playerData.playTime = playTimeManager.playTime;
+        playerSaveDataManager.SavePlayerData(playerData);
         sceneTransitionManager.LoadTo("TitleScene");
     }
 
@@ -188,7 +194,7 @@ public class AtHomeManager : MonoBehaviour
 
         playerData = playerSaveDataManager.LoadPlayerData();
         playerData.currentScene = "ConvenienceScene";
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
 
         canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(false);
         canvasGameObj.transform.Find("nextButton").gameObject.SetActive(false);
@@ -336,7 +342,7 @@ public class AtHomeManager : MonoBehaviour
             bool connectionResult = await firebaseManager.FireBaseConnection();
             if (connectionResult) await firebaseManager.InsertUpdateToDB(playerDataToPlayerDataDBModelManager.PlayerDataToDBModel(playerData));
         }
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
 
         canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(false);
         canvasGameObj.transform.Find("AlertTitle").gameObject.SetActive(false);

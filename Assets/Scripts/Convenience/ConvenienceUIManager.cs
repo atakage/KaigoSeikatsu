@@ -79,7 +79,7 @@ public class ConvenienceUIManager : MonoBehaviour
         {
             playerData = playerSaveDataManager.LoadPlayerData();
             playerData.currentScene = "AtHomeScene";
-            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+            playerSaveDataManager.SavePlayerData(playerData);
 
             sceneTransitionManager.LoadTo("AtHomeScene");
         }
@@ -337,7 +337,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         // 現在プレイヤーデータの時間を変更する(add minute)
         DateTime addedDateTime = utilManager.TimeCal(playerData.time, 20);
         playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
 
         // イベントを呼び出す(店員さん挨拶イベント)
         canvasGameObj.transform.Find("eventCodeSW").GetComponent<Text>().text = "EV013";
@@ -410,7 +410,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
             // specificationBoxのresultMoneyValueStrをプレイヤー所持金に反映する
             string resultMoney = specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text.Replace("円", "");
             playerData.money = resultMoney;
-            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+            playerSaveDataManager.SavePlayerData(playerData);
 
             // 購買したアイテムの数反映()
             convenienceItemSetManager.SetConvenienceJsonFile(itemListDataListForConvenience.ToArray(), buildManager.buildMode);

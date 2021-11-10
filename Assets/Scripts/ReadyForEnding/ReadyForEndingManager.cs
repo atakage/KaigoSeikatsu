@@ -127,7 +127,7 @@ public class ReadyForEndingManager : MonoBehaviour
     {
         // PlayerDataをDBセーブ用モデルに変換(PlayerDataDBModel)
         playerData.endDate = DateTime.Now.ToString("yyyyMMddHHmmss");
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
         PlayerDataDBModel playerDataDBModel = ConvertPlayerDataDBModel(playerData, null);
 
         // DB作業
@@ -340,7 +340,7 @@ public class ReadyForEndingManager : MonoBehaviour
 
         // PlayerDataをDBセーブ用モデルに変換(PlayerDataDBModel)
         playerData.endDate = DateTime.Now.ToString("yyyyMMddHHmmss");
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
         PlayerDataDBModel playerDataDBModel = ConvertPlayerDataDBModel(playerData, reasonList);
 
 

@@ -167,7 +167,7 @@ public class ChatManager : MonoBehaviour
                         else if (afterEvent.Equals("Change Scene Fade Out"))
                         {
                                           //  プレイヤーデータを更新
-                            playerSaveDataManager.SavePlayerData(SetPlayerDataForEnding(), buildManager.buildMode);
+                            playerSaveDataManager.SavePlayerData(SetPlayerDataForEnding());
                                           // ゲームオブジェクトに変えるシーン名を格納
                             SetChangeSceneNameToGameObject("ReadyForEndingScene");
                             executeChangeSceneFadeOut();
@@ -361,7 +361,7 @@ public class ChatManager : MonoBehaviour
         ShowDialogue(scriptArrList, "", null);
 
 
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
 
         SetActiveChoiceButton(false);
 
@@ -420,7 +420,7 @@ public class ChatManager : MonoBehaviour
         SetTime();
 
         //プレイヤーデータをセーブ
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
 
         // スクリプトをディスプレイする
         List<string[]> scriptArrList = eventManager.SingleScriptSaveToList(panelText);

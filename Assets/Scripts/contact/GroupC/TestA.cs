@@ -48,7 +48,7 @@ public class TestA : MonoBehaviour
         if (playerData.progress == 0)
         {
             playerData.progress = 1;
-            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+            playerSaveDataManager.SavePlayerData(playerData);
             Debug.Log("TestAとの関係:" + playerData.progress);
             Tale1();
         }

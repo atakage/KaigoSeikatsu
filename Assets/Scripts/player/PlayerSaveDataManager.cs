@@ -453,7 +453,7 @@ public class PlayerSaveDataManager : MonoBehaviour
         */
     }
 
-    public void SavePlayerData(PlayerData playerData, string buildMode)
+    public void SavePlayerData(PlayerData playerData)
     {
         // 2021.08.02 修正
         // statusが0未満なら0でセーブする

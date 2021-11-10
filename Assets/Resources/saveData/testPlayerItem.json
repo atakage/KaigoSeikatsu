@@ -1,0 +1,10 @@
+{
+    "Items": [
+        {
+            "itemName": "名刺",
+            "itemDescription": "介護福祉士の名刺だ",
+            "quantity": 1,
+            "keyItem": "Y"
+        }
+    ]
+}

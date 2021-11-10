@@ -124,7 +124,7 @@ public class ItemUseManager : MonoBehaviour
             }
 
             // 変更されたプレイヤーの情報をセーブする
-            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+            playerSaveDataManager.SavePlayerData(playerData);
         }
     }
 }

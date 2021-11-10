@@ -135,7 +135,7 @@ public class CafeManager : MonoBehaviour
         {
             playerData = playerSaveDataManager.LoadPlayerData();
             playerData.currentScene = "AtHomeScene";
-            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+            playerSaveDataManager.SavePlayerData(playerData);
             sceneTransitionManager.LoadTo("AtHomeScene");
         }
 
@@ -164,7 +164,7 @@ public class CafeManager : MonoBehaviour
         canvasGameObj.transform.Find("NextAlertBox").gameObject.SetActive(false);
 
         playerData.time = "19:00";
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
 
         canvasGameObj.transform.Find("greeting2Check").GetComponent<Text>().text = "Y";
     }
@@ -210,7 +210,7 @@ public class CafeManager : MonoBehaviour
         string resultMoney = GameObject.Find("Canvas").transform.Find("ConfirmAlertBox").transform.Find("resultMoney").GetComponent<Text>().text;
         playerData.money = resultMoney.Replace("円", "");
         playerData.time = "19:00";
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
 
         // 注文したアイテム効果適用
         // 注文したアイテムをリストに追加する

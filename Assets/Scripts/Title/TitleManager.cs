@@ -5,10 +5,12 @@ using UnityEngine;
 public class TitleManager : MonoBehaviour
 {
     public AdManager adManager;
-
+    public int SetWidth = 720;
+    public int SetHeight = 1280;
     void Start()
     {
         adManager = GameObject.Find("AdManager").GetComponent("AdManager") as AdManager;
+        Screen.SetResolution(SetWidth, SetHeight, true);
     }
 
     void Update()

@@ -99,7 +99,7 @@ public class IntroManager1 : MonoBehaviour
         playerData.currentScene = "AtHomeScene";
         playerData.localMode = true;
         playerData.startDate = DateTime.Now.ToString("yyyyMMddHHmmss");
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
 
         // プレイ時間カウント
         playTimeManager.countPlayTime = true;
@@ -170,7 +170,7 @@ public class IntroManager1 : MonoBehaviour
                     playerData.currentScene = "AtHomeScene";
                     playerData.localMode = false;
                     playerData.startDate = playerDataDBModel.startDate;
-                    playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+                    playerSaveDataManager.SavePlayerData(playerData);
 
                     // プレイ時間カウント
                     playTimeManager.countPlayTime = true;

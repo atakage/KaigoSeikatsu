@@ -74,7 +74,7 @@ public class ParkManager : MonoBehaviour
             PlayerData playerData = playerSaveDataManager.LoadPlayerData();
             if (endedTextEventCode.Equals("EV018")) playerData.fatigue -= (float)3;
             else if (endedTextEventCode.Equals("EV019")) playerData.satisfaction += 3;
-            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+            playerSaveDataManager.SavePlayerData(playerData);
 
             canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text = "";
             // 家に帰るイベント
@@ -193,7 +193,7 @@ public class ParkManager : MonoBehaviour
         DateTime addedDateTime = utilManager.TimeCal(playerData.time, 60);
         playerData.currentScene = "AtHomeScene";
         playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
 
         canvasGameObj.transform.Find("actionReadyAlertBox").gameObject.SetActive(false);
         SetActiveWalkAndExerciseBtn(false);
@@ -250,7 +250,7 @@ public class ParkManager : MonoBehaviour
             int money = random.Next(1, 3) * 100;
             PlayerData playerData = playerSaveDataManager.LoadPlayerData();
             playerData.money = (Int32.Parse(playerData.money) + money).ToString();
-            playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+            playerSaveDataManager.SavePlayerData(playerData);
 
             List<string[]> scriptList = eventManager.SingleScriptSaveToList(money + "円を拾った!");
             chatManager.ShowDialogue(scriptList, "", null);

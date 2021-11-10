@@ -59,7 +59,7 @@ public class JobDiaryManager : MonoBehaviour
 
         playerData = playerSaveDataManager.LoadPlayerData();
         playerData.tip.checkedJobDiaryTip = true;
-        playerSaveDataManager.SavePlayerData(playerData, buildManager.buildMode);
+        playerSaveDataManager.SavePlayerData(playerData);
     }
 
     IEnumerator StartTipDisplay()
