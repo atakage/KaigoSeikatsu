@@ -16,6 +16,7 @@ public class FacilityManager : MonoBehaviour
     public JobEventManager jobEventManager;
     public JobEventSetManager jobEventSetManager;
     public BuildManager buildManager;
+    public PlayTimeManager playTimeManager;
     public Button menuButton;
     public Button useItemButton;
     public Button nextButton;
@@ -48,6 +49,7 @@ public class FacilityManager : MonoBehaviour
         jobEventManager = new JobEventManager();
         jobEventSetManager = new JobEventSetManager();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
         // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
         if (GameObject.Find("loadValueSW") != null) loadValueSW = GameObject.Find("loadValueSW").transform.GetComponent<Text>().text;
@@ -92,6 +94,9 @@ public class FacilityManager : MonoBehaviour
                   // 現在プレイヤーデータの時間を変更する(add minute)
             DateTime addedDateTime = utilManager.TimeCal(playerData.time, 10);
             playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
+            // 2021.11.11 追加
+            // プレイ時間
+            playerData.playTime = playTimeManager.playTime;
             playerSaveDataManager.SavePlayerData(playerData);
             string morningEventCode = CallRandomEvent(morningrequiredEvent);
             LoadEventAndShow(morningEventCode);
@@ -204,6 +209,9 @@ public class FacilityManager : MonoBehaviour
             {
                 playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "AtHomeScene";
+                // 2021.11.11 追加
+                // プレイ時間
+                playerData.playTime = playTimeManager.playTime;
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("AtHomeScene");
             }
@@ -214,6 +222,9 @@ public class FacilityManager : MonoBehaviour
             {
                 playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "CafeScene";
+                // 2021.11.11 追加
+                // プレイ時間
+                playerData.playTime = playTimeManager.playTime;
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("CafeScene");
             }
@@ -224,6 +235,9 @@ public class FacilityManager : MonoBehaviour
             {
                 playerData.time = canvasObj.transform.Find("time").GetComponent<Text>().text;
                 playerData.currentScene = "ParkScene";
+                // 2021.11.11 追加
+                // プレイ時間
+                playerData.playTime = playTimeManager.playTime;
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("ParkScene");
             }
@@ -369,6 +383,9 @@ public class FacilityManager : MonoBehaviour
 
                                         playerData = playerSaveDataManager.LoadPlayerData();
                                         playerData.flag.jobEventDayCompletedBool = jobEventDayCompletedBool;
+                                        // 2021.11.11 追加
+                                        // プレイ時間
+                                        playerData.playTime = playTimeManager.playTime;
                                         playerSaveDataManager.SavePlayerData(playerData);
                                     }
                                     else
@@ -396,6 +413,9 @@ public class FacilityManager : MonoBehaviour
                               // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();;
                     playerData.time = "11:50";
+                    // 2021.11.11 追加
+                    // プレイ時間
+                    playerData.playTime = playTimeManager.playTime;
                     playerSaveDataManager.SavePlayerData(playerData);
 
                     break;
@@ -447,6 +467,9 @@ public class FacilityManager : MonoBehaviour
 
                                         playerData = playerSaveDataManager.LoadPlayerData();
                                         playerData.flag.jobEventDayCompletedBool = jobEventDayCompletedBool;
+                                        // 2021.11.11 追加
+                                        // プレイ時間
+                                        playerData.playTime = playTimeManager.playTime;
                                         playerSaveDataManager.SavePlayerData(playerData);
                                     }
                                     else
@@ -474,6 +497,9 @@ public class FacilityManager : MonoBehaviour
                               // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "12:50";
+                    // 2021.11.11 追加
+                    // プレイ時間
+                    playerData.playTime = playTimeManager.playTime;
                     playerSaveDataManager.SavePlayerData(playerData);
 
                     break;
@@ -525,6 +551,9 @@ public class FacilityManager : MonoBehaviour
 
                                         playerData = playerSaveDataManager.LoadPlayerData();
                                         playerData.flag.jobEventDayCompletedBool = jobEventDayCompletedBool;
+                                        // 2021.11.11 追加
+                                        // プレイ時間
+                                        playerData.playTime = playTimeManager.playTime;
                                         playerSaveDataManager.SavePlayerData(playerData);
                                     }
                                     else
@@ -552,6 +581,9 @@ public class FacilityManager : MonoBehaviour
                               // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "14:00";
+                    // 2021.11.11 追加
+                    // プレイ時間
+                    playerData.playTime = playTimeManager.playTime;
                     playerSaveDataManager.SavePlayerData(playerData);
 
                     break;
@@ -602,6 +634,9 @@ public class FacilityManager : MonoBehaviour
 
                                         playerData = playerSaveDataManager.LoadPlayerData();
                                         playerData.flag.jobEventDayCompletedBool = jobEventDayCompletedBool;
+                                        // 2021.11.11 追加
+                                        // プレイ時間
+                                        playerData.playTime = playTimeManager.playTime;
                                         playerSaveDataManager.SavePlayerData(playerData);
                                     }
                                     else
@@ -629,6 +664,9 @@ public class FacilityManager : MonoBehaviour
                               // プレイヤーデータに時間をアプデ
                     playerData = playerSaveDataManager.LoadPlayerData();
                     playerData.time = "17:00";
+                    // 2021.11.11 追加
+                    // プレイ時間
+                    playerData.playTime = playTimeManager.playTime;
                     playerSaveDataManager.SavePlayerData(playerData);
 
                     break;
@@ -647,6 +685,9 @@ public class FacilityManager : MonoBehaviour
                     playerData.flag.jobEventDayCompletedBool = false;
 
                     playerData.time = "17:20";
+                    // 2021.11.11 追加
+                    // プレイ時間
+                    playerData.playTime = playTimeManager.playTime;
                     playerSaveDataManager.SavePlayerData(playerData);
 
                                // 時間が経つ
@@ -671,7 +712,6 @@ public class FacilityManager : MonoBehaviour
         // プレイヤーデータに時間をセーブ
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
         playerData.time = "18:00";
-        //playerSaveDataManager.SavePlayerData(playerData);
 
         canvasObj.transform.Find("AlertGoing").gameObject.SetActive(false);
         canvasObj.transform.Find("Panel").gameObject.SetActive(false);
@@ -765,6 +805,9 @@ public class FacilityManager : MonoBehaviour
                 // 終わったMainEventはプレイヤーデータに記録する
                 string[] mainEventCodeArray = playerSaveDataManager.SaveCompletedEvent(playerData.eventCodeObject.completedMainEventArray, mainEventCode);
                 playerData.eventCodeObject.completedMainEventArray = mainEventCodeArray;
+                // 2021.11.11 追加
+                // プレイ時間
+                playerData.playTime = playTimeManager.playTime;
                 playerSaveDataManager.SavePlayerData(playerData);
 
                 returnValue = true;
@@ -781,6 +824,9 @@ public class FacilityManager : MonoBehaviour
 
         playerData = playerSaveDataManager.LoadPlayerData();
         playerData.flag.completeMainEvent = returnValue;
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
         playerSaveDataManager.SavePlayerData(playerData);
 
         return returnValue;

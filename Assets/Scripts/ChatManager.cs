@@ -16,6 +16,7 @@ public class ChatManager : MonoBehaviour
     public JobDiaryManager jobDiaryManager;
     public FlashEffectManager flashEffectManager;
     public BuildManager buildManager;
+    public PlayTimeManager playTimeManager;
     public List<string[]> textList;
     public string eventCode;
     public Dictionary<string, bool> completeEventSW; // イベントスクリプトの完了確認
@@ -42,6 +43,7 @@ public class ChatManager : MonoBehaviour
         jobDiarySetManager = new JobDiarySetManager();
         jobDiaryManager = new JobDiaryManager();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
         canvasGameObj = GameObject.Find("Canvas");
         if(GameObject.Find("Panel") != null) panelText = GameObject.Find("Panel").transform.Find("Text").GetComponent<Text>();
@@ -166,7 +168,11 @@ public class ChatManager : MonoBehaviour
                                     // Change Scene Fade Out: fade outあとシーンを変える
                         else if (afterEvent.Equals("Change Scene Fade Out"))
                         {
-                                          //  プレイヤーデータを更新
+                            // 2021.11.11 追加
+                            // プレイ時間
+                            PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+                            playerData.playTime = playTimeManager.playTime;
+                            //  プレイヤーデータを更新
                             playerSaveDataManager.SavePlayerData(SetPlayerDataForEnding());
                                           // ゲームオブジェクトに変えるシーン名を格納
                             SetChangeSceneNameToGameObject("ReadyForEndingScene");
@@ -360,7 +366,9 @@ public class ChatManager : MonoBehaviour
         List<string[]> scriptArrList = eventManager.SingleScriptSaveToList(choosingTextAndNumberArray[0]);
         ShowDialogue(scriptArrList, "", null);
 
-
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
         playerSaveDataManager.SavePlayerData(playerData);
 
         SetActiveChoiceButton(false);
@@ -418,6 +426,10 @@ public class ChatManager : MonoBehaviour
         }
         // 時間が経つ
         SetTime();
+
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
 
         //プレイヤーデータをセーブ
         playerSaveDataManager.SavePlayerData(playerData);

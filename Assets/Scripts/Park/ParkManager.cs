@@ -15,6 +15,7 @@ public class ParkManager : MonoBehaviour
     public ConvenienceItemSetManager convenienceItemSetManager;
     public SceneTransitionManager sceneTransitionManager;
     public BuildManager buildManager;
+    public PlayTimeManager playTimeManager;
     public GameObject canvasGameObj;
     public string loadValueSW;
     void Start()
@@ -27,6 +28,7 @@ public class ParkManager : MonoBehaviour
         sceneTransitionManager = new SceneTransitionManager();
         convenienceItemSetManager = new ConvenienceItemSetManager();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
         // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
         if (GameObject.Find("loadValueSW") != null) loadValueSW = GameObject.Find("loadValueSW").transform.GetComponent<Text>().text;
@@ -74,6 +76,11 @@ public class ParkManager : MonoBehaviour
             PlayerData playerData = playerSaveDataManager.LoadPlayerData();
             if (endedTextEventCode.Equals("EV018")) playerData.fatigue -= (float)3;
             else if (endedTextEventCode.Equals("EV019")) playerData.satisfaction += 3;
+
+            // 2021.11.11 追加
+            // プレイ時間
+            playerData.playTime = playTimeManager.playTime;
+
             playerSaveDataManager.SavePlayerData(playerData);
 
             canvasGameObj.transform.Find("textEventEndSW").GetComponent<Text>().text = "";
@@ -193,6 +200,9 @@ public class ParkManager : MonoBehaviour
         DateTime addedDateTime = utilManager.TimeCal(playerData.time, 60);
         playerData.currentScene = "AtHomeScene";
         playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
         playerSaveDataManager.SavePlayerData(playerData);
 
         canvasGameObj.transform.Find("actionReadyAlertBox").gameObject.SetActive(false);
@@ -250,6 +260,9 @@ public class ParkManager : MonoBehaviour
             int money = random.Next(1, 3) * 100;
             PlayerData playerData = playerSaveDataManager.LoadPlayerData();
             playerData.money = (Int32.Parse(playerData.money) + money).ToString();
+            // 2021.11.11 追加
+            // プレイ時間
+            playerData.playTime = playTimeManager.playTime;
             playerSaveDataManager.SavePlayerData(playerData);
 
             List<string[]> scriptList = eventManager.SingleScriptSaveToList(money + "円を拾った!");

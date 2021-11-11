@@ -17,6 +17,7 @@ public class ReadyForEndingManager : MonoBehaviour
     public GameClearFileManager gameClearFileManager;
     public FirebaseManager firebaseManager;
     public BuildManager buildManager;
+    public PlayTimeManager playTimeManager;
     //public int dropdownCount = 0;
     private void Start()
     {
@@ -28,6 +29,7 @@ public class ReadyForEndingManager : MonoBehaviour
         gameClearFileManager = new GameClearFileManager();
         firebaseManager = new FirebaseManager();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
         playerData = playerSaveDataManager.LoadPlayerData();
         UnityEngine.Debug.Log("localMode: " + playerData.localMode);
@@ -127,6 +129,9 @@ public class ReadyForEndingManager : MonoBehaviour
     {
         // PlayerDataをDBセーブ用モデルに変換(PlayerDataDBModel)
         playerData.endDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
         playerSaveDataManager.SavePlayerData(playerData);
         PlayerDataDBModel playerDataDBModel = ConvertPlayerDataDBModel(playerData, null);
 
@@ -340,6 +345,9 @@ public class ReadyForEndingManager : MonoBehaviour
 
         // PlayerDataをDBセーブ用モデルに変換(PlayerDataDBModel)
         playerData.endDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
         playerSaveDataManager.SavePlayerData(playerData);
         PlayerDataDBModel playerDataDBModel = ConvertPlayerDataDBModel(playerData, reasonList);
 

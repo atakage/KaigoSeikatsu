@@ -74,6 +74,9 @@ public class AtHomeManager : MonoBehaviour
             // 次のシーンをプレイヤーデータにセーブ
             playerData.currentScene = "FacilityScene";
             playerData.time = "08:50";
+            // 2021.11.11 追加
+            // プレイ時間
+            playerData.playTime = playTimeManager.playTime;
             playerSaveDataManager.SavePlayerData(playerData);
             sceneTransitionManager.LoadTo("FacilityScene");
 
@@ -90,6 +93,9 @@ public class AtHomeManager : MonoBehaviour
                 GameObject.Find("Canvas").transform.Find("AlertGoing").transform.Find("FadeSwitchText").GetComponent<Text>().text = "";
                 GameObject.Find("Canvas").transform.Find("nextButton").transform.Find("Text").GetComponent<Text>().text = "出勤する";
                 playerData.time = "08:00";
+                // 2021.11.11 追加
+                // プレイ時間
+                playerData.playTime = playTimeManager.playTime;
                 playerSaveDataManager.SavePlayerData(playerData);
                 GameObject.Find("Canvas").transform.Find("time").GetComponent<Text>().text = playerData.time;
                 MenuButtonActive(true);
@@ -100,6 +106,9 @@ public class AtHomeManager : MonoBehaviour
             {
                 playerData.ending = "endingC";
                 playerData.currentScene = "ReadyForEndingScene";
+                // 2021.11.11 追加
+                // プレイ時間
+                playerData.playTime = playTimeManager.playTime;
                 playerSaveDataManager.SavePlayerData(playerData);
                 sceneTransitionManager.LoadTo("ReadyForEndingScene");
             }
@@ -109,6 +118,9 @@ public class AtHomeManager : MonoBehaviour
             // 現在プレイヤーデータの時間を変更する(add minute)
             DateTime addedDateTime = utilManager.TimeCal(playerData.time, 20);
             playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
+            // 2021.11.11 追加
+            // プレイ時間
+            playerData.playTime = playTimeManager.playTime;
             playerSaveDataManager.SavePlayerData(playerData);
 
             sceneTransitionManager.LoadTo("ConvenienceScene");
@@ -194,6 +206,9 @@ public class AtHomeManager : MonoBehaviour
 
         playerData = playerSaveDataManager.LoadPlayerData();
         playerData.currentScene = "ConvenienceScene";
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
         playerSaveDataManager.SavePlayerData(playerData);
 
         canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(false);
@@ -342,6 +357,9 @@ public class AtHomeManager : MonoBehaviour
             bool connectionResult = await firebaseManager.FireBaseConnection();
             if (connectionResult) await firebaseManager.InsertUpdateToDB(playerDataToPlayerDataDBModelManager.PlayerDataToDBModel(playerData));
         }
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
         playerSaveDataManager.SavePlayerData(playerData);
 
         canvasGameObj.transform.Find("AlertGoing").gameObject.SetActive(false);
@@ -351,6 +369,7 @@ public class AtHomeManager : MonoBehaviour
         canvasGameObj.transform.Find("itemCheckButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("statusButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("jobDiaryButton").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("titleButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("time").gameObject.SetActive(false);
         ExecuteFadeInOut();
     }

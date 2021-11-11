@@ -14,6 +14,7 @@ public class ConvenienceUIManager : MonoBehaviour
     public ChatManager chatManager;
     public SceneTransitionManager sceneTransitionManager;
     public BuildManager buildManager;
+    public PlayTimeManager playTimeManager;
     public PlayerData playerData;
     public GameObject canvasGameObj;
     public GameObject contentGameObj;
@@ -37,6 +38,7 @@ public class ConvenienceUIManager : MonoBehaviour
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
         sceneTransitionManager = new SceneTransitionManager();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
         // コンビニで販売するアイテムリストを読み込む(json)
         ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile(buildManager.buildMode);
@@ -79,6 +81,9 @@ public class ConvenienceUIManager : MonoBehaviour
         {
             playerData = playerSaveDataManager.LoadPlayerData();
             playerData.currentScene = "AtHomeScene";
+            // 2021.11.11 追加
+            // プレイ時間
+            playerData.playTime = playTimeManager.playTime;
             playerSaveDataManager.SavePlayerData(playerData);
 
             sceneTransitionManager.LoadTo("AtHomeScene");
@@ -337,6 +342,9 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         // 現在プレイヤーデータの時間を変更する(add minute)
         DateTime addedDateTime = utilManager.TimeCal(playerData.time, 20);
         playerData.time = addedDateTime.Hour.ToString("D2") + ":" + addedDateTime.Minute.ToString("D2");
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
         playerSaveDataManager.SavePlayerData(playerData);
 
         // イベントを呼び出す(店員さん挨拶イベント)
@@ -410,6 +418,9 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
             // specificationBoxのresultMoneyValueStrをプレイヤー所持金に反映する
             string resultMoney = specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text.Replace("円", "");
             playerData.money = resultMoney;
+            // 2021.11.11 追加
+            // プレイ時間
+            playerData.playTime = playTimeManager.playTime;
             playerSaveDataManager.SavePlayerData(playerData);
 
             // 購買したアイテムの数反映()

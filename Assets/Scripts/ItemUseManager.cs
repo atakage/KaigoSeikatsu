@@ -7,10 +7,12 @@ public class ItemUseManager : MonoBehaviour
 {
     private PlayerSaveDataManager playerSaveDataManager;
     public BuildManager buildManager;
+    public PlayTimeManager playTimeManager;
 
     private void Start()
     {
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
     }
 
     public void DropItem(string dropItemName, string dropItemQty, ItemListData[] allItemListData)
@@ -122,6 +124,10 @@ public class ItemUseManager : MonoBehaviour
                     playerData.feeling -= itemValue;
                 }
             }
+
+            // 2021.11.11 追加
+            // プレイ時間
+            playerData.playTime = playTimeManager.playTime;
 
             // 変更されたプレイヤーの情報をセーブする
             playerSaveDataManager.SavePlayerData(playerData);

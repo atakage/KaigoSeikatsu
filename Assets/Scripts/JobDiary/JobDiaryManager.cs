@@ -9,6 +9,7 @@ public class JobDiaryManager : MonoBehaviour
     public SceneTransitionManager sceneTransitionManager;
     public PlayerSaveDataManager playerSaveDataManager;
     public BuildManager buildManager;
+    public PlayTimeManager playTimeManager;
     public GameObject canvasGameObj;
     public GameObject jobDiaryAlphaScreenCanvas;
     public GameObject jobDiaryFlipIconCanvas;
@@ -22,6 +23,7 @@ public class JobDiaryManager : MonoBehaviour
         sceneTransitionManager = new SceneTransitionManager();
         playerSaveDataManager = new PlayerSaveDataManager();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
         canvasGameObj = GameObject.Find("Canvas");
         jobDiaryAlphaScreenCanvas = GameObject.Find("jobDiaryAlphaScreenCanvas");
@@ -59,6 +61,9 @@ public class JobDiaryManager : MonoBehaviour
 
         playerData = playerSaveDataManager.LoadPlayerData();
         playerData.tip.checkedJobDiaryTip = true;
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
         playerSaveDataManager.SavePlayerData(playerData);
     }
 

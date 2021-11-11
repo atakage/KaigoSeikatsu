@@ -13,6 +13,7 @@ public class CafeManager : MonoBehaviour
     public CSVManager csvManager;
     public ItemUseManager itemUseManager;
     public BuildManager buildManager;
+    public PlayTimeManager playTimeManager;
     public Vector3 cafeMenuCanvasPos;
     public Vector3 detailOrderCanvasPos;
     public PlayerData playerData;
@@ -32,6 +33,7 @@ public class CafeManager : MonoBehaviour
         csvManager = new CSVManager();
         itemUseManager = new ItemUseManager();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+        playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
         // TitleSceneからロードした時やMenuSceneからもどる時についてくるvalue
         if (GameObject.Find("loadValueSW") != null) loadValueSW = GameObject.Find("loadValueSW").transform.GetComponent<Text>().text;
@@ -135,6 +137,9 @@ public class CafeManager : MonoBehaviour
         {
             playerData = playerSaveDataManager.LoadPlayerData();
             playerData.currentScene = "AtHomeScene";
+            // 2021.11.11 追加
+            // プレイ時間
+            playerData.playTime = playTimeManager.playTime;
             playerSaveDataManager.SavePlayerData(playerData);
             sceneTransitionManager.LoadTo("AtHomeScene");
         }
@@ -164,6 +169,9 @@ public class CafeManager : MonoBehaviour
         canvasGameObj.transform.Find("NextAlertBox").gameObject.SetActive(false);
 
         playerData.time = "19:00";
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
         playerSaveDataManager.SavePlayerData(playerData);
 
         canvasGameObj.transform.Find("greeting2Check").GetComponent<Text>().text = "Y";
@@ -210,6 +218,9 @@ public class CafeManager : MonoBehaviour
         string resultMoney = GameObject.Find("Canvas").transform.Find("ConfirmAlertBox").transform.Find("resultMoney").GetComponent<Text>().text;
         playerData.money = resultMoney.Replace("円", "");
         playerData.time = "19:00";
+        // 2021.11.11 追加
+        // プレイ時間
+        playerData.playTime = playTimeManager.playTime;
         playerSaveDataManager.SavePlayerData(playerData);
 
         // 注文したアイテム効果適用
