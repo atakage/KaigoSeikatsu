@@ -6,6 +6,7 @@ public class StatusInitVar : MonoBehaviour
 {
     public GameObject canvasGameObj;
         public GameObject closeButtonGameObj;
+        public GameObject playerNameBoxGameObj;
         public GameObject playInfoBoxGameObj;
             public GameObject playTimeBox;
                 public GameObject playTimeValue;
@@ -22,6 +23,7 @@ public class StatusInitVar : MonoBehaviour
     {
         this.canvasGameObj = GameObject.Find("StatusMainCanvas");
         this.closeButtonGameObj = this.canvasGameObj.transform.Find("closeButton").gameObject;
+        this.playerNameBoxGameObj = this.canvasGameObj.transform.Find("playerNameBox").gameObject;
         this.playInfoBoxGameObj = this.canvasGameObj.transform.Find("playInfoBox").gameObject;
         this.playTimeBox = this.playInfoBoxGameObj.transform.Find("playTimeBox").gameObject;
         this.playTimeValue = this.playTimeBox.transform.Find("playTimeValue").gameObject;

@@ -10,6 +10,7 @@ public class MenuManager : MonoBehaviour
     PlayerSaveDataManager playerSaveDataManager;
     MenuInitVar menuInitVar;
     PlayTimeManager playTimeManager;
+    PlayerData playerData;
     //string goBackScene;
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,7 @@ public class MenuManager : MonoBehaviour
         menuInitVar = GameObject.Find("MenuInitVar").GetComponent("MenuInitVar") as MenuInitVar;
         playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
-        PlayerData playerData = playerSaveDataManager.LoadPlayerData();
+        playerData = playerSaveDataManager.LoadPlayerData();
 
             // 戻るボタンの目的地を設定
         if (GameObject.Find("SceneChangeManager") != null)

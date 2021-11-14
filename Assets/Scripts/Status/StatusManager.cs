@@ -11,7 +11,7 @@ public class StatusManager : MonoBehaviour
     PlayTimeManager playTimeManager;
     PlayerSaveDataManager playerSaveDataManager;
     PlayerData playerData;
-
+    GameObject playerName;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,10 +21,12 @@ public class StatusManager : MonoBehaviour
 
         playerData = playerSaveDataManager.LoadPlayerData();
         statusInitVar.closeButtonGameObj.GetComponent<Button>().onClick.AddListener(() => ClickCloseButton());
+        playerName = statusInitVar.playerNameBoxGameObj.transform.Find("Text").gameObject;
     }
 
     private void Update()
     {
+        playerName.GetComponent<Text>().text = playerData.name;
         statusInitVar.playTimeValue.GetComponent<Text>().text = TimeSpan.FromSeconds(playTimeManager.playTime).ToString("hh':'mm':'ss");
         statusInitVar.progressValueGameObj.GetComponent<Text>().text = playerData.progress.ToString() + "%";
         statusInitVar.progressBarGameObj.GetComponent<Slider>().value = playerData.progress;
