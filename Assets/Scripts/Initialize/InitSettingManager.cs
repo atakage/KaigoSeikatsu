@@ -38,16 +38,16 @@ public class InitSettingManager : MonoBehaviour
         // ConvenienceItemInit.txtにある情報をResource/saveData/に移す
         // itemSaleを変更したいときはそのSceneでを読み込んで変更したあとセーブすればいい
         // があると作らない(最初だけ作る)
-        csvManager.ReadConvenienceInitFileAndCreateJson(buildManager.buildMode);
+        csvManager.ReadConvenienceInitFileAndCreateJson();
 
         // カフェで販売するアイテムをセットする
-        csvManager.ReadCafeItemInitFileAndCreateJson(buildManager.buildMode);
+        csvManager.ReadCafeItemInitFileAndCreateJson();
 
         // MainEvent.jsonを作る
-        csvManager.ReadMainEventInitFileAndCreateJson(buildManager.buildMode);
+        csvManager.ReadMainEventInitFileAndCreateJson();
 
         // JobEvent.jsonを作る
-        csvManager.ReadJobEventInitFileAndCreateJson(buildManager.buildMode);
+        csvManager.ReadJobEventInitFileAndCreateJson();
 
         canvasObj.transform.Find("careGiverListButton").gameObject.SetActive(true);
 
@@ -67,8 +67,8 @@ public class InitSettingManager : MonoBehaviour
 
         PlayerData playerData = playerSaveDataManager.LoadPlayerData();
 
-        canvasObj.transform.Find("PlayButton").GetComponent<Button>().onClick.AddListener(() => ClickPlayButton(playerData, buildManager.buildMode));
-        newGameAlertBoxObj.transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(() => ClickNewGameAlertBoxConfirmBtn(this.msgCheckIntVal, buildManager.buildMode));
+        canvasObj.transform.Find("PlayButton").GetComponent<Button>().onClick.AddListener(() => ClickPlayButton(playerData));
+        newGameAlertBoxObj.transform.Find("confirmButton").GetComponent<Button>().onClick.AddListener(() => ClickNewGameAlertBoxConfirmBtn(this.msgCheckIntVal));
         newGameAlertBoxObj.transform.Find("cancelButton").GetComponent<Button>().onClick.AddListener(() => ClickNewGameAlertBoxCancelBtn());
         canvasObj.transform.Find("careGiverListButton").GetComponent<Button>().onClick.AddListener(ClickCareGiverListButton);
 
@@ -89,7 +89,7 @@ public class InitSettingManager : MonoBehaviour
         sceneTransitionManager.LoadTo("CareGiverListScene");
     }
 
-    public void ClickNewGameAlertBoxConfirmBtn(int msgCheckIntVal, string buildMode)
+    public void ClickNewGameAlertBoxConfirmBtn(int msgCheckIntVal)
     {
         // 2021.10.20 追加 ボタン音
         GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
@@ -100,7 +100,7 @@ public class InitSettingManager : MonoBehaviour
         Dictionary<string, Dictionary<string, object>> jobEventListDic = csvManager.GetTxtItemList("JobEvent");
         // JobEvent.jsonを作る
         jobEventSetManager = new JobEventSetManager();
-        jobEventSetManager.CreateJobEventJson(jobEventListDic, buildManager.buildMode);
+        jobEventSetManager.CreateJobEventJson(jobEventListDic);
 
         // 追加メッセージ
         if (msgCheckIntVal == 0)
@@ -116,7 +116,7 @@ public class InitSettingManager : MonoBehaviour
             jobDiarySetManager.CreateJobDiaryJsonFile(new List<JobDiaryModel>());
             
             // プレイヤーアイテムデータ初期化
-            playerSaveDataManager.RemoveItemListDataJsonFile(buildMode);
+            playerSaveDataManager.RemoveItemListDataJsonFile();
 
             sceneTransitionManager.LoadTo("IntroScene");
         }
@@ -131,7 +131,7 @@ public class InitSettingManager : MonoBehaviour
         canvasObj.transform.Find("careGiverListButton").GetComponent<Button>().interactable = true;
     }
 
-    public void ClickPlayButton(PlayerData playerData, string buildMode)
+    public void ClickPlayButton(PlayerData playerData)
     {
         // 2021.10.20 追加 ボタン音
         GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
@@ -149,10 +149,10 @@ public class InitSettingManager : MonoBehaviour
             Dictionary<string, Dictionary<string, object>> jobEventListDic = csvManager.GetTxtItemList("JobEvent");
             // JobEvent.jsonを作る
             jobEventSetManager = new JobEventSetManager();
-            jobEventSetManager.CreateJobEventJson(jobEventListDic, buildMode);
+            jobEventSetManager.CreateJobEventJson(jobEventListDic);
 
             // プレイヤーアイテムデータ初期化
-            playerSaveDataManager.RemoveItemListDataJsonFile(buildMode);
+            playerSaveDataManager.RemoveItemListDataJsonFile();
 
             sceneTransitionManager.LoadTo("IntroScene");
         }

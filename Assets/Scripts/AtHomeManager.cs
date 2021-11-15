@@ -187,6 +187,8 @@ public class AtHomeManager : MonoBehaviour
 
     public void ClickTitleButton()
     {
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         MenuButtonActive(false);
         canvasGameObj.transform.Find("AlertTitle").gameObject.SetActive(true);
     }
@@ -276,7 +278,7 @@ public class AtHomeManager : MonoBehaviour
         else
         {
             // コンビニにのアイテム補充
-            convenienceItemSetManager.ResetConvenienceQuantity(buildManager.buildMode);
+            convenienceItemSetManager.ResetConvenienceQuantity();
 
             SetAlertForSleep();
             ActiveAlertGoing(true);

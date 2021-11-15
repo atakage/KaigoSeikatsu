@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class JobEventSetManager : MonoBehaviour
 {
-    public void CreateJobEventJson(Dictionary<string, Dictionary<string, object>> jobEventListDic, string buildMode)
+    public void CreateJobEventJson(Dictionary<string, Dictionary<string, object>> jobEventListDic)
     {
         JobEventModel jobEventModel;
         List<JobEventModel> jobEventModelList = new List<JobEventModel>();
@@ -34,7 +34,7 @@ public class JobEventSetManager : MonoBehaviour
 
             // jsonファイルを作る
             Debug.Log("jobEventModelList.Count: " + jobEventModelList.Count);
-            CreateJobEventJsonFile(jobEventModelList, buildMode);
+            CreateJobEventJsonFile(jobEventModelList);
         }
         catch (Exception e)
         {
@@ -42,7 +42,7 @@ public class JobEventSetManager : MonoBehaviour
         }
     }
 
-    public JobEventModel[] GetJobEventJsonFile(string buildMode)
+    public JobEventModel[] GetJobEventJsonFile()
     {
         string jsonStr = null;
 
@@ -74,7 +74,7 @@ public class JobEventSetManager : MonoBehaviour
         return jobEventModelArray;
     }
 
-    public void CreateJobEventJsonFile(List<JobEventModel> jobEventModelList, string buildMode)
+    public void CreateJobEventJsonFile(List<JobEventModel> jobEventModelList)
     {
         string jsonStr = JsonHelper.ToJson(jobEventModelList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);

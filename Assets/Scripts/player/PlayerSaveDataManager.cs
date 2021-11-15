@@ -122,7 +122,7 @@ public class PlayerSaveDataManager : MonoBehaviour
         return loadedEventScriptDic;
     }
 
-    public void SaveEventListData(EventListData[] eventListData, string buildMode)
+    public void SaveEventListData(EventListData[] eventListData)
     {
         string eventAsStr = JsonHelper.ToJson(eventListData, true);
         Debug.Log("dictionary to string: " + eventAsStr);
@@ -151,7 +151,7 @@ public class PlayerSaveDataManager : MonoBehaviour
     }
 
     
-    public EventListData[] LoadedEventListData(string buildMode)
+    public EventListData[] LoadedEventListData()
     {
         EventListData[] returnEventListData = null;
         try
@@ -191,7 +191,7 @@ public class PlayerSaveDataManager : MonoBehaviour
         return returnEventListData;
     }
 
-    public void SavePlayerItemList(ItemListData[] itemListDataArray, string buildMode)
+    public void SavePlayerItemList(ItemListData[] itemListDataArray)
     {
         string itemListDataJson = JsonHelper.ToJson(itemListDataArray, true);
         Debug.Log("SAVEDATA: " + itemListDataJson);
@@ -221,10 +221,10 @@ public class PlayerSaveDataManager : MonoBehaviour
 
 
     // 2021.05.06使用
-    public void SaveItemListData(ItemListData[] itemListData, string buildMode)
+    public void SaveItemListData(ItemListData[] itemListData)
     {
         // セーブ前にデータをロードする
-        ItemListData[] loadedItemListData = LoadItemListData(buildMode);
+        ItemListData[] loadedItemListData = LoadItemListData();
         
         // もしロードデータがなかったら新しいアイテムリストをセーブする
         if(loadedItemListData == null)
@@ -324,7 +324,7 @@ public class PlayerSaveDataManager : MonoBehaviour
         }
     }
 
-    public ItemListData[] LoadItemListData(int page, string buildMode)
+    public ItemListData[] LoadItemListData(int page)
     {
         ItemListData[] itemListData;
         ItemListData[] returnItemListData = null;
@@ -384,7 +384,7 @@ public class PlayerSaveDataManager : MonoBehaviour
     }
 
     // 全体アイテムロード
-    public ItemListData[] LoadItemListData(string buildMode)
+    public ItemListData[] LoadItemListData()
     {
         ItemListData[] itemListData;
         try
@@ -425,7 +425,7 @@ public class PlayerSaveDataManager : MonoBehaviour
         return itemListData;
     }
 
-    public void RemoveItemListDataJsonFile(string buildMode)
+    public void RemoveItemListDataJsonFile()
     {
 
         string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";

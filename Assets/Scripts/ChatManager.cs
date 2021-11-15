@@ -339,9 +339,9 @@ public class ChatManager : MonoBehaviour
         }
 
         // JobEvent.jsonにイベントのactiveをfalse処理
-        JobEventModel[] jobEventModelArray = jobEventSetManager.GetJobEventJsonFile(buildManager.buildMode);
+        JobEventModel[] jobEventModelArray = jobEventSetManager.GetJobEventJsonFile();
         List<JobEventModel> newJobEventModelList = jobEventManager.SetEventActiveAndReturnAll(jobEventModelArray, eventCode, false);
-        jobEventSetManager.CreateJobEventJsonFile(newJobEventModelList, buildManager.buildMode);
+        jobEventSetManager.CreateJobEventJsonFile(newJobEventModelList);
 
         // プレイヤーデータにクリアーイベントで追加する
         string[] jobEventCodeArray = playerSaveDataManager.SaveCompletedEvent(playerData.eventCodeObject.completedJobEventArray, eventCode);

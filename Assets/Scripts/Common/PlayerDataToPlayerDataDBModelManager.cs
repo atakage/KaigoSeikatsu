@@ -27,7 +27,7 @@ public class PlayerDataToPlayerDataDBModelManager : MonoBehaviour
         playerDataDBModel.jobDiaryModelArray = new JobDiaryModel[jobDiaryModelArray.Length];
         playerDataDBModel.jobDiaryModelArray = jobDiaryModelArray;
 
-        ItemListData[] itemListDataArray = playerSaveDataManager.LoadItemListData(buildManager.buildMode);
+        ItemListData[] itemListDataArray = playerSaveDataManager.LoadItemListData();
         playerDataDBModel.itemListDataArray = new ItemListData[itemListDataArray.Length];
         playerDataDBModel.itemListDataArray = itemListDataArray;
 

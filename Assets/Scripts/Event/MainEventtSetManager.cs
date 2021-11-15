@@ -6,7 +6,7 @@ using System.IO;
 
 public class MainEventSetManager : MonoBehaviour
 {
-    public void CreateMainEventJson(Dictionary<string, Dictionary<string, object>> mainEventListDic, string buildMode)
+    public void CreateMainEventJson(Dictionary<string, Dictionary<string, object>> mainEventListDic)
     {
         MainEventModel mainEventModel;
         List<MainEventModel> mainEventModelList = new List<MainEventModel>();
@@ -32,7 +32,7 @@ public class MainEventSetManager : MonoBehaviour
 
             // jsonファイルを作る
             Debug.Log("mainEventModelList.Count: " + mainEventModelList.Count);
-            CreateMainEventJsonFile(mainEventModelList, buildMode);
+            CreateMainEventJsonFile(mainEventModelList);
         }
         catch (Exception e)
         {
@@ -40,7 +40,7 @@ public class MainEventSetManager : MonoBehaviour
         }
     }
 
-    public MainEventModel[] GetMainEventJsonFile(string buildMode)
+    public MainEventModel[] GetMainEventJsonFile()
     {
         string jsonStr = null;
 
@@ -70,7 +70,7 @@ public class MainEventSetManager : MonoBehaviour
         return mainEventModelArray;
     }
 
-    public void CreateMainEventJsonFile(List<MainEventModel> mainEventModelList, string buildMode)
+    public void CreateMainEventJsonFile(List<MainEventModel> mainEventModelList)
     {
         string jsonStr = JsonHelper.ToJson(mainEventModelList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);

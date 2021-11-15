@@ -17,7 +17,7 @@ public class CareGiverListUIManager : MonoBehaviour
         careGiverListSharingObject = GameObject.Find("CareGiverListSharingObjectManager").GetComponent<CareGiverListSharingObjectManager>();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
-        clearData = gameClearFileManager.LoadClearData(buildManager.buildMode);
+        clearData = gameClearFileManager.LoadClearData();
 
         Debug.Log("call AddPlayerDataItems()");
         

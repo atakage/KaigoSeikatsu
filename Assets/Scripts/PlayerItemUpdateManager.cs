@@ -58,6 +58,6 @@ public class PlayerItemUpdateManager : MonoBehaviour
         }
 
         // 新しいアイテムリストファイルをセーブ
-        if (updatedItemList != null && updatedItemList.Count > 0) playerSaveDataManager.SavePlayerItemList(updatedItemList.ToArray(), buildManager.buildMode);
+        if (updatedItemList != null && updatedItemList.Count > 0) playerSaveDataManager.SavePlayerItemList(updatedItemList.ToArray());
     }
 }

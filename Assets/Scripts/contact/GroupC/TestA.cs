@@ -63,7 +63,7 @@ public class TestA : MonoBehaviour
             itemListData[1].itemName = "item5";
             itemListData[1].quantity = 666;
 
-            playerSaveDataManager.SaveItemListData(itemListData, buildManager.buildMode);
+            playerSaveDataManager.SaveItemListData(itemListData);
             //playerSaveDataManager.SavePlayerData(playerData);
             Tale2();
         }else if (playerData.progress == 20)

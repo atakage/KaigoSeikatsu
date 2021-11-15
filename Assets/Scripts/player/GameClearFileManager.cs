@@ -14,16 +14,16 @@ public class ClearData
 
 public class GameClearFileManager : MonoBehaviour
 {
-    public void SaveGameClearFile(PlayerData playerData, string buildMode)
+    public void SaveGameClearFile(PlayerData playerData)
     {
         ClearData clearData = new ClearData();
         clearData.clear = true;
 
         // クリアファイルが存在すると
-        if (CheckExistClearFile(buildMode))
+        if (CheckExistClearFile())
         {
             // プレイヤーデータを追加
-            clearData = LoadClearData(buildMode);
+            clearData = LoadClearData();
             clearData.clearPlayerDataList.Add(playerData);
         }
         // クリアファイルが存在しないと
@@ -39,7 +39,7 @@ public class GameClearFileManager : MonoBehaviour
         File.WriteAllText(Application.dataPath + "/Resources/saveData/clearFile.json", jsonStr);
     }
 
-    public ClearData LoadClearData(string buildMode)
+    public ClearData LoadClearData()
     {
         ClearData clearData = null;
         string jsonStr = null;
@@ -92,7 +92,7 @@ public class GameClearFileManager : MonoBehaviour
         return clearData;
     }
 
-    public bool CheckExistClearFile(string buildMode)
+    public bool CheckExistClearFile()
     {
         bool checkFile = false;
 

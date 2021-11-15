@@ -41,7 +41,7 @@ public class ConvenienceUIManager : MonoBehaviour
         playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
 
         // コンビニで販売するアイテムリストを読み込む(json)
-        ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile(buildManager.buildMode);
+        ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
         // 最初のUIセット
         FirstUISetting(convenienceItemDataArray);
 
@@ -269,7 +269,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
         specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text = playerData.money + "円";
 
         // コンビニで販売するアイテムリストを読み込む(json)
-        ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile(buildManager.buildMode);
+        ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
 
 
         for (int i = 0; i < convenienceItemDataArray.Length; i++)
@@ -323,7 +323,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
 
     public void LoadEventAndShow(string eventCode)
     {
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         chatManager.ShowDialogue(scriptList, eventCode, eventItem.script);
@@ -413,7 +413,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
                 
                 
             }
-            playerSaveDataManager.SaveItemListData(itemListDataList.ToArray(), buildManager.buildMode);
+            playerSaveDataManager.SaveItemListData(itemListDataList.ToArray());
 
             // specificationBoxのresultMoneyValueStrをプレイヤー所持金に反映する
             string resultMoney = specificationBoxGameObj.transform.Find("resultMoneyValueStr").GetComponent<Text>().text.Replace("円", "");
@@ -424,7 +424,7 @@ public void FirstUISetting(ConvenienceItemData[] convenienceItemDataArray)
             playerSaveDataManager.SavePlayerData(playerData);
 
             // 購買したアイテムの数反映()
-            convenienceItemSetManager.SetConvenienceJsonFile(itemListDataListForConvenience.ToArray(), buildManager.buildMode);
+            convenienceItemSetManager.SetConvenienceJsonFile(itemListDataListForConvenience.ToArray());
 
             // UIをリセットする
             ResetUI();

@@ -67,10 +67,10 @@ public class ItemCheckManager : MonoBehaviour
         GameObject.Find("itemPageCanvas").transform.Find("prevButton").GetComponent<Button>().onClick.AddListener(ClickPrevPage);
 
         // 全体アイテムリスト
-        allItemListData = playerSaveDataManager.LoadItemListData(buildManager.buildMode);
+        allItemListData = playerSaveDataManager.LoadItemListData();
 
         // 現在ページのアイテムリスト
-        itemListData = playerSaveDataManager.LoadItemListData(loadItemPage, buildManager.buildMode);
+        itemListData = playerSaveDataManager.LoadItemListData(loadItemPage);
 
         if(itemListData != null && itemListData.Length > 0) ItemSlotPage();
 
@@ -86,7 +86,7 @@ public class ItemCheckManager : MonoBehaviour
         GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
 
         // 全体アイテムリスト
-        allItemListData = playerSaveDataManager.LoadItemListData(buildManager.buildMode);
+        allItemListData = playerSaveDataManager.LoadItemListData();
 
             // 選択されたitemNameとitemQtyを移す
         string dropItemName = GameObject.Find("Canvas").transform.Find("itemDropAlertBox").transform.Find("itemName").GetComponent<Text>().text;
@@ -202,10 +202,10 @@ public class ItemCheckManager : MonoBehaviour
     public void UseItemAndRefreshItemSlotUI()
     {
         // 全体アイテムリスト
-        allItemListData = playerSaveDataManager.LoadItemListData(buildManager.buildMode);
+        allItemListData = playerSaveDataManager.LoadItemListData();
 
         // 現在ページのアイテムリスト
-        itemListData = playerSaveDataManager.LoadItemListData(1, buildManager.buildMode);
+        itemListData = playerSaveDataManager.LoadItemListData(1);
 
         // 1ページから表示する
         loadItemPage = 1;
@@ -301,7 +301,7 @@ public class ItemCheckManager : MonoBehaviour
 
         loadItemPage += 1;
         // 現在ページのアイテムリスト
-        itemListData = playerSaveDataManager.LoadItemListData(loadItemPage, buildManager.buildMode);
+        itemListData = playerSaveDataManager.LoadItemListData(loadItemPage);
         // アイテム表示
         if (itemListData != null && itemListData.Length > 0) ItemSlotPage();
         // アイテムスロットUI初期化
@@ -317,7 +317,7 @@ public class ItemCheckManager : MonoBehaviour
 
         loadItemPage -= 1;
         // 現在ページのアイテムリスト
-        itemListData = playerSaveDataManager.LoadItemListData(loadItemPage, buildManager.buildMode);
+        itemListData = playerSaveDataManager.LoadItemListData(loadItemPage);
         // アイテム表示
         if (itemListData != null && itemListData.Length > 0) ItemSlotPage();
         // アイテムスロットUI初期化

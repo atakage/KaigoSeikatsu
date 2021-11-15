@@ -19,7 +19,7 @@ public class EventManager : MonoBehaviour
         EventListData[] eventListData = CreateEventListForSave(eventScriptDicData);
         // 新しいイベントを登録する時や既存イベントを修正するときに使う
         Debug.Log("Event Save Start-----------------------------------------------------------");
-        playerSaveDataManager.SaveEventListData(eventListData, buildManager.buildMode);
+        playerSaveDataManager.SaveEventListData(eventListData);
     }
 
     // ChoiceEvent

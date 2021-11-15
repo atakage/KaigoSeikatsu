@@ -52,7 +52,7 @@ public class ReadyForEndingManager : MonoBehaviour
             if ("endingA".Equals(playerData.ending))
             {
                 // ゲームエンディングを記録するファイルを作る
-                gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
+                gameClearFileManager.SaveGameClearFile(playerData);
                 // プレイヤーデータを削除する
                 playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -162,7 +162,7 @@ public class ReadyForEndingManager : MonoBehaviour
                     UnityMainThread.wkr.AddJob(() =>
                     {
                         // ゲームエンディングを記録するファイルを作る
-                        gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
+                        gameClearFileManager.SaveGameClearFile(playerData);
                         // プレイヤーデータを削除する
                         playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -174,7 +174,7 @@ public class ReadyForEndingManager : MonoBehaviour
             else
             {
                 // ゲームエンディングを記録するファイルを作る
-                gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
+                gameClearFileManager.SaveGameClearFile(playerData);
                 // プレイヤーデータを削除する
                 playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -185,7 +185,7 @@ public class ReadyForEndingManager : MonoBehaviour
         else
         {
             // ゲームエンディングを記録するファイルを作る
-            gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
+            gameClearFileManager.SaveGameClearFile(playerData);
             // プレイヤーデータを削除する
             playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -222,7 +222,7 @@ public class ReadyForEndingManager : MonoBehaviour
         playerDataDBModel.jobDiaryModelArray = new JobDiaryModel[jobDiaryModelArray.Length];
         playerDataDBModel.jobDiaryModelArray = jobDiaryModelArray;
 
-        ItemListData[] itemListDataArray = playerSaveDataManager.LoadItemListData(buildManager.buildMode);
+        ItemListData[] itemListDataArray = playerSaveDataManager.LoadItemListData();
         playerDataDBModel.itemListDataArray = new ItemListData[itemListDataArray.Length];
         playerDataDBModel.itemListDataArray = itemListDataArray;
 
@@ -291,7 +291,7 @@ public class ReadyForEndingManager : MonoBehaviour
         GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
 
         // ゲームエンディングを記録するファイルを作る
-        gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
+        gameClearFileManager.SaveGameClearFile(playerData);
         // プレイヤーデータを削除する
         playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -305,7 +305,7 @@ public class ReadyForEndingManager : MonoBehaviour
         if (localMode)
         {
             // ゲームエンディングを記録するファイルを作る
-            gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
+            gameClearFileManager.SaveGameClearFile(playerData);
             // プレイヤーデータを削除する
             playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -378,7 +378,7 @@ public class ReadyForEndingManager : MonoBehaviour
                     UnityMainThread.wkr.AddJob(() =>
                     {
                         // ゲームエンディングを記録するファイルを作る
-                        gameClearFileManager.SaveGameClearFile(playerData, buildManager.buildMode);
+                        gameClearFileManager.SaveGameClearFile(playerData);
                         // プレイヤーデータを削除する
                         playerSaveDataManager.DeletePlayerDataJsonFile();
 
@@ -454,7 +454,7 @@ public class ReadyForEndingManager : MonoBehaviour
 
     public void LoadEventAndShow(string eventCode)
     {
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         // 2021.07.26 修正, キャライメージ追加されたrawScriptをparameterに渡す

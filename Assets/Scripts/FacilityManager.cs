@@ -371,7 +371,7 @@ public class FacilityManager : MonoBehaviour
                             {
                                 case "YES":
                                     // jobEventの中でactiveされているイベントをランダムで呼び出す
-                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile(buildManager.buildMode);
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
                                     JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
 
                                     if (jobEvent != null)
@@ -455,7 +455,7 @@ public class FacilityManager : MonoBehaviour
                             {
                                 case "YES":
                                     // jobEventの中でactiveされているイベントをランダムで呼び出す
-                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile(buildManager.buildMode);
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
                                     JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
 
                                     if (jobEvent != null)
@@ -539,7 +539,7 @@ public class FacilityManager : MonoBehaviour
                             {
                                 case "YES":
                                     // jobEventの中でactiveされているイベントをランダムで呼び出す
-                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile(buildManager.buildMode);
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
                                     JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
 
                                     if (jobEvent != null)
@@ -622,7 +622,7 @@ public class FacilityManager : MonoBehaviour
                             {
                                 case "YES":
                                     // jobEventの中でactiveされているイベントをランダムで呼び出す
-                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile(buildManager.buildMode);
+                                    JobEventModel[] jobeventModelArray = jobEventSetManager.GetJobEventJsonFile();
                                     JobEventModel jobEvent = jobEventManager.GetActiveJobEventRandom(jobeventModelArray);
 
                                     if (jobEvent != null)
@@ -791,7 +791,7 @@ public class FacilityManager : MonoBehaviour
             // 完了されたイベントがないならメインイベント発動
             if (!completedEventBool)
             {
-                EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
+                EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
                 EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, mainEventCode);
                 List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
 
@@ -842,7 +842,7 @@ public class FacilityManager : MonoBehaviour
 
     public void LoadEventAndShow(string eventCode)
     {
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         // 2021.07.26 修正, キャライメージ追加されたrawScriptをparameterに渡す

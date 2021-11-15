@@ -15,11 +15,11 @@ public class ConvenienceItemSetManager : MonoBehaviour
     }
 
     // 毎晩コンビニにアイテムを補充
-    public void ResetConvenienceQuantity(string buildMode)
+    public void ResetConvenienceQuantity()
     {
         System.Random random = new System.Random();
         // アイテムリストロード
-        ConvenienceItemData[] getConvenienceItemDataArray = GetConvenienceJsonFile(buildManager.buildMode);
+        ConvenienceItemData[] getConvenienceItemDataArray = GetConvenienceJsonFile();
 
         // アイテム数くらい繰り返す
         for (int i=0; i < getConvenienceItemDataArray.Length; i++)
@@ -28,10 +28,10 @@ public class ConvenienceItemSetManager : MonoBehaviour
             getConvenienceItemDataArray[i].itemQuantity = random.Next(1, 6);
         }
 
-        CreateConvenienceJsonFile(getConvenienceItemDataArray.OfType<ConvenienceItemData>().ToList(), buildMode);
+        CreateConvenienceJsonFile(getConvenienceItemDataArray.OfType<ConvenienceItemData>().ToList());
     }
 
-    public void CreateConvenienceItem(Dictionary<string, Dictionary<string, object>> ConItemListDic, string buildMode)
+    public void CreateConvenienceItem(Dictionary<string, Dictionary<string, object>> ConItemListDic)
     {
         ConvenienceItemData convenienceItemData;
         List<ConvenienceItemData> convenienceList = new List<ConvenienceItemData>();
@@ -58,7 +58,7 @@ public class ConvenienceItemSetManager : MonoBehaviour
 
             // jsonファイルを作る
             Debug.Log("convenienceList.Count: " + convenienceList.Count);
-            CreateConvenienceJsonFile(convenienceList, buildMode);
+            CreateConvenienceJsonFile(convenienceList);
         }
         catch(Exception e)
         {
@@ -82,7 +82,7 @@ public class ConvenienceItemSetManager : MonoBehaviour
         return imagePath;
     }
 
-    public ConvenienceItemData[] GetConvenienceJsonFile(string buildMode)
+    public ConvenienceItemData[] GetConvenienceJsonFile()
     {
         string jsonStr = null;
 
@@ -113,7 +113,7 @@ public class ConvenienceItemSetManager : MonoBehaviour
         return convenienceItemDataArray;
     }
 
-    public void SetConvenienceJsonFile(ItemListData[] buyingItemListDataArray, string buildMode)
+    public void SetConvenienceJsonFile(ItemListData[] buyingItemListDataArray)
     {
         Debug.Log("buying count" + buyingItemListDataArray.Length);
 
@@ -121,7 +121,7 @@ public class ConvenienceItemSetManager : MonoBehaviour
         List<ConvenienceItemData> convenienceItemDataList = new List<ConvenienceItemData>();
 
         // ファイルをロードする
-        ConvenienceItemData[] loadedConvenienceItemData = GetConvenienceJsonFile(buildManager.buildMode);
+        ConvenienceItemData[] loadedConvenienceItemData = GetConvenienceJsonFile();
 
 
         for(int i=0; i<buyingItemListDataArray.Length; i++)
@@ -163,11 +163,11 @@ public class ConvenienceItemSetManager : MonoBehaviour
         }
 
         // 新しく数が反映された情報をファイルに作る
-        CreateConvenienceJsonFile(convenienceItemDataList, buildMode);
+        CreateConvenienceJsonFile(convenienceItemDataList);
 
     }
 
-    public void CreateConvenienceJsonFile(List<ConvenienceItemData> convenienceList, string buildMode)
+    public void CreateConvenienceJsonFile(List<ConvenienceItemData> convenienceList)
     {
         string jsonStr = JsonHelper.ToJson(convenienceList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);

@@ -66,7 +66,7 @@ public class CSVManager : MonoBehaviour
         return allItemDic;
     }
 
-    public void ReadJobEventInitFileAndCreateJson(string buildMode)
+    public void ReadJobEventInitFileAndCreateJson()
     {
         Debug.Log("call ReadJobEventInitFileAndCreateJson()");
         bool checkJsonSW = false;
@@ -113,11 +113,11 @@ public class CSVManager : MonoBehaviour
             Dictionary<string, Dictionary<string, object>> jobEventListDic = GetTxtItemList("JobEvent");
             // JobEvent.jsonを作る
             jobEventSetManager = new JobEventSetManager();
-            jobEventSetManager.CreateJobEventJson(jobEventListDic, buildMode);
+            jobEventSetManager.CreateJobEventJson(jobEventListDic);
         }
     }
 
-    public void ReadMainEventInitFileAndCreateJson(string buildMode)
+    public void ReadMainEventInitFileAndCreateJson()
     {
         bool checkJsonSW = false;
         try
@@ -165,11 +165,11 @@ public class CSVManager : MonoBehaviour
             Dictionary<string, Dictionary<string, object>> mainEventListDic = GetTxtItemList("MainEvent");
             // を作る
             mainEventSetManager = new MainEventSetManager();
-            mainEventSetManager.CreateMainEventJson(mainEventListDic, buildMode);
+            mainEventSetManager.CreateMainEventJson(mainEventListDic);
         }
     }
 
-    public void ReadConvenienceInitFileAndCreateJson(string buildMode)
+    public void ReadConvenienceInitFileAndCreateJson()
     {
         bool checkJsonSW = false;  
         try
@@ -218,11 +218,11 @@ public class CSVManager : MonoBehaviour
             Dictionary<string, Dictionary<string, object>> ConItemListDic = GetTxtItemList("ConvenienceItemInit");
             // を作る
             convenienceItemSetManager = new ConvenienceItemSetManager();
-            convenienceItemSetManager.CreateConvenienceItem(ConItemListDic, buildMode);
+            convenienceItemSetManager.CreateConvenienceItem(ConItemListDic);
         }
     }
     
-    public void ReadCafeItemInitFileAndCreateJson(string buildMode)
+    public void ReadCafeItemInitFileAndCreateJson()
     {
         bool checkJsonSW = false;
         try
@@ -271,7 +271,7 @@ public class CSVManager : MonoBehaviour
             Dictionary<string, Dictionary<string, object>> CafeItemListDic = GetTxtItemList("CafeItemInit");
             // cafeItem.jsonを作る
             cafeItemSetManager = new CafeItemSetManager();
-            cafeItemSetManager.CreateCafeItem(CafeItemListDic, buildMode);
+            cafeItemSetManager.CreateCafeItem(CafeItemListDic);
         }
     }
     

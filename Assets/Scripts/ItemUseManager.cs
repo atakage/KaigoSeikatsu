@@ -34,7 +34,7 @@ public class ItemUseManager : MonoBehaviour
         }
 
         playerSaveDataManager = new PlayerSaveDataManager();
-        playerSaveDataManager.SavePlayerItemList((ItemListData[])itemListDataList.ToArray(typeof(ItemListData)), buildManager.buildMode);
+        playerSaveDataManager.SavePlayerItemList((ItemListData[])itemListDataList.ToArray(typeof(ItemListData)));
     }
 
     public void UseItem(string useItemName, Dictionary<string, Dictionary<string, object>> allItemDic)

@@ -27,7 +27,7 @@ public class ShopItemSetManager : MonoBehaviour
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
 
         // ショップアイテムファイルをclassに読み込む
-        ConvenienceItemData[] loadedCafeItemArray = LoadCafeItemJsonFile(buildManager.buildMode);
+        ConvenienceItemData[] loadedCafeItemArray = LoadCafeItemJsonFile();
 
         //読み込んだclassファイルをショップUIにセットする
         SetShopItemUI(loadedCafeItemArray);
@@ -334,7 +334,7 @@ public class ShopItemSetManager : MonoBehaviour
         File.WriteAllText(Application.dataPath + "/Resources/saveData/shopItem.json", itemAsStr);
     }
 
-    public ConvenienceItemData[] LoadCafeItemJsonFile(string buildMode)
+    public ConvenienceItemData[] LoadCafeItemJsonFile()
     {
         ConvenienceItemData[] loadedCafeItemArray = null;
         try

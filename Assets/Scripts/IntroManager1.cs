@@ -80,14 +80,14 @@ public class IntroManager1 : MonoBehaviour
 
         // プレイヤーデータセーブ
         // プレイヤーアイテムデータ初期化
-        playerSaveDataManager.RemoveItemListDataJsonFile(buildManager.buildMode);
+        playerSaveDataManager.RemoveItemListDataJsonFile();
         ItemListData[] itemListData = new ItemListData[1];
         itemListData[0] = new ItemListData();
         itemListData[0].itemName = "名刺";
         itemListData[0].itemDescription = "介護福祉士の名刺だ";
         itemListData[0].quantity = 1;
         itemListData[0].keyItem = "Y";
-        playerSaveDataManager.SaveItemListData(itemListData, buildManager.buildMode);
+        playerSaveDataManager.SaveItemListData(itemListData);
 
         // 新しいプレイヤーデータを作成
         playerData = new PlayerData();
@@ -151,14 +151,14 @@ public class IntroManager1 : MonoBehaviour
                     
                     // プレイヤーデータセーブ
                     // プレイヤーアイテムデータ初期化
-                    playerSaveDataManager.RemoveItemListDataJsonFile(buildManager.buildMode);
+                    playerSaveDataManager.RemoveItemListDataJsonFile();
                     ItemListData[] itemListData = new ItemListData[1];
                     itemListData[0] = new ItemListData();
                     itemListData[0].itemName = "名刺";
                     itemListData[0].itemDescription = "介護福祉士の名刺だ";
                     itemListData[0].quantity = 1;
                     itemListData[0].keyItem = "Y";
-                    playerSaveDataManager.SaveItemListData(itemListData, buildManager.buildMode);
+                    playerSaveDataManager.SaveItemListData(itemListData);
 
                     // 新しいプレイヤーデータを作成
                     playerData = new PlayerData();
@@ -269,7 +269,7 @@ public class IntroManager1 : MonoBehaviour
 
     public void LoadEventAndShow(string eventCode)
     {
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         // 2021.07.26 修正, キャライメージ追加されたrawScriptをparameterに渡す

@@ -6,7 +6,7 @@ using System.IO;
 
 public class CafeItemSetManager : MonoBehaviour
 {
-    public void CreateCafeItem(Dictionary<string, Dictionary<string, object>> cafeItemListDic, string buildMode)
+    public void CreateCafeItem(Dictionary<string, Dictionary<string, object>> cafeItemListDic)
     {
         ConvenienceItemData cafeItemData;
         List<ConvenienceItemData> cafeList = new List<ConvenienceItemData>();
@@ -33,7 +33,7 @@ public class CafeItemSetManager : MonoBehaviour
 
             // jsonファイルを作る
             Debug.Log("cafeList.Count: " + cafeList.Count);
-            CreateCafeJsonFile(cafeList, buildMode);
+            CreateCafeJsonFile(cafeList);
         }
         catch (Exception e)
         {
@@ -41,7 +41,7 @@ public class CafeItemSetManager : MonoBehaviour
         }
     }
 
-    public void CreateCafeJsonFile(List<ConvenienceItemData> cafeList, string buildMode)
+    public void CreateCafeJsonFile(List<ConvenienceItemData> cafeList)
     {
         string jsonStr = JsonHelper.ToJson(cafeList.ToArray(), true);
         Debug.Log("jsonStr: " + jsonStr);

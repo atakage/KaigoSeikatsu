@@ -272,7 +272,7 @@ public class ParkManager : MonoBehaviour
         else if (1 == eventInt)
         {
             // コンビニのアイテムリストを取り出す
-            ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile(buildManager.buildMode);
+            ConvenienceItemData[] convenienceItemDataArray = convenienceItemSetManager.GetConvenienceJsonFile();
             // アイテムリストから一つをランダムで取り出す
             string pickUpItemName = SearchluckyItemToConvenience(convenienceItemDataArray);
 
@@ -307,14 +307,14 @@ public class ParkManager : MonoBehaviour
         ItemListData[] itemListDataArray = new ItemListData[1];
         itemListDataArray[0] = itemListData;
 
-        playerSaveDataManager.SaveItemListData(itemListDataArray, buildManager.buildMode);
+        playerSaveDataManager.SaveItemListData(itemListDataArray);
 
         return convenienceItemData.itemName;
     }
     public void LoadEventAndShow(string eventCode)
     {
         Debug.Log("call LoadEventAndShow");
-        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData(buildManager.buildMode);
+        EventListData[] loadedEventListData = playerSaveDataManager.LoadedEventListData();
         EventListData eventItem = eventManager.FindEventByCode(loadedEventListData, eventCode);
         List<string[]> scriptList = eventManager.ScriptSaveToList(eventItem);
         chatManager.ShowDialogue(scriptList, eventCode, eventItem.script);
