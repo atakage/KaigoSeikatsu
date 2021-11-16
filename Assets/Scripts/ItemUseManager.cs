@@ -127,6 +127,7 @@ public class ItemUseManager : MonoBehaviour
 
             // 2021.11.11 追加
             // プレイ時間
+            playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
             playerData.playTime = playTimeManager.playTime;
 
             // 変更されたプレイヤーの情報をセーブする

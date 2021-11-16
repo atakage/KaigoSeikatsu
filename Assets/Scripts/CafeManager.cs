@@ -159,6 +159,7 @@ public class CafeManager : MonoBehaviour
 
     public void ClickMenuButton()
     {
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
         sceneTransitionManager.LoadTo("MenuScene");
     }
 
@@ -187,6 +188,8 @@ public class CafeManager : MonoBehaviour
 
     public void ClickNextButton()
     {
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
         menuAndNextButtonInteractable(false);
         menuAndOrderCanvasActive(false);
 
