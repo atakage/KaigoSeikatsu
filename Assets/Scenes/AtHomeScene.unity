@@ -3887,6 +3887,7 @@ MonoBehaviour:
   firebaseManager: {fileID: 0}
   playerDataToPlayerDataDBModelManager: {fileID: 0}
   buildManager: {fileID: 0}
+  playTimeManager: {fileID: 0}
   playerData:
     name: 
     currentScene: 

@@ -1,9 +1,14 @@
 {
     "Items": [
         {
-            "eventCode": "EC012",
-            "eventScript": "●介護職員の必需品について考えてみよう",
-            "choosingString": "ビニール袋"
+            "eventCode": "EC017",
+            "eventScript": "●利用者同士のトラブルが起こった/●どうしよう...",
+            "choosingString": "トラブルの原因なった利用者を一旦退去させる"
+        },
+        {
+            "eventCode": "EC016",
+            "eventScript": "●高齢者に運動を指導する時に注意する点を考えてみよう",
+            "choosingString": "高齢者のやる気を引き出す"
         }
     ]
 }

@@ -35,8 +35,12 @@ public class GameClearFileManager : MonoBehaviour
             clearData.clearPlayerDataList = clearPlayerDataList;
         }
 
+        // 2021.11.17 修正
+        string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
+        string filePath = folderPath + "clearFile.json";
+
         string jsonStr = JsonConvert.SerializeObject(clearData);
-        File.WriteAllText(Application.dataPath + "/Resources/saveData/clearFile.json", jsonStr);
+        File.WriteAllText(filePath, jsonStr);
     }
 
     public ClearData LoadClearData()

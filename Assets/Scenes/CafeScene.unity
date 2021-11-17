@@ -469,7 +469,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 20
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -2177,7 +2177,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2105696832}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.00000017198683
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2600,7 +2600,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u75B2\u52B4\u5EA6"
+  m_Text: "\u75B2\u308C"
 --- !u!222 &610750203
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3418,6 +3418,7 @@ MonoBehaviour:
   csvManager: {fileID: 0}
   itemUseManager: {fileID: 0}
   buildManager: {fileID: 0}
+  playTimeManager: {fileID: 0}
   cafeMenuCanvasPos: {x: 0, y: 0, z: 0}
   detailOrderCanvasPos: {x: 0, y: 0, z: 0}
   playerData:
@@ -4554,6 +4555,7 @@ MonoBehaviour:
   jobDiaryManager: {fileID: 0}
   flashEffectManager: {fileID: 0}
   buildManager: {fileID: 0}
+  playTimeManager: {fileID: 0}
   eventCode: 
   panelText: {fileID: 0}
   dialogueSW: 0
@@ -6937,7 +6939,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1480623619}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

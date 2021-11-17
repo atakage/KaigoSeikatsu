@@ -665,6 +665,7 @@ MonoBehaviour:
   convenienceItemSetManager: {fileID: 0}
   sceneTransitionManager: {fileID: 0}
   buildManager: {fileID: 0}
+  playTimeManager: {fileID: 0}
   canvasGameObj: {fileID: 0}
   loadValueSW: 
 --- !u!4 &184869620
@@ -1382,7 +1383,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u75B2\u52B4\u5EA6"
+  m_Text: "\u75B2\u308C"
 --- !u!222 &628967265
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2670,7 +2671,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 20
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -3477,6 +3478,7 @@ MonoBehaviour:
   jobDiaryManager: {fileID: 0}
   flashEffectManager: {fileID: 0}
   buildManager: {fileID: 0}
+  playTimeManager: {fileID: 0}
   eventCode: 
   panelText: {fileID: 0}
   dialogueSW: 0

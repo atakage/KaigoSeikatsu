@@ -221,6 +221,7 @@ public class AtHomeManager : MonoBehaviour
         canvasGameObj.transform.Find("jobDiaryButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("time").gameObject.SetActive(false);
         canvasGameObj.transform.Find("GoOutBox").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("titleButton").gameObject.SetActive(false);
         ExecuteFadeInOutV2();
     }
 

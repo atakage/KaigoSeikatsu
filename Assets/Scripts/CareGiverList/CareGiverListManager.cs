@@ -313,6 +313,9 @@ public class CareGiverListManager : MonoBehaviour
     public async void FireBaseConnectionAndSelectPlayerDataList()
     {
         // DB作業
+        // 2021.11.17 修正
+        // firebase DB Connection Checkによる様々な問題発生を防止するためチェック作業を除く
+        /*
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
         bool connectionResult = false;
@@ -325,7 +328,9 @@ public class CareGiverListManager : MonoBehaviour
 
         UnityEngine.Debug.Log("completed connectionResult: " + connectionResult);
         stopwatch = null;
+        */
 
+        bool connectionResult = true;
         // DB接続チェックを成功すると
         if (connectionResult)
         {
@@ -338,6 +343,15 @@ public class CareGiverListManager : MonoBehaviour
                 careGiverListSharingObjectManager.transparentScreenGameObj.SetActive(false);
                 careGiverListSharingObjectManager.dataNoneMessage.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1);
                 careGiverListSharingObjectManager.dataNoneMessage.SetActive(true);
+
+            // 2021.11.17 追加
+            // taskがtimeOutなら
+            }else if (playerDataListJsonStr.Equals("timeOut"))
+            {
+                // UI設定
+                careGiverListSharingObjectManager.transparentScreenGameObj.SetActive(false);
+                careGiverListSharingObjectManager.connectionFailDefaultGameObj.transform.SetSiblingIndex(careGiverListSharingObjectManager.careGiverListContentBoxGameObj.transform.childCount - 1);
+                careGiverListSharingObjectManager.connectionFailDefaultGameObj.SetActive(true);
             }
             // プレイヤーデータリストの取り出しに成功すると
             else

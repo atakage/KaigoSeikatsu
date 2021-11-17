@@ -14,11 +14,6 @@ public class FirebaseManager : MonoBehaviour
     public string realDbName = "player_data";
     public string testDbName = "test_player_data";
 
-    public void DisConnectFireBase()
-    {
-        databaseReference.OnDisconnect();
-    }
-
     public async Task<string> SelectPlayerDataListByName(int selectCount)
     {
         Debug.Log("SelectPlayerDataListByName selectCount: " + selectCount);
@@ -27,23 +22,34 @@ public class FirebaseManager : MonoBehaviour
 
         // 日本語の場合データを読み込んだ時にunicodeに変換される問題(たまにある)
 
-        await databaseReference.OrderByKey().LimitToFirst(selectCount).GetValueAsync()        
-        //await databaseReference.LimitToFirst(selectCount).GetValueAsync()
-        //await databaseReference.OrderByKey().GetValueAsync()
-       .ContinueWith(task =>
-       {
-           if (task.IsFaulted)
+        try
+        {
+           await FirebaseDatabase.DefaultInstance.GetReference(testDbName).OrderByKey().LimitToFirst(selectCount).GetValueAsync()
+           //await databaseReference.OrderByKey().LimitToFirst(selectCount).GetValueAsync()        
+           //await databaseReference.LimitToFirst(selectCount).GetValueAsync()
+           //await databaseReference.OrderByKey().GetValueAsync()
+           .ContinueWith(task =>
            {
-               //findDataDBResultDic.Add(false, "サーバーとの通信に失敗しました");
-               Debug.Log("task.Exception.Message" + task.Exception.Message);
-           }
-           else if(task.IsCompleted)
-           {
-               DataSnapshot dataSnapshot = task.Result;
-               Debug.Log("dataSnapshot.GetRawJsonValue(): " + dataSnapshot.GetRawJsonValue());
-               returnValue = dataSnapshot.GetRawJsonValue();
-           }
-       });
+               if (task.IsFaulted)
+               {
+                   //findDataDBResultDic.Add(false, "サーバーとの通信に失敗しました");
+                   Debug.Log("task.Exception.Message" + task.Exception.Message);
+               }
+               else if (task.IsCompleted)
+               {
+                   DataSnapshot dataSnapshot = task.Result;
+                   Debug.Log("dataSnapshot.GetRawJsonValue(): " + dataSnapshot.GetRawJsonValue());
+                   returnValue = dataSnapshot.GetRawJsonValue();
+               }
+               // new CancellationTokenSource(5000).Token: Taskが無限に待機するのを防止する、5秒後Exception
+           }, new CancellationTokenSource(5000).Token);
+        }
+        catch(TaskCanceledException e)
+        {
+            return returnValue="timeOut";
+        }
+
+        
 
         return returnValue;
     }
@@ -75,8 +81,6 @@ public class FirebaseManager : MonoBehaviour
                 }
             };
         });
-
-        Debug.Log("return mae: " + returnValue);
 
         return returnValue;
     }

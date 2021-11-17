@@ -903,7 +903,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 20
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -4781,7 +4781,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u75B2\u52B4\u5EA6"
+  m_Text: "\u75B2\u308C"
 --- !u!222 &1057795341
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6344,6 +6344,7 @@ MonoBehaviour:
   chatManager: {fileID: 0}
   sceneTransitionManager: {fileID: 0}
   buildManager: {fileID: 0}
+  playTimeManager: {fileID: 0}
   playerData:
     name: 
     currentScene: 
@@ -7420,6 +7421,7 @@ MonoBehaviour:
   jobDiaryManager: {fileID: 0}
   flashEffectManager: {fileID: 0}
   buildManager: {fileID: 0}
+  playTimeManager: {fileID: 0}
   eventCode: 
   panelText: {fileID: 0}
   dialogueSW: 0

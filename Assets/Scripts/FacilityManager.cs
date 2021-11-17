@@ -262,6 +262,10 @@ public class FacilityManager : MonoBehaviour
             if (canvasObj.transform.Find("fadeOutEndMomentSW") != null
                 && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
             {
+                // 2021.11.17 追加
+                playerData = playerSaveDataManager.LoadPlayerData();
+                canvasObj.transform.Find("fatigueBar").GetComponent<Slider>().value = playerData.fatigue;
+
                 FacilityUISetActive(true);
                 menuBtnAndNextBtnInteractable(true);
             }
