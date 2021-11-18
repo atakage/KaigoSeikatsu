@@ -357,8 +357,8 @@ public class AtHomeManager : MonoBehaviour
 
             // 2021.10.14追加
             // 次の日になる時データ収集ためDBにデータセーブ
-            bool connectionResult = await firebaseManager.FireBaseConnection();
-            if (connectionResult) await firebaseManager.InsertUpdateToDB(playerDataToPlayerDataDBModelManager.PlayerDataToDBModel(playerData));
+            //bool connectionResult = await firebaseManager.FireBaseConnection();
+            await firebaseManager.InsertUpdateToDB(playerDataToPlayerDataDBModelManager.PlayerDataToDBModel(playerData));
         }
         // 2021.11.11 追加
         // プレイ時間

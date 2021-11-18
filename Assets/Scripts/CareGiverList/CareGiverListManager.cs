@@ -94,6 +94,7 @@ public class CareGiverListManager : MonoBehaviour
         careGiverListSharingObjectManager.transparentScreenGameObj.SetActive(true);
 
         // DB作業
+        /*
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
         bool connectionResult = false;
@@ -106,7 +107,8 @@ public class CareGiverListManager : MonoBehaviour
 
         UnityEngine.Debug.Log("completed connectionResult: " + connectionResult);
         stopwatch = null;
-
+        */
+        bool connectionResult = true;
         // DB接続チェックを成功すると
         if (connectionResult)
         {

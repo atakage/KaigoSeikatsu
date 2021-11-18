@@ -109,8 +109,11 @@ public class FirebaseManager : MonoBehaviour
     {
         string returnValue = "サーバーとの通信に失敗しました";
 
-        await databaseReference.Child(playerDataDBModel.name).GetValueAsync()
-            .ContinueWith( task =>
+        try
+        {
+            //await databaseReference.Child(playerDataDBModel.name).GetValueAsync()
+            await FirebaseDatabase.DefaultInstance.GetReference(testDbName).Child(playerDataDBModel.name).GetValueAsync()
+            .ContinueWith(task =>
             {
                 if (task.IsFaulted)
                 {
@@ -134,7 +137,12 @@ public class FirebaseManager : MonoBehaviour
                         returnValue = "すでに使用されている名前です";
                     }
                 }
-            });
+            }, new CancellationTokenSource(5000).Token);
+        }
+        catch(TaskCanceledException e)
+        {
+            return returnValue = "timeOut";
+        }
 
         return returnValue;
     }
@@ -143,8 +151,12 @@ public class FirebaseManager : MonoBehaviour
     {
         string returnValue = "データ作成に失敗しました";
 
-        await databaseReference.Child(playerDataDBModel.name).SetRawJsonValueAsync(JsonUtility.ToJson(playerDataDBModel))
-            .ContinueWith(task => {
+        try
+        {
+            //await databaseReference.Child(playerDataDBModel.name).SetRawJsonValueAsync(JsonUtility.ToJson(playerDataDBModel))
+            await FirebaseDatabase.DefaultInstance.GetReference(testDbName).Child(playerDataDBModel.name).SetRawJsonValueAsync(JsonUtility.ToJson(playerDataDBModel))
+            .ContinueWith(task =>
+            {
                 if (task.IsFaulted)
                 {
                     Debug.Log("insert update fail: " + task.Exception);
@@ -155,7 +167,13 @@ public class FirebaseManager : MonoBehaviour
                     Debug.Log("insert update success");
                     returnValue = "success";
                 }
-            });
+            }, new CancellationTokenSource(3000).Token);
+        }
+        catch (TaskCanceledException e)
+        {
+            return returnValue;
+        }
+;
         return returnValue;
     }
 

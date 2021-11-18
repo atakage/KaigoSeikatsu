@@ -120,6 +120,7 @@ public class IntroManager1 : MonoBehaviour
         playerDataDBModel.name = IntroSharingObjectManager.nameValueGameObj.GetComponent<InputField>().text;
         playerDataDBModel.startDate = DateTime.Now.ToString("yyyyMMddHHmmss");
 
+        /*
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
         bool connectionResult = false;
@@ -131,6 +132,8 @@ public class IntroManager1 : MonoBehaviour
         }
         
         UnityEngine.Debug.Log("connectionResult: " + connectionResult);
+        */
+        bool connectionResult = true;
         // DB接続に成功する
         if (connectionResult)
         {
@@ -184,6 +187,10 @@ public class IntroManager1 : MonoBehaviour
                     ActivingAlertCancelButton(true);
                 }
 
+            }else if (findDataDBResult.Equals("timeOut"))
+            {
+                IntroSharingObjectManager.alertBoxTextGameObj.GetComponent<Text>().text = "サーバーとの通信に失敗しました";
+                ActivingAlertCancelButton(true);
             }
             // FindDataToDBの結果がnullじゃないならすでに使用されている名前
             else

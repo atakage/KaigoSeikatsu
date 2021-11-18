@@ -3,7 +3,7 @@
         {
             "itemName": "おにぎり",
             "itemDescription": "お米を味わう!<br>シンプルなおにぎり",
-            "itemQuantity": 2,
+            "itemQuantity": 4,
             "itemPrice": 100,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
@@ -11,7 +11,7 @@
         {
             "itemName": "焼肉弁当",
             "itemDescription": "豚肉たっぶり、お弁当",
-            "itemQuantity": 5,
+            "itemQuantity": 3,
             "itemPrice": 300,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
@@ -19,7 +19,7 @@
         {
             "itemName": "ビール",
             "itemDescription": "ビールでも飲んで忘れろ!<br>のどごしがすごいビール",
-            "itemQuantity": 3,
+            "itemQuantity": 1,
             "itemPrice": 200,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"
@@ -27,7 +27,7 @@
         {
             "itemName": "栄養ドリンク",
             "itemDescription": "疲労回復の効果がある",
-            "itemQuantity": 4,
+            "itemQuantity": 1,
             "itemPrice": 500,
             "itemSale": "Y",
             "itemImagePath": "img/item/unity"

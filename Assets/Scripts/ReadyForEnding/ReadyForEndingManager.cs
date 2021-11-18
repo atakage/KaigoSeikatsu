@@ -136,6 +136,7 @@ public class ReadyForEndingManager : MonoBehaviour
         PlayerDataDBModel playerDataDBModel = ConvertPlayerDataDBModel(playerData, null);
 
         // DB作業
+        /*
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
         bool connectionResult = false;
@@ -147,7 +148,8 @@ public class ReadyForEndingManager : MonoBehaviour
             if (connectionResult) break;
         }
         stopwatch.Stop();
-
+        */
+        bool connectionResult = true;
         // DB接続に成功すると
         if (connectionResult)
         {
@@ -353,6 +355,7 @@ public class ReadyForEndingManager : MonoBehaviour
 
 
         // DB作業
+        /*
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
         bool connectionResult = false;
@@ -363,7 +366,8 @@ public class ReadyForEndingManager : MonoBehaviour
             if (connectionResult) break;
         }
         stopwatch.Stop();
-
+        */
+        bool connectionResult = true;
         // DB接続に成功すると
         if (connectionResult)
         {
