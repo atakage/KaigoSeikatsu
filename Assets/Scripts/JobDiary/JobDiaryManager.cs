@@ -15,6 +15,7 @@ public class JobDiaryManager : MonoBehaviour
     public GameObject jobDiaryFlipIconCanvas;
     public GameObject jobDiaryTipScriptCanvas;
     public GameObject jobDiaryTipCloseCanvas;
+    public JobDiarySharingVarManager jobDiarySharingVarManager;
     public RectTransform flipIconRectTransform;
     public Vector3 flipIconRectPosiion;
     public PlayerData playerData;
@@ -24,6 +25,7 @@ public class JobDiaryManager : MonoBehaviour
         playerSaveDataManager = new PlayerSaveDataManager();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
         playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
+        jobDiarySharingVarManager = GameObject.Find("JobDiarySharingVarManager").GetComponent("JobDiarySharingVarManager") as JobDiarySharingVarManager;
 
         canvasGameObj = GameObject.Find("Canvas");
         jobDiaryAlphaScreenCanvas = GameObject.Find("jobDiaryAlphaScreenCanvas");
@@ -45,6 +47,8 @@ public class JobDiaryManager : MonoBehaviour
         // 最初のjobDiaryTip
         playerData = playerSaveDataManager.LoadPlayerData();
         if(playerData.tip.checkedJobDiaryTip == false) DisplayJobDiaryTip();
+
+        jobDiarySharingVarManager.titleBoxGameObj.transform.Find("Text").GetComponent<Text>().text = playerData.name + "の手帳";
     }
 
     public void DisplayJobDiaryTip()

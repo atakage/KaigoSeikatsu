@@ -354,12 +354,8 @@ public class AtHomeManager : MonoBehaviour
             // 2021.10.09追加
             // 次の日になるたびお金+100円
             playerData.money = (Int32.Parse(playerData.money)+100).ToString();
-
-            // 2021.10.14追加
-            // 次の日になる時データ収集ためDBにデータセーブ
-            //bool connectionResult = await firebaseManager.FireBaseConnection();
-            await firebaseManager.InsertUpdateToDB(playerDataToPlayerDataDBModelManager.PlayerDataToDBModel(playerData));
         }
+
         // 2021.11.11 追加
         // プレイ時間
         playerData.playTime = playTimeManager.playTime;
@@ -374,6 +370,12 @@ public class AtHomeManager : MonoBehaviour
         canvasGameObj.transform.Find("jobDiaryButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("titleButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("time").gameObject.SetActive(false);
+
+        // 2021.10.14追加
+        // 次の日になる時データ収集ためDBにデータセーブ
+        //bool connectionResult = await firebaseManager.FireBaseConnection();
+        await firebaseManager.InsertUpdateToDB(playerDataToPlayerDataDBModelManager.PlayerDataToDBModel(playerData));
+
         ExecuteFadeInOut();
     }
 

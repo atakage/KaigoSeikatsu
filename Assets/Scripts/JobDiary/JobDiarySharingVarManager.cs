@@ -6,6 +6,7 @@ public class JobDiarySharingVarManager : MonoBehaviour
 {
     public GameObject canvasGameObj;
     public GameObject containerGameObj;
+    public GameObject titleBoxGameObj;
 
     // Start is called before the first frame update
     // Awake() -> Start()
@@ -28,5 +29,7 @@ public class JobDiarySharingVarManager : MonoBehaviour
         Debug.Log("call JobDiarySharingVarManager Awake()");
         this.canvasGameObj = GameObject.Find("Canvas");
         this.containerGameObj = this.canvasGameObj.transform.Find("JobDiaryViewBox").GetChild(0).GetChild(0).GetChild(0).gameObject;
+        this.titleBoxGameObj = this.canvasGameObj.transform.Find("titleBox").gameObject;
+
     }
 }
