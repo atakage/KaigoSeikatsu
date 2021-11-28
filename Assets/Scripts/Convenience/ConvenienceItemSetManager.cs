@@ -73,11 +73,13 @@ public class ConvenienceItemSetManager : MonoBehaviour
         string imagePath = "img/item/" + itemName;
         Texture2D texture = Resources.Load(imagePath, typeof(Texture2D)) as Texture2D;
 
+        /*
         // イメージがないならdefaultイメージを設定
         if (texture == null)
         {
             imagePath = "img/item/unity";
         }
+        */
 
         return imagePath;
     }

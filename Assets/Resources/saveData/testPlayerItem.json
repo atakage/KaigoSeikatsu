@@ -5,18 +5,6 @@
             "itemDescription": "介護福祉士の名刺だ",
             "quantity": 1,
             "keyItem": "Y"
-        },
-        {
-            "itemName": "ビール",
-            "itemDescription": "ビールでも飲んで忘れろ!<br>のどごしがすごいビール",
-            "quantity": 1,
-            "keyItem": "N"
-        },
-        {
-            "itemName": "おにぎり",
-            "itemDescription": "お米を味わう!<br>シンプルなおにぎり",
-            "quantity": 1,
-            "keyItem": "N"
         }
     ]
 }

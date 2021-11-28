@@ -112,12 +112,6 @@ public class InitSettingManager : MonoBehaviour
         // ゲームが始まるnew game
         else if (msgCheckIntVal == 1)
         {
-            // JobDiary.jsonを作る
-            jobDiarySetManager.CreateJobDiaryJsonFile(new List<JobDiaryModel>());
-            
-            // プレイヤーアイテムデータ初期化
-            playerSaveDataManager.RemoveItemListDataJsonFile();
-
             sceneTransitionManager.LoadTo("IntroScene");
         }
     }

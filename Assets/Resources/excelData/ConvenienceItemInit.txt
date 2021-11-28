@@ -1,5 +1,5 @@
-itemName,itemPrice,itemDescription,itemQty,itemSale
+﻿itemName,itemPrice,itemDescription,itemQty,itemSale
 おにぎり,100,お米を味わう!<br>シンプルなおにぎり,1,Y
-焼肉弁当,300,豚肉たっぶり、お弁当,1,Y
+鶏肉弁当,300,鶏肉のから揚げ弁当,1,Y
 ビール,200,ビールでも飲んで忘れろ!<br>のどごしがすごいビール,1,Y
 栄養ドリンク,500,疲労回復の効果がある,1,Y

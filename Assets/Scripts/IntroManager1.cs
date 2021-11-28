@@ -22,6 +22,8 @@ public class IntroManager1 : MonoBehaviour
     public FirebaseManager FirebaseManager;
     public PlayTimeManager playTimeManager;
     public BuildManager buildManager;
+    public JobDiarySetManager jobDiarySetManager;
+    public CSVManager csvManager;
     public bool inputFieldFocusBool;
     private TouchScreenKeyboard touchScreenKeyboard;
     private PlayerDataDBModel playerDataDBModel;
@@ -33,6 +35,8 @@ public class IntroManager1 : MonoBehaviour
         eventManager = new EventManager();
         sceneTransitionManager = new SceneTransitionManager();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+        jobDiarySetManager = new JobDiarySetManager();
+        csvManager = new CSVManager();
 
         IntroSharingObjectManager = GameObject.Find("IntroSharingObjectManager").GetComponent("IntroSharingObjectManager") as IntroSharingObjectManager;
         IntroSharingObjectManager.checkNameButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickCheckNameButton);
@@ -151,7 +155,17 @@ public class IntroManager1 : MonoBehaviour
                 if ("success".Equals(insertUpdateResult))
                 {
                     ActivingAlertBox(false);
-                    
+
+                    // 2021.11.28 修正
+                    // IntroSceneでプレイヤーデータが作れると既存ユーザー情報を削除する
+
+                    // JobDiary.jsonを作る
+                    jobDiarySetManager.CreateJobDiaryJsonFile(new List<JobDiaryModel>());
+                    // プレイヤーアイテムデータ初期化
+                    playerSaveDataManager.RemoveItemListDataJsonFile();
+                    // コンビニデータを初期化
+                    csvManager.CreateConvenienceJsonFile();
+
                     // プレイヤーデータセーブ
                     // プレイヤーアイテムデータ初期化
                     playerSaveDataManager.RemoveItemListDataJsonFile();

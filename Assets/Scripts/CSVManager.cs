@@ -221,6 +221,15 @@ public class CSVManager : MonoBehaviour
             convenienceItemSetManager.CreateConvenienceItem(ConItemListDic);
         }
     }
+
+    public void CreateConvenienceJsonFile()
+    {
+        // ConvenienceItemInit.txtからデータを読み込む
+        Dictionary<string, Dictionary<string, object>> ConItemListDic = GetTxtItemList("ConvenienceItemInit");
+        // を作る
+        convenienceItemSetManager = new ConvenienceItemSetManager();
+        convenienceItemSetManager.CreateConvenienceItem(ConItemListDic);
+    }
     
     public void ReadCafeItemInitFileAndCreateJson()
     {
