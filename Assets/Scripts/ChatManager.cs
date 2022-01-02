@@ -499,7 +499,7 @@ public class ChatManager : MonoBehaviour
     public void SetActiveUI(bool sw)
     {
         Debug.Log("SetactiveUI");
-        GameObject.Find("Canvas").transform.Find("Image").gameObject.SetActive(sw);
+        //GameObject.Find("Canvas").transform.Find("Image").gameObject.SetActive(sw);
         GameObject.Find("Canvas").transform.Find("time").gameObject.SetActive(sw);
         GameObject.Find("Canvas").transform.Find("fatigueText").gameObject.SetActive(sw);
         GameObject.Find("Canvas").transform.Find("fatigueBar").gameObject.SetActive(sw);

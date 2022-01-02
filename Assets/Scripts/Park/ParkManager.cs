@@ -147,7 +147,7 @@ public class ParkManager : MonoBehaviour
         GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
 
         canvasGameObj.transform.Find("time").gameObject.SetActive(false);
-        canvasGameObj.transform.Find("Image").gameObject.SetActive(false);
+        //canvasGameObj.transform.Find("Image").gameObject.SetActive(false);
         canvasGameObj.transform.Find("fatigueBar").gameObject.SetActive(false);
         canvasGameObj.transform.Find("fatigueText").gameObject.SetActive(false);
         canvasGameObj.transform.Find("nextButtonClickAlertBox").gameObject.SetActive(false);
