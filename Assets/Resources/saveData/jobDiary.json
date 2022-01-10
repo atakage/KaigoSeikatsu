@@ -14,6 +14,16 @@
             "eventCode": "EC016",
             "eventScript": "●高齢者に運動を指導する時に注意する点を考えてみよう",
             "choosingString": "休憩を取りながら行う"
+        },
+        {
+            "eventCode": "EC019",
+            "eventScript": "●更衣介助の際に気をつけることについて考えてみよう",
+            "choosingString": "皮膚常態を観察する"
+        },
+        {
+            "eventCode": "EC013",
+            "eventScript": "●おやつの提供方法について考えてみよう",
+            "choosingString": "口へ運びやすく盛り付ける"
         }
     ]
 }
