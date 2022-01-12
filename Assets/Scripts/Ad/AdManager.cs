@@ -6,6 +6,7 @@ using GoogleMobileAds.Api;
 public class AdManager : MonoBehaviour
 {
     static AdManager adManagerInstance;
+    public BuildManager buildManager;
     public bool adSwitch;
     private InterstitialAd interstitial;
 
@@ -23,14 +24,28 @@ public class AdManager : MonoBehaviour
 
     private void Start()
     {
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+
         RequestInterstitial();
         Debug.Log("call RequestInterstitialTest()");
     }
 
     private void RequestInterstitial()
     {
-        // android広告id(Test)
-        string adUnitIdAndroid = "ca-app-pub-3940256099942544/1033173712";
+        string adUnitIdAndroid = "";
+        // 2022.01.12 修正
+        // buildModeによってAdMobId設定
+        // realなら
+        if (buildManager.realMode)
+        {
+            adUnitIdAndroid = "ca-app-pub-1638099411160865/4720497227";
+        }
+        // testなら
+        else
+        {
+            adUnitIdAndroid = "ca-app-pub-3940256099942544/1033173712";
+        }
+        
         // Initialize an InterstitialAd
         this.interstitial = new InterstitialAd(adUnitIdAndroid);
         // Create an empty ad request
