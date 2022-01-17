@@ -1,3 +1,9 @@
 {
-    "Items": []
+    "Items": [
+        {
+            "eventCode": "EC011",
+            "eventScript": "●利用者との会話の話題について考えてみよう",
+            "choosingString": "政治"
+        }
+    ]
 }

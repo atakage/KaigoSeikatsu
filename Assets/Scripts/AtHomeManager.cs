@@ -56,6 +56,7 @@ public class AtHomeManager : MonoBehaviour
         canvasGameObj.transform.Find("itemCheckButton").GetComponent<Button>().onClick.AddListener(ClickItemCheckButton);
         canvasGameObj.transform.Find("statusButton").GetComponent<Button>().onClick.AddListener(ClickStatusButton);
         canvasGameObj.transform.Find("jobDiaryButton").GetComponent<Button>().onClick.AddListener(ClickJobDiaryButton);
+        canvasGameObj.transform.Find("helpButton").GetComponent<Button>().onClick.AddListener(ClickHelpButton);
         canvasGameObj.transform.Find("titleButton").GetComponent<Button>().onClick.AddListener(ClickTitleButton);
         canvasGameObj.transform.Find("AlertTitle").transform.Find("No").GetComponent<Button>().onClick.AddListener(delegate { ActiveAlertTitle(false); });
         canvasGameObj.transform.Find("AlertTitle").transform.Find("Yes").GetComponent<Button>().onClick.AddListener(ClickAlertTitleYesButton);
@@ -199,6 +200,13 @@ public class AtHomeManager : MonoBehaviour
         GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
 
         sceneTransitionManager.LoadTo("JobDiaryScene");
+    }
+
+    public void ClickHelpButton()
+    {
+        GameObject.Find("SoundManager").GetComponent<AudioSource>().Play();
+
+        SceneManager.LoadScene("HelpScene", LoadSceneMode.Additive);
     }
 
     public void ClickGoToConvenienceBtn()

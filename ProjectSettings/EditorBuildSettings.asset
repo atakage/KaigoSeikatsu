@@ -47,4 +47,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FacilityScene.unity
     guid: a246e533bc3b6c041b9528e1770660b0
+  - enabled: 1
+    path: Assets/Scenes/HelpScene.unity
+    guid: 8e765757a122b0645a6be99313f0fd2b
   m_configObjects: {}

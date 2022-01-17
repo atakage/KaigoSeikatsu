@@ -118,7 +118,7 @@ public class FirebaseManager : MonoBehaviour
                 if (task.IsFaulted)
                 {
                     //findDataDBResultDic.Add(false, "サーバーとの通信に失敗しました");
-                    Debug.Log("task.Exception.Message" + task.Exception.Message);
+                    Debug.Log("task.Exception.Message: " + task.Exception);
                     returnValue = "サーバーとの通信に失敗しました";
                 }
                 else
