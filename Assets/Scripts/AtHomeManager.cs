@@ -230,6 +230,7 @@ public class AtHomeManager : MonoBehaviour
         canvasGameObj.transform.Find("time").gameObject.SetActive(false);
         canvasGameObj.transform.Find("GoOutBox").gameObject.SetActive(false);
         canvasGameObj.transform.Find("titleButton").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("helpButton").gameObject.SetActive(false);
         ExecuteFadeInOutV2();
     }
 
@@ -333,6 +334,7 @@ public class AtHomeManager : MonoBehaviour
         canvasGameObj.transform.Find("statusButton").gameObject.SetActive(sw);
         canvasGameObj.transform.Find("jobDiaryButton").gameObject.SetActive(sw);
         canvasGameObj.transform.Find("titleButton").gameObject.SetActive(sw);
+        canvasGameObj.transform.Find("helpButton").gameObject.SetActive(sw);
     }
 
     public void MenuButtonActive(bool sw)
@@ -343,6 +345,7 @@ public class AtHomeManager : MonoBehaviour
         canvasGameObj.transform.Find("statusButton").GetComponent<Button>().interactable = sw;
         canvasGameObj.transform.Find("jobDiaryButton").GetComponent<Button>().interactable = sw;
         canvasGameObj.transform.Find("titleButton").GetComponent<Button>().interactable = sw;
+        canvasGameObj.transform.Find("helpButton").GetComponent<Button>().interactable = sw;
     }
 
     public void ExecuteFadeInOut()
@@ -378,6 +381,7 @@ public class AtHomeManager : MonoBehaviour
         canvasGameObj.transform.Find("jobDiaryButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("titleButton").gameObject.SetActive(false);
         canvasGameObj.transform.Find("time").gameObject.SetActive(false);
+        canvasGameObj.transform.Find("helpButton").gameObject.SetActive(false);
 
         // 2021.10.14追加
         // 次の日になる時データ収集ためDBにデータセーブ

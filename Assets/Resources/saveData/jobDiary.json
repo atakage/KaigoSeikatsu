@@ -4,6 +4,11 @@
             "eventCode": "EC011",
             "eventScript": "●利用者との会話の話題について考えてみよう",
             "choosingString": "政治"
+        },
+        {
+            "eventCode": "EC017",
+            "eventScript": "●利用者同士のトラブルが起こった/●どうしよう...",
+            "choosingString": "トラブルの原因なった利用者を一旦退去させる"
         }
     ]
 }

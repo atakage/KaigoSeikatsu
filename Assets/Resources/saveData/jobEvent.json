@@ -130,7 +130,7 @@
             "choiceAEffect": "SA+1:FL+1",
             "choiceBEffect": "FA+3:FL-3",
             "choiceCEffect": "SA+1:FL+3",
-            "eventActive": false
+            "eventActive": true
         },
         {
             "eventCode": "EC012",
