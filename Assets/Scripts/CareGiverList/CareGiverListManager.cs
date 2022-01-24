@@ -189,7 +189,8 @@ public class CareGiverListManager : MonoBehaviour
                         moneyValue.name = "moneyValue";
                         moneyValue.AddComponent<Text>();
                         moneyValue.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-                        moneyValue.GetComponent<Text>().text = playerDataKey.Value.money;
+                        // 2022.01.25 修正
+                        moneyValue.GetComponent<Text>().text = string.IsNullOrEmpty(playerDataKey.Value.money) ? "0" + "円" : playerDataKey.Value.money + "円";
                         moneyValue.GetComponent<Text>().fontSize = 20;
                         moneyValue.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
                         moneyValue.GetComponent<Text>().color = new Color(0, 0, 0, 255);
@@ -219,7 +220,8 @@ public class CareGiverListManager : MonoBehaviour
                         endDateValue.name = "endDateValue";
                         endDateValue.AddComponent<Text>();
                         endDateValue.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-                        endDateValue.GetComponent<Text>().text = playerDataKey.Value.endDate;
+                        // 2022.01.25 修正
+                        endDateValue.GetComponent<Text>().text = string.IsNullOrEmpty(playerDataKey.Value.endDate) ? "" : DateTime.ParseExact(playerDataKey.Value.endDate, "yyyyMMddHHmmss", null).ToString("yyyy-MM-dd");
                         endDateValue.GetComponent<Text>().fontSize = 20;
                         endDateValue.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
                         endDateValue.GetComponent<Text>().color = new Color(0, 0, 0, 255);
@@ -402,7 +404,8 @@ public class CareGiverListManager : MonoBehaviour
                         moneyValue.name = "moneyValue";
                         moneyValue.AddComponent<Text>();
                         moneyValue.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-                        moneyValue.GetComponent<Text>().text = playerDataKey.Value.money;
+                        // 2022.01.25 修正
+                        moneyValue.GetComponent<Text>().text = string.IsNullOrEmpty(playerDataKey.Value.money) ? "0" + "円" : playerDataKey.Value.money + "円";
                         moneyValue.GetComponent<Text>().fontSize = 20;
                         moneyValue.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
                         moneyValue.GetComponent<Text>().color = new Color(0, 0, 0, 255);
@@ -432,7 +435,8 @@ public class CareGiverListManager : MonoBehaviour
                         endDateValue.name = "endDateValue";
                         endDateValue.AddComponent<Text>();
                         endDateValue.GetComponent<Text>().font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-                        endDateValue.GetComponent<Text>().text = playerDataKey.Value.endDate;
+                        // 2022.01.25 修正
+                        endDateValue.GetComponent<Text>().text = string.IsNullOrEmpty(playerDataKey.Value.endDate) ? "" : DateTime.ParseExact(playerDataKey.Value.endDate, "yyyyMMddHHmmss", null).ToString("yyyy-MM-dd");
                         endDateValue.GetComponent<Text>().fontSize = 20;
                         endDateValue.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
                         endDateValue.GetComponent<Text>().color = new Color(0, 0, 0, 255);

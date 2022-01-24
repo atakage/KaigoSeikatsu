@@ -42,7 +42,7 @@ public class CareGiverListUIManager : MonoBehaviour
                 copiedPlayerDataItem.transform.parent = careGiverListSharingObject.playerClearScrollContainerGameObj.transform;
 
                 copiedPlayerDataItem.transform.Find("upperBox").transform.Find("nameBox").transform.Find("value").GetComponent<Text>().text = clearData.clearPlayerDataList[i].name;
-                copiedPlayerDataItem.transform.Find("upperBox").transform.Find("moneyBox").transform.Find("value").GetComponent<Text>().text = clearData.clearPlayerDataList[i].money;
+                copiedPlayerDataItem.transform.Find("upperBox").transform.Find("moneyBox").transform.Find("value").GetComponent<Text>().text = clearData.clearPlayerDataList[i].money + "円";
                 copiedPlayerDataItem.transform.Find("upperBox").transform.Find("satisfactionBox").transform.Find("value").GetComponent<Text>().text = clearData.clearPlayerDataList[i].satisfaction.ToString();
                 copiedPlayerDataItem.transform.Find("lowerBox").transform.Find("playTimeBox").transform.Find("value").GetComponent<Text>().text = TimeSpan.FromSeconds(clearData.clearPlayerDataList[i].playTime).ToString("hh':'mm':'ss");
                 copiedPlayerDataItem.transform.Find("lowerBox").transform.Find("endDateBox").transform.Find("value").GetComponent<Text>().text = clearData.clearPlayerDataList[i].endDate;
@@ -61,7 +61,7 @@ public class CareGiverListUIManager : MonoBehaviour
 
         // default objectに格納する
         careGiverListSharingObject.containerItem0GameObj.transform.Find("upperBox").transform.Find("nameBox").transform.Find("value").GetComponent<Text>().text = playerDataFirst.name;
-        careGiverListSharingObject.containerItem0GameObj.transform.Find("upperBox").transform.Find("moneyBox").transform.Find("value").GetComponent<Text>().text = playerDataFirst.money;
+        careGiverListSharingObject.containerItem0GameObj.transform.Find("upperBox").transform.Find("moneyBox").transform.Find("value").GetComponent<Text>().text = playerDataFirst.money + "円";
         careGiverListSharingObject.containerItem0GameObj.transform.Find("upperBox").transform.Find("satisfactionBox").transform.Find("value").GetComponent<Text>().text = playerDataFirst.satisfaction.ToString();
         careGiverListSharingObject.containerItem0GameObj.transform.Find("lowerBox").transform.Find("playTimeBox").transform.Find("value").GetComponent<Text>().text = TimeSpan.FromSeconds(playerDataFirst.playTime).ToString("hh':'mm':'ss");
         careGiverListSharingObject.containerItem0GameObj.transform.Find("lowerBox").transform.Find("endDateBox").transform.Find("value").GetComponent<Text>().text = playerDataFirst.endDate;
