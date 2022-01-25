@@ -18,6 +18,8 @@ public class TitleManager : MonoBehaviour
         Screen.SetResolution(SetWidth, SetHeight, true);
 
         titleSharingObjectManager.versionTextValueGameObj.GetComponent<Text>().text = buildManager.version;
+        if (buildManager.realMode) titleSharingObjectManager.versionTextTitle2GameObj.SetActive(false);
+        else titleSharingObjectManager.versionTextTitle2GameObj.SetActive(true);
     }
 
     void Update()

@@ -27,9 +27,9 @@ public class ReadyForEndingManager : MonoBehaviour
         chatManager = GameObject.Find("ChatManager").GetComponent("ChatManager") as ChatManager;
         sceneTransitionManager = new SceneTransitionManager();
         gameClearFileManager = new GameClearFileManager();
-        firebaseManager = new FirebaseManager();
         buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
         playTimeManager = GameObject.Find("PlayTimeManager").GetComponent("PlayTimeManager") as PlayTimeManager;
+        firebaseManager = new FirebaseManager(buildManager.realMode);
 
         playerData = playerSaveDataManager.LoadPlayerData();
         UnityEngine.Debug.Log("localMode: " + playerData.localMode);

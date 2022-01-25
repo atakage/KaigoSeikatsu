@@ -5,6 +5,12 @@
             "itemDescription": "介護福祉士の名刺だ",
             "quantity": 1,
             "keyItem": "Y"
+        },
+        {
+            "itemName": "鶏肉弁当",
+            "itemDescription": "鶏肉のから揚げ弁当",
+            "quantity": 1,
+            "keyItem": "N"
         }
     ]
 }

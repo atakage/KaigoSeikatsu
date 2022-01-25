@@ -5,8 +5,9 @@ using UnityEngine;
 public class TitleSharingObjectManager : MonoBehaviour
 {
     public GameObject canvasGameObj;
+    public GameObject versionTextTitle2GameObj;
     public GameObject versionTextValueGameObj;
-
+    
     // Start is called before the first frame update
     // Awake() -> Start()
     /*
@@ -27,6 +28,8 @@ public class TitleSharingObjectManager : MonoBehaviour
     {
         Debug.Log("call TitleSharingObjectManager Awake()");
         this.canvasGameObj = GameObject.Find("Canvas");
+        this.versionTextTitle2GameObj = this.canvasGameObj.transform.Find("versionTextTitle2").gameObject;
         this.versionTextValueGameObj = this.canvasGameObj.transform.Find("versionTextValue").gameObject;
+        
     }
 }

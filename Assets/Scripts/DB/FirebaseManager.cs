@@ -13,6 +13,24 @@ public class FirebaseManager : MonoBehaviour
     public DatabaseReference databaseReference;
     public string realDbName = "player_data";
     public string testDbName = "test_player_data";
+    public string dbName;
+    public BuildManager buildManager;
+
+    // 2022.01.25 追加
+    public FirebaseManager(bool realMode)
+    {
+        if (realMode) this.dbName = this.realDbName;
+        else this.dbName = this.testDbName;
+        Debug.Log("dbName In FirebaseManager Instance: " + dbName);
+    }
+
+    public void Awake()
+    {
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+        if(buildManager.realMode) this.dbName = this.realDbName;
+        else this.dbName = this.testDbName;
+        Debug.Log("dbName In FirebaseManager  Awake(): " + dbName);
+    }
 
     public async Task<string> SelectPlayerDataListByName(int selectCount)
     {
@@ -24,7 +42,7 @@ public class FirebaseManager : MonoBehaviour
 
         try
         {
-           await FirebaseDatabase.DefaultInstance.GetReference(testDbName).OrderByKey().LimitToFirst(selectCount).GetValueAsync()
+           await FirebaseDatabase.DefaultInstance.GetReference(dbName).OrderByKey().LimitToFirst(selectCount).GetValueAsync()
            //await databaseReference.OrderByKey().LimitToFirst(selectCount).GetValueAsync()        
            //await databaseReference.LimitToFirst(selectCount).GetValueAsync()
            //await databaseReference.OrderByKey().GetValueAsync()
@@ -70,7 +88,7 @@ public class FirebaseManager : MonoBehaviour
                     Debug.Log("isConnected: " + isConnected);
                     // 接続に成功するとDB情報を格納
                     // FirebaseDatabase.DefaultInstance.GetReference("player_data"): DB名にaccess
-                     this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference(testDbName);
+                     this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference(dbName);
                     returnValue = true;
                     
                 }
@@ -93,7 +111,7 @@ public class FirebaseManager : MonoBehaviour
         if (isConnected)
         {
             // FirebaseDatabase.DefaultInstance.GetReference("player_data"): DB名にaccess
-            this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference(testDbName);
+            this.databaseReference = FirebaseDatabase.DefaultInstance.GetReference(dbName);
             returnValue = true;
         }
         else
@@ -112,7 +130,7 @@ public class FirebaseManager : MonoBehaviour
         try
         {
             //await databaseReference.Child(playerDataDBModel.name).GetValueAsync()
-            await FirebaseDatabase.DefaultInstance.GetReference(testDbName).Child(playerDataDBModel.name).GetValueAsync()
+            await FirebaseDatabase.DefaultInstance.GetReference(dbName).Child(playerDataDBModel.name).GetValueAsync()
             .ContinueWith(task =>
             {
                 if (task.IsFaulted)
@@ -154,7 +172,7 @@ public class FirebaseManager : MonoBehaviour
         try
         {
             //await databaseReference.Child(playerDataDBModel.name).SetRawJsonValueAsync(JsonUtility.ToJson(playerDataDBModel))
-            await FirebaseDatabase.DefaultInstance.GetReference(testDbName).Child(playerDataDBModel.name).SetRawJsonValueAsync(JsonUtility.ToJson(playerDataDBModel))
+            await FirebaseDatabase.DefaultInstance.GetReference(dbName).Child(playerDataDBModel.name).SetRawJsonValueAsync(JsonUtility.ToJson(playerDataDBModel))
             .ContinueWith(task =>
             {
                 if (task.IsFaulted)

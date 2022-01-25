@@ -13,6 +13,7 @@ public class CareGiverListManager : MonoBehaviour
     public bool successSelectingPlayerDataList; // DBからプレイヤーデータリスト取り出しに成功
     public bool actionFlagInUpdate; // Update()中である動作を指示するflag
     public CareGiverListSharingObjectManager careGiverListSharingObjectManager;
+    public BuildManager buildManager;
     public Dictionary<string, PlayerDataDBModel> allPlayerDataDBModelDic;
     public bool startingCheckScrollPos;
     public int reqPlayerDataCount;
@@ -27,13 +28,15 @@ public class CareGiverListManager : MonoBehaviour
         sceneTransitionManager = new SceneTransitionManager();
 
         careGiverListSharingObjectManager = GameObject.Find("CareGiverListSharingObjectManager").GetComponent<CareGiverListSharingObjectManager>();
+        buildManager = GameObject.Find("BuildManager").GetComponent("BuildManager") as BuildManager;
+
         careGiverListSharingObjectManager.connectionFailDefaultGameObj.transform.Find("Button").GetComponent<Button>().onClick.AddListener(ClickConnectionRetryButton);
         careGiverListSharingObjectManager.returnButtonGameObj.GetComponent<Button>().onClick.AddListener(ClickReturnButton);
 
         reqPlayerDataCount = 7;
 
         actionFlagInUpdate = false;
-        firebaseManager = new FirebaseManager();
+        firebaseManager = new FirebaseManager(buildManager.realMode);
         FireBaseConnectionAndSelectPlayerDataList();
     }
 
