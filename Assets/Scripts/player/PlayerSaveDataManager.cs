@@ -246,17 +246,6 @@ public class PlayerSaveDataManager : MonoBehaviour
             File.Create(filePath).Close();
             File.WriteAllText(filePath, itemAsStr);
 
-            /*
-            // 2021.11.04 追加
-            if ("window".Equals(buildMode))
-            {
-                File.WriteAllText(Application.dataPath + "/Resources/saveData/testPlayerItem.json", itemAsStr);
-            }
-            else if ("android".Equals(buildMode))
-            {
-                File.WriteAllText(Directory.CreateDirectory(Application.persistentDataPath + "/Resources/saveData/").FullName + "testPlayerItem.json", itemAsStr);
-            }
-            */
         }
         // ロードデータがあるなら既存アイテムリストに新しいアイテムリストを追加してセーブする
         else

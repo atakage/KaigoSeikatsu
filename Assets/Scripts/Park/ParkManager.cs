@@ -301,7 +301,8 @@ public class ParkManager : MonoBehaviour
         itemListData.itemDescription = convenienceItemData.itemDescription;
         itemListData.itemName = convenienceItemData.itemName;
         itemListData.keyItem = "N";
-        itemListData.quantity = random.Next(1, 4);
+        //itemListData.quantity = random.Next(1, 4);
+        itemListData.quantity = 1;
         Debug.Log("ランダムアイテム数: " + itemListData.quantity);
 
         ItemListData[] itemListDataArray = new ItemListData[1];

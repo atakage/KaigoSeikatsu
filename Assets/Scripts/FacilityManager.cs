@@ -172,7 +172,7 @@ public class FacilityManager : MonoBehaviour
                 && canvasObj.transform.Find("fadeOutEndMomentSW").GetComponent<Text>().text.Equals("Y"))
                 || (timeStr.Equals("12:50") && loadValueSW.Equals("Y")))
             {
-                SetPanelText("休憩時間だ\n何をしようかな?");
+                SetPanelText("休憩時間だ");
                 ActiveDefaultCharacterImage(true);
             }
             else if ((timeStr.Equals("14:00")

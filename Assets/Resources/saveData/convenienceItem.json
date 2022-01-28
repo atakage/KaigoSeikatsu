@@ -3,7 +3,7 @@
         {
             "itemName": "おにぎり",
             "itemDescription": "お米を味わう!<br>シンプルなおにぎり",
-            "itemQuantity": 4,
+            "itemQuantity": 1,
             "itemPrice": 100,
             "itemSale": "Y",
             "itemImagePath": "img/item/おにぎり"
@@ -11,7 +11,7 @@
         {
             "itemName": "鶏肉弁当",
             "itemDescription": "鶏肉のから揚げ弁当",
-            "itemQuantity": 2,
+            "itemQuantity": 1,
             "itemPrice": 300,
             "itemSale": "Y",
             "itemImagePath": "img/item/鶏肉弁当"
@@ -27,7 +27,7 @@
         {
             "itemName": "栄養ドリンク",
             "itemDescription": "疲労回復の効果がある",
-            "itemQuantity": 5,
+            "itemQuantity": 1,
             "itemPrice": 500,
             "itemSale": "Y",
             "itemImagePath": "img/item/栄養ドリンク"

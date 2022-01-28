@@ -39,6 +39,11 @@ public class GameClearFileManager : MonoBehaviour
         string folderPath = (Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.dataPath) + "/Resources/saveData/";
         string filePath = folderPath + "clearFile.json";
 
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
         string jsonStr = JsonConvert.SerializeObject(clearData);
         File.WriteAllText(filePath, jsonStr);
     }
