@@ -45,6 +45,7 @@ public class CafeManager : MonoBehaviour
         playerData = playerSaveDataManager.LoadPlayerData();
         GameObject.Find("time").GetComponent<Text>().text = playerData.time;
         GameObject.Find("MoneyValue").GetComponent<Text>().text = playerData.money+"円";
+        canvasGameObj.transform.Find("fatigueBar").GetComponent<Slider>().value = playerData.fatigue;
 
         canvasGameObj.transform.Find("menuButton").GetComponent<Button>().onClick.AddListener(ClickMenuButton);
         canvasGameObj.transform.Find("nextButton").GetComponent<Button>().onClick.AddListener(ClickNextButton);

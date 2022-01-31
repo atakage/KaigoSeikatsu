@@ -56,6 +56,11 @@ public class AdManager : MonoBehaviour
 
     public void ShowInterstitial()
     {
-        if (this.interstitial.IsLoaded() && this.adSwitch) this.interstitial.Show();
+        if (this.interstitial.IsLoaded() && this.adSwitch)
+        {
+            Debug.Log("Ads On!");
+            this.interstitial.Show();
+        }
+            
     }
 }

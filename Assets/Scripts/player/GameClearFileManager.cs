@@ -22,6 +22,7 @@ public class GameClearFileManager : MonoBehaviour
         // クリアファイルが存在すると
         if (CheckExistClearFile())
         {
+            Debug.Log("CHECKED directory /Resources/saveData/ IN SaveGameClearFile");
             // プレイヤーデータを追加
             clearData = LoadClearData();
             clearData.clearPlayerDataList.Add(playerData);
@@ -29,6 +30,7 @@ public class GameClearFileManager : MonoBehaviour
         // クリアファイルが存在しないと
         else
         {
+            Debug.Log("NOT FOUND directory /Resources/saveData/ IN SaveGameClearFile");
             // 新しいクリアリストを作る
             List<PlayerData> clearPlayerDataList = new List<PlayerData>();
             clearPlayerDataList.Add(playerData);
@@ -42,6 +44,7 @@ public class GameClearFileManager : MonoBehaviour
         if (!Directory.Exists(folderPath))
         {
             Directory.CreateDirectory(folderPath);
+            Debug.Log("CREATING directory /Resources/saveData/ IN SaveGameClearFile");
         }
 
         string jsonStr = JsonConvert.SerializeObject(clearData);
@@ -60,6 +63,7 @@ public class GameClearFileManager : MonoBehaviour
 
             if (!Directory.Exists(folderPath))
             {
+                Debug.Log("NOT FOUND directory /Resources/saveData/ IN LoadClearData");
                 Directory.CreateDirectory(folderPath);
             }
 

@@ -23,7 +23,7 @@ public class CareGiverListUIManager : MonoBehaviour
         
 
         // プレイヤーデータが2つ以上ならオブジェクトを追加する
-        if (clearData != null && clearData.clearPlayerDataList.Count > 1)
+        if (clearData != null && clearData.clearPlayerDataList.Count > 0)
         {
             Debug.Log("playerDataList.Count: " + clearData.clearPlayerDataList.Count);
 
